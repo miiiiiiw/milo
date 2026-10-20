@@ -1,0 +1,32 @@
+# 每次 push 就自動重建 manifest.json —— 你只要把 HTML 丟進 repo 就好。
+name: Build manifest
+
+on:
+  push:
+    branches: [main]
+    paths: ["**.html", "**.htm", "scripts/build-manifest.mjs"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # 需要完整 git 歷史來取得每個檔案的加入日期
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/build-manifest.mjs
+      - name: Commit manifest if changed
+        run: |
+          if ! git diff --quiet -- manifest.json || [ -n "$(git ls-files --others -- manifest.json)" ]; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
+            git add manifest.json
+            git commit -m "chore: update manifest [skip ci]"
+            git push
+          fi

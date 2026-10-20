@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cabinet · 作品索引</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   CONFIG — 想改名字、顏色，改這裡就好
+   ================================================================ */
+:root{
+  --paper:#f3efe6; --paper-2:#ebe5d8; --ink:#1d1b17; --ink-2:#5c574d; --ink-3:#958e80;
+  --rule:#d6cebd; --accent:#c8471f; --accent-soft:#f1d9cc; --sel:#1d1b17; --sel-ink:#f3efe6;
+  --stage:#e4ddcf;
+  --serif:"Fraunces", "Noto Serif TC", Georgia, serif;
+  --sans:"Noto Sans TC", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, monospace;
+  --side:340px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#16150f; --paper-2:#1e1c16; --ink:#ece6d8; --ink-2:#a9a291; --ink-3:#6f695b;
+    --rule:#2f2c23; --accent:#ff7a4d; --accent-soft:#3a2219; --sel:#ece6d8; --sel-ink:#16150f; --stage:#0f0e0a;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#16150f; --paper-2:#1e1c16; --ink:#ece6d8; --ink-2:#a9a291; --ink-3:#6f695b;
+  --rule:#2f2c23; --accent:#ff7a4d; --accent-soft:#3a2219; --sel:#ece6d8; --sel-ink:#16150f; --stage:#0f0e0a;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5;
+  display:grid;grid-template-columns:var(--side) 1fr;overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit}
+
+/* ---------- Sidebar ---------- */
+aside{display:flex;flex-direction:column;border-right:1px solid var(--rule);min-height:0;background:var(--paper)}
+.mast{padding:22px 22px 16px;border-bottom:1px solid var(--rule)}
+.mast .kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);display:flex;justify-content:space-between}
+.mast h1{font-family:var(--serif);font-weight:600;font-size:34px;line-height:1;letter-spacing:-.02em;margin:10px 0 6px}
+.mast h1 em{font-style:normal;color:var(--accent)}
+.mast p{color:var(--ink-2);font-size:13px}
+.stats{display:flex;gap:18px;margin-top:14px;font-family:var(--mono);font-size:11px;color:var(--ink-2)}
+.stats b{display:block;font-family:var(--serif);font-weight:600;font-size:20px;color:var(--ink);line-height:1.1}
+
+.tools{padding:12px 14px;display:flex;flex-direction:column;gap:10px;border-bottom:1px solid var(--rule)}
+.search{display:flex;align-items:center;gap:8px;border:1px solid var(--rule);background:var(--paper-2);border-radius:8px;padding:7px 10px}
+.search input{flex:1;border:0;background:none;outline:none;font:inherit;color:var(--ink);min-width:0}
+.search kbd{font-family:var(--mono);font-size:10px;color:var(--ink-3);border:1px solid var(--rule);border-radius:4px;padding:0 5px}
+.seg{display:flex;gap:2px;background:var(--paper-2);border:1px solid var(--rule);border-radius:8px;padding:2px}
+.seg button{flex:1;padding:5px 0;border-radius:6px;font-size:12px;color:var(--ink-2)}
+.seg button[aria-pressed="true"]{background:var(--paper);color:var(--ink);box-shadow:0 1px 0 var(--rule)}
+.minor{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.minor button:hover{color:var(--accent)}
+
+.list{flex:1;overflow:auto;padding:8px 8px 40px;min-height:0}
+.list::-webkit-scrollbar{width:8px}.list::-webkit-scrollbar-thumb{background:var(--rule);border-radius:8px}
+
+/* tree */
+.folder > .row{font-weight:500}
+.row{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:6px 10px;border-radius:6px;position:relative}
+.row:hover{background:var(--paper-2)}
+.row .tw{width:12px;flex:none;color:var(--ink-3);transition:transform .18s;font-size:10px}
+.folder.open > .row .tw{transform:rotate(90deg)}
+.row .ic{flex:none;width:16px;height:16px;color:var(--ink-2)}
+.row .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .meta{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);flex:none}
+.folder > .kids{display:none;margin-left:15px;border-left:1px dashed var(--rule);padding-left:4px}
+.folder.open > .kids{display:block}
+.file .row.on{background:var(--sel);color:var(--sel-ink)}
+.file .row.on .meta,.file .row.on .ic{color:var(--sel-ink);opacity:.7}
+.new-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex:none}
+
+/* timeline */
+.month{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);padding:16px 10px 6px;display:flex;align-items:center;gap:8px}
+.month::after{content:"";flex:1;height:1px;background:var(--rule)}
+.card{display:block;width:100%;text-align:left;padding:10px;border-radius:8px;display:grid;grid-template-columns:42px 1fr;gap:10px}
+.card:hover{background:var(--paper-2)}
+.card.on{background:var(--sel);color:var(--sel-ink)}
+.card .d{font-family:var(--serif);font-size:22px;font-weight:600;line-height:1;text-align:center}
+.card .d small{display:block;font-family:var(--mono);font-size:9.5px;font-weight:400;letter-spacing:.1em;opacity:.6;margin-top:3px}
+.card .t{font-weight:500;line-height:1.35}
+.card .p{font-family:var(--mono);font-size:10.5px;opacity:.6;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.tag{font-family:var(--mono);font-size:10px;padding:1px 6px;border-radius:99px;background:var(--accent-soft);color:var(--accent)}
+.card.on .tag{background:transparent;color:var(--sel-ink);border:1px solid currentColor;opacity:.75}
+.empty{padding:30px 14px;color:var(--ink-3);text-align:center;font-size:13px}
+mark{background:var(--accent-soft);color:inherit;border-radius:2px}
+
+/* ---------- Stage ---------- */
+main{display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--stage)}
+.bar{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--rule);background:var(--paper);min-height:52px}
+.crumb{flex:1;min-width:0;font-family:var(--mono);font-size:12px;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.crumb b{color:var(--ink);font-weight:500}
+.crumb span.sep{margin:0 6px;opacity:.5}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--rule);border-radius:7px;font-size:12px;color:var(--ink-2);background:var(--paper);text-decoration:none;white-space:nowrap}
+.btn:hover{color:var(--ink);border-color:var(--ink-3)}
+.btn svg{width:14px;height:14px}
+.menu-btn{display:none}
+.frame-wrap{flex:1;position:relative;padding:14px;min-height:0}
+iframe{width:100%;height:100%;border:1px solid var(--rule);border-radius:10px;background:#fff;box-shadow:0 1px 0 var(--rule),0 18px 40px -24px rgba(0,0,0,.35)}
+body.full .frame-wrap{padding:0}
+body.full iframe{border-radius:0;border:0}
+body.full aside{display:none}
+body.full{grid-template-columns:1fr}
+
+/* home / cover */
+.cover{position:absolute;inset:14px;border:1px solid var(--rule);border-radius:10px;background:var(--paper);overflow:auto;padding:clamp(24px,5vw,64px)}
+.cover .k{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.cover h2{font-family:var(--serif);font-weight:400;font-size:clamp(34px,5vw,64px);line-height:1.02;letter-spacing:-.025em;margin:14px 0 18px;max-width:16em;word-break:keep-all}
+.cover h2 i{font-style:italic;color:var(--accent)}
+.cover .lede{color:var(--ink-2);max-width:52ch;font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:40px}
+.tile{text-align:left;border:1px solid var(--rule);border-radius:10px;padding:16px;background:var(--paper);display:flex;flex-direction:column;gap:8px;min-height:140px;transition:transform .15s, border-color .15s}
+.tile:hover{transform:translateY(-2px);border-color:var(--ink-3)}
+.tile .n{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);display:flex;justify-content:space-between}
+.tile .t{font-family:var(--serif);font-size:19px;line-height:1.2;font-weight:600}
+.tile .s{color:var(--ink-2);font-size:12.5px;flex:1}
+.section-h{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-top:44px;display:flex;align-items:center;gap:10px}
+.section-h::after{content:"";flex:1;height:1px;background:var(--rule)}
+.section-h + .grid{margin-top:16px}
+
+.scrim{display:none}
+@media (max-width: 820px){
+  body{grid-template-columns:1fr}
+  aside{position:fixed;inset:0 auto 0 0;width:min(88vw,360px);z-index:20;transform:translateX(-100%);transition:transform .22s;box-shadow:0 0 60px rgba(0,0,0,.25)}
+  body.drawer aside{transform:none}
+  body.drawer .scrim{display:block;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:10}
+  .menu-btn{display:inline-flex}
+  .hide-sm{display:none}
+  .frame-wrap{padding:8px}.cover{inset:8px}
+  .bar{padding:8px 12px}
+}
+</style>
+</head>
+<body>
+
+<aside id="side">
+  <div class="mast">
+    <div class="kicker"><span id="site-kicker">Personal Archive</span><button id="theme" title="切換明暗" aria-label="切換明暗">◐</button></div>
+    <h1 id="site-title">Cabinet<em>.</em></h1>
+    <p id="site-sub">想法、圖表與實驗的抽屜。</p>
+    <div class="stats">
+      <div><b id="s-files">–</b>頁面</div>
+      <div><b id="s-dirs">–</b>主題</div>
+      <div><b id="s-last">–</b>最近更新</div>
+    </div>
+  </div>
+  <div class="tools">
+    <label class="search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" placeholder="搜尋標題、路徑、標籤…" autocomplete="off">
+      <kbd>/</kbd>
+    </label>
+    <div class="seg" role="group" aria-label="檢視方式">
+      <button data-view="tree" aria-pressed="true">資料夾</button>
+      <button data-view="time" aria-pressed="false">時間軸</button>
+    </div>
+    <div class="minor" id="tree-ctl">
+      <button id="expand">全部展開</button>
+      <button id="collapse">全部收合</button>
+    </div>
+  </div>
+  <nav class="list" id="list"></nav>
+</aside>
+<div class="scrim" id="scrim"></div>
+
+<main>
+  <div class="bar">
+    <button class="btn menu-btn" id="menu" aria-label="目錄">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <div class="crumb" id="crumb"><b>首頁</b></div>
+    <button class="btn hide-sm" id="home" title="回首頁">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11 12 4l9 7v9H3z"/></svg>首頁
+    </button>
+    <button class="btn" id="copy" hidden title="複製分享連結">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg><span class="hide-sm">複製連結</span>
+    </button>
+    <button class="btn hide-sm" id="full" hidden title="專注模式 (F)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>專注
+    </button>
+    <a class="btn" id="open" hidden target="_blank" rel="noopener" title="新分頁開啟">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4h6v6M20 4l-9 9M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg><span class="hide-sm">新分頁</span>
+    </a>
+  </div>
+  <div class="frame-wrap">
+    <iframe id="frame" title="預覽" hidden></iframe>
+    <section class="cover" id="cover"></section>
+  </div>
+</main>
+
+<script>
+/* ================================================================
+   設定
+   ================================================================ */
+const CONFIG = {
+  title: "Cabinet",              // 左上大標題
+  kicker: "Personal Archive",    // 標題上方小字
+  subtitle: "想法、圖表與實驗的抽屜。",
+  manifest: "manifest.json",     // 由 scripts/build-manifest.mjs 產生
+  newDays: 14,                   // 幾天內算「新」，會顯示小紅點
+  // 沒有 manifest.json 時，在 *.github.io 上會自動用 GitHub API 抓檔案清單。
+  // 若用自訂網域，請在這裡填 repo，例如 "yourname/yourrepo"
+  repo: "",
+  branch: "",                    // 留空 = 預設分支
+  ignore: [/^index\.html$/i, /(^|\/)(node_modules|\.github|scripts|assets|_[^/]*)\//, /(^|\/)_[^/]*\.html$/]
+};
+
+/* ================================================================ */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let FILES = [], VIEW = "tree", QUERY = "", CURRENT = null;
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem("cab:"+k); return v==null ? d : JSON.parse(v);}catch{ return d; } },
+  set(k, v){ try{ localStorage.setItem("cab:"+k, JSON.stringify(v)); }catch{} }
+};
+let OPEN = new Set(store.get("open", []));
+
+const ICON = {
+  folder: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
+  folderOpen: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h7a2 2 0 0 1 2 2v1M3 7v10a2 2 0 0 0 2 2h12.5a2 2 0 0 0 1.9-1.4L21.5 12a1 1 0 0 0-1-1.3H8.4a2 2 0 0 0-1.9 1.4L4 19"/></svg>',
+  file: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13l-1.5 2L9 17M15 13l1.5 2L15 17"/></svg>'
+};
+
+/* ---------- load ---------- */
+async function load(){
+  try{
+    const r = await fetch(CONFIG.manifest + "?t=" + Date.now(), {cache:"no-store"});
+    if(!r.ok) throw 0;
+    const m = await r.json();
+    return (m.files || m).map(norm);
+  }catch{}
+  // fallback: GitHub API
+  const gh = guessRepo();
+  if(gh){
+    try{
+      let br = CONFIG.branch;
+      if(!br){ const info = await (await fetch(`https://api.github.com/repos/${gh}`)).json(); br = info.default_branch || "main"; }
+      const t = await (await fetch(`https://api.github.com/repos/${gh}/git/trees/${br}?recursive=1`)).json();
+      return (t.tree||[]).filter(x => x.type==="blob" && /\.html?$/i.test(x.path)).map(x => norm({path:x.path}));
+    }catch{}
+  }
+  return [];
+}
+function guessRepo(){
+  if(CONFIG.repo) return CONFIG.repo;
+  const h = location.hostname.match(/^([^.]+)\.github\.io$/i);
+  if(!h) return null;
+  const seg = location.pathname.split("/").filter(Boolean)[0];
+  return seg && !/\.html?$/.test(seg) ? `${h[1]}/${seg}` : `${h[1]}/${h[1]}.github.io`;
+}
+function norm(f){
+  const path = f.path.replace(/^\.?\//, "");
+  const name = path.split("/").pop();
+  return {
+    path,
+    title: f.title || prettify(name),
+    description: f.description || "",
+    tags: f.tags || [],
+    date: f.date || null,
+    dir: path.includes("/") ? path.slice(0, path.lastIndexOf("/")) : ""
+  };
+}
+function prettify(n){ return n.replace(/\.html?$/i,"").replace(/^\d{4}-\d{2}-\d{2}[-_ ]?/,"").replace(/[-_]+/g," ").trim() || n; }
+
+/* ---------- tree build ---------- */
+function buildTree(files){
+  const root = {name:"", path:"", dirs:new Map(), files:[]};
+  for(const f of files){
+    const parts = f.path.split("/"); parts.pop();
+    let node = root, acc = "";
+    for(const p of parts){
+      acc = acc ? acc+"/"+p : p;
+      if(!node.dirs.has(p)) node.dirs.set(p, {name:p, path:acc, dirs:new Map(), files:[]});
+      node = node.dirs.get(p);
+    }
+    node.files.push(f);
+  }
+  return root;
+}
+const ts = f => f.date ? Date.parse(f.date) : 0;
+const latest = n => Math.max(0, ...n.files.map(ts), ...[...n.dirs.values()].map(latest));
+const count = n => n.files.length + [...n.dirs.values()].reduce((a,d)=>a+count(d),0);
+const isNew = f => f.date && (Date.now() - ts(f)) < CONFIG.newDays*864e5;
+const fmtDate = d => d ? new Date(d).toLocaleDateString("zh-TW",{year:"numeric",month:"2-digit",day:"2-digit"}).replace(/\//g,".") : "";
+const shortDate = d => d ? fmtDate(d).slice(5) : "";
+
+function hl(text){
+  if(!QUERY) return esc(text);
+  const i = text.toLowerCase().indexOf(QUERY);
+  if(i<0) return esc(text);
+  return esc(text.slice(0,i)) + "<mark>" + esc(text.slice(i,i+QUERY.length)) + "</mark>" + esc(text.slice(i+QUERY.length));
+}
+function matches(f){
+  if(!QUERY) return true;
+  return [f.title, f.path, f.description, ...(f.tags||[])].join(" ").toLowerCase().includes(QUERY);
+}
+
+function renderTree(node, depth=0){
+  const dirs = [...node.dirs.values()].sort((a,b)=>a.name.localeCompare(b.name, "zh-Hant", {numeric:true}));
+  const files = [...node.files].sort((a,b)=> ts(b)-ts(a) || a.title.localeCompare(b.title));
+  let html = "";
+  for(const d of dirs){
+    const open = QUERY || OPEN.has(d.path);
+    html += `<div class="folder ${open?"open":""}" data-dir="${esc(d.path)}">
+      <button class="row" data-toggle="${esc(d.path)}" aria-expanded="${!!open}">
+        <span class="tw">▶</span>${open?ICON.folderOpen:ICON.folder}
+        <span class="nm">${hl(d.name)}</span><span class="meta">${count(d)}</span>
+      </button>
+      <div class="kids">${renderTree(d, depth+1)}</div></div>`;
+  }
+  for(const f of files){
+    html += `<div class="file"><button class="row ${CURRENT===f.path?"on":""}" data-open="${esc(f.path)}" title="${esc(f.path)}">
+      <span class="tw"></span>${ICON.file}<span class="nm">${hl(f.title)}</span>
+      ${isNew(f)?'<span class="new-dot" title="新"></span>':""}<span class="meta">${shortDate(f.date)}</span></button></div>`;
+  }
+  return html;
+}
+function pruneTree(node){
+  const out = {name:node.name, path:node.path, dirs:new Map(), files:node.files.filter(matches)};
+  for(const [k,d] of node.dirs){
+    const p = pruneTree(d);
+    if(p.files.length || p.dirs.size || (QUERY && d.name.toLowerCase().includes(QUERY))) out.dirs.set(k, p);
+  }
+  return out;
+}
+
+function renderTimeline(){
+  const list = FILES.filter(matches).sort((a,b)=>ts(b)-ts(a));
+  let html = "", lastM = null;
+  for(const f of list){
+    const d = f.date ? new Date(f.date) : null;
+    const m = d ? `${d.getFullYear()} · ${String(d.getMonth()+1).padStart(2,"0")}` : "未標日期";
+    if(m!==lastM){ html += `<div class="month">${m}</div>`; lastM = m; }
+    html += `<button class="card ${CURRENT===f.path?"on":""}" data-open="${esc(f.path)}">
+      <div class="d">${d?d.getDate():"–"}<small>${d?["SUN","MON","TUE","WED","THU","FRI","SAT"][d.getDay()]:""}</small></div>
+      <div><div class="t">${hl(f.title)}</div><div class="p">${hl(f.dir||"/")}</div>
+      ${f.tags.length?`<div class="tags">${f.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>`:""}</div></button>`;
+  }
+  return html;
+}
+
+function render(){
+  const el = $("#list");
+  $("#tree-ctl").style.display = VIEW==="tree" ? "" : "none";
+  let html = VIEW==="tree" ? renderTree(pruneTree(buildTree(FILES))) : renderTimeline();
+  if(!html) html = FILES.length ? `<div class="empty">找不到「${esc(QUERY)}」</div>`
+                                : `<div class="empty">還沒有任何頁面。<br>把 .html 丟進 repo 就會出現在這裡。</div>`;
+  el.innerHTML = html;
+}
+
+/* ---------- cover ---------- */
+function renderCover(){
+  const recent = [...FILES].sort((a,b)=>ts(b)-ts(a)).slice(0,6);
+  const tree = buildTree(FILES);
+  const topics = [...tree.dirs.values()].sort((a,b)=>latest(b)-latest(a));
+  const tile = (f,i) => `<button class="tile" data-open="${esc(f.path)}">
+      <div class="n"><span>${String(i+1).padStart(2,"0")}</span><span>${fmtDate(f.date)}</span></div>
+      <div class="t">${esc(f.title)}</div>
+      <div class="s">${esc(f.description || f.dir || "")}</div>
+      ${f.tags.length?`<div class="tags">${f.tags.slice(0,3).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>`:""}
+    </button>`;
+  $("#cover").innerHTML = `
+    <div class="k">Index · ${FILES.length} pages</div>
+    <h2>一個放<i>想法</i>的抽屜。</h2>
+    <p class="lede">${esc(CONFIG.subtitle)} 從左側展開資料夾，或從下方挑一個開始。每個頁面都可以獨立開新分頁、複製連結分享。</p>
+    ${recent.length?`<div class="section-h">最近放進來的</div><div class="grid">${recent.map(tile).join("")}</div>`:""}
+    ${topics.length?`<div class="section-h">主題</div><div class="grid">${topics.map(d=>`
+      <button class="tile" data-reveal="${esc(d.path)}">
+        <div class="n"><span>${ICON.folder.replace('class="ic"','width="14" height="14"')}</span><span>${count(d)} 頁</span></div>
+        <div class="t">${esc(d.name)}</div>
+        <div class="s">最近更新 ${fmtDate(latest(d)||null)||"—"}</div>
+      </button>`).join("")}</div>`:""}
+  `;
+}
+
+/* ---------- open / route ---------- */
+function show(path, push=true){
+  const f = FILES.find(x=>x.path===path);
+  if(!f){ home(push); return; }
+  CURRENT = path;
+  const url = encodeURI(path);
+  const frame = $("#frame");
+  if(frame.getAttribute("src")!==url) frame.src = url;
+  frame.hidden = false; $("#cover").hidden = true;
+  $("#open").href = url; ["open","copy","full"].forEach(id=>$("#"+id).hidden=false);
+  const segs = path.split("/");
+  $("#crumb").innerHTML = segs.slice(0,-1).map(s=>`<span>${esc(s)}</span><span class="sep">/</span>`).join("") + `<b>${esc(f.title)}</b>`;
+  document.title = `${f.title} · ${CONFIG.title}`;
+  // 展開祖先資料夾
+  let acc=""; for(const s of segs.slice(0,-1)){ acc = acc?acc+"/"+s:s; OPEN.add(acc); } store.set("open",[...OPEN]);
+  if(push) history.pushState(null,"","#/"+path);
+  render();
+  document.body.classList.remove("drawer");
+  requestAnimationFrame(()=> document.querySelector(`[data-open="${CSS.escape(path)}"].on`)?.scrollIntoView({block:"nearest"}));
+}
+function home(push=true){
+  CURRENT = null;
+  $("#frame").hidden = true; $("#frame").removeAttribute("src"); $("#cover").hidden = false;
+  ["open","copy","full"].forEach(id=>$("#"+id).hidden=true);
+  $("#crumb").innerHTML = "<b>首頁</b>";
+  document.title = `${CONFIG.title} · 作品索引`;
+  document.body.classList.remove("full");
+  if(push) history.pushState(null,"",location.pathname);
+  render();
+}
+function route(){
+  const h = decodeURI(location.hash.replace(/^#\/?/,""));
+  h ? show(h,false) : home(false);
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click", e=>{
+  const o = e.target.closest("[data-open]"); if(o){ show(o.dataset.open); return; }
+  const t = e.target.closest("[data-toggle]");
+  if(t){ const p=t.dataset.toggle; OPEN.has(p)?OPEN.delete(p):OPEN.add(p); store.set("open",[...OPEN]); render(); return; }
+  const r = e.target.closest("[data-reveal]");
+  if(r){ setView("tree"); let acc=""; for(const s of r.dataset.reveal.split("/")){acc=acc?acc+"/"+s:s;OPEN.add(acc);} store.set("open",[...OPEN]); render();
+    document.body.classList.add("drawer");
+    requestAnimationFrame(()=>document.querySelector(`[data-dir="${CSS.escape(r.dataset.reveal)}"]`)?.scrollIntoView({block:"start",behavior:"smooth"})); }
+});
+function setView(v){ VIEW=v; store.set("view",v); document.querySelectorAll("[data-view]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.view===v)); render(); }
+document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>setView(b.dataset.view));
+$("#q").addEventListener("input", e=>{ QUERY=e.target.value.trim().toLowerCase(); render(); });
+$("#expand").onclick = ()=>{ const walk=n=>n.dirs.forEach(d=>{OPEN.add(d.path);walk(d);}); walk(buildTree(FILES)); store.set("open",[...OPEN]); render(); };
+$("#collapse").onclick = ()=>{ OPEN.clear(); store.set("open",[]); render(); };
+$("#home").onclick = ()=>home();
+$("#menu").onclick = ()=>document.body.classList.toggle("drawer");
+$("#scrim").onclick = ()=>document.body.classList.remove("drawer");
+$("#full").onclick = ()=>document.body.classList.toggle("full");
+$("#copy").onclick = async ()=>{
+  try{ await navigator.clipboard.writeText(location.href); const s=$("#copy span"); const o=s.textContent; s.textContent="已複製 ✓"; setTimeout(()=>s.textContent=o,1400);}catch{}
+};
+$("#theme").onclick = ()=>{
+  const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+  const cur = document.documentElement.dataset.theme || (dark?"dark":"light");
+  const next = cur==="dark"?"light":"dark"; document.documentElement.dataset.theme=next; store.set("theme",next);
+};
+document.addEventListener("keydown", e=>{
+  if(e.target.matches("input")){ if(e.key==="Escape"){ e.target.value=""; QUERY=""; render(); e.target.blur(); } return; }
+  if(e.key==="/"){ e.preventDefault(); document.body.classList.add("drawer"); $("#q").focus(); }
+  if(e.key==="f" && CURRENT) document.body.classList.toggle("full");
+  if(e.key==="Escape") document.body.classList.remove("full","drawer");
+});
+addEventListener("popstate", route);
+
+/* ---------- boot ---------- */
+(async()=>{
+  const t = store.get("theme", null); if(t) document.documentElement.dataset.theme = t;
+  $("#site-title").innerHTML = esc(CONFIG.title)+"<em>.</em>";
+  $("#site-kicker").textContent = CONFIG.kicker;
+  $("#site-sub").textContent = CONFIG.subtitle;
+  FILES = (await load()).filter(f => !CONFIG.ignore.some(re=>re.test(f.path)));
+  $("#s-files").textContent = FILES.length;
+  $("#s-dirs").textContent = buildTree(FILES).dirs.size;
+  const last = Math.max(0,...FILES.map(ts));
+  $("#s-last").textContent = last ? shortDate(last) : "—";
+  setView(store.get("view","tree"));
+  renderCover();
+  route();
+})();
+</script>
+</body>
+</html>
