@@ -128,58 +128,39 @@ ul.points{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:8px
 .d .lg-backend{fill:var(--node);stroke:var(--ink)}
 .d .lg-ext{fill:var(--ext);stroke:var(--ext-stroke)}
 
-.stage{position:relative}
-.play-cover{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;gap:14px;width:100%;
-  border:0;margin:0;padding:16px;background:color-mix(in srgb,var(--paper) 55%,transparent);color:var(--ink);font-family:var(--sans);cursor:pointer;text-align:left}
-.play-cover .pc-icon{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;background:var(--accent);color:var(--paper);flex:none;padding-left:3px}
-.play-cover .pc-text{display:flex;flex-direction:column;gap:2px;background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:10px 14px}
-.play-cover b{font-size:1rem;font-weight:600}
-.play-cover small{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
-.play-cover:hover .pc-icon{filter:brightness(1.08)}
-.play-cover:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
-.motion-note{font-size:.88rem;color:var(--muted);border:1px solid var(--rule);border-radius:6px;padding:10px 12px;max-width:none}
-@media (prefers-reduced-motion:reduce){.play-cover{display:none!important}}
-/* motion (diagram-design animation contract: static source complete, step mode) */
-.motion-fig{--motion-fast:160ms;--motion-step:480ms;--motion-hold:1200ms;--motion-total:7200ms;--motion-ease:cubic-bezier(.2,.8,.2,1);min-width:0}
-.motion-ready [data-motion-item]{opacity:.12;transform:translateY(8px);transform-box:fill-box;transform-origin:center;
-  transition:opacity var(--motion-step) var(--motion-ease),transform var(--motion-step) var(--motion-ease)}
-.motion-ready [data-motion-item].is-visible,
-.motion-ready[data-frame="end"] [data-motion-item],
-.motion-ready[data-frame="static"] [data-motion-item]{opacity:1;transform:none}
-.draw-path{fill:none;stroke:var(--accent);stroke-width:3;stroke-dasharray:1;stroke-dashoffset:1;pointer-events:none}
-.motion-ready .draw-path.is-visible{animation:draw-path var(--motion-step) linear forwards}
-.motion-ready[data-frame="static"] .draw-path{display:none}
-@keyframes draw-path{to{stroke-dashoffset:0}}
-.motion-caption{font-size:.95rem;color:var(--ink);min-height:1.75em;font-variant-numeric:tabular-nums}
-.motion-caption .cap-n{font-family:var(--mono);font-size:.78rem;color:var(--accent);margin-right:10px;letter-spacing:.06em}
-[data-motion-controls]{display:none;align-items:center;flex-wrap:wrap;gap:8px;padding-top:12px;border-top:1px solid var(--rule)}
-.motion-ready [data-motion-controls]{display:flex}
-[data-motion-controls][hidden]{display:none!important}
-[data-motion-controls] button{min-width:44px;min-height:44px;padding:8px 12px;border:1px solid var(--rule-solid);border-radius:4px;
-  color:var(--ink);background:var(--paper);font:600 .8rem/1 var(--sans);cursor:pointer}
-[data-motion-controls] button:hover{border-color:var(--accent)}
-[data-motion-controls] button[data-motion-action="play"]{border-color:var(--accent);color:var(--accent)}
-[data-motion-controls] button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-[data-motion-controls] button:disabled{cursor:not-allowed;opacity:.45}
-[data-motion-controls] button[data-music-toggle][aria-pressed="false"]{color:var(--soft)}
-.keyboard-help{font-family:var(--mono);font-size:.68rem;color:var(--soft)}
-[data-motion-status-visible]{margin-left:auto;color:var(--muted);font:500 .75rem/1.4 var(--mono)}
-@media (max-width:680px){.keyboard-help{display:none}}
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-html[data-motion="static"] [data-motion-controls],html[data-motion="static"] [data-motion-decorative]{display:none!important}
-html[data-motion="static"] [data-motion-item]{opacity:1!important;transform:none!important;animation:none!important;transition:none!important}
-html[data-motion="step"] [data-motion-controls],html[data-motion="step"] [data-motion-decorative]{display:none!important}
-html[data-motion="step"] [data-motion-item]{animation:none!important;transition:none!important}
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}
-  [data-motion-item]{opacity:1!important;transform:none!important}
-  [data-motion-decorative]{display:none!important}
-  [data-motion-controls]{display:none!important}
-}
-@media print{
-  [data-motion-controls],[data-motion-decorative]{display:none!important}
-  [data-motion-item]{opacity:1!important;transform:none!important;animation:none!important;transition:none!important}
-}
+[hidden]{display:none!important}
+/* video block: a portrait player that fits a phone screen without sideways scrolling */
+.video-block{display:flex;flex-direction:column;gap:10px;border:1px solid var(--rule);border-radius:8px;background:var(--paper-2);padding:16px;margin:8px 0}
+.video-block h3{margin:0}
+.player{width:100%;max-width:420px;margin:4px auto 0;display:flex;flex-direction:column;border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:var(--paper)}
+.screen{position:relative}
+.screen svg.pv{display:block;width:100%;height:auto}
+.pv [data-s]{opacity:.12;transition:opacity .5s ease}
+.pv [data-s].on{opacity:1}
+.pv [data-s] .box{transition:fill .4s ease,stroke .4s ease}
+.pv [data-s].cur .box{fill:var(--accent-tint);stroke:var(--accent);stroke-width:1.8}
+.pv .flow{stroke-dasharray:1;stroke-dashoffset:0;transition:stroke-dashoffset .7s ease}
+.player.is-run .pv [data-s]:not(.on) .flow{stroke-dashoffset:1}
+.pv-cap{margin:0;padding:10px 14px 12px;min-height:3.6em;font-size:.95rem;line-height:1.5;border-top:1px solid var(--rule);max-width:none}
+.pv-n{display:inline-block;font-family:var(--mono);font-size:.72rem;color:var(--accent);letter-spacing:.06em;margin-right:8px}
+.pv-big{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;width:100%;border:0;margin:0;padding:0;
+  background:color-mix(in srgb,var(--paper) 60%,transparent);color:var(--ink);font:600 1rem var(--sans);cursor:pointer}
+.pv-big-icon{display:grid;place-items:center;width:76px;height:76px;border-radius:50%;background:var(--accent);color:var(--paper);padding-left:4px}
+.pv-big-text{background:var(--paper);border:1px solid var(--rule);border-radius:999px;padding:6px 14px;font-size:.9rem}
+.pv-big:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.pv-bar{display:flex;align-items:center;gap:8px;padding:6px 8px;border-top:1px solid var(--rule)}
+.pv-btn{display:grid;place-items:center;width:44px;height:44px;flex:none;border:0;border-radius:6px;background:transparent;color:var(--ink);cursor:pointer}
+.pv-btn:hover{background:var(--paper-2)}
+.pv-btn:focus-visible{outline:2px solid var(--accent);outline-offset:0}
+.pv-sound[aria-pressed="false"]{color:var(--soft)}
+.pv-segs{flex:1;min-width:0;display:flex;gap:3px;align-items:center;height:44px}
+.pv-seg{flex:1;min-width:0;height:44px;border:0;padding:0;background:transparent;cursor:pointer;display:flex;align-items:center}
+.pv-seg i{display:block;width:100%;height:4px;border-radius:2px;background:var(--rule-solid);overflow:hidden}
+.pv-seg i b{display:block;height:100%;width:0;background:var(--accent)}
+.pv-seg:focus-visible i{outline:2px solid var(--accent);outline-offset:3px}
+.pv-time{flex:none;font:500 .72rem var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+@media (max-width:380px){.pv-time{display:none}}
+@media (prefers-reduced-motion:reduce){.pv [data-s],.pv [data-s] .box,.pv .flow{transition:none}}
 </style>
 </head>
 <body>
@@ -192,120 +173,107 @@ html[data-motion="step"] [data-motion-item]{animation:none!important;transition:
   <h2><span class="no">01</span>運作方式</h2>
   <p>三個服務各有分工：GitHub 存放程式碼；Workers 執行後端程式，也能同時提供前端的靜態檔；D1 存放資料。</p>
   <p>你在本機開發後 push 到 GitHub，Cloudflare 的 Workers Builds 會自動建置並部署 Worker。使用者的請求進到 Worker 後，Worker 透過名為 <code>DB</code> 的 binding 查詢 D1，不需要連線字串，也不必另外架設資料庫伺服器。</p>
-  <figure class="motion-fig" data-motion-root data-motion-mode="step" data-step-count="6" data-step-current="6" data-frame="static" data-static-frame="complete">
-    <p class="motion-note" data-reduced-note hidden>你的裝置開啟了「減少動態效果」，所以這裡只顯示完整的靜態圖，不提供播放。想看動畫，可到裝置的輔助使用設定中關閉這個選項（iPhone：設定 → 輔助使用 → 動態效果）。</p>
+  <figure>
     <span class="swipe">← 左右滑動看完整圖 →</span>
-    <div class="stage">
-    <button type="button" class="play-cover" data-play-cover hidden>
-      <span class="pc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span>
-      <span class="pc-text"><b>播放流程動畫</b><small>6 個步驟 · 約 7 秒 · 有配樂</small></span>
-    </button>
     <div class="scroll">
-<svg class="d" viewBox="0 0 640 452" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="arch-title arch-desc">
-  <title id="arch-title">GitHub、Workers 與 D1 的部署架構</title>
-  <desc id="arch-desc">程式碼從本機 push 到 GitHub，觸發 Workers Builds 部署 Worker；使用者透過 HTTPS 呼叫 Worker，Worker 經由 DB binding 讀寫 D1，migration 可選擇在建置時套用。</desc>
-  <defs>
-    <marker id="arch-ar" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker>
-    <marker id="arch-ar-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-link" points="0 0, 8 3, 0 6"/></marker>
-  </defs>
-  <rect class="bg" width="640" height="452"/>
 
-  <rect class="zone" x="184" y="148" width="432" height="228" rx="8"/>
-  <text class="eb" x="200" y="168">CLOUDFLARE</text>
-
-  <g data-motion-item data-step="1" aria-label="在本機開發與測試">
-    <rect class="mask" x="24" y="40" width="120" height="56" rx="6"/>
-    <rect class="n-input" x="24" y="40" width="120" height="56" rx="6"/>
-    <rect class="tag" x="32" y="46" width="28" height="12" rx="2"/><text class="tag-t" x="46" y="55" text-anchor="middle">DEV</text>
-    <text class="nm" x="84" y="74" text-anchor="middle">你的電腦</text>
-    <text class="sub" x="84" y="88" text-anchor="middle">wrangler dev</text>
-  </g>
-
-  <g data-motion-item data-step="2" aria-label="git push 到 GitHub">
-    <line class="a" x1="84" y1="96" x2="84" y2="191" marker-end="url(#arch-ar)"/>
-    <rect class="mask" x="92" y="136" width="48" height="12" rx="2"/>
-    <text class="lbl" x="116" y="145" text-anchor="middle">GIT PUSH</text>
-    <rect class="mask" x="24" y="192" width="120" height="56" rx="6"/>
-    <rect class="n-backend" x="24" y="192" width="120" height="56" rx="6"/>
-    <rect class="tag" x="32" y="198" width="28" height="12" rx="2"/><text class="tag-t" x="46" y="207" text-anchor="middle">GIT</text>
-    <text class="nm" x="84" y="226" text-anchor="middle">GitHub repo</text>
-    <text class="sub" x="84" y="240" text-anchor="middle">branch: main</text>
-  </g>
-
-  <g data-motion-item data-step="3" aria-label="觸發 Workers Builds 自動建置">
-    <line class="a" x1="144" y1="220" x2="207" y2="220" marker-end="url(#arch-ar)"/>
-    <rect class="mask" x="156" y="200" width="40" height="12" rx="2"/>
-    <text class="lbl" x="176" y="209" text-anchor="middle">TRIGGER</text>
-    <rect class="mask" x="208" y="192" width="128" height="56" rx="6"/>
-    <rect class="n-backend" x="208" y="192" width="128" height="56" rx="6"/>
-    <rect class="tag" x="216" y="198" width="28" height="12" rx="2"/><text class="tag-t" x="230" y="207" text-anchor="middle">CI</text>
-    <text class="nm" x="272" y="226" text-anchor="middle">Workers Builds</text>
-    <text class="sub" x="272" y="240" text-anchor="middle">build · deploy</text>
-  </g>
-
-  <g data-motion-item data-step="4" aria-label="部署成 Worker">
-    <line class="a" x1="336" y1="220" x2="399" y2="220" marker-end="url(#arch-ar)"/>
-    <rect class="mask" x="348" y="200" width="40" height="12" rx="2"/>
-    <text class="lbl" x="368" y="209" text-anchor="middle">DEPLOY</text>
-    <rect class="mask" x="400" y="192" width="136" height="56" rx="6"/>
-    <rect class="n-focal" x="400" y="192" width="136" height="56" rx="6"/>
-    <rect class="tag" x="408" y="198" width="28" height="12" rx="2"/><text class="tag-t" x="422" y="207" text-anchor="middle">API</text>
-    <text class="nm" x="468" y="226" text-anchor="middle">Worker</text>
-    <text class="sub" x="468" y="240" text-anchor="middle">fetch() · assets</text>
-  </g>
-
-  <g data-motion-item data-step="5" aria-label="使用者透過 HTTPS 呼叫 Worker">
-    <line class="a-link" x1="468" y1="96" x2="468" y2="191" marker-end="url(#arch-ar-link)"/>
-    <rect class="mask" x="476" y="116" width="36" height="12" rx="2"/>
-    <text class="lbl" x="494" y="125" text-anchor="middle">HTTPS</text>
-    <rect class="mask" x="400" y="40" width="136" height="56" rx="6"/>
-    <rect class="n-ext" x="400" y="40" width="136" height="56" rx="6"/>
-    <rect class="tag" x="408" y="46" width="28" height="12" rx="2"/><text class="tag-t" x="422" y="55" text-anchor="middle">WEB</text>
-    <text class="nm" x="468" y="74" text-anchor="middle">使用者瀏覽器</text>
-    <text class="sub" x="468" y="88" text-anchor="middle">*.workers.dev</text>
-  </g>
-
-  <g data-motion-item data-step="6" aria-label="Worker 透過 binding 讀寫 D1">
-    <line class="a" x1="468" y1="248" x2="468" y2="295" marker-end="url(#arch-ar)"/>
-    <rect class="mask" x="476" y="266" width="40" height="12" rx="2"/>
-    <text class="lbl" x="496" y="275" text-anchor="middle">ENV.DB</text>
-    <path class="a-dash" d="M272,248 V316 Q272,324 280,324 H399" marker-end="url(#arch-ar)"/>
-    <rect class="mask" x="316" y="304" width="44" height="12" rx="2"/>
-    <text class="lbl" x="338" y="313" text-anchor="middle">MIGRATE</text>
-    <rect class="mask" x="400" y="296" width="136" height="56" rx="6"/>
-    <rect class="n-focal" x="400" y="296" width="136" height="56" rx="6"/>
-    <rect class="tag" x="408" y="302" width="28" height="12" rx="2"/><text class="tag-t" x="422" y="311" text-anchor="middle">DB</text>
-    <text class="nm" x="468" y="330" text-anchor="middle">D1 資料庫</text>
-    <text class="sub" x="468" y="344" text-anchor="middle">SQLite · binding</text>
-  </g>
-
-  <path data-motion-item data-step="6" data-motion-decorative aria-hidden="true" focusable="false" pathLength="1" class="draw-path" d="M468 248 V292"/>
-
-  <line class="hair" x1="24" y1="396" x2="616" y2="396"/>
-  <text class="eb" x="24" y="428">LEGEND</text>
-  <rect class="lg-focal" x="96" y="416" width="16" height="12" rx="2"/><text class="lbl-zh" x="120" y="427">重點元件</text>
-  <rect class="lg-backend" x="196" y="416" width="16" height="12" rx="2"/><text class="lbl-zh" x="220" y="427">服務</text>
-  <rect class="lg-ext" x="272" y="416" width="16" height="12" rx="2"/><text class="lbl-zh" x="296" y="427">外部</text>
-  <line class="a-link" x1="348" y1="422" x2="376" y2="422"/><text class="lbl-zh" x="384" y="427">HTTP 請求</text>
-  <line class="a-dash" x1="472" y1="422" x2="500" y2="422"/><text class="lbl-zh" x="508" y="427">選用流程</text>
-</svg>
     </div>
-    </div>
-    <p class="motion-caption" data-motion-caption aria-hidden="true">完整流程：本機開發 → push → 自動建置 → 部署 → 使用者請求 → 查詢 D1</p>
-    <div data-motion-controls role="group" aria-label="架構圖播放控制">
-      <button type="button" data-motion-action="prev">上一步</button>
-      <button type="button" data-motion-action="play" aria-pressed="false">播放</button>
-      <button type="button" data-motion-action="pause" aria-pressed="true">暫停</button>
-      <button type="button" data-motion-action="next">下一步</button>
-      <button type="button" data-motion-action="replay">重播</button>
-      <button type="button" data-music-toggle aria-pressed="true">配樂：開</button>
-      <span class="keyboard-help">←/→ 換步 · 空白鍵 播放/暫停 · R 重播</span>
-      <span data-motion-status-visible aria-hidden="true">第 <span data-motion-step-label>6</span> / 6 步</span>
-    </div>
-    <p class="sr-only" data-motion-status role="status" aria-live="polite" aria-atomic="true"></p>
-    <noscript><p class="note">動畫需要 JavaScript，上方顯示的是完整架構圖。</p></noscript>
-    <figcaption>按圖上的播放鍵，六個步驟會依序亮起；也可以用「上一步」「下一步」自己控制節奏。虛線的 MIGRATE 是選用做法：把 migration 指令加進部署指令，建置時順便更新資料表（見步驟 06）。</figcaption>
+    <figcaption>虛線的 MIGRATE 是選用做法：把 migration 指令加進部署指令，建置時順便更新資料表（見步驟 06）。</figcaption>
   </figure>
+
+  <section class="video-block" aria-labelledby="video-h">
+    <h3 id="video-h">動畫：從寫程式到使用者讀到資料</h3>
+    <p>把上面這張圖拆成 7 個畫面依序播放，約 21 秒，有配樂。</p>
+
+    <div class="player" data-player>
+      <div class="screen">
+<svg class="d pv" viewBox="0 0 360 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pv-title pv-desc">
+  <title id="pv-title">部署流程動畫</title>
+  <desc id="pv-desc">依序呈現：本機開發、git push 到 GitHub、Workers Builds 自動建置、部署成 Worker、使用者透過 HTTPS 呼叫 Worker、Worker 透過 binding 讀寫 D1。</desc>
+  <defs>
+    <marker id="pv-ar" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker>
+    <marker id="pv-ar-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-link" points="0 0, 8 3, 0 6"/></marker>
+  </defs>
+  <rect class="bg" width="360" height="420"/>
+  <rect class="zone" x="12" y="164" width="208" height="248" rx="8"/>
+  <text class="eb" x="24" y="404">CLOUDFLARE</text>
+
+  <g data-s="1">
+    <rect class="mask" x="24" y="20" width="184" height="52" rx="6"/>
+    <rect class="box n-input" x="24" y="20" width="184" height="52" rx="6"/>
+    <rect class="tag" x="32" y="26" width="28" height="12" rx="2"/><text class="tag-t" x="46" y="35" text-anchor="middle">DEV</text>
+    <text class="nm" x="116" y="50" text-anchor="middle">你的電腦</text>
+    <text class="sub" x="116" y="64" text-anchor="middle">wrangler dev</text>
+  </g>
+  <g data-s="2">
+    <line class="a flow" pathLength="1" x1="116" y1="72" x2="116" y2="99" marker-end="url(#pv-ar)"/>
+    <rect class="mask" x="124" y="80" width="48" height="12" rx="2"/>
+    <text class="lbl" x="148" y="89" text-anchor="middle">GIT PUSH</text>
+    <rect class="mask" x="24" y="100" width="184" height="52" rx="6"/>
+    <rect class="box n-backend" x="24" y="100" width="184" height="52" rx="6"/>
+    <rect class="tag" x="32" y="106" width="28" height="12" rx="2"/><text class="tag-t" x="46" y="115" text-anchor="middle">GIT</text>
+    <text class="nm" x="116" y="130" text-anchor="middle">GitHub repo</text>
+    <text class="sub" x="116" y="144" text-anchor="middle">branch: main</text>
+  </g>
+  <g data-s="3">
+    <line class="a flow" pathLength="1" x1="116" y1="152" x2="116" y2="179" marker-end="url(#pv-ar)"/>
+    <rect class="mask" x="124" y="160" width="40" height="12" rx="2"/>
+    <text class="lbl" x="144" y="169" text-anchor="middle">TRIGGER</text>
+    <rect class="mask" x="24" y="180" width="184" height="52" rx="6"/>
+    <rect class="box n-backend" x="24" y="180" width="184" height="52" rx="6"/>
+    <rect class="tag" x="32" y="186" width="28" height="12" rx="2"/><text class="tag-t" x="46" y="195" text-anchor="middle">CI</text>
+    <text class="nm" x="116" y="210" text-anchor="middle">Workers Builds</text>
+    <text class="sub" x="116" y="224" text-anchor="middle">build · deploy</text>
+  </g>
+  <g data-s="4">
+    <line class="a flow" pathLength="1" x1="116" y1="232" x2="116" y2="259" marker-end="url(#pv-ar)"/>
+    <rect class="mask" x="124" y="240" width="40" height="12" rx="2"/>
+    <text class="lbl" x="144" y="249" text-anchor="middle">DEPLOY</text>
+    <rect class="mask" x="24" y="260" width="184" height="52" rx="6"/>
+    <rect class="box n-backend" x="24" y="260" width="184" height="52" rx="6"/>
+    <rect class="tag" x="32" y="266" width="28" height="12" rx="2"/><text class="tag-t" x="46" y="275" text-anchor="middle">API</text>
+    <text class="nm" x="116" y="290" text-anchor="middle">Worker</text>
+    <text class="sub" x="116" y="304" text-anchor="middle">fetch() · assets</text>
+  </g>
+  <g data-s="5">
+    <line class="a-link flow" pathLength="1" x1="240" y1="286" x2="209" y2="286" marker-end="url(#pv-ar-link)"/>
+    <rect class="mask" x="240" y="260" width="108" height="52" rx="6"/>
+    <rect class="box n-ext" x="240" y="260" width="108" height="52" rx="6"/>
+    <rect class="tag" x="248" y="266" width="28" height="12" rx="2"/><text class="tag-t" x="262" y="275" text-anchor="middle">WEB</text>
+    <text class="nm" x="294" y="290" text-anchor="middle">使用者瀏覽器</text>
+    <text class="sub" x="294" y="304" text-anchor="middle">HTTPS</text>
+  </g>
+  <g data-s="6">
+    <line class="a flow" pathLength="1" x1="116" y1="312" x2="116" y2="339" marker-end="url(#pv-ar)"/>
+    <rect class="mask" x="124" y="320" width="40" height="12" rx="2"/>
+    <text class="lbl" x="144" y="329" text-anchor="middle">ENV.DB</text>
+    <rect class="mask" x="24" y="340" width="184" height="52" rx="6"/>
+    <rect class="box n-store" x="24" y="340" width="184" height="52" rx="6"/>
+    <rect class="tag" x="32" y="346" width="28" height="12" rx="2"/><text class="tag-t" x="46" y="355" text-anchor="middle">DB</text>
+    <text class="nm" x="116" y="370" text-anchor="middle">D1 資料庫</text>
+    <text class="sub" x="116" y="384" text-anchor="middle">SQLite · binding</text>
+  </g>
+</svg>
+        <p class="pv-cap" data-cap aria-live="polite"><span class="pv-n">7 個畫面</span>按播放鍵開始</p>
+        <button type="button" class="pv-big" data-big>
+          <span class="pv-big-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span>
+          <span class="pv-big-text" data-big-text>播放動畫</span>
+        </button>
+      </div>
+      <div class="pv-bar">
+        <button type="button" class="pv-btn" data-toggle aria-label="播放">
+          <svg data-icon-play viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg>
+          <svg data-icon-pause viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" hidden><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/></svg>
+        </button>
+        <div class="pv-segs" data-segs role="group" aria-label="跳到第幾個畫面"></div>
+        <span class="pv-time" data-time>0:00 / 0:21</span>
+        <button type="button" class="pv-btn pv-sound" data-sound aria-pressed="true" aria-label="配樂">
+          <svg data-icon-on viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4zM16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg data-icon-off viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" hidden><path d="M4 9h4l5-4v14l-5-4H4zM16.5 9.5l5 5M21.5 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
 
   <h2><span class="no">02</span>建置步驟</h2>
   <p>開始前需要準備 Cloudflare 帳號、GitHub 帳號，以及已安裝 Node.js 的電腦。步驟 01 會建立專案資料夾，之後的指令都在該資料夾中執行。</p>
@@ -562,349 +530,166 @@ document.querySelectorAll('.copy').forEach(function(btn){
 });
 </script>
 
-  <script data-diagram-controls>
-    (() => {
-      const params = new URLSearchParams(location.search);
-      const staticOverride = params.get('motion') === 'static' || document.documentElement.dataset.motion === 'static';
-      const requestedStep = params.get('step');
-      const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-      document.fonts.ready.then(() => { document.documentElement.dataset.fontsReady = 'true'; });
-
-      document.querySelectorAll('[data-motion-root]').forEach((root) => {
-        const count = Number(root.dataset.stepCount);
-        const hold = parseFloat(getComputedStyle(root).getPropertyValue('--motion-hold')) || 720;
-        const parsedStep = requestedStep !== null && /^\d+$/.test(requestedStep) ? Number(requestedStep) : null;
-        const exactStep = params.get('motion') === 'step' && Number.isSafeInteger(parsedStep) && parsedStep >= 0 && parsedStep <= count ? parsedStep : null;
-        const items = [...root.querySelectorAll('[data-motion-item]')];
-        const labels = Array.from({ length: count + 1 }, (_, index) => index === 0
-          ? 'Ready'
-          : items.filter((item) => !item.hasAttribute('data-motion-decorative') && Number(item.dataset.step) === index)
-              .map((item) => item.getAttribute('aria-label')).join('; '));
-        const controls = root.querySelector('[data-motion-controls]');
-        const status = root.querySelector('[data-motion-status]');
-        const visibleStep = root.querySelector('[data-motion-step-label]');
-        let step = count;
-        let timer = 0;
-        let playing = false;
-        let stepBeforeReduce = 0;
-        let resumeAfterReduce = root.dataset.motionMode === 'reveal';
-
-        const buttons = (action) => controls.querySelector(`[data-motion-action="${action}"]`);
-        const clearClock = () => { window.clearTimeout(timer); timer = 0; };
-        const announce = () => { status.textContent = `Step ${step} of ${count}: ${labels[step] || 'Complete'}`; };
-        const setControlsAvailable = (available) => {
-          controls.hidden = !available;
-          controls.setAttribute('aria-hidden', String(!available));
-          controls.dataset.playbackDisabled = String(!available);
-          controls.querySelectorAll('button').forEach((control) => { control.disabled = !available; });
-        };
-
-        function render(next, userInitiated = false) {
-          step = Math.max(0, Math.min(count, next));
-          root.dataset.stepCurrent = String(step);
-          root.dataset.frame = step === count ? 'end' : step === 0 ? 'start' : 'step';
-          items.forEach((item) => {
-            const itemStep = Number(item.dataset.step);
-            item.classList.toggle('is-visible', itemStep <= step);
-            item.classList.toggle('is-current', itemStep === step);
-          });
-          if (visibleStep) visibleStep.textContent = String(step);
-          const unavailable = controls.dataset.playbackDisabled === 'true';
-          buttons('prev').disabled = unavailable || step === 0;
-          buttons('next').disabled = unavailable || step === count;
-          if (userInitiated) announce();
-        }
-
-        function pause(userInitiated = false) {
-          clearClock();
-          playing = false;
-          root.classList.remove('is-playing');
-          buttons('play').setAttribute('aria-pressed', 'false');
-          buttons('pause').setAttribute('aria-pressed', 'true');
-          if (userInitiated) status.textContent = `Paused at step ${step} of ${count}`;
-        }
-
-        function finish() {
-          pause(false);
-          root.dataset.frame = 'end';
-          status.textContent = `Complete · step ${count} of ${count}`;
-        }
-
-        function tick() {
-          if (!playing) return;
-          if (step >= count) { finish(); return; }
-          render(step + 1, false);
-          if (step >= count) { finish(); return; }
-          timer = window.setTimeout(tick, hold);
-        }
-
-        function play(fromStart = false, userInitiated = false) {
-          clearClock();
-          if (fromStart || step >= count) render(0, userInitiated);
-          playing = true;
-          root.classList.add('is-playing');
-          buttons('play').setAttribute('aria-pressed', 'true');
-          buttons('pause').setAttribute('aria-pressed', 'false');
-          timer = window.setTimeout(tick, hold);
-        }
-
-        controls.addEventListener('click', (event) => {
-          const button = event.target.closest('[data-motion-action]');
-          if (!button) return;
-          const action = button.dataset.motionAction;
-          if (action === 'play') play(false, true);
-          if (action === 'pause') pause(true);
-          if (action === 'replay') play(true, true);
-          if (action === 'prev') { pause(false); render(step - 1, true); }
-          if (action === 'next') { pause(false); render(step + 1, true); }
-        });
-
-        root.addEventListener('keydown', (event) => {
-          if (event.target.matches('input, textarea, select, a[href]')) return;
-          const keys = { ArrowLeft: step - 1, ArrowRight: step + 1, Home: 0, End: count };
-          if (event.code === 'Space' && !event.target.closest('button')) {
-            event.preventDefault();
-            playing ? pause(true) : play(false, true);
-            return;
-          }
-          if (!event.ctrlKey && !event.metaKey && !event.altKey && event.key.toLowerCase() === 'r') {
-            event.preventDefault();
-            play(true, true);
-            return;
-          }
-          if (!(event.key in keys)) return;
-          event.preventDefault();
-          pause(false);
-          render(keys[event.key], true);
-        });
-
-        document.addEventListener('visibilitychange', () => {
-          if (document.visibilityState === 'hidden' && playing) pause(false);
-        });
-        reduce.addEventListener('change', (event) => {
-          if (event.matches && root.dataset.motionState !== 'reduced') {
-            stepBeforeReduce = step;
-            resumeAfterReduce = playing;
-          }
-          pause(false);
-          if (event.matches) {
-            setControlsAvailable(false);
-            render(count, false);
-            root.dataset.frame = 'static';
-            root.dataset.motionState = 'reduced';
-            status.textContent = 'Reduced motion · complete static frame · playback controls unavailable';
-          } else if (staticOverride || root.dataset.motionMode === 'none') {
-            setControlsAvailable(false);
-            render(count, false);
-            root.dataset.frame = 'static';
-            root.dataset.motionState = 'static';
-            status.textContent = 'Static frame · complete diagram · playback controls unavailable';
-          } else {
-            delete root.dataset.motionState;
-            if (exactStep !== null) {
-              setControlsAvailable(false);
-              render(exactStep, false);
-              root.dataset.frame = 'step';
-              root.dataset.motionState = 'test';
-              status.textContent = `Test frame · step ${step} of ${count} · playback controls unavailable`;
-            } else {
-              setControlsAvailable(true);
-              render(stepBeforeReduce, false);
-              status.textContent = `Ready · step ${step} of ${count}`;
-              if (resumeAfterReduce && root.dataset.motionMode === 'reveal') {
-                play(false, false);
-              }
-            }
-            resumeAfterReduce = false;
-          }
-        });
-
-        if (staticOverride) {
-          document.documentElement.dataset.motion = 'static';
-          pause(false);
-          setControlsAvailable(false);
-          render(count, false);
-          root.dataset.frame = 'static';
-          root.dataset.motionState = 'static';
-          status.textContent = 'Static frame · complete diagram · playback controls unavailable';
-        } else if (reduce.matches || root.dataset.motionMode === 'none') {
-          pause(false);
-          setControlsAvailable(false);
-          render(count, false);
-          root.dataset.frame = 'static';
-          root.dataset.motionState = reduce.matches ? 'reduced' : 'static';
-          status.textContent = reduce.matches
-            ? 'Reduced motion · complete static frame · playback controls unavailable'
-            : 'Static frame · complete diagram · playback controls unavailable';
-        } else if (exactStep !== null) {
-          document.documentElement.dataset.motion = 'step';
-          pause(false);
-          setControlsAvailable(false);
-          render(exactStep, false);
-          root.dataset.frame = 'step';
-          root.dataset.motionState = 'test';
-          status.textContent = `Test frame · step ${step} of ${count} · playback controls unavailable`;
-        } else if (root.dataset.motionMode === 'reveal') {
-          setControlsAvailable(true);
-          render(0, false);
-          play(false, false);
-        } else {
-          pause(false);
-          setControlsAvailable(true);
-          render(0, false);
-          status.textContent = `Ready · step 0 of ${count}`;
-        }
-        root.classList.add('motion-ready');
-      });
-    })();
-  </script>
-
 <script>
-/* Caption + soundtrack for the step diagram. Reads the controller's state only; never drives playback.
-   The music is an original pad synthesized with Web Audio and starts only after the viewer presses a control. */
+/* Portrait video player: 7 scenes x 3s, original Web Audio soundtrack that starts only on a press. */
 (() => {
-  const root = document.querySelector('.motion-fig[data-motion-root]');
-  if (!root) return;
-  const cap = root.querySelector('[data-motion-caption]');
-  const toggle = root.querySelector('[data-music-toggle]');
-  const cover = root.querySelector('[data-play-cover]');
-  const reducedNote = root.querySelector('[data-reduced-note]');
-  cover.addEventListener('click', () => { const b = root.querySelector('[data-motion-action="play"]'); if (b && !b.disabled) b.click(); });
-  const total = Number(root.dataset.stepCount);
-  const fullText = cap.textContent;
-  const items = [...root.querySelectorAll('[data-motion-item]:not([data-motion-decorative])')];
-  const labelFor = (n) => { const it = items.find((i) => Number(i.dataset.step) === n); return it ? it.getAttribute('aria-label') : ''; };
-
-  let enabled = true;
-  try { if (localStorage.getItem('d1-guide-music') === 'off') enabled = false; } catch (e) {}
-  const paintToggle = () => { toggle.textContent = enabled ? '配樂：開' : '配樂：關'; toggle.setAttribute('aria-pressed', String(enabled)); };
-  paintToggle();
-
-  /* --- audio graph --- */
-  let ctx = null, master, padBus, send, padTimer = 0, nextTime = 0, chordIndex = 0;
-  const CHORDS = [
-    [130.81, 164.81, 196.00, 246.94, 293.66], /* Cmaj9 */
-    [110.00, 130.81, 164.81, 196.00, 246.94], /* Am9 */
-    [87.31, 110.00, 130.81, 164.81, 196.00],  /* Fmaj9 */
-    [98.00, 123.47, 146.83, 164.81, 220.00]   /* G6/9 */
+  const P = document.querySelector('[data-player]');
+  if (!P) return;
+  const SCENES = [
+    '在自己的電腦寫程式，用 wrangler dev 在本機測試。',
+    '用 git push 把程式碼推上 GitHub。',
+    'Workers Builds 偵測到新的 push，自動開始建置。',
+    '建置完成，新版 Worker 部署上線。',
+    '使用者打開網站，瀏覽器透過 HTTPS 呼叫 Worker。',
+    'Worker 透過 binding 讀寫 D1 資料庫，再把結果回傳。',
+    '完成。之後每次 push，都會自動重跑第 2–4 步。'
   ];
-  const BELLS = [523.25, 587.33, 659.25, 783.99, 880.00, 1046.50];
-  const CHORD_LEN = 2.4;
+  const DUR = 3000, TOTAL = SCENES.length * DUR;
+  const groups = [...P.querySelectorAll('[data-s]')];
+  const cap = P.querySelector('[data-cap]');
+  const big = P.querySelector('[data-big]'), bigText = P.querySelector('[data-big-text]');
+  const toggleBtn = P.querySelector('[data-toggle]');
+  const iPlay = P.querySelector('[data-icon-play]'), iPause = P.querySelector('[data-icon-pause]');
+  const timeEl = P.querySelector('[data-time]');
+  const soundBtn = P.querySelector('[data-sound]');
+  const iOn = P.querySelector('[data-icon-on]'), iOff = P.querySelector('[data-icon-off]');
+  const segWrap = P.querySelector('[data-segs]');
+  const segs = SCENES.map((_, i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'pv-seg'; b.setAttribute('aria-label', '第 ' + (i + 1) + ' 個畫面');
+    b.innerHTML = '<i><b></b></i>';
+    b.addEventListener('click', () => { unlock(); seek(i * DUR); });
+    segWrap.appendChild(b);
+    return b.querySelector('b');
+  });
 
-  function ensure() {
-    if (!enabled) return null;
+  let t = 0, playing = false, last = 0, raf = 0, scene = -1, started = false;
+  const fmt = (ms) => { const s = Math.floor(ms / 1000); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+
+  /* ---------- audio ---------- */
+  let soundOn = true;
+  try { if (localStorage.getItem('d1-guide-music') === 'off') soundOn = false; } catch (e) {}
+  let ctx = null, master, padBus, send, padTimer = 0, nextTime = 0, chordIndex = 0;
+  const CHORDS = [[130.81,164.81,196.00,246.94,293.66],[110.00,130.81,164.81,196.00,246.94],[87.31,110.00,130.81,164.81,196.00],[98.00,123.47,146.83,164.81,220.00]];
+  const BELLS = [523.25,587.33,659.25,783.99,880.00,1046.50,1174.66];
+  const CL = 2.4;
+  function unlock() {
+    if (!soundOn) return;
     const AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC) return null;
+    if (!AC) return;
     if (!ctx) {
       ctx = new AC();
       master = ctx.createGain(); master.gain.value = 0.5; master.connect(ctx.destination);
-      const delay = ctx.createDelay(1.0); delay.delayTime.value = 0.36;
+      const d = ctx.createDelay(1); d.delayTime.value = 0.36;
       const fb = ctx.createGain(); fb.gain.value = 0.3;
       const wet = ctx.createGain(); wet.gain.value = 0.28;
-      send = ctx.createGain(); send.gain.value = 1;
-      send.connect(delay); delay.connect(fb); fb.connect(delay); delay.connect(wet); wet.connect(master);
+      send = ctx.createGain(); send.connect(d); d.connect(fb); fb.connect(d); d.connect(wet); wet.connect(master);
       const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1100; lp.Q.value = 0.4;
-      padBus = ctx.createGain(); padBus.gain.value = 0.0001;
-      padBus.connect(lp); lp.connect(master); lp.connect(send);
+      padBus = ctx.createGain(); padBus.gain.value = 0.0001; padBus.connect(lp); lp.connect(master); lp.connect(send);
     }
     if (ctx.state === 'suspended') ctx.resume();
-    return ctx;
   }
-
-  function chord(freqs, t) {
-    const peak = 0.11 / freqs.length;
-    freqs.forEach((f, i) => {
-      [['triangle', 0], ['sine', 7]].forEach(([type, detune]) => {
-        const o = ctx.createOscillator(); o.type = type; o.frequency.value = f; o.detune.value = detune * (i % 2 ? 1 : -1);
-        const g = ctx.createGain();
-        g.gain.setValueAtTime(0.0001, t);
-        g.gain.linearRampToValueAtTime(peak, t + 0.9);
-        g.gain.setValueAtTime(peak, t + CHORD_LEN - 0.2);
-        g.gain.linearRampToValueAtTime(0.0001, t + CHORD_LEN + 1.0);
-        o.connect(g); g.connect(padBus);
-        o.start(t); o.stop(t + CHORD_LEN + 1.1);
-      });
-    });
-  }
-
-  function schedulePad() {
-    while (nextTime < ctx.currentTime + 1.2) {
-      chord(CHORDS[chordIndex % CHORDS.length], nextTime);
-      nextTime += CHORD_LEN; chordIndex += 1;
-    }
-    padTimer = window.setTimeout(schedulePad, 300);
-  }
-
-  function startPad() {
-    if (padTimer || !ensure()) return;
-    const now = ctx.currentTime;
-    padBus.gain.cancelScheduledValues(now);
-    padBus.gain.setValueAtTime(Math.max(padBus.gain.value, 0.0001), now);
-    padBus.gain.linearRampToValueAtTime(1, now + 0.8);
-    chordIndex = 0; nextTime = now + 0.05;
-    schedulePad();
-  }
-
-  function stopPad(fade) {
-    window.clearTimeout(padTimer); padTimer = 0;
-    if (!ctx) return;
-    const now = ctx.currentTime;
-    padBus.gain.cancelScheduledValues(now);
-    padBus.gain.setValueAtTime(Math.max(padBus.gain.value, 0.0001), now);
-    padBus.gain.linearRampToValueAtTime(0.0001, now + fade);
-  }
-
-  function bell(step) {
-    if (!ctx || !enabled) return;
-    const t = ctx.currentTime + 0.01;
-    const f = BELLS[(step - 1) % BELLS.length];
-    [[f, 0.16], [f * 2, 0.035]].forEach(([freq, amp]) => {
-      const o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = freq;
+  function chord(fs, at) {
+    const peak = 0.11 / fs.length;
+    fs.forEach((f, i) => [['triangle', 0], ['sine', 7]].forEach(([type, dt]) => {
+      const o = ctx.createOscillator(); o.type = type; o.frequency.value = f; o.detune.value = dt * (i % 2 ? 1 : -1);
       const g = ctx.createGain();
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(amp, t + 0.015);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + 1.6);
-      o.connect(g); g.connect(master); g.connect(send);
-      o.start(t); o.stop(t + 1.7);
+      g.gain.setValueAtTime(0.0001, at); g.gain.linearRampToValueAtTime(peak, at + 0.9);
+      g.gain.setValueAtTime(peak, at + CL - 0.2); g.gain.linearRampToValueAtTime(0.0001, at + CL + 1);
+      o.connect(g); g.connect(padBus); o.start(at); o.stop(at + CL + 1.1);
+    }));
+  }
+  function schedule() {
+    while (nextTime < ctx.currentTime + 1.2) { chord(CHORDS[chordIndex % 4], nextTime); nextTime += CL; chordIndex++; }
+    padTimer = setTimeout(schedule, 300);
+  }
+  function padOn() {
+    if (!soundOn || !ctx || padTimer) return;
+    const n = ctx.currentTime;
+    padBus.gain.cancelScheduledValues(n); padBus.gain.setValueAtTime(Math.max(padBus.gain.value, 0.0001), n);
+    padBus.gain.linearRampToValueAtTime(1, n + 0.8);
+    chordIndex = 0; nextTime = n + 0.05; schedule();
+  }
+  function padOff(fade) {
+    clearTimeout(padTimer); padTimer = 0;
+    if (!ctx) return;
+    const n = ctx.currentTime;
+    padBus.gain.cancelScheduledValues(n); padBus.gain.setValueAtTime(Math.max(padBus.gain.value, 0.0001), n);
+    padBus.gain.linearRampToValueAtTime(0.0001, n + fade);
+  }
+  function bell(i) {
+    if (!soundOn || !ctx) return;
+    const at = ctx.currentTime + 0.01, f = BELLS[i % BELLS.length];
+    [[f, 0.16], [f * 2, 0.035]].forEach(([fr, amp]) => {
+      const o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = fr;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, at); g.gain.exponentialRampToValueAtTime(amp, at + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, at + 1.6);
+      o.connect(g); g.connect(master); g.connect(send); o.start(at); o.stop(at + 1.7);
     });
   }
-
-  /* Audio may only start inside a user gesture, so unlock it on any control press or key. */
-  const unlock = () => { ensure(); };
-  root.addEventListener('click', (e) => { if (e.target.closest('[data-motion-action]')) unlock(); }, true);
-  root.addEventListener('keydown', unlock, true);
-
-  toggle.addEventListener('click', () => {
-    enabled = !enabled;
-    try { localStorage.setItem('d1-guide-music', enabled ? 'on' : 'off'); } catch (e) {}
-    paintToggle();
-    if (!enabled) stopPad(0.3);
-    else if (root.classList.contains('is-playing')) startPad();
-  });
-
-  /* --- follow the controller's state --- */
-  let lastStep = null, wasPlaying = false;
-  function sync() {
-    const frame = root.dataset.frame;
-    const step = Number(root.dataset.stepCurrent);
-    const playing = root.classList.contains('is-playing');
-
-    if (frame === 'static') cap.textContent = fullText;
-    else if (step === 0) cap.textContent = '按圖上的播放鍵開始，或用「下一步」逐步看。';
-    else cap.innerHTML = '<span class="cap-n">' + step + ' / ' + total + '</span>' + labelFor(step);
-
-    if (playing && !wasPlaying && enabled) startPad();
-    if (!playing && wasPlaying) stopPad(frame === 'end' ? 2.8 : 0.6);
-    if (lastStep !== null && step !== lastStep && step > 0 && frame !== 'static') bell(step);
-
-    const controlsOn = !root.querySelector('[data-motion-controls]').hidden;
-    cover.hidden = !(root.classList.contains('motion-ready') && controlsOn && step === 0 && !playing);
-    reducedNote.hidden = root.dataset.motionState !== 'reduced';
-
-    wasPlaying = playing; lastStep = step;
+  function paintSound() {
+    soundBtn.setAttribute('aria-pressed', String(soundOn));
+    soundBtn.setAttribute('aria-label', soundOn ? '關閉配樂' : '開啟配樂');
+    iOn.toggleAttribute('hidden', !soundOn); iOff.toggleAttribute('hidden', soundOn);
   }
-  new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['class', 'data-step-current', 'data-frame'] });
-  sync();
+
+  /* ---------- picture ---------- */
+  function render() {
+    const s = Math.max(0, Math.min(SCENES.length - 1, Math.floor(t / DUR)));
+    const lit = started ? s + 1 : 6;           /* before the first play, show the complete diagram as the poster */
+    groups.forEach((g) => {
+      const n = Number(g.dataset.s);
+      g.classList.toggle('on', n <= lit);
+      g.classList.toggle('cur', started && n === s + 1);
+    });
+    if (started && s !== scene) {
+      cap.innerHTML = '<span class="pv-n">' + (s + 1) + ' / ' + SCENES.length + '</span>' + SCENES[s];
+      if (scene !== -1 || playing) bell(s);
+      scene = s;
+    }
+    segs.forEach((b, i) => { b.style.width = Math.max(0, Math.min(1, (t - i * DUR) / DUR)) * 100 + '%'; });
+    timeEl.textContent = fmt(t) + ' / ' + fmt(TOTAL);
+  }
+  function paintControls() {
+    iPlay.toggleAttribute('hidden', playing); iPause.toggleAttribute('hidden', !playing);
+    toggleBtn.setAttribute('aria-label', playing ? '暫停' : '播放');
+    big.hidden = playing;
+    bigText.textContent = !started ? '播放動畫（21 秒）' : t >= TOTAL ? '重新播放' : '繼續播放';
+    P.classList.toggle('is-run', started);
+  }
+  function frame(now) {
+    if (!playing) return;
+    t += Math.max(0, now - last); last = now;
+    if (t >= TOTAL) { t = TOTAL; playing = false; render(); paintControls(); padOff(2.8); return; }
+    render();
+    raf = requestAnimationFrame(frame);
+  }
+  function play() {
+    unlock();
+    if (t >= TOTAL || !started) { t = 0; scene = -1; }
+    started = true; playing = true; last = performance.now();
+    render(); paintControls(); padOn();
+    raf = requestAnimationFrame(frame);
+  }
+  function pause() {
+    playing = false; cancelAnimationFrame(raf); paintControls(); padOff(0.6);
+  }
+  function seek(ms) {
+    started = true; t = Math.max(0, Math.min(TOTAL - 1, ms)); last = performance.now();
+    scene = -2; render(); paintControls();
+  }
+
+  big.addEventListener('click', play);
+  toggleBtn.addEventListener('click', () => (playing ? pause() : play()));
+  soundBtn.addEventListener('click', () => {
+    soundOn = !soundOn;
+    try { localStorage.setItem('d1-guide-music', soundOn ? 'on' : 'off'); } catch (e) {}
+    paintSound();
+    if (!soundOn) padOff(0.3); else { unlock(); if (playing) padOn(); }
+  });
+  document.addEventListener('visibilitychange', () => { if (document.hidden && playing) pause(); });
+
+  paintSound(); render(); paintControls();
 })();
 </script>
 
