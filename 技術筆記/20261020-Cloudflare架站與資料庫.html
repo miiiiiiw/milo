@@ -129,24 +129,89 @@ ul.points{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:8px
 .d .lg-ext{fill:var(--ext);stroke:var(--ext-stroke)}
 
 [hidden]{display:none!important}
-/* video block: a portrait player that fits a phone screen without sideways scrolling */
-.video-block{display:flex;flex-direction:column;gap:10px;border:1px solid var(--rule);border-radius:8px;background:var(--paper-2);padding:16px;margin:8px 0}
-.video-block h3{margin:0}
-.player{width:100%;max-width:420px;margin:4px auto 0;display:flex;flex-direction:column;border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:var(--paper)}
-.screen{position:relative}
-.screen svg.pv{display:block;width:100%;height:auto}
-.pv [data-s]{opacity:.12;transition:opacity .5s ease}
-.pv [data-s].on{opacity:1}
-.pv [data-s] .box{transition:fill .4s ease,stroke .4s ease}
-.pv [data-s].cur .box{fill:var(--accent-tint);stroke:var(--accent);stroke-width:1.8}
-.pv .flow{stroke-dasharray:1;stroke-dashoffset:0;transition:stroke-dashoffset .7s ease}
-.player.is-run .pv [data-s]:not(.on) .flow{stroke-dashoffset:1}
-.pv-cap{margin:0;padding:10px 14px 12px;min-height:3.6em;font-size:.95rem;line-height:1.5;border-top:1px solid var(--rule);max-width:none}
-.pv-n{display:inline-block;font-family:var(--mono);font-size:.72rem;color:var(--accent);letter-spacing:.06em;margin-right:8px}
-.pv-big{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;width:100%;border:0;margin:0;padding:0;
-  background:color-mix(in srgb,var(--paper) 60%,transparent);color:var(--ink);font:600 1rem var(--sans);cursor:pointer}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* trailer: a 10-scene overview video of the whole guide */
+.trailer{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.tr-h{margin:0}
+.player{width:100%;display:flex;flex-direction:column;border:1px solid var(--rule-solid);border-radius:8px;overflow:hidden;background:var(--paper)}
+.stage{position:relative;height:440px;overflow:hidden;background:var(--paper)}
+@media (min-width:640px){.stage{height:400px}}
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:14px;padding:24px 20px;
+  opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}
+@media (min-width:640px){.scene{padding:32px 48px}}
+.scene.act{opacity:1;visibility:visible;transition:opacity .35s ease}
+.scene p{margin:0;max-width:none}
+.sc-title{align-items:flex-start}
+.t-xl{font-family:var(--serif);font-size:clamp(1.9rem,6.4vw,2.6rem);line-height:1.15;text-wrap:balance}
+.t-l{font-family:var(--serif);font-size:clamp(1.45rem,5vw,1.9rem);line-height:1.2;text-wrap:balance}
+.t-sub{font-size:1.05rem;color:var(--muted)}
+.t-note{font-size:.92rem;color:var(--muted);line-height:1.6}
+.t-note.strong{color:var(--ink);font-weight:600}
+.sc-k{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;color:var(--accent);text-transform:uppercase}
+.tagc{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;color:var(--soft);border:1px solid var(--rule-solid);border-radius:2px;padding:0 5px;align-self:flex-start}
+.card{display:flex;flex-direction:column;gap:4px;background:var(--node);border:1px solid var(--ink);border-radius:6px;padding:10px 12px;min-width:0}
+.card b{font-size:1rem}
+.card span:last-child{font-size:.86rem;color:var(--muted);line-height:1.5}
+.card.focal,.chip.focal,.lane.focal{background:var(--accent-tint);border-color:var(--accent)}
+.cards3{display:grid;grid-template-columns:1fr;gap:8px}
+.cards2{display:grid;grid-template-columns:1fr;gap:8px}
+@media (min-width:640px){.cards3{grid-template-columns:1fr 1.15fr .9fr}.cards2{grid-template-columns:1fr 1fr}}
+.chain,.queue{display:flex;flex-direction:column;align-items:flex-start;gap:0}
+@media (min-width:640px){.chain,.queue{flex-direction:row;align-items:center;flex-wrap:wrap}}
+.chip{display:inline-block;background:var(--node);border:1px solid var(--ink);border-radius:6px;padding:8px 12px;font-weight:600;font-size:.95rem}
+.chip.ext{background:var(--ext);border-color:var(--ext-stroke)}
+.draw{position:relative;display:block;width:1px;height:26px;margin-left:24px;background:var(--muted);font-style:normal}
+.draw.link{background:var(--link)}
+.draw em{position:absolute;left:10px;top:50%;transform:translateY(-50%);font:400 .66rem var(--mono);letter-spacing:.06em;color:var(--soft);font-style:normal;white-space:nowrap}
+@media (min-width:640px){
+  .draw{width:44px;height:1px;margin:0 6px}
+  .draw em{left:50%;top:-16px;transform:translateX(-50%)}
+}
+.steps7{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr;gap:4px}
+@media (min-width:640px){.steps7{grid-template-columns:1fr 1fr;gap:6px 24px}}
+.steps7 li{display:flex;gap:10px;align-items:baseline;font-size:.95rem;padding:3px 0;border-bottom:1px solid var(--rule)}
+.steps7 li span{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.steps7 li.key{color:var(--accent);font-weight:600}
+.steps7 li.key span{color:var(--accent)}
+.lanes2{display:flex;flex-direction:column;gap:8px}
+.lane{display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center;background:var(--node);border:1px solid var(--ink);border-radius:6px;padding:10px 12px}
+.lane b{font-size:1rem}
+.lane span{grid-column:1;font-size:.88rem;color:var(--muted)}
+.lane em{grid-row:1 / span 2;grid-column:2;font:500 .7rem var(--mono);letter-spacing:.08em;font-style:normal;border-radius:2px;padding:3px 7px;border:1px solid}
+.lane em.ok{color:var(--muted);border-color:var(--rule-solid)}
+.lane em.warn{color:var(--accent);border-color:var(--accent)}
+.bars{display:flex;flex-direction:column;gap:12px}
+.bar{display:grid;grid-template-columns:1fr auto;grid-template-areas:"l v" "t t";gap:4px 12px;align-items:end}
+.bl{grid-area:l;font-size:.9rem}
+.bv{grid-area:v;font:600 .95rem var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.bv small{display:block;font-weight:400;font-size:.66rem;color:var(--soft)}
+.track{grid-area:t;display:block;height:8px;border-radius:2px;background:var(--rule-solid);overflow:hidden}
+.fill{display:block;height:100%;width:var(--w);background:var(--accent)}
+.queue .dot{display:inline-block;width:14px;height:14px;border-radius:3px;background:var(--muted);margin:0 0 6px 18px}
+@media (min-width:640px){.queue .dot{margin:0 6px 0 0}}
+.toc{display:flex;flex-wrap:wrap;gap:6px}
+.toc span{font:500 .75rem var(--mono);border:1px solid var(--rule-solid);border-radius:4px;padding:5px 9px;color:var(--muted)}
+code{overflow-wrap:anywhere}
+
+/* motion: elements enter only while their scene is active and the player has started */
+.player.started .scene.act .in{animation:tr-rise .5s cubic-bezier(.2,.8,.2,1) var(--d,0s) both}
+.player.started .scene.act .draw{animation:tr-grow-v .45s ease var(--d,0s) both;transform-origin:top}
+.player.started .scene.act .fill{animation:tr-fill .9s ease var(--d,0s) both}
+@media (min-width:640px){.player.started .scene.act .draw{animation-name:tr-grow-h;transform-origin:left}}
+.player.paused .scene *{animation-play-state:paused!important}
+@keyframes tr-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes tr-grow-v{from{transform:scaleY(0)}to{transform:none}}
+@keyframes tr-grow-h{from{transform:scaleX(0)}to{transform:none}}
+@keyframes tr-fill{from{width:0}to{width:var(--w)}}
+@media (prefers-reduced-motion:reduce){
+  .scene{transition:none}
+  .player.started .scene.act .in,.player.started .scene.act .draw,.player.started .scene.act .fill{animation-duration:.001ms}
+}
+
+.pv-big{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:12px;width:100%;
+  border:0;margin:0;padding:0 0 32px;background:linear-gradient(to bottom,transparent 35%,color-mix(in srgb,var(--paper) 85%,transparent));color:var(--ink);font:600 1rem var(--sans);cursor:pointer}
 .pv-big-icon{display:grid;place-items:center;width:76px;height:76px;border-radius:50%;background:var(--accent);color:var(--paper);padding-left:4px}
-.pv-big-text{background:var(--paper);border:1px solid var(--rule);border-radius:999px;padding:6px 14px;font-size:.9rem}
+.pv-big-text{background:var(--paper);border:1px solid var(--rule-solid);border-radius:999px;padding:6px 14px;font-size:.9rem}
 .pv-big:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
 .pv-bar{display:flex;align-items:center;gap:8px;padding:6px 8px;border-top:1px solid var(--rule)}
 .pv-btn{display:grid;place-items:center;width:44px;height:44px;flex:none;border:0;border-radius:6px;background:transparent;color:var(--ink);cursor:pointer}
@@ -159,8 +224,7 @@ ul.points{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:8px
 .pv-seg i b{display:block;height:100%;width:0;background:var(--accent)}
 .pv-seg:focus-visible i{outline:2px solid var(--accent);outline-offset:3px}
 .pv-time{flex:none;font:500 .72rem var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
-@media (max-width:380px){.pv-time{display:none}}
-@media (prefers-reduced-motion:reduce){.pv [data-s],.pv [data-s] .box,.pv .flow{transition:none}}
+@media (max-width:400px){.pv-time{display:none}}
 </style>
 </head>
 <body>
@@ -170,94 +234,116 @@ ul.points{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:8px
   <h1>用 GitHub、Workers 與 D1 部署網站</h1>
   <p class="lede">這份指南說明如何把放在 GitHub 的程式部署到 Cloudflare Workers，並用 D1（Cloudflare 提供的 SQLite 資料庫）儲存資料。設定完成後，每次 push 到 GitHub，網站就會自動更新。</p>
 
-  <h2><span class="no">01</span>運作方式</h2>
-  <p>三個服務各有分工：GitHub 存放程式碼；Workers 執行後端程式，也能同時提供前端的靜態檔；D1 存放資料。</p>
-  <p>你在本機開發後 push 到 GitHub，Cloudflare 的 Workers Builds 會自動建置並部署 Worker。使用者的請求進到 Worker 後，Worker 透過名為 <code>DB</code> 的 binding 查詢 D1，不需要連線字串，也不必另外架設資料庫伺服器。</p>
-  <figure>
-    <span class="swipe">← 左右滑動看完整圖 →</span>
-    <div class="scroll">
-
-    </div>
-    <figcaption>虛線的 MIGRATE 是選用做法：把 migration 指令加進部署指令，建置時順便更新資料表（見步驟 06）。</figcaption>
-  </figure>
-
-  <section class="video-block" aria-labelledby="video-h">
-    <h3 id="video-h">動畫：從寫程式到使用者讀到資料</h3>
-    <p>把上面這張圖拆成 7 個畫面依序播放，約 21 秒，有配樂。</p>
-
+  <section class="trailer" aria-labelledby="tr-h">
+    <h2 id="tr-h" class="tr-h"><span class="no">▶</span>先看動畫：50 秒看懂整份指南</h2>
     <div class="player" data-player>
-      <div class="screen">
-<svg class="d pv" viewBox="0 0 360 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pv-title pv-desc">
-  <title id="pv-title">部署流程動畫</title>
-  <desc id="pv-desc">依序呈現：本機開發、git push 到 GitHub、Workers Builds 自動建置、部署成 Worker、使用者透過 HTTPS 呼叫 Worker、Worker 透過 binding 讀寫 D1。</desc>
-  <defs>
-    <marker id="pv-ar" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker>
-    <marker id="pv-ar-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-link" points="0 0, 8 3, 0 6"/></marker>
-  </defs>
-  <rect class="bg" width="360" height="420"/>
-  <rect class="zone" x="12" y="164" width="208" height="248" rx="8"/>
-  <text class="eb" x="24" y="404">CLOUDFLARE</text>
+      <div class="stage" data-stage>
 
-  <g data-s="1">
-    <rect class="mask" x="24" y="20" width="184" height="52" rx="6"/>
-    <rect class="box n-input" x="24" y="20" width="184" height="52" rx="6"/>
-    <rect class="tag" x="32" y="26" width="28" height="12" rx="2"/><text class="tag-t" x="46" y="35" text-anchor="middle">DEV</text>
-    <text class="nm" x="116" y="50" text-anchor="middle">你的電腦</text>
-    <text class="sub" x="116" y="64" text-anchor="middle">wrangler dev</text>
-  </g>
-  <g data-s="2">
-    <line class="a flow" pathLength="1" x1="116" y1="72" x2="116" y2="99" marker-end="url(#pv-ar)"/>
-    <rect class="mask" x="124" y="80" width="48" height="12" rx="2"/>
-    <text class="lbl" x="148" y="89" text-anchor="middle">GIT PUSH</text>
-    <rect class="mask" x="24" y="100" width="184" height="52" rx="6"/>
-    <rect class="box n-backend" x="24" y="100" width="184" height="52" rx="6"/>
-    <rect class="tag" x="32" y="106" width="28" height="12" rx="2"/><text class="tag-t" x="46" y="115" text-anchor="middle">GIT</text>
-    <text class="nm" x="116" y="130" text-anchor="middle">GitHub repo</text>
-    <text class="sub" x="116" y="144" text-anchor="middle">branch: main</text>
-  </g>
-  <g data-s="3">
-    <line class="a flow" pathLength="1" x1="116" y1="152" x2="116" y2="179" marker-end="url(#pv-ar)"/>
-    <rect class="mask" x="124" y="160" width="40" height="12" rx="2"/>
-    <text class="lbl" x="144" y="169" text-anchor="middle">TRIGGER</text>
-    <rect class="mask" x="24" y="180" width="184" height="52" rx="6"/>
-    <rect class="box n-backend" x="24" y="180" width="184" height="52" rx="6"/>
-    <rect class="tag" x="32" y="186" width="28" height="12" rx="2"/><text class="tag-t" x="46" y="195" text-anchor="middle">CI</text>
-    <text class="nm" x="116" y="210" text-anchor="middle">Workers Builds</text>
-    <text class="sub" x="116" y="224" text-anchor="middle">build · deploy</text>
-  </g>
-  <g data-s="4">
-    <line class="a flow" pathLength="1" x1="116" y1="232" x2="116" y2="259" marker-end="url(#pv-ar)"/>
-    <rect class="mask" x="124" y="240" width="40" height="12" rx="2"/>
-    <text class="lbl" x="144" y="249" text-anchor="middle">DEPLOY</text>
-    <rect class="mask" x="24" y="260" width="184" height="52" rx="6"/>
-    <rect class="box n-backend" x="24" y="260" width="184" height="52" rx="6"/>
-    <rect class="tag" x="32" y="266" width="28" height="12" rx="2"/><text class="tag-t" x="46" y="275" text-anchor="middle">API</text>
-    <text class="nm" x="116" y="290" text-anchor="middle">Worker</text>
-    <text class="sub" x="116" y="304" text-anchor="middle">fetch() · assets</text>
-  </g>
-  <g data-s="5">
-    <line class="a-link flow" pathLength="1" x1="240" y1="286" x2="209" y2="286" marker-end="url(#pv-ar-link)"/>
-    <rect class="mask" x="240" y="260" width="108" height="52" rx="6"/>
-    <rect class="box n-ext" x="240" y="260" width="108" height="52" rx="6"/>
-    <rect class="tag" x="248" y="266" width="28" height="12" rx="2"/><text class="tag-t" x="262" y="275" text-anchor="middle">WEB</text>
-    <text class="nm" x="294" y="290" text-anchor="middle">使用者瀏覽器</text>
-    <text class="sub" x="294" y="304" text-anchor="middle">HTTPS</text>
-  </g>
-  <g data-s="6">
-    <line class="a flow" pathLength="1" x1="116" y1="312" x2="116" y2="339" marker-end="url(#pv-ar)"/>
-    <rect class="mask" x="124" y="320" width="40" height="12" rx="2"/>
-    <text class="lbl" x="144" y="329" text-anchor="middle">ENV.DB</text>
-    <rect class="mask" x="24" y="340" width="184" height="52" rx="6"/>
-    <rect class="box n-store" x="24" y="340" width="184" height="52" rx="6"/>
-    <rect class="tag" x="32" y="346" width="28" height="12" rx="2"/><text class="tag-t" x="46" y="355" text-anchor="middle">DB</text>
-    <text class="nm" x="116" y="370" text-anchor="middle">D1 資料庫</text>
-    <text class="sub" x="116" y="384" text-anchor="middle">SQLite · binding</text>
-  </g>
-</svg>
-        <p class="pv-cap" data-cap aria-live="polite"><span class="pv-n">7 個畫面</span>按播放鍵開始</p>
+        <div class="scene sc-title" data-scene>
+          <p class="eyebrow in">部署筆記 · 50 秒導覽</p>
+          <p class="t-xl in" style="--d:.15s">用 GitHub、Workers 與 D1 部署網站</p>
+          <p class="t-sub in" style="--d:.5s">寫好程式 push 上去，網站就自動更新。</p>
+        </div>
+
+        <div class="scene" data-scene>
+          <p class="sc-k in">01 · 運作方式</p>
+          <p class="t-l in" style="--d:.1s">三個服務，各管一件事</p>
+          <div class="cards3">
+            <div class="card in" style="--d:.4s"><span class="tagc">GIT</span><b>GitHub</b><span>存放程式碼</span></div>
+            <div class="card in" style="--d:.8s"><span class="tagc">API</span><b>Workers</b><span>執行後端程式，也提供前端檔案</span></div>
+            <div class="card focal in" style="--d:1.2s"><span class="tagc">DB</span><b>D1</b><span>存放資料（SQLite）</span></div>
+          </div>
+        </div>
+
+        <div class="scene" data-scene>
+          <p class="sc-k in">01 · 運作方式</p>
+          <p class="t-l in" style="--d:.1s">從 push 到上線，全自動</p>
+          <div class="chain">
+            <span class="chip in" style="--d:.3s">你的電腦</span><i class="draw" style="--d:.6s"><em>push</em></i>
+            <span class="chip in" style="--d:.8s">GitHub</span><i class="draw" style="--d:1.1s"><em>觸發</em></i>
+            <span class="chip in" style="--d:1.3s">Workers Builds</span><i class="draw" style="--d:1.6s"><em>部署</em></i>
+            <span class="chip focal in" style="--d:1.8s">Worker 上線</span>
+          </div>
+          <p class="t-note in" style="--d:2.4s">不用手動上傳檔案，每次 push 都會自動跑一次。</p>
+        </div>
+
+        <div class="scene" data-scene>
+          <p class="sc-k in">01 · 運作方式</p>
+          <p class="t-l in" style="--d:.1s">使用者怎麼讀到資料</p>
+          <div class="chain">
+            <span class="chip ext in" style="--d:.3s">使用者瀏覽器</span><i class="draw link" style="--d:.6s"><em>HTTPS</em></i>
+            <span class="chip in" style="--d:.8s">Worker</span><i class="draw" style="--d:1.1s"><em>env.DB</em></i>
+            <span class="chip focal in" style="--d:1.3s">D1 資料庫</span>
+          </div>
+          <p class="t-note in" style="--d:1.9s">Worker 透過 binding 直接查詢，不需要連線字串，也不必另外架資料庫伺服器。</p>
+        </div>
+
+        <div class="scene" data-scene>
+          <p class="sc-k in">02 · 建置步驟</p>
+          <p class="t-l in" style="--d:.1s">建置只要 7 步</p>
+          <ol class="steps7">
+            <li class="in" style="--d:.3s"><span>01</span>建立專案</li>
+            <li class="in" style="--d:.55s"><span>02</span>建立 D1 並綁定</li>
+            <li class="in" style="--d:.8s"><span>03</span>用 migration 建表</li>
+            <li class="in" style="--d:1.05s"><span>04</span>在程式中查詢</li>
+            <li class="in" style="--d:1.3s"><span>05</span>本機測試</li>
+            <li class="key in" style="--d:1.55s"><span>06</span>接上 GitHub 自動部署</li>
+            <li class="in" style="--d:1.8s"><span>07</span>設定機密資訊</li>
+          </ol>
+        </div>
+
+        <div class="scene" data-scene>
+          <p class="sc-k in">02 · 建置步驟</p>
+          <p class="t-l in" style="--d:.1s">最常忘記的一件事</p>
+          <div class="lanes2">
+            <div class="lane in" style="--d:.4s"><b>程式碼</b><span>push 後自動更新</span><em class="ok">自動</em></div>
+            <div class="lane focal in" style="--d:1s"><b>資料表結構</b><span>要自己執行 <code>apply --remote</code></span><em class="warn">手動</em></div>
+          </div>
+          <p class="t-note in" style="--d:1.7s">新程式要用新欄位時：先 apply，再 push。</p>
+        </div>
+
+        <div class="scene" data-scene>
+          <p class="sc-k in">03 · 限制</p>
+          <p class="t-l in" style="--d:.1s">免費方案的上限</p>
+          <div class="bars">
+            <div class="bar in" style="--d:.3s"><span class="bl">資料庫容量</span><span class="track"><i class="fill" style="--w:5%;--d:.5s"></i></span><span class="bv">500 MB<small>付費 10 GB</small></span></div>
+            <div class="bar in" style="--d:.6s"><span class="bl">每次請求的查詢數</span><span class="track"><i class="fill" style="--w:5%;--d:.8s"></i></span><span class="bv">50<small>付費 1,000</small></span></div>
+            <div class="bar in" style="--d:.9s"><span class="bl">時間點還原</span><span class="track"><i class="fill" style="--w:23%;--d:1.1s"></i></span><span class="bv">7 天<small>付費 30 天</small></span></div>
+          </div>
+          <p class="t-note in" style="--d:1.6s">灰色長條是付費方案的上限，橘色是免費方案。</p>
+        </div>
+
+        <div class="scene" data-scene>
+          <p class="sc-k in">03 · 限制</p>
+          <p class="t-l in" style="--d:.1s">D1 一次只處理一個查詢</p>
+          <div class="queue">
+            <span class="dot in" style="--d:.3s"></span><span class="dot in" style="--d:.5s"></span><span class="dot in" style="--d:.7s"></span><span class="dot in" style="--d:.9s"></span>
+            <i class="draw" style="--d:1.1s"><em>排隊</em></i>
+            <span class="chip focal in" style="--d:1.3s">D1</span>
+          </div>
+          <p class="t-note in" style="--d:1.8s">請求太多就排隊；佇列滿了會回傳 <code>overloaded</code> 錯誤。</p>
+          <p class="t-note strong in" style="--d:2.4s">解法：依使用者或租戶拆成多個資料庫。</p>
+        </div>
+
+        <div class="scene" data-scene>
+          <p class="sc-k in">04 · 快取</p>
+          <p class="t-l in" style="--d:.1s">快取讓網站更快</p>
+          <div class="cards2">
+            <div class="card in" style="--d:.4s"><span class="tagc">前端</span><b>靜態檔長期快取</b><span>檔名帶雜湊的 JS、CSS，用 <code>_headers</code> 設定</span></div>
+            <div class="card in" style="--d:.9s"><span class="tagc">後端</span><b>熱門資料先存起來</b><span>Cache API 或 KV，少查幾次 D1</span></div>
+          </div>
+          <p class="t-note in" style="--d:1.5s">登入後的個人資料和寫入操作不要快取。</p>
+        </div>
+
+        <div class="scene sc-title" data-scene>
+          <p class="t-xl in">大概就是這樣</p>
+          <p class="t-sub in" style="--d:.3s">往下看每一步的指令和細節。</p>
+          <div class="toc in" style="--d:.6s"><span>01 運作方式</span><span>02 建置步驟</span><span>03 限制</span><span>04 快取</span></div>
+        </div>
+
         <button type="button" class="pv-big" data-big>
-          <span class="pv-big-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span>
-          <span class="pv-big-text" data-big-text>播放動畫</span>
+          <span class="pv-big-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span>
+          <span class="pv-big-text" data-big-text>播放導覽動畫（50 秒）</span>
         </button>
       </div>
       <div class="pv-bar">
@@ -266,14 +352,109 @@ ul.points{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:8px
           <svg data-icon-pause viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" hidden><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/></svg>
         </button>
         <div class="pv-segs" data-segs role="group" aria-label="跳到第幾個畫面"></div>
-        <span class="pv-time" data-time>0:00 / 0:21</span>
+        <span class="pv-time" data-time>0:00 / 0:50</span>
         <button type="button" class="pv-btn pv-sound" data-sound aria-pressed="true" aria-label="配樂">
           <svg data-icon-on viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4zM16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <svg data-icon-off viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" hidden><path d="M4 9h4l5-4v14l-5-4H4zM16.5 9.5l5 5M21.5 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>
+      <p class="sr-only" data-live aria-live="polite"></p>
     </div>
   </section>
+
+  <h2><span class="no">01</span>運作方式</h2>
+  <p>三個服務各有分工：GitHub 存放程式碼；Workers 執行後端程式，也能同時提供前端的靜態檔；D1 存放資料。</p>
+  <p>你在本機開發後 push 到 GitHub，Cloudflare 的 Workers Builds 會自動建置並部署 Worker。使用者的請求進到 Worker 後，Worker 透過名為 <code>DB</code> 的 binding 查詢 D1，不需要連線字串，也不必另外架設資料庫伺服器。</p>
+  <figure>
+    <span class="swipe">← 左右滑動看完整圖 →</span>
+    <div class="scroll">
+<svg class="d" viewBox="0 0 640 452" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="arch-title arch-desc">
+  <title id="arch-title">GitHub、Workers 與 D1 的部署架構</title>
+  <desc id="arch-desc">程式碼從本機 push 到 GitHub，觸發 Workers Builds 部署 Worker；使用者透過 HTTPS 呼叫 Worker，Worker 經由 DB binding 讀寫 D1，migration 可選擇在建置時套用。</desc>
+  <defs>
+    <marker id="arch-ar" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker>
+    <marker id="arch-ar-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-link" points="0 0, 8 3, 0 6"/></marker>
+  </defs>
+  <rect class="bg" width="640" height="452"/>
+
+  <!-- zone -->
+  <rect class="zone" x="184" y="148" width="432" height="228" rx="8"/>
+  <text class="eb" x="200" y="168">CLOUDFLARE</text>
+
+  <!-- arrows first -->
+  <line class="a" x1="84" y1="96" x2="84" y2="191" marker-end="url(#arch-ar)"/>
+  <rect class="mask" x="92" y="136" width="48" height="12" rx="2"/>
+  <text class="lbl" x="116" y="145" text-anchor="middle">GIT PUSH</text>
+
+  <line class="a" x1="144" y1="220" x2="207" y2="220" marker-end="url(#arch-ar)"/>
+  <rect class="mask" x="156" y="200" width="40" height="12" rx="2"/>
+  <text class="lbl" x="176" y="209" text-anchor="middle">TRIGGER</text>
+
+  <line class="a" x1="336" y1="220" x2="399" y2="220" marker-end="url(#arch-ar)"/>
+  <rect class="mask" x="348" y="200" width="40" height="12" rx="2"/>
+  <text class="lbl" x="368" y="209" text-anchor="middle">DEPLOY</text>
+
+  <line class="a-link" x1="468" y1="96" x2="468" y2="191" marker-end="url(#arch-ar-link)"/>
+  <rect class="mask" x="476" y="116" width="36" height="12" rx="2"/>
+  <text class="lbl" x="494" y="125" text-anchor="middle">HTTPS</text>
+
+  <line class="a" x1="468" y1="248" x2="468" y2="295" marker-end="url(#arch-ar)"/>
+  <rect class="mask" x="476" y="266" width="40" height="12" rx="2"/>
+  <text class="lbl" x="496" y="275" text-anchor="middle">ENV.DB</text>
+
+  <path class="a-dash" d="M272,248 V316 Q272,324 280,324 H399" marker-end="url(#arch-ar)"/>
+  <rect class="mask" x="316" y="304" width="44" height="12" rx="2"/>
+  <text class="lbl" x="338" y="313" text-anchor="middle">MIGRATE</text>
+
+  <!-- nodes -->
+  <rect class="mask" x="24" y="40" width="120" height="56" rx="6"/>
+  <rect class="n-input" x="24" y="40" width="120" height="56" rx="6"/>
+  <rect class="tag" x="32" y="46" width="28" height="12" rx="2"/><text class="tag-t" x="46" y="55" text-anchor="middle">DEV</text>
+  <text class="nm" x="84" y="74" text-anchor="middle">你的電腦</text>
+  <text class="sub" x="84" y="88" text-anchor="middle">wrangler dev</text>
+
+  <rect class="mask" x="24" y="192" width="120" height="56" rx="6"/>
+  <rect class="n-backend" x="24" y="192" width="120" height="56" rx="6"/>
+  <rect class="tag" x="32" y="198" width="28" height="12" rx="2"/><text class="tag-t" x="46" y="207" text-anchor="middle">GIT</text>
+  <text class="nm" x="84" y="226" text-anchor="middle">GitHub repo</text>
+  <text class="sub" x="84" y="240" text-anchor="middle">branch: main</text>
+
+  <rect class="mask" x="208" y="192" width="128" height="56" rx="6"/>
+  <rect class="n-backend" x="208" y="192" width="128" height="56" rx="6"/>
+  <rect class="tag" x="216" y="198" width="28" height="12" rx="2"/><text class="tag-t" x="230" y="207" text-anchor="middle">CI</text>
+  <text class="nm" x="272" y="226" text-anchor="middle">Workers Builds</text>
+  <text class="sub" x="272" y="240" text-anchor="middle">build · deploy</text>
+
+  <rect class="mask" x="400" y="40" width="136" height="56" rx="6"/>
+  <rect class="n-ext" x="400" y="40" width="136" height="56" rx="6"/>
+  <rect class="tag" x="408" y="46" width="28" height="12" rx="2"/><text class="tag-t" x="422" y="55" text-anchor="middle">WEB</text>
+  <text class="nm" x="468" y="74" text-anchor="middle">使用者瀏覽器</text>
+  <text class="sub" x="468" y="88" text-anchor="middle">*.workers.dev</text>
+
+  <rect class="mask" x="400" y="192" width="136" height="56" rx="6"/>
+  <rect class="n-focal" x="400" y="192" width="136" height="56" rx="6"/>
+  <rect class="tag" x="408" y="198" width="28" height="12" rx="2"/><text class="tag-t" x="422" y="207" text-anchor="middle">API</text>
+  <text class="nm" x="468" y="226" text-anchor="middle">Worker</text>
+  <text class="sub" x="468" y="240" text-anchor="middle">fetch() · assets</text>
+
+  <rect class="mask" x="400" y="296" width="136" height="56" rx="6"/>
+  <rect class="n-focal" x="400" y="296" width="136" height="56" rx="6"/>
+  <rect class="tag" x="408" y="302" width="28" height="12" rx="2"/><text class="tag-t" x="422" y="311" text-anchor="middle">DB</text>
+  <text class="nm" x="468" y="330" text-anchor="middle">D1 資料庫</text>
+  <text class="sub" x="468" y="344" text-anchor="middle">SQLite · binding</text>
+
+  <!-- legend -->
+  <line class="hair" x1="24" y1="396" x2="616" y2="396"/>
+  <text class="eb" x="24" y="428">LEGEND</text>
+  <rect class="lg-focal" x="96" y="416" width="16" height="12" rx="2"/><text class="lbl-zh" x="120" y="427">重點元件</text>
+  <rect class="lg-backend" x="196" y="416" width="16" height="12" rx="2"/><text class="lbl-zh" x="220" y="427">服務</text>
+  <rect class="lg-ext" x="272" y="416" width="16" height="12" rx="2"/><text class="lbl-zh" x="296" y="427">外部</text>
+  <line class="a-link" x1="348" y1="422" x2="376" y2="422"/><text class="lbl-zh" x="384" y="427">HTTP 請求</text>
+  <line class="a-dash" x1="472" y1="422" x2="500" y2="422"/><text class="lbl-zh" x="508" y="427">選用流程</text>
+</svg>
+    </div>
+    <figcaption>虛線的 MIGRATE 是選用做法：把 migration 指令加進部署指令，建置時順便更新資料表（見步驟 06）。</figcaption>
+  </figure>
 
   <h2><span class="no">02</span>建置步驟</h2>
   <p>開始前需要準備 Cloudflare 帳號、GitHub 帳號，以及已安裝 Node.js 的電腦。步驟 01 會建立專案資料夾，之後的指令都在該資料夾中執行。</p>
@@ -531,47 +712,40 @@ document.querySelectorAll('.copy').forEach(function(btn){
 </script>
 
 <script>
-/* Portrait video player: 7 scenes x 3s, original Web Audio soundtrack that starts only on a press. */
+/* Overview video: 10 HTML scenes with CSS entrances; original Web Audio soundtrack that starts only on a press. */
 (() => {
   const P = document.querySelector('[data-player]');
   if (!P) return;
-  const SCENES = [
-    '在自己的電腦寫程式，用 wrangler dev 在本機測試。',
-    '用 git push 把程式碼推上 GitHub。',
-    'Workers Builds 偵測到新的 push，自動開始建置。',
-    '建置完成，新版 Worker 部署上線。',
-    '使用者打開網站，瀏覽器透過 HTTPS 呼叫 Worker。',
-    'Worker 透過 binding 讀寫 D1 資料庫，再把結果回傳。',
-    '完成。之後每次 push，都會自動重跑第 2–4 步。'
-  ];
-  const DUR = 3000, TOTAL = SCENES.length * DUR;
-  const groups = [...P.querySelectorAll('[data-s]')];
-  const cap = P.querySelector('[data-cap]');
+  const scenes = [...P.querySelectorAll('[data-scene]')];
+  const DURS = [4, 5, 5, 5, 6, 5, 5, 5, 5, 5].map((s) => s * 1000);
+  const STARTS = DURS.map((_, i) => DURS.slice(0, i).reduce((a, b) => a + b, 0));
+  const TOTAL = DURS.reduce((a, b) => a + b, 0);
   const big = P.querySelector('[data-big]'), bigText = P.querySelector('[data-big-text]');
   const toggleBtn = P.querySelector('[data-toggle]');
   const iPlay = P.querySelector('[data-icon-play]'), iPause = P.querySelector('[data-icon-pause]');
   const timeEl = P.querySelector('[data-time]');
   const soundBtn = P.querySelector('[data-sound]');
   const iOn = P.querySelector('[data-icon-on]'), iOff = P.querySelector('[data-icon-off]');
+  const live = P.querySelector('[data-live]');
   const segWrap = P.querySelector('[data-segs]');
-  const segs = SCENES.map((_, i) => {
+  const segs = scenes.map((_, i) => {
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'pv-seg'; b.setAttribute('aria-label', '第 ' + (i + 1) + ' 個畫面');
     b.innerHTML = '<i><b></b></i>';
-    b.addEventListener('click', () => { unlock(); seek(i * DUR); });
+    b.addEventListener('click', () => { unlock(); seek(STARTS[i]); });
     segWrap.appendChild(b);
     return b.querySelector('b');
   });
-
   let t = 0, playing = false, last = 0, raf = 0, scene = -1, started = false;
   const fmt = (ms) => { const s = Math.floor(ms / 1000); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+  const sceneAt = (ms) => { let i = 0; while (i < STARTS.length - 1 && ms >= STARTS[i + 1]) i++; return i; };
 
   /* ---------- audio ---------- */
   let soundOn = true;
   try { if (localStorage.getItem('d1-guide-music') === 'off') soundOn = false; } catch (e) {}
   let ctx = null, master, padBus, send, padTimer = 0, nextTime = 0, chordIndex = 0;
   const CHORDS = [[130.81,164.81,196.00,246.94,293.66],[110.00,130.81,164.81,196.00,246.94],[87.31,110.00,130.81,164.81,196.00],[98.00,123.47,146.83,164.81,220.00]];
-  const BELLS = [523.25,587.33,659.25,783.99,880.00,1046.50,1174.66];
+  const BELLS = [523.25,587.33,659.25,783.99,880.00,1046.50,1174.66,1318.51,1567.98,1046.50];
   const CL = 2.4;
   function unlock() {
     if (!soundOn) return;
@@ -630,53 +804,61 @@ document.querySelectorAll('.copy').forEach(function(btn){
   function paintSound() {
     soundBtn.setAttribute('aria-pressed', String(soundOn));
     soundBtn.setAttribute('aria-label', soundOn ? '關閉配樂' : '開啟配樂');
-    iOn.toggleAttribute('hidden', !soundOn); iOff.toggleAttribute('hidden', soundOn);
+    iOn.hidden = !soundOn; iOff.hidden = soundOn;
   }
 
   /* ---------- picture ---------- */
-  function render() {
-    const s = Math.max(0, Math.min(SCENES.length - 1, Math.floor(t / DUR)));
-    const lit = started ? s + 1 : 6;           /* before the first play, show the complete diagram as the poster */
-    groups.forEach((g) => {
-      const n = Number(g.dataset.s);
-      g.classList.toggle('on', n <= lit);
-      g.classList.toggle('cur', started && n === s + 1);
+  function show(i, restart) {
+    scenes.forEach((s, k) => {
+      const on = k === i;
+      if (on && restart) { s.classList.remove('act'); void s.offsetWidth; }
+      s.classList.toggle('act', on);
+      s.setAttribute('aria-hidden', String(!on));
     });
-    if (started && s !== scene) {
-      cap.innerHTML = '<span class="pv-n">' + (s + 1) + ' / ' + SCENES.length + '</span>' + SCENES[s];
-      if (scene !== -1 || playing) bell(s);
-      scene = s;
+  }
+  function render(force) {
+    const i = started ? sceneAt(Math.min(t, TOTAL - 1)) : 0;
+    if (i !== scene || force) {
+      show(i, started);
+      if (started) {
+        bell(i);
+        const h = scenes[i].querySelector('.t-xl, .t-l');
+        live.textContent = '第 ' + (i + 1) + ' / ' + scenes.length + ' 個畫面：' + (h ? h.textContent : '');
+      }
+      scene = i;
     }
-    segs.forEach((b, i) => { b.style.width = Math.max(0, Math.min(1, (t - i * DUR) / DUR)) * 100 + '%'; });
+    segs.forEach((b, k) => { b.style.width = Math.max(0, Math.min(1, (t - STARTS[k]) / DURS[k])) * 100 + '%'; });
     timeEl.textContent = fmt(t) + ' / ' + fmt(TOTAL);
   }
   function paintControls() {
     iPlay.toggleAttribute('hidden', playing); iPause.toggleAttribute('hidden', !playing);
     toggleBtn.setAttribute('aria-label', playing ? '暫停' : '播放');
     big.hidden = playing;
-    bigText.textContent = !started ? '播放動畫（21 秒）' : t >= TOTAL ? '重新播放' : '繼續播放';
-    P.classList.toggle('is-run', started);
+    bigText.textContent = !started ? '播放導覽動畫（50 秒）' : t >= TOTAL ? '重新播放' : '繼續播放';
+    P.classList.toggle('started', started);
+    P.classList.toggle('paused', started && !playing);
   }
   function frame(now) {
     if (!playing) return;
     t += Math.max(0, now - last); last = now;
-    if (t >= TOTAL) { t = TOTAL; playing = false; render(); paintControls(); padOff(2.8); return; }
-    render();
+    if (t >= TOTAL) { t = TOTAL; playing = false; render(false); paintControls(); padOff(3); return; }
+    render(false);
     raf = requestAnimationFrame(frame);
   }
   function play() {
     unlock();
-    if (t >= TOTAL || !started) { t = 0; scene = -1; }
+    const fresh = !started || t >= TOTAL;
+    if (fresh) t = 0;
     started = true; playing = true; last = performance.now();
-    render(); paintControls(); padOn();
+    paintControls();
+    render(fresh);
+    padOn();
     raf = requestAnimationFrame(frame);
   }
-  function pause() {
-    playing = false; cancelAnimationFrame(raf); paintControls(); padOff(0.6);
-  }
+  function pause() { playing = false; cancelAnimationFrame(raf); paintControls(); padOff(0.6); }
   function seek(ms) {
     started = true; t = Math.max(0, Math.min(TOTAL - 1, ms)); last = performance.now();
-    scene = -2; render(); paintControls();
+    paintControls(); render(true);
   }
 
   big.addEventListener('click', play);
@@ -689,7 +871,7 @@ document.querySelectorAll('.copy').forEach(function(btn){
   });
   document.addEventListener('visibilitychange', () => { if (document.hidden && playing) pause(); });
 
-  paintSound(); render(); paintControls();
+  paintSound(); render(true); paintControls();
 })();
 </script>
 
