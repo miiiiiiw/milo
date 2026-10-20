@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>家人身後事處理指南</title>
+<meta name="description" content="新北市民交通意外身故後的死亡登記、補助、求償與繼承流程">
+<meta name="keywords" content="指南, 身後事, 繼承, 車禍">
+<meta name="date" content="2026-10-20">
+<style>
+:root{
+  --bg:#f7f5f1; --paper:#ffffff; --ink:#22211f; --muted:#6b675f; --line:#e3dfd6;
+  --accent:#2f5d50; --accent-soft:#e6efeb; --warn:#8a4b14; --warn-soft:#f8ede0;
+  --radius:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#161716; --paper:#1f201e; --ink:#ecebe6; --muted:#a4a19a; --line:#34352f;
+    --accent:#86c2ad; --accent-soft:#22332d; --warn:#e2a970; --warn-soft:#352a1f;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+  font-size:16px;line-height:1.75}
+.wrap{max-width:820px;margin:0 auto;padding:0 16px 64px}
+header.top{padding:40px 0 20px;border-bottom:1px solid var(--line);margin-bottom:8px}
+header.top .eyebrow{color:var(--accent);font-size:13px;letter-spacing:.08em;font-weight:600}
+header.top h1{font-size:28px;line-height:1.35;margin:6px 0 10px;font-weight:700}
+header.top p{margin:0;color:var(--muted);font-size:14.5px}
+nav.toc{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0;
+  display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line)}
+nav.toc::-webkit-scrollbar{display:none}
+nav.toc a{flex:none;font-size:13.5px;padding:5px 12px;border:1px solid var(--line);border-radius:999px;
+  color:var(--ink);text-decoration:none;background:var(--paper);white-space:nowrap}
+nav.toc a:hover{border-color:var(--accent);color:var(--accent)}
+h3{font-size:17.5px;margin:28px 0 8px}
+h2{font-size:21px;line-height:1.4;margin:48px 0 12px;padding-top:12px;scroll-margin-top:60px;
+  border-top:3px solid var(--accent);display:inline-block}
+p{margin:10px 0}
+strong{font-weight:700}
+a{color:var(--accent);text-underline-offset:3px;word-break:break-word}
+ul,ol{padding-left:1.4em;margin:10px 0}
+li{margin:5px 0}
+.tw{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:var(--radius);background:var(--paper)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14.5px;line-height:1.6}
+th,td{padding:10px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--accent-soft);font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+ul.tasks{list-style:none;padding:0;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius)}
+ul.tasks li{margin:0;border-bottom:1px solid var(--line)}
+ul.tasks li:last-child{border-bottom:0}
+ul.tasks label{display:flex;gap:10px;padding:9px 12px;cursor:pointer;align-items:flex-start}
+ul.tasks input{margin-top:6px;width:17px;height:17px;accent-color:var(--accent);flex:none}
+ul.tasks input:checked + span{color:var(--muted);text-decoration:line-through}
+.flow{display:grid;gap:10px;margin:18px 0}
+.stage{display:grid;grid-template-columns:96px 1fr;background:var(--paper);border:1px solid var(--line);
+  border-radius:var(--radius);overflow:hidden}
+.stage .when{display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;
+  background:var(--accent-soft);color:var(--accent);padding:10px;text-align:center}
+.stage .what{padding:10px 14px}
+.stage .what b{display:block;font-size:15.5px}
+.stage .what span{display:block;color:var(--muted);font-size:14px;line-height:1.6}
+.stage.key{border:2px solid var(--warn)}
+.stage.key .when{background:var(--warn-soft);color:var(--warn)}
+table.assign{min-width:0}
+table.assign td.c{text-align:center;width:56px}
+table.assign input.who{width:100%;min-width:80px;font:inherit;font-size:14px;color:var(--ink);background:transparent;
+  border:0;border-bottom:1px dashed var(--line);padding:3px 0}
+table.assign input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent)}
+.note{margin-top:40px;padding:14px 16px;border-radius:var(--radius);background:var(--warn-soft);color:var(--ink);font-size:14px}
+.tools{display:flex;gap:8px;margin-top:14px}
+.tools button{font:inherit;font-size:13.5px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);
+  background:var(--paper);color:var(--ink);cursor:pointer}
+@media (max-width:560px){
+  header.top h1{font-size:23px}
+  .stage{grid-template-columns:88px 1fr}.stage .when{font-size:14px;white-space:nowrap;padding:8px}
+  h2{font-size:19px}
+}
+@media print{
+  body{background:#fff;color:#000;font-size:11.5pt}
+  nav.toc,.tools{display:none}
+  .wrap{max-width:none;padding:0}
+  h2{break-after:avoid}
+  .tw,.stage,ul.tasks li{break-inside:avoid}
+  a{color:#000}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">新北市・交通意外</div>
+  <h1>家人身後事處理指南</h1>
+  <p>資料整理至 2026 年 10 月 20 日。依處理順序排列，勾選清單會保存在這台裝置的瀏覽器中。</p>
+  <div class="tools"><button type="button" onclick="window.print()">列印／存成 PDF</button><button type="button" id="reset">清除勾選</button></div>
+</header>
+<nav class="toc"><a href="#s0">先看這裡</a><a href="#s1">第一步</a><a href="#s2">第二步</a><a href="#s3">第三步</a><a href="#s4">第四步</a><a href="#s5">第五步</a><a href="#s6">第六步</a><a href="#s7">第七步</a><a href="#s8">第八步</a><a href="#s9">找誰辦</a><a href="#s10">準備文件</a><a href="#s11">分工與窗口</a><a href="#s12">參考資料</a></nav>
+<main>
+<h2 id="s0">先看這裡：最重要的期限</h2>
+<p>所有期限都從<strong>過世當天</strong>起算。最不能錯過的是四個：30天內死亡登記、3個月內決定是否拋棄繼承、6個月內申報遺產稅並辦房地過戶、2年內向對方求償。其餘的事都可以照下表慢慢來，不必一次做完。</p>
+
+<div class="flow" role="img" aria-label="四個關卡：30 天、3 個月、6 個月、2 年">
+  <div class="stage"><div class="when">30 天內</div><div class="what"><b>相驗、喪禮、死亡登記</b><span>領證明書 10–15 份；戶政辦除戶、壽險公會查詢；子女勞保家屬死亡給付</span></div></div>
+  <div class="stage key"><div class="when">3 個月內</div><div class="what"><b>查清財產與債務，決定怎麼繼承</b><span>正常繼承、陳報遺產清冊，或向法院拋棄繼承</span></div></div>
+  <div class="stage"><div class="when">6 個月內</div><div class="what"><b>15 萬救助、遺產稅與過戶</b><span>區公所申請意外致死救助；申報遺產稅；房地、存款過戶</span></div></div>
+  <div class="stage"><div class="when">2 年內</div><div class="what"><b>求償與理賠</b><span>向對方孩子與父母調解或民事求償；各項保險理賠</span></div></div>
+</div>
+<p>3 個月的繼承決定最不能拖：拋棄繼承一旦逾期就不能再辦。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>期限（從過世日算）</th>
+<th>要辦的事</th>
+<th>去哪裡</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>立刻</td>
+<td>檢察官相驗，取得「相驗屍體證明書」，一次多申請 10–15 份</td>
+<td>地檢署（多在殯儀館進行）</td>
+</tr>
+<tr>
+<td>7 天後</td>
+<td>申請事故現場圖、現場照片</td>
+<td>臺北市政府警察局交通警察大隊或處理的分局</td>
+</tr>
+<tr>
+<td>30 天內</td>
+<td>辦死亡登記（除戶），同時申請子女的勞保家屬死亡給付、壽險公會查詢</td>
+<td>全國任一戶政事務所</td>
+</tr>
+<tr>
+<td>30 天後</td>
+<td>初判表：本案因當事人過世無法筆錄，警方不開立</td>
+<td>臺北市政府警察局交通警察大隊</td>
+</tr>
+<tr>
+<td>3 個月內</td>
+<td>決定：拋棄繼承，或陳報遺產清冊</td>
+<td>岳父戶籍地的地方法院</td>
+</tr>
+<tr>
+<td>6 個月內</td>
+<td><strong>申請新北市意外事故致死救助 15 萬元</strong></td>
+<td>岳父戶籍地區公所社會課</td>
+</tr>
+<tr>
+<td>6 個月內</td>
+<td>請檢察官或少年法庭囑託行車事故鑑定</td>
+<td>臺北地檢署或少年法庭</td>
+</tr>
+<tr>
+<td>6 個月內</td>
+<td>申報遺產稅；辦不動產繼承登記</td>
+<td>國稅局；地政事務所</td>
+</tr>
+<tr>
+<td>2 年內</td>
+<td>向對方孩子與父母求償；申請各項保險理賠</td>
+<td>區公所調解委員會或法院；各保險公司</td>
+</tr>
+</tbody>
+</table></div>
+<p>若岳父在世時領勞保年金，家屬也應在過世後 30 天內通知勞保局，以免溢領被追回（詳見第五步）。</p>
+<h2 id="s1">第一步：相驗，取得「相驗屍體證明書」</h2>
+<p>車禍屬於非自然死亡，要由檢察官和法醫相驗，之後開立<strong>相驗屍體證明書</strong>，效力等同一般的死亡證明書。相驗完成前，遺體通常不能入殮或火化。</p>
+<ul>
+<li>相驗多半在殯儀館進行，警方會通知家屬時間，家屬到場確認身分即可。</li>
+<li>證明書請<strong>一次多申請 10–15 份正本</strong>：戶政、殯儀館、火化、塔位、每家銀行、每張保單、勞保局都要留存正本，事後補發很花時間。</li>
+<li>對方是 13、14 歲的孩子，刑事部分會移由少年法庭處理（見第四步），家屬不必另外提告。</li>
+</ul>
+<p><strong>證明書寫「死因不詳、待鑑定」怎麼辦</strong>：這是解剖後的暫時版本，仍證明「人已死亡」。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>用途</th>
+<th>暫開版能不能用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>死亡登記、殯葬火化、塔位</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>子女的勞保家屬死亡給付</td>
+<td>可以，只看死亡事實</td>
+</tr>
+<tr>
+<td>遺產稅、繼承、拋棄繼承</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>市民意外致死救助 15 萬元</td>
+<td>可能不夠，要能證明是「意外」：先送件，鑑定完成後補件</td>
+</tr>
+<tr>
+<td>意外險</td>
+<td>可先報案申請，保險公司通常會等最終死因才理賠</td>
+</tr>
+<tr>
+<td>向對方求償</td>
+<td>最好等法醫鑑定結果，因果關係才清楚</td>
+</tr>
+</tbody>
+</table></div>
+<p>法醫鑑定完成後，向地檢署申請載明最終死因的證明書，再補給需要的單位。可以先問書記官鑑定大約要多久。</p>
+<p>相驗時若有疑問，可直接問承辦檢察官或書記官，並記下案號，之後理賠、鑑定都會用到。</p>
+<h2 id="s2">第二步：30 天內辦死亡登記</h2>
+<p>死亡登記可到<strong>全國任一戶政事務所</strong>辦，期限是過世後 30 天內；無正當理由逾期，可能被罰 300–900 元。申請人可以是配偶、親屬或辦喪事的人。</p>
+<p><strong>要帶的東西</strong></p>
+<ul class="tasks">
+<li class="task"><label><input type="checkbox" data-k="c1"><span>相驗屍體證明書正本</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c2"><span>岳父的身分證、戶口名簿（遺失也能辦）</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c3"><span>申請人的身分證、印章</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c4"><span>若岳母健在：岳母的身分證 + 近 2 年內照片 1 張（配偶欄要換證，規費 50 元）</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c5"><span>委託別人辦：委託書 + 受託人身分證、印章</span></label></li>
+</ul>
+<p><strong>在戶政事務所順便辦好</strong></p>
+<ul>
+<li>通報壽險公會「亡故者訊息服務」：系統會幫忙查岳父有沒有家人不知道的壽險保單，並通知受益人。</li>
+<li>申請岳父的「除戶謄本」數份，以及每位繼承人的現戶謄本，之後遺產稅和過戶都要用。</li>
+<li>岳父的子女若有勞保，請他本人帶存摺到場，當場申請「勞保家屬死亡給付」（3 個月投保薪資，見第三步）。</li>
+<li>需要遺照可申請岳父身分證上的照片檔。</li>
+</ul>
+<p>有自然人憑證的話，也可以在內政部戶政司網站線上辦死亡登記。</p>
+<h2 id="s3">第三步：喪葬安排與可申請的補助</h2>
+<p>岳父的情況有<strong>兩筆錢一定要申請</strong>，合計可能有十幾萬到二十幾萬元。</p>
+<p><strong>1. 新北市市民意外事故致死救助：一般市民 15 萬元</strong></p>
+<ul>
+<li>金額：一般市民 15 萬元，中低收入戶 30 萬元，低收入戶 50 萬元。</li>
+<li>期限：過世後 <strong>6 個月內</strong>，向岳父戶籍地的<strong>區公所社會課</strong>（或社會人文課）申請。</li>
+<li>誰領：依序為配偶、子女、父母、兄弟姊妹、祖父母，所以通常由岳母出面。</li>
+<li>文件：申請表、相驗屍體證明書、事故證明、除戶謄本、全戶謄本、共同委任及切結書、存摺封面影本。</li>
+<li>本案警方因當事人已過世無法做筆錄，不會開立初判表。請先問區公所可否改用：相驗屍體證明書（死亡方式為意外）、警方的事故現場圖或當事人登記聯單、地檢署的證明文件；並先送件，以免拖過 6 個月。</li>
+<li>酒駕、無照駕駛等情形不予救助；已領保險或賠償是否影響，申請時請向區公所確認。（<a target="_blank" rel="noopener" href="https://welfare.ntpc.gov.tw/viewService/show/1008037?fromOpa=1">新北市福利補助查詢</a>）</li>
+</ul>
+<p><strong>2. 子女的勞保家屬死亡給付：子女投保薪資 × 3 個月</strong></p>
+<ul>
+<li>岳父的<strong>子女</strong>（例如您的配偶）只要過世當時有在保勞保，就能請領，不限年資。</li>
+<li>金額：該子女過世當月起前 6 個月的平均月投保薪資 × 3。例如投保薪資 4 萬元，可領 12 萬元。</li>
+<li>有多位子女都有勞保時，只能推<strong>一位</strong>請領，建議由投保薪資最高的人申請。</li>
+<li>女婿、媳婦不算，岳父母不是他們勞保上的「父母」。</li>
+<li>最方便的辦法：辦死亡登記時帶申請人的存摺，請戶政人員當場一併送件；之後也可上勞保局網站申請，期限 5 年。</li>
+</ul>
+<p>其他補助如下，請逐一確認是否符合。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>補助項目</th>
+<th>誰符合</th>
+<th>去哪裡問</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>新北市聯合奠祭（免費奠祭服務）</td>
+<td>選擇新北市環保自然葬（樹葬、植存、海葬）者，或低收入等弱勢家庭</td>
+<td>新北市立殯儀館服務中心</td>
+</tr>
+<tr>
+<td>區公所喪葬補助</td>
+<td>部分行政區（如林口、八里等垃圾場周邊）設籍滿一定期間的居民，林口一般里為 1 萬元、6 個月內申請</td>
+<td>岳父戶籍地的區公所</td>
+</tr>
+<tr>
+<td>低收入、中低收入戶喪葬補助</td>
+<td>具低收或中低收身分者</td>
+<td>區公所社會課</td>
+</tr>
+<tr>
+<td>原住民喪葬補助</td>
+<td>具原住民身分者，每人 8,000 元起</td>
+<td>新北市殯葬管理處</td>
+</tr>
+<tr>
+<td>老農、軍公教等喪葬給付</td>
+<td>生前有農保或軍公教保險者</td>
+<td>農會、原服務機關</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>關於岳父本人的勞保、國保喪葬津貼</strong>：這兩項要「死亡時本人仍在投保中」才能領。岳父 69 歲已退休，通常不適用；但他若在領勞保年金，另有遺屬權益，見第五步。</p>
+<p><strong>喪葬收據一定要留好</strong>：申報遺產稅時，喪葬費可以直接扣除固定的 138 萬元，不用附收據；但向對方家長求償時，要用收據證明實際花了多少錢，所以<strong>所有喪葬收據、發票都要保存</strong>。</p>
+<h2 id="s4">第四步：事故後續——對方是 13、14 歲的腳踏車騎士</h2>
+<p>兩台都是腳踏車，所以<strong>強制險不賠</strong>。主要的賠償來源是<strong>肇事的孩子和他的父母</strong>，另外要查雙方有沒有其他保險可以理賠。</p>
+<p><strong>事故發生在臺北市</strong>：古亭河濱自行車道位於臺北市中正區，所以警方資料、行車事故鑑定、車道管理都找<strong>臺北市</strong>的單位；相驗與偵查由臺北地檢署負責。但 15 萬元意外致死救助看的是岳父戶籍，仍向<strong>新北市</strong>的區公所申請。</p>
+<p><strong>1. 已確認的事實</strong></p>
+<ul>
+<li>地點：古亭河濱自行車道（臺北市中正區，新店溪畔）。</li>
+<li>雙方都騎自己的腳踏車：強制險、YouBike 保險都不適用。</li>
+<li>當場有民眾報案，派出所與交通警察大隊到場，救護車送萬芳醫院。</li>
+</ul>
+<p><strong>還要確認</strong></p>
+<ul class="tasks">
+<li class="task"><label><input type="checkbox" data-k="c6"><span>記下處理的分局、派出所、承辦員警和案號。</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c7"><span>報案民眾、其他目擊者的姓名與電話：他們是重要證人，可請警方協助聯繫。</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c8"><span>現場附近有沒有監視器，盡快請警方或臺北市水利工程處調取保存。</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c9"><span>對方孩子的出生日期、父母的姓名與聯絡方式。</span></label></li>
+</ul>
+<p><strong>2. 可能的賠償與理賠來源</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>來源</th>
+<th>什麼情況可以領</th>
+<th>怎麼申請</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>對方孩子與父母</td>
+<td>孩子有過失就要賠。13、14 歲已有識別能力，依民法要和父母連帶賠償；父母須證明已盡監督責任，才可能免責</td>
+<td>調解或民事求償，2 年內</td>
+</tr>
+<tr>
+<td>對方家庭的責任險</td>
+<td>家長若有個人或家庭責任險、住宅險附加責任險，可能理賠</td>
+<td>調解時請對方查保單</td>
+</tr>
+<tr>
+<td>岳父自己的保險</td>
+<td>壽險、意外險、信用卡或團體保險</td>
+<td>各保險公司，多為 2 年內</td>
+</tr>
+<tr>
+<td>國家賠償</td>
+<td>只有自行車道本身有缺失（如視線死角、路面破損、缺警示）並造成事故時才可能成立</td>
+<td>書面向臺北市政府工務局水利工程處請求，2 年內</td>
+</tr>
+<tr>
+<td>強制險、YouBike 保險</td>
+<td>不適用：雙方都騎自己的腳踏車</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>3. 刑事程序與「刑事附帶民事」</strong></p>
+<p>檢察官建議的「刑事附帶民事」好處是<strong>不用繳民事裁判費</strong>，也能直接用刑事案件的調查證據。但有一個前提：案件必須以<strong>刑事訴訟</strong>在法院審理。對方是未成年人，能不能走這條路要看年齡和案件去向。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>對方事故當時的年齡</th>
+<th>刑事會怎麼走</th>
+<th>能否刑事附帶民事</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>未滿 14 歲</td>
+<td>依刑法不處罰，移由少年法庭當保護事件處理</td>
+<td>不行，要另外調解或提民事訴訟</td>
+</tr>
+<tr>
+<td>14 到 17 歲</td>
+<td>原則上也由少年法庭當保護事件處理；少年法庭裁定移送檢察官並起訴時，才變成刑事案件</td>
+<td>只有被起訴、進入刑事審理後才可以</td>
+</tr>
+<tr>
+<td>18 歲以上</td>
+<td>檢察官偵查後起訴，一般刑事審理</td>
+<td>可以，起訴後到二審辯論終結前提出</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>接下來先做的事</strong></p>
+<ul class="tasks">
+<li class="task"><label><input type="checkbox" data-k="c10"><span>向承辦檢察官或書記官確認：案件的被告是誰、會移少年法庭還是由檢察官起訴，並記下案號。</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c11"><span>若確定是少年保護事件：直接向區公所調解委員會聲請調解，或向法院提民事訴訟，被告列孩子和父母。少年法庭開庭時，家屬可以請律師陪同到庭陳述意見。</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c12"><span>若有人被起訴：收到起訴書後，向法院查分案案號，遞「刑事附帶民事起訴狀」。</span></label></li>
+</ul>
+<p><strong>時效不會等刑事</strong>：民事求償期限是知道損害和賠償義務人起 2 年，與刑事何時起訴無關，別等刑事結果才開始。</p>
+<p><strong>對方未滿 14 歲，證據怎麼保住</strong>：不走刑事附帶民事，證據也不會斷。</p>
+<ul>
+<li>相驗、警方調查的資料都留在地檢署和少年法庭的卷宗裡，提民事訴訟時可以聲請法院調閱。</li>
+<li>家屬在少年保護事件中可以委任律師當代理人，律師能聲請閱覽卷證。</li>
+<li>擔心監視器畫面、目擊者聯絡方式等證據流失，可向法院聲請「證據保全」，不必等起訴。</li>
+<li>自己也先保存：現場照片、事故腳踏車、醫療紀錄、目擊者名字和電話。</li>
+</ul>
+<p><strong>4. 求償流程</strong></p>
+<ol>
+<li>事故 7 天後向臺北市政府警察局交通警察大隊或處理的分局申請現場圖、照片。本案警方不開初判表，責任要靠鑑定、監視器和證人釐清。河濱車道的監視器可向臺北市水利工程處詢問，畫面保存期限有限，要盡快。</li>
+<li>行車事故鑑定不會因為相驗、解剖而自動進行。案件已在地檢署或少年法庭手上時，家屬不能自己申請，要以書狀請檢察官或少年法庭「囑託」臺北市車輛行車事故鑑定會鑑定；河濱車道事故是否受理，以鑑定會認定為準。司法機關囑託的鑑定，規費由囑託機關負擔，家屬不必自付 3,000 元；但要追蹤檢察官或少年法庭是否真的囑託。</li>
+<li>向對方住所地或事故地（臺北市中正區）的區公所調解委員會聲請調解，免費。對方未成年，必須由<strong>父母以法定代理人身分</strong>出面簽調解書。</li>
+<li>可請求的項目：殯葬費（憑收據）、受岳父扶養者的扶養費、配偶及子女的精神慰撫金。</li>
+<li>調解不成，2 年內提民事訴訟，被告列孩子和他的父母。</li>
+<li>對方提出和解或慰問金時，<strong>先別簽任何「放棄追究」的文件</strong>，先問律師或法律扶助基金會。</li>
+</ol>
+<p><strong>要不要請律師</strong>：不強制。檢察官代表國家查明事實，少年法庭著重孩子的輔導，兩者都不會替家屬要求賠償；賠償要家屬自己主張。費用與律師能做的事，見「找誰辦」一節。</p>
+<h2 id="s5">第五步：勞保、國保與商業保險</h2>
+<p>先查岳父退休時，勞保老年給付是「一次領」還是「按月領年金」，這決定了家屬還能不能領錢。</p>
+<p><strong>若岳父生前按月領勞保老年年金</strong>，家屬可以二選一：</p>
+<ul>
+<li><strong>老年差額金</strong>（一次領）：原本一次請領可拿的金額，扣掉已經領過的年金，剩下的差額。限 2009 年勞保年金上路前就有年資的人。</li>
+<li><strong>遺屬年金</strong>（按月領）：原年金的一半，每月最低 3,000 元。配偶、子女要符合年齡、收入等條件才能請。</li>
+<li>領取順序由法律規定：配偶及子女優先，其次父母、祖父母。過去約六成五的家屬選差額金。</li>
+<li>請在過世後 30 天內通知勞保局，避免年金溢領被追回；申請期限為 10 年。不確定怎麼選，打勞保局電話 (02) 2396-1266 試算。</li>
+</ul>
+<p><strong>若岳父當年已一次領完</strong>，勞保就沒有後續給付。</p>
+<p><strong>國民年金</strong>：若岳父在領國保老年年金，遺屬可申請遺屬年金（原領金額的一半）。國保喪葬給付只限 65 歲前投保中過世，通常不適用。</p>
+<p><strong>商業保險</strong>：找出家中保單，或等壽險公會的查詢結果。每張保單分別向保險公司申請，期限多為 2 年。意外險、旅平險在車禍身故時常有理賠，別漏掉。</p>
+<h2 id="s6">第六步：3 個月內查清財產與債務，決定怎麼繼承</h2>
+<p>繼承人是<strong>岳母（配偶）和岳父的子女</strong>，平均分配。3 個月內要先把財產和債務查清楚，再決定要不要繼承。</p>
+<p><strong>怎麼查</strong></p>
+<ul>
+<li>財產：向國稅局申請「遺產稅財產參考清單」和「金融遺產查詢」（存款、股票、保險）；向地政事務所申請「全國地籍總歸戶」查房地。</li>
+<li>債務：向財團法人金融聯合徵信中心申請岳父的信用報告，查貸款、卡債；也留意家中帳單、借據。</li>
+</ul>
+<p><strong>查完後三選一</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>狀況</th>
+<th>建議做法</th>
+<th>怎麼辦</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>財產明顯大於債務</td>
+<td>正常繼承，什麼都不用向法院辦</td>
+<td>法律已規定繼承人只在遺產範圍內還債</td>
+</tr>
+<tr>
+<td>不確定有沒有隱藏債務</td>
+<td>陳報遺產清冊</td>
+<td>3 個月內向法院陳報，一位繼承人陳報即視為全體已陳報</td>
+</tr>
+<tr>
+<td>債務大於財產</td>
+<td>拋棄繼承</td>
+<td>每位要拋棄的人各自書面向法院聲請，並通知下一順位繼承人</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>注意</strong></p>
+<ul>
+<li>拋棄繼承是全拿或全不拿，不能只拿房子不還債。</li>
+<li>子女拋棄後，繼承權會往下輪到孫子女，他們也要一起辦，否則債務會落到孫輩身上。</li>
+<li>勞保差額金、指定受益人的壽險都<strong>不是遺產</strong>，拋棄繼承也照領。</li>
+<li>決定前，不要私自提領或處分岳父的財產，以免喪失只在遺產範圍內還債的保護，也避免家人之間起爭議。</li>
+</ul>
+<h2 id="s7">第七步：6 個月內申報遺產稅</h2>
+<p><strong>就算不用繳稅也一定要申報</strong>，因為要拿到國稅局的「免稅證明書」或「繳清證明書」，銀行才會解凍存款、地政事務所才會辦過戶。2026 年過世者適用的主要金額如下。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>項目</th>
+<th>金額</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>免稅額</td>
+<td>1,333 萬元</td>
+</tr>
+<tr>
+<td>配偶扣除額</td>
+<td>553 萬元</td>
+</tr>
+<tr>
+<td>子女扣除額</td>
+<td>每人 56 萬元</td>
+</tr>
+<tr>
+<td>父母扣除額（岳父的父母若健在）</td>
+<td>每人 138 萬元</td>
+</tr>
+<tr>
+<td>喪葬費扣除額（定額，免單據）</td>
+<td>138 萬元</td>
+</tr>
+<tr>
+<td>稅率</td>
+<td>遺產淨額 5,621 萬元以下 10%，以上分段 15%、20%</td>
+</tr>
+</tbody>
+</table></div>
+<p>舉例：岳母加 2 名子女，扣除合計約 1,333 + 553 + 112 + 138 = 2,136 萬元。遺產總額低於這個數字就不必繳稅，只要申報取得免稅證明。</p>
+<p><strong>怎麼申報</strong>：向岳父戶籍地的國稅局（新北市屬財政部北區國稅局）申報，可臨櫃、郵寄或用自然人憑證線上申報；國稅局櫃檯可協助填寫。房地以公告現值計算，不是市價。岳母另可主張「剩餘財產差額分配請求權」再減稅，財產較多時值得請專業人士評估。</p>
+<h2 id="s8">第八步：繼承過戶</h2>
+<p>拿到遺產稅免稅或繳清證明書後，才能把財產轉到繼承人名下。家人先談好「誰拿什麼」，寫成<strong>遺產分割協議書</strong>，全體繼承人簽名並蓋印鑑章。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>財產</th>
+<th>去哪裡辦</th>
+<th>期限與重點</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>房屋、土地</td>
+<td>不動產所在地的地政事務所（先到稅捐處查欠稅）</td>
+<td>6 個月內；逾期每個月罰登記費 1 倍，最高 20 倍。1 年未辦會被列冊管理</td>
+</tr>
+<tr>
+<td>銀行、郵局存款</td>
+<td>各家銀行</td>
+<td>銀行得知過世即凍結帳戶；憑稅單證明、除戶及全體繼承人謄本、印鑑證明辦理</td>
+</tr>
+<tr>
+<td>股票</td>
+<td>往來券商</td>
+<td>文件與銀行類似，各家略有不同，先打電話問</td>
+</tr>
+<tr>
+<td>汽機車</td>
+<td>監理站</td>
+<td>先繳清欠稅罰單</td>
+</tr>
+<tr>
+<td>水、電、瓦斯、電信</td>
+<td>各公司服務處</td>
+<td>改名或停用即可</td>
+</tr>
+</tbody>
+</table></div>
+<p>辦房地前可先到地政事務所服務台，承辦人員會說明要準備的文件和填寫方式。</p>
+<h2 id="s9">自己辦，還是找代書、律師？</h2>
+<p><strong>建議分開看</strong>：戶政、喪葬、保險這些家屬自己辦就好；遺產稅和房地過戶視財產多寡決定；車禍賠償談判則建議至少先做一次法律諮詢。一般常說的「代書」，正式名稱是<strong>地政士</strong>，需國家考試及格。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>誰來辦</th>
+<th>適合的情況</th>
+<th>大約費用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>家屬自己辦</td>
+<td>財產單純（一間房、幾個帳戶）、家人意見一致、有人有時間跑機關</td>
+<td>只有規費</td>
+</tr>
+<tr>
+<td>地政士（代書）</td>
+<td>有房地要過戶、多筆不動產、家人沒時間；可一併代辦遺產稅申報、存款繼承、拋棄繼承</td>
+<td>繼承登記行情約 1.6 萬元起（一筆土地加一筆建物），每多一筆另加</td>
+</tr>
+<tr>
+<td>律師</td>
+<td>車禍賠償談不攏要調解或訴訟、家人對分遺產有爭議、懷疑有大筆債務</td>
+<td>依案件報價，通常較高</td>
+</tr>
+<tr>
+<td>會計師、記帳士</td>
+<td>遺產金額大，需要節稅規劃</td>
+<td>依案件報價</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>省錢的第一步</strong>：先用免費資源——國稅局、地政事務所的櫃檯諮詢，各區公所的免費法律諮詢，或法律扶助基金會（專線 412-8518）。</p>
+<p><strong>找代書要注意</strong>：確認是合格地政士，先問清楚報價包含哪些項目；涉及借錢、抵押的提議一律拒絕。</p>
+<h3>本案請律師：費用與用途</h3>
+<p>律師費要自己負擔，勝訴也很難向對方請求；起訴時繳的裁判費，則通常由敗訴方負擔。律師可以分階段委任，不必一次全包。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>委任範圍</th>
+<th>大約費用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>諮詢：評估案情與求償金額</td>
+<td>每小時 2,000–8,000 元</td>
+</tr>
+<tr>
+<td>陪同調解</td>
+<td>每小時 3,000–8,000 元</td>
+</tr>
+<tr>
+<td>少年法庭代理（閱卷、陪同陳述意見）</td>
+<td>依次數或包案報價</td>
+</tr>
+<tr>
+<td>民事訴訟一審</td>
+<td>約 4–8 萬元；上訴每一審級另計</td>
+</tr>
+</tbody>
+</table></div>
+<p>行情參考 <a target="_blank" rel="noopener" href="https://www.pro360.com.tw/price/car_accident_lawyer">PRO360 車禍律師收費</a>，臺北可能偏高。常見做法是先諮詢、再陪同調解，調解不成才委任一審，合計約 5–10 萬元。</p>
+<p><strong>律師在本案能做的事</strong></p>
+<ul>
+<li>聲請閱覽少年法庭卷宗，取得筆錄、監視器畫面與鑑定結果，作為求償依據。</li>
+<li>撰寫書狀，請法庭囑託行車事故鑑定，或聲請保全監視器畫面。</li>
+<li>計算扶養費與每位家屬的精神慰撫金，避免調解時開價過低。</li>
+<li>回應對方「岳父也有過失」的主張：一旦被認定有部分過失，賠償會按比例減少。</li>
+<li>回應父母「已盡監督責任」的抗辯：孩子通常沒有財產，實際賠償多半來自父母。</li>
+<li>代為與對方家長聯絡，並審閱和解書，避免簽下「放棄其他請求」等條款。</li>
+</ul>
+<p><strong>何時找、怎麼找</strong></p>
+<ul>
+<li>少年法庭進度或對方家長態度明朗後，先付一次諮詢費請律師評估。</li>
+<li>符合收入條件者，可申請法律扶助基金會補助律師費（412-8518）。</li>
+<li>拒絕「免預付、勝訴抽三成」的招攬：曾有無律師資格者以此專找車禍被害人，已遭起訴（<a target="_blank" rel="noopener" href="https://udn.com/news/story/7321/9588038">聯合新聞網</a>）。委任前，先到全國律師聯合會網站確認律師身分。</li>
+</ul>
+<h2 id="s10">各項申請的準備文件</h2>
+<p>先一次備齊<strong>共用文件</strong>，之後每項申請只要補上專屬文件。各機關細節可能略有不同，出門前先打電話確認。</p>
+<p><strong>共用文件（建議多準備幾份）</strong></p>
+<ul class="tasks">
+<li class="task"><label><input type="checkbox" data-k="c13"><span>相驗屍體證明書正本 10–15 份</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c14"><span>岳父除戶謄本（記事欄勿省略）5–10 份</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c15"><span>每位繼承人的現戶謄本、身分證、印章</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c16"><span>每位繼承人的印鑑證明（戶政事務所申請，繼承、過戶時用）</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c17"><span>申請人存摺封面影本</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c18"><span>警方事故資料：現場圖、照片，以及承辦單位與案號</span></label></li>
+</ul>
+<p><strong>新北市市民意外事故致死救助（區公所，6 個月內）</strong></p>
+<ul class="tasks">
+<li class="task"><label><input type="checkbox" data-k="c19"><span>市民意外救助申請表（區公所索取）</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c20"><span>相驗屍體證明書</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c21"><span>事故證明：本案沒有初判表，改附警方現場圖、當事人登記聯單或地檢署文件，先問區公所接受哪些</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c22"><span>岳父除戶謄本、具領人一個月內全戶謄本（可請公所代查）</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c23"><span>共同委任及切結書、領款收據</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c24"><span>具領人存摺封面影本</span></label></li>
+</ul>
+<p><strong>子女的勞保家屬死亡給付（戶政事務所或勞保局網站，5 年內）</strong></p>
+<ul class="tasks">
+<li class="task"><label><input type="checkbox" data-k="c25"><span>有勞保那位子女的存摺（本人到戶政事務所最方便）</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c26"><span>本人無法到場：委託書 + 雙方身分證正本 + 該子女存摺資料</span></label></li>
+</ul>
+<p><strong>勞保老年差額金或遺屬年金（勞保局，限岳父有領年金）</strong></p>
+<ul class="tasks">
+<li class="task"><label><input type="checkbox" data-k="c27"><span>勞保局申請書（擇一勾選差額金或遺屬年金）</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c28"><span>相驗屍體證明書、除戶謄本</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c29"><span>申請人與岳父關係的戶籍謄本</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c30"><span>申請人存摺封面影本</span></label></li>
+</ul>
+<p><strong>壽險、意外險理賠（各保險公司）</strong></p>
+<ul class="tasks">
+<li class="task"><label><input type="checkbox" data-k="c31"><span>理賠申請書（向保險公司索取）</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c32"><span>保單或保單號碼</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c33"><span>相驗屍體證明書、除戶謄本</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c34"><span>事故證明（意外險通常需要）</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c35"><span>受益人身分證、存摺；法定繼承人受領時另附繼承系統表</span></label></li>
+</ul>
+<p><strong>向對方家長調解（區公所調解委員會）</strong></p>
+<ul class="tasks">
+<li class="task"><label><input type="checkbox" data-k="c36"><span>調解聲請書（調解委員會可代填）</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c37"><span>對方孩子與父母的姓名、地址（可向警方問事故當事人資料）</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c38"><span>相驗屍體證明書、事故資料</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c39"><span>損失明細：殯葬費收據、受岳父扶養者的資料</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c40"><span>全體繼承人的委任書（推一人出席時）</span></label></li>
+</ul>
+<p><strong>拋棄繼承或陳報遺產清冊（地方法院，3 個月內）</strong></p>
+<ul class="tasks">
+<li class="task"><label><input type="checkbox" data-k="c41"><span>聲請狀或陳報狀（法院網站有範本）</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c42"><span>岳父除戶謄本、繼承系統表</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c43"><span>聲請人戶籍謄本、印鑑證明（拋棄繼承）</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c44"><span>遺產清冊（陳報時）</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c45"><span>裁判費 1,000 元</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c46"><span>拋棄繼承後：通知下一順位繼承人的存證信函副本</span></label></li>
+</ul>
+<p><strong>遺產稅申報（國稅局，6 個月內）</strong></p>
+<ul class="tasks">
+<li class="task"><label><input type="checkbox" data-k="c47"><span>遺產稅申報書</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c48"><span>相驗屍體證明書或除戶謄本、繼承系統表、全體繼承人戶籍謄本</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c49"><span>國稅局「遺產稅財產參考清單」及財產證明（存款餘額、房地謄本、股票）</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c50"><span>債務證明（如貸款餘額證明），可扣除</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c51"><span>法院准予拋棄繼承的公文（若有人拋棄）</span></label></li>
+</ul>
+<p><strong>房地繼承登記（地政事務所，6 個月內）</strong></p>
+<ul class="tasks">
+<li class="task"><label><input type="checkbox" data-k="c52"><span>登記申請書、登記清冊</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c53"><span>遺產稅免稅證明書或繳清證明書（先到稅捐處蓋無欠稅章）</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c54"><span>除戶謄本、繼承人現戶謄本、繼承系統表</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c55"><span>遺產分割協議書（全體繼承人簽名蓋印鑑章）+ 印鑑證明</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c56"><span>土地、建物所有權狀</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c57"><span>登記規費：申報地價及房屋現值的千分之一</span></label></li>
+</ul>
+<p><strong>銀行存款、股票繼承（各銀行、券商）</strong></p>
+<ul class="tasks">
+<li class="task"><label><input type="checkbox" data-k="c58"><span>遺產稅免稅證明書或繳清證明書</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c59"><span>除戶謄本、全體繼承人戶籍謄本、繼承系統表</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c60"><span>遺產分割協議書或全體繼承人同意書 + 印鑑證明</span></label></li>
+<li class="task"><label><input type="checkbox" data-k="c61"><span>岳父存摺、印章（有的話）</span></label></li>
+</ul>
+<h2 id="s11">家屬分工表與常用窗口</h2>
+<p>建議指定<strong>一位總聯絡人</strong>統一保管證明文件、收據和各機關案號，其他人分頭辦。負責人欄位請家人自行填上。</p>
+<div class="tw"><table class="assign"><thead><tr><th>工作</th><th>負責人</th><th>完成</th></tr></thead><tbody><tr><td>相驗、領證明書（10–15 份）、記下地檢署案號</td><td><input class="who" type="text" placeholder="填名字" data-k="w0"></td><td class="c"><input type="checkbox" data-k="d0" aria-label="完成"></td></tr><tr><td>死亡登記、除戶謄本、壽險公會查詢</td><td><input class="who" type="text" placeholder="填名字" data-k="w1"></td><td class="c"><input type="checkbox" data-k="d1" aria-label="完成"></td></tr><tr><td>喪禮、市民意外致死救助 15 萬元、勞保家屬死亡給付、收據保管</td><td><input class="who" type="text" placeholder="填名字" data-k="w2"></td><td class="c"><input type="checkbox" data-k="d2" aria-label="完成"></td></tr><tr><td>警方事故資料、確認雙方保險、與對方家長調解</td><td><input class="who" type="text" placeholder="填名字" data-k="w3"></td><td class="c"><input type="checkbox" data-k="d3" aria-label="完成"></td></tr><tr><td>勞保局通報、差額金或遺屬年金選擇</td><td><input class="who" type="text" placeholder="填名字" data-k="w4"></td><td class="c"><input type="checkbox" data-k="d4" aria-label="完成"></td></tr><tr><td>查財產與負債、決定是否拋棄繼承</td><td><input class="who" type="text" placeholder="填名字" data-k="w5"></td><td class="c"><input type="checkbox" data-k="d5" aria-label="完成"></td></tr><tr><td>遺產稅申報、房地與存款過戶</td><td><input class="who" type="text" placeholder="填名字" data-k="w6"></td><td class="c"><input type="checkbox" data-k="d6" aria-label="完成"></td></tr></tbody></table></div>
+<p><strong>常用窗口</strong></p>
+<ul>
+<li>勞動部勞工保險局：<a href="tel:0223961266">(02) 2396-1266</a></li>
+<li>臺北市車輛行車事故鑑定會（臺北市政府交通局）：本案由檢察官或少年法庭囑託</li>
+<li>臺北市政府警察局交通警察大隊或處理的分局：申請事故現場圖、照片</li>
+<li>財政部北區國稅局：<a href="tel:0800000321">0800-000-321</a>（國稅免付費服務專線）</li>
+<li>法律扶助基金會：412-8518</li>
+<li>岳父戶籍地的區公所、戶政事務所、地政事務所：請查新北市政府網站</li>
+</ul>
+<h2 id="s12">參考資料</h2>
+<p>本指南整理自公開資料，金額與規定以各機關最新公告為準；涉及賠償金額或家人爭議時，請另行諮詢專業人士。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://welfare.ntpc.gov.tw/viewService/show/1008037?fromOpa=1">新北市政府：市民意外事故致死救助</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ris.gov.tw/documents/html/2/3/1/386.html">內政部戶政司：死亡登記</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.mol.gov.tw/1607/1632/1633/80994/">勞動部：死亡登記時一併申請勞保家屬死亡給付</a></li>
+<li><a target="_blank" rel="noopener" href="https://ctee.com.tw/news/insurance/481619.html">工商時報：勞保家屬死亡給付與擇領</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.moneyweekly.com.tw/_Article?AID=72806">好險網：勞保老年差額金與遺屬年金</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.legis-pedia.com/QA/question/6259">法律百科：刑事附帶民事與少年案件</a></li>
+<li><a target="_blank" rel="noopener" href="https://judgment.judicial.gov.tw/FILES/TCDV/114,補,498,20250225,1.pdf">臺中地院裁定：少年保護事件不得提起附帶民事訴訟</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.twba.org.tw/upload/content/20250911/ac59a420fe9d42c19f131078e465c1db/ac59a420fe9d42c19f131078e465c1db.pdf">全國律師聯合會：少年事件被害人程序參與</a></li>
+<li><a target="_blank" rel="noopener" href="https://laws.gov.taipei/law/LawSearch/LawExport/FL040841?type=0">臺北市車輛行車事故鑑定及覆議規費收費標準</a></li>
+<li><a target="_blank" rel="noopener" href="https://uanalyze.com.tw/articles/8092840298">優分析：115 年遺產稅免稅額與扣除額</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-saving-manual/national/estate-and-gift-tax/QbA7Lqp">財政部稅務入口網：遺產稅計算</a></li>
+<li><a target="_blank" rel="noopener" href="https://news.cnyes.com/news/id/4946497">鉅亨網：親人過世 8 件事處理期限</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.mso.ntpc.gov.tw/userfiles/2550500/files/115%E5%B9%B4%E5%BA%A6%E6%96%B0%E5%8C%97%E5%B8%82%E8%81%AF%E5%90%88%E5%A5%A0%E7%A5%AD%E5%AF%A6%E6%96%BD%E8%A8%88%E7%95%AB.pdf">新北市 115 年度聯合奠祭實施計畫</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.pro360.com.tw/price/house_inheritance">PRO360：房屋繼承代書費用行情</a></li>
+</ul>
+</main>
+<p class="note">本指南整理自公開資料，僅供參考，不構成法律意見。金額與規定以各機關最新公告為準；涉及賠償、訴訟或家人意見不一致時，請諮詢律師或法律扶助基金會。</p>
+</div>
+<script>
+(function(){
+  var KEY='afterlife-guide-v1', s={};
+  try{ s=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ s={}; }
+  var els=document.querySelectorAll('[data-k]');
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} }
+  els.forEach(function(el){
+    var k=el.getAttribute('data-k');
+    if(el.type==='checkbox'){ el.checked=!!s[k]; el.addEventListener('change',function(){ s[k]=el.checked; save(); }); }
+    else { if(s[k]) el.value=s[k]; el.addEventListener('input',function(){ s[k]=el.value; save(); }); }
+  });
+  document.getElementById('reset').addEventListener('click',function(){
+    if(!confirm('確定清除所有勾選與負責人？')) return;
+    s={}; save(); els.forEach(function(el){ if(el.type==='checkbox') el.checked=false; else el.value=''; });
+  });
+})();
+</script>
+</body>
+</html>
