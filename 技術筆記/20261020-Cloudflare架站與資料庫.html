@@ -164,13 +164,13 @@ canvas.mg{display:block;width:100%;max-width:560px;aspect-ratio:1/1;height:auto}
   <p class="lede">這份指南說明如何把放在 GitHub 的程式部署到 Cloudflare Workers，並用 D1（Cloudflare 提供的 SQLite 資料庫）儲存資料。設定完成後，每次 push 到 GitHub，網站就會自動更新。</p>
 
   <section class="trailer" aria-labelledby="tr-h">
-    <h2 id="tr-h" class="tr-h"><span class="no">▶</span>先看動畫：一分鐘看懂整份指南</h2>
+    <h2 id="tr-h" class="tr-h"><span class="no">▶</span>先看動畫：80 秒看懂整份指南</h2>
     <div class="player" data-player>
       <div class="stage">
         <canvas class="mg" data-canvas width="1000" height="1000" role="img" aria-label="導覽動畫：GitHub、Workers、D1 各自的分工，push 後自動部署的流程，使用者如何讀到資料，七個建置步驟，資料表需要手動套用 migration，免費方案的上限，D1 一次只處理一個查詢的排隊問題，以及快取的做法。"></canvas>
         <button type="button" class="pv-big" data-big>
           <span class="pv-big-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span>
-          <span class="pv-big-text" data-big-text>播放（約 1 分鐘，有配樂）</span>
+          <span class="pv-big-text" data-big-text>播放（約 80 秒，有配樂）</span>
         </button>
       </div>
       <div class="pv-bar">
@@ -179,7 +179,7 @@ canvas.mg{display:block;width:100%;max-width:560px;aspect-ratio:1/1;height:auto}
           <svg data-icon-pause viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" hidden><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/></svg>
         </button>
         <div class="pv-segs" data-segs role="group" aria-label="跳到第幾段"></div>
-        <span class="pv-time" data-time>0:00 / 0:59</span>
+        <span class="pv-time" data-time>0:00 / 1:20</span>
         <button type="button" class="pv-btn pv-sound" data-sound aria-pressed="true" aria-label="關閉配樂">
           <svg data-icon-on viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4zM16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <svg data-icon-off viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" hidden><path d="M4 9h4l5-4v14l-5-4H4zM16.5 9.5l5 5M21.5 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -616,16 +616,16 @@ document.querySelectorAll('.copy').forEach(function(btn){
 
   /* ---------- scenes (logical canvas 1000 x 1000) ---------- */
   const SCENES = [
-    { d: 5, say: '寫程式，push，上線。', draw: s1 },
-    { d: 6, say: '三個服務各管一件事：GitHub 存程式碼，Workers 執行程式，D1 存資料。', draw: s2 },
-    { d: 7, say: 'push 之後，Workers Builds 自動建置並部署 Worker。', draw: s3 },
-    { d: 6, say: '使用者透過 HTTPS 呼叫 Worker，Worker 用 binding 讀寫 D1。', draw: s4 },
-    { d: 5, say: '建置只要 7 步，第 6 步是接上 GitHub 自動部署。', draw: s5 },
-    { d: 6, say: '最常忘記的事：程式碼會自動更新，資料表要自己 apply。', draw: s6 },
-    { d: 7, say: '免費方案上限：資料庫 500 MB、每次請求 50 個查詢、還原 7 天。', draw: s7 },
-    { d: 7, say: 'D1 一次只處理一個查詢，太多會排隊甚至回傳錯誤；拆成多個資料庫可以分散。', draw: s8 },
-    { d: 6, say: '快取：第一次查 D1 並存起來，之後直接從快取拿。', draw: s9 },
-    { d: 4, say: '往下看每一步的指令和細節。', draw: s10 }
+    { d: 6.5, say: '寫程式，push，上線。', draw: s1 },
+    { d: 7, say: '三個服務各管一件事：GitHub 存程式碼，Workers 執行程式，D1 存資料。', draw: s2 },
+    { d: 9, say: 'push 之後，Workers Builds 自動建置並部署 Worker。', draw: s3 },
+    { d: 7.5, say: '使用者透過 HTTPS 呼叫 Worker，Worker 用 binding 讀寫 D1。', draw: s4 },
+    { d: 9, say: '建置只要 7 步，第 6 步是接上 GitHub 自動部署。', draw: s5 },
+    { d: 8, say: '最常忘記的事：程式碼會自動更新，資料表要自己 apply。', draw: s6 },
+    { d: 9.5, say: '免費方案上限：資料庫 500 MB、每次請求 50 個查詢、還原 7 天。', draw: s7 },
+    { d: 9, say: 'D1 一次只處理一個查詢，太多會排隊甚至回傳錯誤；拆成多個資料庫可以分散。', draw: s8 },
+    { d: 9, say: '快取：第一次查 D1 並存起來，之後直接從快取拿。', draw: s9 },
+    { d: 5.5, say: '往下看每一步的指令和細節。', draw: s10 }
   ];
   const STARTS = []; let acc = 0; SCENES.forEach((s) => { STARTS.push(acc); acc += s.d; });
   const TOTAL = acc;
@@ -641,7 +641,7 @@ document.querySelectorAll('.copy').forEach(function(btn){
     });
     g.fillStyle = ACC; g.fillRect(80, 740, 840 * eo(p(t, 2.1, 2.7)), 8);
     T('GitHub × Cloudflare Workers × D1', 80, 820, { size: 30, weight: 500, font: 'mono', color: MUTED, alpha: p(t, 2.5, 3) });
-    T('一分鐘看懂整份指南', 80, 890, { size: 40, alpha: p(t, 2.9, 3.4) });
+    T('80 秒看懂整份指南', 80, 890, { size: 40, alpha: p(t, 2.9, 3.4) });
   }
 
   function s2(t) {
@@ -711,8 +711,8 @@ document.querySelectorAll('.copy').forEach(function(btn){
     cyl(500, 790, 96, 100, { a: p(t, 0.7, 1), label: 'D1' });
     T('HTTPS', 610, 400, { size: 22, weight: 500, font: 'mono', color: LINK, alpha: p(t, 1, 1.4) });
     T('binding · env.DB', 560, 660, { size: 22, weight: 500, font: 'mono', color: MUTED, alpha: p(t, 1.6, 2) });
-    for (let k = 0; k < 24; k++) {
-      const s0 = 0.9 + k * 0.18, tt = t - s0; if (tt < 0 || tt > 1.5 || s0 > 5.2) continue;
+    for (let k = 0; k < 40; k++) {
+      const s0 = 0.9 + k * 0.18, tt = t - s0; if (tt < 0 || tt > 1.5 || s0 > 6.2) continue;
       const x0 = ux[(k * 3) % 5], y0 = uy + 40;
       if (tt < 0.5) { const e = eo(tt / 0.5); dot(lerp(x0, 500, e), lerp(y0, 458, e), LINK, 8); }
       else if (tt < 0.8) { const e = (tt - 0.5) / 0.3; dot(500 - 10, lerp(582, 735, e), MUTED, 6); }
@@ -726,21 +726,21 @@ document.querySelectorAll('.copy').forEach(function(btn){
     grid(t, 0.5);
     kicker('02 · 建置步驟', t);
     const steps = ['建立專案', '建立 D1 並綁定', '用 migration 建表', '在程式中查詢', '本機測試', '接上 GitHub 自動部署', '設定機密資訊'];
-    const n = t < 0.4 ? 0 : Math.min(7, 1 + Math.floor((t - 0.4) / 0.48));
+    const n = t < 0.4 ? 0 : Math.min(7, 1 + Math.floor((t - 0.4) / 0.6));
     T('建置只要', 80, 210, { size: 40, weight: 500, color: MUTED, alpha: p(t, 0.2, 0.5) });
     if (n > 0) {
-      const k = p(t, 0.4 + (n - 1) * 0.48, 0.4 + (n - 1) * 0.48 + 0.2);
+      const k = p(t, 0.4 + (n - 1) * 0.6, 0.4 + (n - 1) * 0.6 + 0.2);
       g.save(); g.translate(70, 560); const s = lerp(1.25, 1, eo(k)); g.scale(s, s);
       T(String(n), 0, 0, { size: 380, weight: 400, font: 'serif', color: ACC }); g.restore();
-      T('步', 300, 560, { size: 60, alpha: p(t, 3.8, 4.1) });
+      T('步', 300, 560, { size: 60, alpha: p(t, 4.1, 4.4) });
     }
     steps.forEach((s, i) => {
       if (n <= i) return;
-      const k = p(t, 0.4 + i * 0.48, 0.65 + i * 0.48), y = 240 + i * 92, key = i === 5;
+      const k = p(t, 0.4 + i * 0.6, 0.65 + i * 0.6), y = 240 + i * 92, key = i === 5;
       T('0' + (i + 1), 430, y, { size: 24, weight: 500, font: 'mono', color: key ? ACC : MUTED, alpha: k });
       T(s, 480 + 20 * (1 - eo(k)), y, { size: key ? 36 : 32, weight: key ? 600 : 500, color: key ? ACC : (i === n - 1 ? INK : 'rgba(245,245,245,.72)'), alpha: k });
     });
-    T('第 6 步最常出問題 →', 80, 900, { size: 34, color: ACC, alpha: p(t, 4.1, 4.5) });
+    T('第 6 步最常出問題 →', 80, 900, { size: 34, color: ACC, alpha: p(t, 4.5, 4.9) });
   }
 
   function s6(t) {
@@ -782,7 +782,7 @@ document.querySelectorAll('.copy').forEach(function(btn){
       g.save(); g.globalAlpha = a; g.fillStyle = 'rgba(245,245,245,.18)'; g.fillRect(80, y0 + 146, 840 * eo(p(t, s + 0.1, s + 0.6)), 14);
       g.fillStyle = ACC; g.fillRect(80, y0 + 146, 840 * frac * eo(p(t, s + 0.6, s + 1.2)), 14); g.restore();
     });
-    T('長條全長＝付費方案上限，橘色＝免費方案', 80, 960, { size: 24, weight: 400, color: MUTED, alpha: p(t, 5.5, 6) });
+    T('長條全長＝付費方案上限，橘色＝免費方案', 80, 960, { size: 24, weight: 400, color: MUTED, alpha: p(t, 5, 5.5) });
   }
 
   function queueSim(t) {
@@ -920,7 +920,7 @@ document.querySelectorAll('.copy').forEach(function(btn){
     iPlay.toggleAttribute('hidden', playing); iPause.toggleAttribute('hidden', !playing);
     toggleBtn.setAttribute('aria-label', playing ? '暫停' : '播放');
     big.hidden = playing;
-    bigText.textContent = !started ? '播放（約 1 分鐘，有配樂）' : t >= TOTAL ? '重新播放' : '繼續播放';
+    bigText.textContent = !started ? '播放（約 80 秒，有配樂）' : t >= TOTAL ? '重新播放' : '繼續播放';
   }
   function frame(now) {
     if (!playing) return;
@@ -1032,7 +1032,7 @@ document.querySelectorAll('.copy').forEach(function(btn){
   window.addEventListener('resize', size);
 
   /* canvas text needs the web fonts loaded for exactly the characters it draws */
-  const sample = SCENES.map((s) => s.say).join('') + '寫程式上線一分鐘看懂整份指南三個服務各管一件事存放程式碼執行資料也能同時提供前端網頁從到你的電腦建置中完成了自動使用者怎麼拿不用連線字串必另外架伺服器步第最常出問題忘記結構新欄位時先再免費方案限容量每次請求查詢數還原付費長條全等於橘色處理太多就排隊滿回傳錯誤解法拆成分散負載快取讓網站更去已存入第一順便起來之後直接從靜態檔設期或登個人往下看指令和細節運作方式限制就是這樣＝，。：！→↓·';
+  const sample = SCENES.map((s) => s.say).join('') + '寫程式上線一分鐘看懂整份指南秒三個服務各管一件事存放程式碼執行資料也能同時提供前端網頁從到你的電腦建置中完成了自動使用者怎麼拿不用連線字串必另外架伺服器步第最常出問題忘記結構新欄位時先再免費方案限容量每次請求查詢數還原付費長條全等於橘色處理太多就排隊滿回傳錯誤解法拆成分散負載快取讓網站更去已存入第一順便起來之後直接從靜態檔設期或登個人往下看指令和細節運作方式限制就是這樣＝，。：！→↓·';
   const specs = ['600 40px "Noto Sans TC"', '500 40px "Noto Sans TC"', '400 40px "Noto Sans TC"', '400 40px "Noto Serif TC"', '600 40px "Geist"', '400 40px "Instrument Serif"', '500 40px "Geist Mono"'];
   size();
   if (document.fonts && document.fonts.load) Promise.all(specs.map((s) => document.fonts.load(s, sample).catch(() => {}))).then(draw);
