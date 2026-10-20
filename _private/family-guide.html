@@ -96,6 +96,512 @@ table.assign input[type=checkbox]{width:18px;height:18px;accent-color:var(--acce
   <p>資料整理至 2026 年 10 月 20 日。依處理順序排列，勾選清單會保存在這台裝置的瀏覽器中。</p>
   <div class="tools"><button type="button" onclick="window.print()">列印／存成 PDF</button><button type="button" id="reset">清除勾選</button></div>
 </header>
+<section class="mv" id="mv" aria-label="導覽影片">
+  <div class="mv-intro"><b>先看導覽影片</b><span id="mvLen">有配樂，可隨時暫停或靜音</span></div>
+  <div class="mv-frame poster" id="mvFrame">
+    <div class="mv-stage" id="mvStage" aria-hidden="true"></div>
+    <div class="mv-wipe" id="mvWipe"></div>
+    <button type="button" class="mv-big" id="mvBig" aria-label="播放導覽影片"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><span>播放導覽</span></button>
+  </div>
+  <div class="mv-bar">
+    <button type="button" class="mv-btn" id="mvPlay" aria-label="播放"><svg viewBox="0 0 24 24"><path id="mvPlayIcon" d="M8 5v14l11-7z"/></svg></button>
+    <div class="mv-track" id="mvTrack" role="slider" tabindex="0" aria-label="影片進度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="mv-fill" id="mvFill"></div></div>
+    <span class="mv-time" id="mvTime">0:00</span>
+    <button type="button" class="mv-btn" id="mvMute" aria-label="靜音"><svg viewBox="0 0 24 24"><path id="mvMuteIcon" d="M4 9v6h4l5 4V5L8 9H4zm12.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+  </div>
+  <div class="mv-chap" id="mvChap"></div>
+</section>
+<style>
+.mv{--mv-bad:#b3261e;--mv-bad-soft:#fbe7e5;margin:22px 0 6px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .mv{--mv-bad:#f28b82;--mv-bad-soft:#3b2422}}
+.mv-intro{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;max-width:640px;margin:0 auto 10px}
+.mv-intro b{font-size:17px}
+.mv-intro span{font-size:14px;color:var(--muted)}
+.mv-frame{position:relative;width:100%;max-width:640px;margin:0 auto;aspect-ratio:1/1;border-radius:14px;overflow:hidden;background:var(--paper);border:1px solid var(--line);cursor:pointer;-webkit-tap-highlight-color:transparent}
+@supports not (aspect-ratio:1/1){.mv-frame{height:0;padding-bottom:100%}}
+.mv-stage{position:absolute;left:0;top:0;width:640px;height:640px;transform-origin:0 0;font-size:22px;line-height:1.45;color:var(--ink);transition:opacity .3s}
+.mv-frame.poster .mv-stage{opacity:.32}
+.mv-big{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:8px;padding:14px 24px;border:0;border-radius:999px;background:var(--accent);color:var(--paper);font:inherit;font-size:17px;font-weight:700;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.mv-big svg{width:22px;height:22px;fill:currentColor}
+.mv-big[hidden]{display:none}
+.mv-wipe{position:absolute;top:-10%;bottom:-10%;left:0;width:45%;background:var(--accent);opacity:0;transform:translateX(-130%) skewX(-12deg);pointer-events:none}
+.mv-bar{display:flex;align-items:center;gap:10px;max-width:640px;margin:8px auto 0}
+.mv-btn{flex:none;width:40px;height:40px;padding:0;border-radius:50%;border:1px solid var(--line);background:var(--paper);display:grid;place-items:center;cursor:pointer}
+.mv-btn svg{width:20px;height:20px;fill:var(--ink)}
+.mv-track{position:relative;flex:1;height:30px;cursor:pointer;touch-action:none;outline-offset:2px}
+.mv-track::before{content:"";position:absolute;left:0;right:0;top:13px;height:4px;border-radius:2px;background:var(--line)}
+.mv-fill{position:absolute;left:0;top:13px;height:4px;width:0;border-radius:2px;background:var(--accent)}
+.mv-tick{position:absolute;top:10px;width:2px;height:10px;margin-left:-1px;background:var(--muted);opacity:.45;pointer-events:none}
+.mv-time{flex:none;min-width:78px;text-align:right;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.mv-chap{max-width:640px;margin:4px auto 0;min-height:1.5em;font-size:13.5px;color:var(--muted)}
+.mv .sc{position:absolute;left:0;top:0;width:640px;height:640px;visibility:hidden;opacity:0}
+.mv .sc>div{position:absolute}
+.mv .sc>svg{position:absolute;left:0;top:0;width:640px;height:640px;overflow:visible}
+.mv .mv-tag{left:40px;top:28px;padding:3px 14px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:18px;font-weight:700;line-height:1.45}
+.mv .mv-ttl{font-size:34px;font-weight:800;line-height:1.3}
+.mv .mv-cap{font-size:23px;line-height:1.55;padding-left:16px;border-left:4px solid var(--accent)}
+.mv .chip{display:flex;align-items:center;justify-content:center;text-align:center;padding:0 12px;border:2px solid var(--line);border-radius:12px;background:var(--paper);font-size:22px;line-height:1.3}
+.mv .chip.ac{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:700}
+.mv .chip.wn{border-color:var(--warn);background:var(--warn-soft);color:var(--warn);font-weight:700}
+.mv .chip.bd{border-color:var(--mv-bad);background:var(--mv-bad-soft);color:var(--mv-bad);font-weight:700}
+.mv .chip.mu{border-style:dashed;color:var(--muted)}
+.mv .chip.col{flex-direction:column}
+.mv .chip.col b{font-size:23px}
+.mv .chip.col span{font-size:21px;font-weight:400;color:var(--muted)}
+.mv .mut{font-size:21px;line-height:1.5;color:var(--muted)}
+.mv .hd{font-size:23px;font-weight:800}
+.mv .num{font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums}
+.mv .t0{font-size:46px;font-weight:800;text-align:center;letter-spacing:.04em}
+.mv .s0{font-size:26px;text-align:center;color:var(--muted)}
+.mv .lb0{font-size:23px;font-weight:800;text-align:center}
+.mv .lb0.w,.mv .tl.w b,.mv .tl.w span{color:var(--warn)}
+.mv .tl b{display:block;font-size:26px;line-height:1.3}
+.mv .tl span{display:block;font-size:22px;color:var(--muted)}
+.mv .cnt{text-align:right}
+.mv .cnt span{font-size:21px;color:var(--muted)}
+.mv .cnt div{font-size:24px;line-height:1.2}
+.mv .cnt b{font-size:46px}
+.mv .sheet{position:absolute;width:150px;height:200px;padding:18px 14px;border:2px solid var(--line);border-radius:8px;background:var(--paper);box-shadow:0 2px 8px rgba(0,0,0,.06);transform-origin:50% 100%}
+.mv .sheet b{display:block;margin-bottom:12px;font-size:21px;line-height:1.35;text-align:center}
+.mv .sheet i{display:block;height:6px;margin:12px 0;border-radius:3px;background:var(--line)}
+.mv .stamp{padding:8px 6px;border:3px solid var(--warn);border-radius:8px;background:var(--warn-soft);color:var(--warn);font-size:23px;font-weight:800;line-height:1.3;text-align:center}
+.mv .cnt2{font-size:24px}
+.mv .cnt2 b{font-size:58px;line-height:1.1}
+.mv .st{display:flex;gap:10px;align-items:flex-start;font-size:22px;line-height:1.45}
+.mv .st i{flex:none;display:grid;place-items:center;width:30px;height:30px;margin-top:1px;border-radius:50%;color:var(--paper);font-style:normal;font-size:18px;font-weight:800}
+.mv .st.ok i{background:var(--accent)}
+.mv .st.wt i{background:var(--warn)}
+.mv .rn{font-size:28px;font-weight:800;text-align:center;line-height:38px}
+.mv .rl{font-size:22px;line-height:32px;color:var(--muted)}
+.mv .big{font-size:24px;font-weight:800;color:var(--accent);line-height:1.2}
+.mv .big b{font-size:48px}
+.mv .big2{font-size:22px;font-weight:800;color:var(--accent);line-height:1.2}
+.mv .big2 b{font-size:42px}
+.mv .track{overflow:hidden;border-radius:9px;background:var(--accent-soft)}
+.mv .track div{width:0;height:100%;border-radius:9px;background:var(--accent)}
+.mv .eq{font-size:26px}
+.mv .eq b{color:var(--accent)}
+.mv .blk{display:flex;align-items:center;justify-content:center;border-radius:8px;background:var(--accent);color:var(--paper);font-size:22px;font-weight:800}
+.mv .zone{border:2px solid var(--line);border-radius:16px;background:var(--paper)}
+.mv .zone.ac{border-color:var(--accent);background:var(--accent-soft)}
+.mv .zh{font-size:23px;font-weight:800}
+.mv .zh.a{color:var(--accent)}
+.mv .zi{font-size:21px;line-height:1.4}
+.mv .nt{font-size:21px;font-weight:700;line-height:1.45;color:var(--mv-bad)}
+.mv .x{margin-right:6px;font-weight:800}
+.mv .circ{display:flex;align-items:center;justify-content:center;border:3px solid var(--accent);border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:22px;font-weight:800}
+.mv .nt2 b{display:block;font-size:23px}
+.mv .nt2 span{display:block;font-size:21px;color:var(--muted)}
+.mv .pill{display:flex;align-items:center;justify-content:center;border-radius:999px;background:var(--warn-soft);color:var(--warn);font-size:21px;font-weight:800;border:2px solid var(--warn)}
+.mv .pl{font-size:23px;font-weight:800;text-align:center}
+.mv .q{font-size:38px;font-weight:800;color:var(--warn);text-align:center;line-height:1}
+.mv .bar9{display:flex;overflow:hidden;border-radius:8px;background:var(--line)}
+.mv .seg{height:100%;width:0}
+.mv .lg{display:flex;align-items:center;gap:10px;font-size:22px}
+.mv .lg i{flex:none;width:18px;height:18px;border-radius:4px}
+.mv .lg b{margin-left:auto;font-variant-numeric:tabular-nums}
+.mv .cert{padding:14px 16px;border:2px solid var(--accent);border-radius:12px;background:var(--paper)}
+.mv .cert b{display:block;font-size:24px;color:var(--accent)}
+.mv .cert span{display:block;font-size:21px;line-height:1.45;color:var(--muted)}
+.mv .v11{font-size:21px;text-align:center;color:var(--muted)}
+.mv .v11.a{font-weight:800;color:var(--accent);font-size:23px}
+.mv .c11{font-size:22px;font-weight:700;text-align:center}
+.mv .it{display:flex;gap:8px;align-items:flex-start;font-size:21px;line-height:1.45}
+.mv .it i{flex:none;display:grid;place-items:center;width:26px;height:26px;margin-top:2px;border-radius:50%;background:var(--accent);color:var(--paper);font-style:normal;font-size:16px;font-weight:800}
+.mv .chip.pad{padding:8px 12px}
+.mv .ck{font-size:23px;line-height:40px}
+.mv .c12{font-size:26px;font-weight:800;text-align:right;color:var(--accent)}
+.mv .hub{display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--accent);color:var(--paper);font-size:24px;font-weight:800}
+.mv .endc{padding:22px 20px;border:2px solid var(--accent);border-radius:16px;background:var(--paper);text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.1)}
+.mv .endc b{display:block;font-size:30px;color:var(--accent)}
+.mv .endc span{display:block;margin-top:6px;font-size:21px;color:var(--muted)}
+@media print{.mv{display:none}}
+</style>
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id)};
+var frame=$('mvFrame'),stage=$('mvStage'),wipe=$('mvWipe'),big=$('mvBig'),btnPlay=$('mvPlay'),btnMute=$('mvMute'),track=$('mvTrack'),fillEl=$('mvFill'),timeEl=$('mvTime'),chapEl=$('mvChap');
+var NS='http://www.w3.org/2000/svg';
+var A='var(--accent)',WN='var(--warn)',WS='var(--warn-soft)',BD='var(--mv-bad)',INK='var(--ink)',MU='var(--muted)',LN='var(--line)',PA='var(--paper)';
+function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
+function P(t,a,b){return clamp((t-a)/(b-a),0,1)}
+function eo(x){return 1-Math.pow(1-x,3)}
+function eio(x){return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2}
+function back(x){var c1=1.70158,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)}
+function pop(p){return 0.6+0.4*back(p)}
+function E(p,cls,x,y,w,html,h){var e=document.createElement('div');if(cls)e.className=cls;e.style.left=x+'px';e.style.top=y+'px';if(w!=null)e.style.width=w+'px';if(h!=null)e.style.height=h+'px';if(html!=null)e.innerHTML=html;p.appendChild(e);return e}
+function S(p,tag,at){var e=document.createElementNS(NS,tag);for(var k in at)e.setAttribute(k,at[k]);p.appendChild(e);return e}
+function PD(pts){return 'M'+pts.map(function(q){return q[0]+' '+q[1]}).join('L')}
+function line(g,d,col,w){return S(g,'path',{d:d,fill:'none',stroke:col,'stroke-width':w,'stroke-linecap':'round','stroke-linejoin':'round',pathLength:1,'stroke-dasharray':'1 1','stroke-dashoffset':1})}
+function draw(e,p){e.setAttribute('stroke-dashoffset',(1-p).toFixed(4))}
+function show(e,p,dx,dy,sc){e.style.opacity=p.toFixed(3);var tr='';if(dx||dy)tr+='translate('+((1-p)*(dx||0)).toFixed(1)+'px,'+((1-p)*(dy||0)).toFixed(1)+'px)';if(sc!=null)tr+=' scale('+sc.toFixed(3)+')';e.style.transform=tr}
+function flash(lt,a,b){return lt>=a&&(lt>=b||Math.floor((lt-a)/0.18)%2===0)}
+function flow(g,pts,n,col,r,speed){
+  var seg=[],L=0,i;for(i=1;i<pts.length;i++){var d=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);seg.push(d);L+=d}
+  var cs=[];for(i=0;i<n;i++)cs.push(S(g,'circle',{r:r,fill:col,opacity:0}));
+  function at(u){var d=u*L;for(var j=0;j<seg.length;j++){if(d<=seg[j]||j===seg.length-1){var f=seg[j]?Math.min(1,d/seg[j]):0;return[pts[j][0]+(pts[j+1][0]-pts[j][0])*f,pts[j][1]+(pts[j+1][1]-pts[j][1])*f]}d-=seg[j]}}
+  return function(lt,a){cs.forEach(function(c,k){var u=((lt*speed)+k/n)%1,q=at(u);c.setAttribute('cx',q[0].toFixed(1));c.setAttribute('cy',q[1].toFixed(1));c.setAttribute('opacity',(a*Math.sin(Math.PI*u)).toFixed(3))})};
+}
+function fmt(n){return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,',')}
+
+var DEFS=[
+{tag:'導覽影片',title:null,caption:'依處理順序，帶您看完每一章的重點；細節再往下閱讀各章節。',last:3.8,
+build:function(r,g){
+  var t1=E(r,'t0',40,170,560,'家人身後事處理指南'),t2=E(r,'s0',40,244,560,'新北市民・交通意外');
+  var y=376,xs=[90,243,397,550];
+  var base=line(g,PD([[90,y],[550,y]]),A,5),fl=flow(g,[[90,y],[550,y]],8,A,5,0.35);
+  var dots=xs.map(function(x,k){return S(g,'circle',{cx:x,cy:y,r:0,fill:PA,stroke:k===1?WN:A,'stroke-width':5})});
+  var lb=['30 天','3 個月','6 個月','2 年'].map(function(s,k){return E(r,'lb0'+(k===1?' w':''),xs[k]-70,y+26,140,s)});
+  return function(lt){show(t1,eo(P(lt,0.2,1.0)),0,24);show(t2,eo(P(lt,0.6,1.4)),0,16);draw(base,P(lt,1.2,3.0));
+    xs.forEach(function(x,k){var tk=1.2+(x-90)/460*1.8,p=P(lt,tk,tk+0.4);dots[k].setAttribute('r',(12*back(p)).toFixed(2));show(lb[k],eo(p),0,10)});
+    fl(lt,P(lt,3.0,3.5));};
+}},
+{tag:'先看這裡',title:'四個關卡，從過世當天起算',caption:'3 個月的繼承決定最不能拖：一旦逾期，就不能再辦拋棄繼承。',last:5.6,
+build:function(r,g){
+  var x=100,y0=160,y1=462,ys=[180,272,364,446],T0=0.8,T1=5.0;
+  var bg=S(g,'path',{d:'M'+x+' '+y0+'V'+y1,stroke:LN,'stroke-width':5,'stroke-linecap':'round'});
+  var pr=line(g,'M'+x+' '+y0+'V'+y1,A,5);
+  var ring=S(g,'circle',{cx:x,cy:ys[1],r:13,fill:'none',stroke:WN,'stroke-width':3,opacity:0});
+  var D=[['30 天內','死亡登記（除戶）'],['3 個月內','決定是否拋棄繼承'],['6 個月內','15 萬救助・遺產稅・過戶'],['2 年內','向對方求償・保險理賠']];
+  var nodes=ys.map(function(y,k){return S(g,'circle',{cx:x,cy:y,r:0,fill:PA,stroke:k===1?WN:A,'stroke-width':5})});
+  var lab=D.map(function(d,k){return E(r,'tl'+(k===1?' w':''),136,ys[k]-30,300,'<b>'+d[0]+'</b><span>'+d[1]+'</span>')});
+  var cnt=E(r,'cnt',420,150,180,'<span>過世後</span><div><b class="num">0</b> 天</div>'),nb=cnt.querySelector('b');
+  var yd=[[y0,0],[ys[0],30],[ys[1],90],[ys[2],180],[ys[3],730],[y1,730]];
+  return function(lt){bg.setAttribute('opacity',eo(P(lt,0.4,0.8)).toFixed(3));var pl=P(lt,T0,T1);draw(pr,pl);var yr=y0+pl*(y1-y0);
+    ys.forEach(function(y,k){var tk=T0+(y-y0)/(y1-y0)*(T1-T0),p=P(lt,tk,tk+0.4);nodes[k].setAttribute('r',(13*back(p)).toFixed(2));show(lab[k],eo(p),-16,0)});
+    var v=730;for(var j=1;j<yd.length;j++){if(yr<=yd[j][0]){v=yd[j-1][1]+(yr-yd[j-1][0])/(yd[j][0]-yd[j-1][0])*(yd[j][1]-yd[j-1][1]);break}}
+    nb.textContent=Math.round(v);show(cnt,eo(P(lt,0.6,1.0)));
+    var t2=T0+(ys[1]-y0)/(y1-y0)*(T1-T0)+0.5;if(lt>t2){var f=((lt-t2)*0.9)%1;ring.setAttribute('r',(13+f*24).toFixed(1));ring.setAttribute('opacity',((1-f)*0.9).toFixed(3))}else ring.setAttribute('opacity',0);};
+}},
+{tag:'第一步',title:'取得相驗屍體證明書',caption:'法醫鑑定完成後，向地檢署申請載明最終死因的證明書，再補件給各單位。',last:5.4,
+build:function(r,g){
+  var st=E(r,'',56,176,210,null,250),rots=[-11,-6,-1,4,8];
+  var sh=rots.map(function(a,k){var d=E(st,'sheet',20+k*3,10,null,k===4?'<b>相驗屍體<br>證明書</b><i></i><i></i><i></i>':'');return d});
+  var stamp=E(r,'stamp',70,302,176,'死因不詳<br>待鑑定');
+  var cnt=E(r,'cnt2',300,156,300,'<b class="num">0</b> 份正本'),nb=cnt.querySelector('b');
+  var sub=E(r,'mut',300,230,300,'建議一次申請 10–15 份');
+  var r1=E(r,'st ok',300,290,300,'<i>✓</i><span>現在可辦：死亡登記、勞保、繼承</span>');
+  var r2=E(r,'st wt',300,382,300,'<i>!</i><span>要等鑑定：15 萬救助、向對方求償</span>');
+  return function(lt){
+    sh.forEach(function(d,k){var p=eo(P(lt,0.8+k*0.38,1.15+k*0.38));d.style.opacity=p.toFixed(3);d.style.transform='translateY('+((1-p)*-50).toFixed(1)+'px) rotate('+rots[k]+'deg)'});
+    nb.textContent=Math.round(15*eo(P(lt,0.8,2.7)));show(cnt,eo(P(lt,0.6,1.0)));show(sub,eo(P(lt,2.6,3.0)),0,10);
+    var ps=P(lt,3.2,3.5);stamp.style.opacity=ps.toFixed(3);stamp.style.transform='rotate(-9deg) scale('+(1.9-0.9*eo(ps)).toFixed(3)+')';
+    var sk=lt>3.5&&lt<3.9?Math.sin((lt-3.5)*70)*5*(1-(lt-3.5)/0.4):0;st.style.transform='translateX('+sk.toFixed(2)+'px)';
+    show(r1,eo(P(lt,4.2,4.6)),24,0);show(r2,eo(P(lt,4.7,5.1)),24,0);};
+}},
+{tag:'第二步',title:'30 天內辦死亡登記',caption:'順便申請除戶謄本；家中有勞保的子女帶存摺到場，可一併申請給付。',last:4.8,
+build:function(r,g){
+  var cy=[190,270,350],cyc=270;
+  var ins=['證明書','身分證','戶口名簿'].map(function(s,k){return E(r,'chip',40,cy[k]-25,124,s,50)});
+  var ctr=E(r,'chip ac col',232,cyc-48,176,'<b>戶政事務所</b><span>全國任一間</span>',96);
+  var outs=['除戶謄本','壽險公會查詢','子女勞保給付'].map(function(s,k){return E(r,'chip',446,cy[k]-25,164,s,50)});
+  var pin=cy.map(function(y){return[[164,y],[198,y],[198,cyc],[232,cyc]]}),pout=cy.map(function(y){return[[408,cyc],[427,cyc],[427,y],[446,y]]});
+  var li=pin.map(function(p){return line(g,PD(p),MU,3)}),lo=pout.map(function(p){return line(g,PD(p),MU,3)});
+  var fi=pin.map(function(p){return flow(g,p,3,A,5,0.6)}),fo=pout.map(function(p){return flow(g,p,3,A,5,0.6)});
+  var rc=[300,440],rr=32;
+  var rb=S(g,'circle',{cx:rc[0],cy:rc[1],r:rr,fill:'none',stroke:LN,'stroke-width':6,opacity:0});
+  var ring=S(g,'circle',{cx:rc[0],cy:rc[1],r:rr,fill:'none',stroke:WN,'stroke-width':6,pathLength:1,'stroke-dasharray':'1 1','stroke-dashoffset':1,'stroke-linecap':'round',transform:'rotate(-90 '+rc[0]+' '+rc[1]+')'});
+  var rn=E(r,'rn',rc[0]-32,rc[1]-19,64,'30'),rl=E(r,'rl',rc[0]+46,rc[1]-16,220,'天內完成');
+  return function(lt){
+    ins.forEach(function(e,k){show(e,eo(P(lt,0.6+k*0.25,1.0+k*0.25)),-20,0)});
+    li.forEach(function(e){draw(e,P(lt,1.4,2.0))});var pc=P(lt,1.6,2.0);show(ctr,eo(pc),0,0,pop(pc));
+    fi.forEach(function(f){f(lt,P(lt,2.0,2.4))});
+    rb.setAttribute('opacity',eo(P(lt,1.9,2.2)).toFixed(3));draw(ring,eio(P(lt,2.0,3.2)));show(rn,eo(P(lt,2.0,2.4)));show(rl,eo(P(lt,2.4,2.8)),-10,0);
+    lo.forEach(function(e){draw(e,P(lt,3.0,3.5))});outs.forEach(function(e,k){show(e,eo(P(lt,3.3+k*0.3,3.7+k*0.3)),20,0)});
+    fo.forEach(function(f){f(lt,P(lt,3.6,4.0))});};
+}},
+{tag:'第三步',title:'兩筆一定要申請的錢',caption:'15 萬救助看岳父戶籍，向新北市區公所申請；勞保給付由一位有投保的子女請領。',last:5.6,
+build:function(r,g){
+  var dv=S(g,'path',{d:'M320 150V408',stroke:LN,'stroke-width':2});
+  var h1=E(r,'hd',40,150,270,'新北市意外致死救助'),n1=E(r,'big',40,190,270,'<b class="num">0</b> 元'),b1=n1.querySelector('b');
+  var tr=E(r,'track',40,268,260,'<div></div>',18),tf=tr.firstChild;
+  var i1=E(r,'mut',40,300,270,'過世後 6 個月內<br>向新北市區公所社會課申請');
+  var h2=E(r,'hd',340,150,270,'子女勞保家屬死亡給付'),eq=E(r,'eq',340,192,270,'投保薪資 <b>× 3</b>');
+  var bl=[0,1,2].map(function(k){return E(r,'blk',340+k*88,244,82,'4 萬',40)});
+  var n2=E(r,'big2',340,296,270,'<b class="num">0</b> 元'),b2=n2.querySelector('b');
+  var i2=E(r,'mut',340,352,270,'例：投保薪資 4 萬元<br>只能推一位子女請領');
+  var rc=E(r,'chip wn',40,436,560,'所有喪葬收據、發票都要留好：向對方求償時要用',52);
+  return function(lt){
+    dv.setAttribute('opacity',eo(P(lt,0.4,0.8)).toFixed(3));
+    show(h1,eo(P(lt,0.5,0.9)),0,10);var v1=eo(P(lt,0.9,2.6));b1.textContent=fmt(150000*v1);show(n1,eo(P(lt,0.8,1.1)));show(tr,eo(P(lt,0.8,1.1)));tf.style.width=(v1*100).toFixed(2)+'%';show(i1,eo(P(lt,2.4,2.8)),0,10);
+    show(h2,eo(P(lt,1.0,1.4)),0,10);show(eq,eo(P(lt,1.3,1.7)),0,10);
+    bl.forEach(function(e,k){var p=P(lt,1.9+k*0.45,2.3+k*0.45);e.style.opacity=eo(p).toFixed(3);e.style.transform='translateY('+((1-back(p))*-30).toFixed(1)+'px)'});
+    b2.textContent=fmt(120000*eo(P(lt,1.9,3.5)));show(n2,eo(P(lt,1.8,2.1)));show(i2,eo(P(lt,3.4,3.8)),0,10);
+    show(rc,eo(P(lt,4.6,5.0)),0,20);rc.style.borderColor=(lt>5.0&&lt<5.6&&Math.floor((lt-5.0)/0.15)%2===0)?BD:'';};
+}},
+{tag:'第四步',title:'事故在臺北，戶籍在新北',caption:'事故相關找臺北市的單位；15 萬救助、遺產稅與繼承仍在新北市辦理。',last:5.6,
+build:function(r,g,top){
+  var zl=E(r,'zone ac',40,148,272,null,236),zr=E(r,'zone',328,148,272,null,236);
+  var hl=E(r,'zh a',60,162,200,'臺北市｜古亭河濱'),hr=E(r,'zh',348,162,240,'新北市｜岳父戶籍');
+  var il=['警方事故資料','行車事故鑑定','臺北地檢署、少年法庭'].map(function(s,k){return E(r,'zi',60,214+k*50,244,'・'+s)});
+  var ir=['15 萬意外致死救助','遺產稅、繼承','死亡登記（全國皆可）'].map(function(s,k){return E(r,'zi',348,214+k*50,244,'・'+s)});
+  var pin=S(top,'g',{opacity:0});S(pin,'path',{d:'M0 0c-13 0-23 10-23 23 0 17 23 40 23 40s23-23 23-40C23 10 13 0 0 0z',fill:BD});S(pin,'circle',{cx:0,cy:22,r:8,fill:PA});
+  var c1=E(r,'chip',40,410,122,'強制險',50),c2=E(r,'chip',174,410,176,'YouBike 保險',50);
+  var s1=line(top,'M52 435H150',BD,4),s2=line(top,'M186 435H338',BD,4);
+  var lb=E(r,'nt',366,404,234,'雙方騎自己的腳踏車<br>這兩項都不適用');
+  return function(lt){
+    show(zl,eo(P(lt,0.3,0.7)),0,16);show(zr,eo(P(lt,0.6,1.0)),0,16);show(hl,eo(P(lt,0.5,0.9)));show(hr,eo(P(lt,0.8,1.2)));
+    [0,1,2].forEach(function(k){show(il[k],eo(P(lt,1.3+k*0.45,1.7+k*0.45)),-14,0);show(ir[k],eo(P(lt,1.5+k*0.45,1.9+k*0.45)),-14,0)});
+    var pp=P(lt,1.0,1.5);pin.setAttribute('transform','translate(286 '+(126-(1-back(pp))*90).toFixed(1)+')');pin.setAttribute('opacity',pp>0?1:0);
+    show(c1,eo(P(lt,3.0,3.3)),0,12);show(c2,eo(P(lt,3.1,3.4)),0,12);
+    var bad=flash(lt,3.5,4.5);c1.classList.toggle('bd',bad);c2.classList.toggle('bd',bad);
+    draw(s1,P(lt,4.5,4.8));draw(s2,P(lt,4.6,4.9));show(lb,eo(P(lt,4.9,5.3)),-14,0);};
+}},
+{tag:'第四步',title:'賠償要家屬自己主張',caption:'鑑定由檢察官或少年法庭囑託，家屬不必自付 3,000 元；請追蹤是否已囑託。',last:5.8,
+build:function(r,g){
+  var a=E(r,'chip',40,148,192,'對方未滿 14 歲',50),b=E(r,'chip ac',272,148,328,'少年法庭（保護事件）',50);
+  var c=E(r,'chip',40,240,290,'<span class="x">✕</span>刑事附帶民事：不適用',52);
+  var d=E(r,'chip ac',350,240,250,'調解（免費）',52),e=E(r,'chip ac',350,330,250,'民事訴訟・2 年內',52);
+  var lAB=line(g,PD([[232,173],[272,173]]),MU,3),lBC=line(g,PD([[400,198],[400,220],[185,220],[185,240]]),BD,3),lBD=line(g,PD([[475,198],[475,240]]),MU,3),lDE=line(g,PD([[475,292],[475,330]]),MU,3);
+  var fl=flow(g,[[232,173],[475,173],[475,330]],6,A,5,0.4);
+  var k1=E(r,'circ',66,410,72,'孩子',72),k2=E(r,'circ',186,410,72,'父母',72),lk=line(g,'M138 446H186',A,6);
+  var lb=E(r,'nt2',286,410,314,'<b>被告：孩子＋父母</b><span>連帶負責，賠償多來自父母</span>');
+  return function(lt){
+    show(a,eo(P(lt,0.5,0.9)),-16,0);draw(lAB,P(lt,0.9,1.2));var pb=P(lt,1.1,1.5);show(b,eo(pb),0,0,pop(pb));
+    draw(lBC,P(lt,1.7,2.2));draw(lBD,P(lt,1.7,2.1));
+    show(c,eo(P(lt,2.1,2.4)),0,10);c.classList.toggle('bd',flash(lt,2.2,3.2));
+    show(d,eo(P(lt,2.4,2.8)),0,10);draw(lDE,P(lt,2.8,3.1));show(e,eo(P(lt,3.0,3.4)),0,10);fl(lt,P(lt,3.4,3.8));
+    var q1=P(lt,3.8,4.1),q2=P(lt,4.0,4.3);show(k1,eo(q1),0,0,pop(q1));show(k2,eo(q2),0,0,pop(q2));
+    draw(lk,P(lt,4.3,4.6));lk.setAttribute('stroke-width',lt>4.6?(6+2*Math.sin((lt-4.6)*5)).toFixed(2):6);
+    show(lb,eo(P(lt,4.8,5.2)),-14,0);};
+}},
+{tag:'第五步',title:'先查岳父勞保怎麼領',caption:'若在領年金，過世後 30 天內通知勞保局；不確定怎麼選，先打 (02) 2396-1266 試算。',last:4.8,
+build:function(r,g){
+  var rt=E(r,'chip ac',200,148,240,'勞保老年給付',50);
+  var L=E(r,'chip',40,238,262,'生前按月領年金',50),R=E(r,'chip',338,238,262,'當年一次領完',50);
+  var L1=E(r,'chip ac',64,330,262,'老年差額金（一次領）',50),L2=E(r,'chip ac',64,420,262,'遺屬年金（按月領）',50);
+  var R1=E(r,'chip mu',338,330,262,'沒有後續給付',50),pill=E(r,'pill',80,383,96,'二選一',34);
+  var pRL=[[320,198],[320,218],[171,218],[171,238]],pRR=[[320,218],[469,218],[469,238]];
+  var lRL=line(g,PD(pRL),MU,3),lRR=line(g,PD(pRR),MU,3),lL1=line(g,PD([[52,288],[52,355],[64,355]]),MU,3),lL2=line(g,PD([[52,355],[52,445],[64,445]]),MU,3);
+  var lR1=S(g,'path',{d:'M469 288V330',stroke:MU,'stroke-width':3,'stroke-dasharray':'6 6',opacity:0});
+  var fa=flow(g,pRL,4,A,5,0.5),fb=flow(g,[[52,288],[52,445]],4,A,5,0.5);
+  return function(lt){
+    var p0=P(lt,0.4,0.8);show(rt,eo(p0),0,0,pop(p0));draw(lRL,P(lt,0.8,1.2));draw(lRR,P(lt,0.8,1.2));show(L,eo(P(lt,1.1,1.5)),0,12);show(R,eo(P(lt,1.2,1.6)),0,12);
+    draw(lL1,P(lt,1.8,2.1));draw(lL2,P(lt,1.9,2.3));show(L1,eo(P(lt,2.0,2.4)),-14,0);show(L2,eo(P(lt,2.3,2.7)),-14,0);
+    lR1.setAttribute('opacity',eo(P(lt,2.0,2.3)).toFixed(3));show(R1,eo(P(lt,2.4,2.8)),0,10);
+    var pp=P(lt,2.8,3.1);show(pill,eo(pp),0,0,pop(pp));fa(lt,P(lt,3.0,3.4));fb(lt,P(lt,3.0,3.4));};
+}},
+{tag:'第六步',title:'3 個月內查清財產與債務',caption:'子女拋棄後會輪到孫輩，要一起辦；決定前，不要動用岳父的錢。',last:5.8,
+build:function(r,g){
+  var px=320,py=190,hb=190,hang=64;
+  var stand=S(g,'path',{d:'M'+px+' '+py+'V352M262 352H378',stroke:MU,'stroke-width':5,'stroke-linecap':'round',fill:'none'});
+  var beam=S(g,'line',{stroke:INK,'stroke-width':6,'stroke-linecap':'round'});var hubC=S(g,'circle',{cx:px,cy:py,r:9,fill:INK});
+  function mk(){var gr=S(g,'g',{});S(gr,'path',{d:'M0 0L-56 '+hang+'M0 0L56 '+hang,stroke:MU,'stroke-width':2,fill:'none'});S(gr,'path',{d:'M-64 '+hang+'Q0 '+(hang+34)+' 64 '+hang+'Z',fill:LN,stroke:MU,'stroke-width':2});return gr}
+  var pl=mk(),prr=mk();
+  function blk(gr,x,col,q){var b=S(gr,'g',{opacity:0});S(b,'rect',{x:x,y:hang-26,width:34,height:26,rx:5,fill:q?WS:col,stroke:q?WN:'none','stroke-width':2});if(q){var t=S(b,'text',{x:x+17,y:hang-5,'text-anchor':'middle','font-size':22,'font-weight':800,fill:WN});t.textContent='?'}return b}
+  var asset=[blk(pl,-55,A),blk(pl,-17,A),blk(pl,21,A)],debt=[blk(prr,-55,WN),blk(prr,-17,WN)],qb=blk(prr,21,WN,true);
+  var drops=[{e:asset[0],t:1.3,d:-1},{e:asset[1],t:1.7,d:-1},{e:asset[2],t:2.1,d:-1},{e:debt[0],t:2.6,d:1},{e:debt[1],t:3.0,d:1},{e:qb,t:3.5,d:1}];
+  var la=E(r,'pl',0,0,128,'財產'),ld=E(r,'pl',0,0,128,'債務'),q=E(r,'q',px-30,128,60,'？');
+  var cards=[['財產＞債務','正常繼承'],['不確定','陳報遺產清冊'],['債務＞財產','拋棄繼承']].map(function(c,k){return E(r,'chip col',40+k*192,392,176,'<b>'+c[0]+'</b><span>'+c[1]+'</span>',92)});
+  return function(lt){
+    var base=eo(P(lt,0.3,0.8));stand.setAttribute('opacity',base);beam.setAttribute('opacity',base);hubC.setAttribute('opacity',base);pl.setAttribute('opacity',base);prr.setAttribute('opacity',base);
+    var ang=0;drops.forEach(function(o){var p=P(lt,o.t-0.35,o.t);o.e.setAttribute('opacity',eo(p).toFixed(3));o.e.setAttribute('transform','translate(0 '+((1-eo(p))*-110).toFixed(1)+')');
+      if(lt>=o.t){var dt=lt-o.t;ang+=o.d*5*(1-Math.exp(-4*dt)*Math.cos(9*dt))}});
+    ang=clamp(ang,-14,14)+1.2*Math.sin(lt*2.2)*P(lt,3.9,4.4);
+    var a=ang*Math.PI/180,ca=Math.cos(a),sa=Math.sin(a),Lx=px-hb*ca,Ly=py-hb*sa,Rx=px+hb*ca,Ry=py+hb*sa;
+    beam.setAttribute('x1',Lx.toFixed(1));beam.setAttribute('y1',Ly.toFixed(1));beam.setAttribute('x2',Rx.toFixed(1));beam.setAttribute('y2',Ry.toFixed(1));
+    pl.setAttribute('transform','translate('+Lx.toFixed(1)+' '+Ly.toFixed(1)+')');prr.setAttribute('transform','translate('+Rx.toFixed(1)+' '+Ry.toFixed(1)+')');
+    la.style.left=(Lx-64).toFixed(1)+'px';la.style.top=(Ly+hang+24).toFixed(1)+'px';ld.style.left=(Rx-64).toFixed(1)+'px';ld.style.top=(Ry+hang+24).toFixed(1)+'px';
+    show(la,eo(P(lt,0.6,1.0)));show(ld,eo(P(lt,0.6,1.0)));
+    var pq=P(lt,3.8,4.1);show(q,eo(pq),0,0,pop(pq)*(lt>4.1?1+0.06*Math.sin((lt-4.1)*6):1));
+    cards.forEach(function(e,k){var t0=4.3+k*0.45;show(e,eo(P(lt,t0,t0+0.35)),0,16);e.classList.toggle('ac',k===1?lt>=t0:(lt>=t0&&lt<t0+0.45))});};
+}},
+{tag:'第七步',title:'就算免稅，也要申報',caption:'遺產低於扣除合計就不必繳稅，但仍要在 6 個月內向國稅局申報。',last:6.0,
+build:function(r,g,top){
+  var lab=E(r,'mut',40,146,560,'可扣除合計（以岳母＋2 名子女為例）');
+  var tot=E(r,'big',40,180,560,'<b class="num">0</b> 萬元'),tb=tot.querySelector('b');
+  var bar=E(r,'bar9',40,252,560,null,40);
+  var V=[1333,553,112,138],nm=['免稅額','配偶扣除額','子女 2 人','喪葬費'],col=[A,A,A,WN],op=[1,.62,.36,1];
+  var segs=V.map(function(v,k){var d=document.createElement('div');d.className='seg';d.style.background=col[k];d.style.opacity=op[k];bar.appendChild(d);return d});
+  var rows=V.map(function(v,k){return E(r,'lg',40,312+k*44,320,'<i style="background:'+col[k]+';opacity:'+op[k]+'"></i><span>'+nm[k]+'</span><b>'+fmt(v)+' 萬</b>')});
+  var cert=E(r,'cert',380,316,220,'<b>免稅證明書</b><span>解凍存款、辦過戶都要它</span>',124);
+  var seal=S(top,'g',{opacity:0});S(seal,'circle',{cx:0,cy:0,r:20,fill:A});S(seal,'path',{d:'M-8 0l5 5 10-11',stroke:PA,'stroke-width':4,fill:'none','stroke-linecap':'round','stroke-linejoin':'round'});
+  return function(lt){
+    show(lab,eo(P(lt,0.4,0.8)),0,10);show(tot,eo(P(lt,0.6,1.0)));show(bar,eo(P(lt,0.6,1.0)));
+    var sum=0;V.forEach(function(v,k){var p=eio(P(lt,1.0+k*0.9,1.8+k*0.9));segs[k].style.width=(v/2136*560*p).toFixed(1)+'px';sum+=v*p;show(rows[k],eo(P(lt,1.0+k*0.9,1.4+k*0.9)),-14,0)});
+    tb.textContent=fmt(sum);show(cert,eo(P(lt,4.9,5.3)),40,0);
+    var ps=P(lt,5.3,5.6);seal.setAttribute('opacity',eo(ps).toFixed(3));seal.setAttribute('transform','translate(584 322) scale('+pop(ps).toFixed(3)+')');};
+}},
+{tag:'第八步',title:'拿到證明，財產才能過戶',caption:'全體繼承人先談好分配，簽遺產分割協議書並蓋印鑑章。',last:5.4,
+build:function(r,g,top){
+  var ys=[150,212,274,336],nm=['房屋、土地','銀行存款','股票','汽機車'];
+  var as=nm.map(function(s,k){return E(r,'chip',40,ys[k],186,s,48)});
+  var locks=ys.map(function(y){var gr=S(top,'g',{transform:'translate(244 '+(y+26)+')',opacity:0});var sh=S(gr,'path',{d:'M-6 -2V-8a6 6 0 0 1 12 0V-2',fill:'none',stroke:WN,'stroke-width':3});var bd=S(gr,'rect',{x:-10,y:-3,width:20,height:16,rx:3,fill:WN});return{g:gr,sh:sh,bd:bd}});
+  var key=E(r,'chip wn',272,ys[0],150,'稅單證明',48);
+  var heir=E(r,'chip ac col',452,226,148,'<b>繼承人</b><span>依分割協議</span>',96);
+  var pths=ys.map(function(y){return[[258,y+24],[400,y+24],[400,274],[452,274]]});
+  var lns=pths.map(function(p){return line(g,PD(p),MU,3)}),fls=pths.map(function(p){return flow(g,p,2,A,5,0.5)});
+  var wn=E(r,'chip wn',40,424,560,'房地 6 個月內登記，逾期最高罰 20 倍登記費',50);
+  return function(lt){
+    as.forEach(function(e,k){var p=eo(P(lt,0.4+k*0.2,0.8+k*0.2));show(e,p,-16,0);locks[k].g.setAttribute('opacity',p.toFixed(3))});
+    var kp=P(lt,1.6,3.4);show(key,eo(P(lt,1.3,1.6))*(1-P(lt,3.5,3.9)));key.style.top=(ys[0]+eio(kp)*(ys[3]-ys[0])).toFixed(1)+'px';
+    locks.forEach(function(l,k){var tk=1.6+k/3*1.8+0.05,o=P(lt,tk,tk+0.3),c=o>0.5?A:WN;l.sh.setAttribute('transform','translate(0 '+(-6*o).toFixed(1)+')');l.sh.setAttribute('stroke',c);l.bd.setAttribute('fill',c);as[k].classList.toggle('ac',o>=1)});
+    lns.forEach(function(e){draw(e,P(lt,3.8,4.3))});var ph=P(lt,4.0,4.4);show(heir,eo(ph),0,0,pop(ph));fls.forEach(function(f){f(lt,P(lt,4.4,4.8))});
+    show(wn,eo(P(lt,4.8,5.2)),0,16);};
+}},
+{tag:'找誰辦',title:'自己辦，還是請人辦',caption:'律師費原則上自己負擔，勝訴也很難向對方請求；可先向法律扶助基金會 412-8518 諮詢。',last:6.0,
+build:function(r,g){
+  var by=432,k23=23,cx=[95,215,335],H=[8,1.6*k23,5*k23],op=[.4,.7,1];
+  var base=line(g,'M40 '+by+'H380',MU,3);
+  var bars=cx.map(function(x,k){return S(g,'rect',{x:x-32,y:by,width:64,height:0,rx:6,fill:A,opacity:op[k]})});
+  var wk=line(g,'M335 '+(by-H[2])+'V'+(by-230)+'M321 '+(by-230)+'H349',A,3);
+  var vt=[['只有規費',''],['約 1.6 萬起',''],['約 5–10 萬',' a']].map(function(v,k){var top=(k===2?by-230:by-H[k])-38;return E(r,'v11'+v[1],cx[k]-75,top,150,v[0])});
+  var cats=['自己辦','地政士','律師'].map(function(s,k){return E(r,'c11',cx[k]-60,by+8,120,s)});
+  var hd=E(r,'hd',410,150,190,'律師能做的事');
+  var its=[['閱卷取得證據',192],['計算應賠金額',236],['審閱和解書',280]].map(function(s){return E(r,'it',410,s[1],190,'<i>✓</i><span>'+s[0]+'</span>')});
+  var wc=E(r,'chip pad',410,356,190,'小心「免預付、勝訴抽三成」');
+  return function(lt){
+    draw(base,P(lt,0.4,0.8));cats.forEach(function(e,k){show(e,eo(P(lt,0.6+k*0.15,1.0+k*0.15)),0,8)});
+    var tm=[[1.0,1.3],[1.4,1.9],[2.0,2.8]];
+    bars.forEach(function(e,k){var h=H[k]*eo(P(lt,tm[k][0],tm[k][1]));e.setAttribute('y',(by-h).toFixed(1));e.setAttribute('height',h.toFixed(1));show(vt[k],eo(P(lt,tm[k][1]-0.1,tm[k][1]+0.3)),0,8)});
+    draw(wk,P(lt,2.8,3.3));show(vt[2],eo(P(lt,3.2,3.6)),0,8);
+    show(hd,eo(P(lt,3.4,3.8)),0,10);its.forEach(function(e,k){show(e,eo(P(lt,3.7+k*0.35,4.1+k*0.35)),16,0)});
+    show(wc,eo(P(lt,4.8,5.1)),0,10);wc.classList.toggle('bd',flash(lt,4.9,5.7));};
+}},
+{tag:'準備文件',title:'先備齊共用文件',caption:'之後每項申請只要補上專屬文件；出門前先打電話確認。',last:5.6,
+build:function(r,g){
+  var items=['相驗屍體證明書 10–15 份','岳父除戶謄本 5–10 份','繼承人謄本、身分證、印章','每位繼承人的印鑑證明','申請人存摺封面影本','警方事故資料與案號'],y0=152,dy=56;
+  var cnt=E(r,'c12',440,74,160,'<b>0</b> / 6'),cb=cnt.querySelector('b');
+  var rows=items.map(function(s,k){var y=y0+k*dy;var box=S(g,'rect',{x:54,y:y+5,width:30,height:30,rx:6,fill:PA,stroke:LN,'stroke-width':2.5,opacity:0});var ck=line(g,'M61 '+(y+20)+'l7 7 12-14',A,4);var tx=E(r,'ck',102,y,500,s,40);return{box:box,ck:ck,tx:tx}});
+  return function(lt){
+    show(cnt,eo(P(lt,0.4,0.8)));var n=0;
+    rows.forEach(function(o,k){var p=eo(P(lt,0.6+k*0.3,1.0+k*0.3));o.box.setAttribute('opacity',p.toFixed(3));show(o.tx,p,-14,0);var tk=2.6+k*0.4,c=P(lt,tk,tk+0.25);draw(o.ck,c);o.box.setAttribute('stroke',c>0?A:LN);if(c>=1)n++});
+    cb.textContent=n;};
+}},
+{tag:'分工與窗口',title:'一位總聯絡人，大家分頭辦',caption:'收據、文件與各機關案號集中保管，其他人依分工表分頭辦理。',last:5.0,
+build:function(r,g){
+  var cx=320,cy=312,N=[[320,168],[510,262],[438,438],[202,438],[130,262]],nm=['相驗與證明','戶政與補助','事故與求償','勞保與保險','繼承與稅務'];
+  var lns=N.map(function(n){return line(g,PD([[cx,cy],n]),MU,3)}),fls=N.map(function(n){return flow(g,[[cx,cy],n],2,A,5,0.45)});
+  var hub=E(r,'hub',cx-64,cy-64,128,'總聯絡人',128);
+  var ch=N.map(function(n,k){return E(r,'chip',n[0]-78,n[1]-24,156,nm[k],48)});
+  var end=E(r,'endc',60,232,520,'<b>細節請往下閱讀各章節</b><span>資料來源列在文末，以各機關最新公告為準</span>');
+  return function(lt){
+    var dim=1-0.85*P(lt,4.3,4.7);g.style.opacity=dim.toFixed(3);
+    var ph=P(lt,0.4,0.8);show(hub,eo(ph)*dim,0,0,pop(ph));
+    lns.forEach(function(e,k){draw(e,P(lt,0.8+k*0.12,1.3+k*0.12))});
+    ch.forEach(function(e,k){var p=P(lt,1.2+k*0.25,1.6+k*0.25);show(e,eo(p)*dim,0,0,pop(p))});
+    fls.forEach(function(f){f(lt,P(lt,2.6,3.0))});
+    var pe=P(lt,4.5,4.9);show(end,eo(pe),0,0,pop(pe));};
+}}
+];
+
+var scenes=[],starts=[],total=0;
+DEFS.forEach(function(d){
+  var root=E(stage,'sc',0,0,640,null,640),g=S(root,'svg',{viewBox:'0 0 640 640'}),top=document.createElementNS(NS,'svg');top.setAttribute('viewBox','0 0 640 640');top.style.pointerEvents='none';
+  var tg=E(root,'mv-tag',40,28,null,d.tag),ttl=d.title?E(root,'mv-ttl',40,66,560,d.title):null,cap=E(root,'mv-cap',40,516,560,d.caption);
+  var up=d.build(root,g,top);root.appendChild(top);
+  var len=root.textContent.replace(/\s/g,'').length;
+  var dur=d.last+3+clamp((len-40)/40,0,2)+0.3;
+  scenes.push({d:d,root:root,dur:dur,upd:function(lt){show(tg,eo(P(lt,0.05,0.45)),-12,0);if(ttl)show(ttl,eo(P(lt,0.15,0.65)),0,14);show(cap,eo(P(lt,0.6,1.2)),0,12);up(lt)}});
+  starts.push(total);total+=dur;
+});
+starts.forEach(function(s,i){if(i>0){var t=document.createElement('div');t.className='mv-tick';t.style.left=(s/total*100)+'%';track.appendChild(t)}});
+function mmss(s){s=Math.max(0,Math.floor(s));return Math.floor(s/60)+':'+('0'+s%60).slice(-2)}
+$('mvLen').textContent='全長 '+mmss(total)+'，有配樂，可隨時暫停或靜音';
+
+var cur=-1;
+function render(T){
+  T=clamp(T,0,total-0.001);var i=0;while(i<scenes.length-1&&T>=starts[i+1])i++;
+  if(i!==cur){scenes.forEach(function(s,k){s.root.style.visibility=k===i?'visible':'hidden'});cur=i;var dd=scenes[i].d;chapEl.textContent=(i+1)+' / '+scenes.length+'｜'+dd.tag+(dd.title?'：'+dd.title:'')}
+  var s=scenes[i],lt=T-starts[i];
+  var fi=i===0?1:P(lt,0,0.3),fo=i===scenes.length-1?1:1-P(lt,s.dur-0.3,s.dur);
+  s.root.style.opacity=Math.min(fi,fo).toFixed(3);s.upd(lt);
+  var d=null;if(i>0&&lt<0.45)d=lt;else if(i<scenes.length-1&&s.dur-lt<0.45)d=lt-s.dur;
+  if(d!==null){var p=(d+0.45)/0.9;wipe.style.opacity=(0.85*Math.sin(Math.PI*p)).toFixed(3);wipe.style.transform='translateX('+(-130+p*390).toFixed(1)+'%) skewX(-12deg)'}else wipe.style.opacity=0;
+  fillEl.style.width=(T/total*100).toFixed(2)+'%';timeEl.textContent=mmss(T)+' / '+mmss(total);track.setAttribute('aria-valuenow',Math.round(T/total*100));
+}
+
+/* ---------- scaling ---------- */
+function fit(){var w=frame.clientWidth;if(w)stage.style.transform='scale('+(w/640).toFixed(4)+')'}
+fit();if(window.ResizeObserver)new ResizeObserver(fit).observe(frame);else window.addEventListener('resize',fit);
+
+/* ---------- audio: original synth score rendered offline, played through <audio> so iPhone silent switch does not mute it ---------- */
+var SR=22050,audio=document.createElement('audio');audio.preload='auto';audio.setAttribute('playsinline','');audio.setAttribute('webkit-playsinline','');
+var audioReady=false,useAudio=false,unlocked=false;
+try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
+function wavBlob(f){var n=f.length,b=new ArrayBuffer(44+n*2),v=new DataView(b),i;function w(o,s){for(var j=0;j<s.length;j++)v.setUint8(o+j,s.charCodeAt(j))}
+  w(0,'RIFF');v.setUint32(4,36+n*2,true);w(8,'WAVE');w(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,SR,true);v.setUint32(28,SR*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,n*2,true);
+  for(i=0;i<n;i++){var s=clamp(f[i],-1,1);v.setInt16(44+i*2,s<0?s*32768:s*32767,true)}return new Blob([b],{type:'audio/wav'})}
+function renderCtx(ctx){return new Promise(function(res,rej){ctx.oncomplete=function(e){res(e.renderedBuffer)};var p=ctx.startRendering();if(p&&p.then)p.then(res,rej)})}
+function noiseBuf(ctx,sec){var b=ctx.createBuffer(1,Math.ceil(SR*sec),SR),d=b.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1;return b}
+function env(ctx,g,t,peak,att,dec){g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(peak,t+att);g.gain.exponentialRampToValueAtTime(0.0001,t+att+dec)}
+function buildMusic(){
+  var OAC=window.OfflineAudioContext||window.webkitOfflineAudioContext;if(!OAC)return Promise.resolve(null);
+  var bpm=92,beat=60/bpm,bar=beat*4,loop=bar*4,len=Math.ceil(loop*2*SR),ctx=new OAC(1,len,SR);
+  var master=ctx.createGain();master.gain.value=0.8;var comp=ctx.createDynamicsCompressor();master.connect(comp);comp.connect(ctx.destination);
+  var nb=noiseBuf(ctx,1);
+  var CH=[[261.63,329.63,392.00,493.88],[220.00,261.63,329.63,392.00],[174.61,220.00,261.63,329.63],[196.00,246.94,293.66,392.00]],ROOT=[130.81,110.00,87.31,98.00];
+  var padLP=ctx.createBiquadFilter();padLP.type='lowpass';padLP.frequency.value=1500;padLP.connect(master);
+  for(var b=0;b<8;b++){
+    var t0=b*bar,c=CH[b%4];
+    c.forEach(function(f){var o=ctx.createOscillator(),gg=ctx.createGain();o.type='sawtooth';o.frequency.value=f;o.detune.value=(Math.random()-.5)*8;o.connect(gg);gg.connect(padLP);gg.gain.setValueAtTime(0.0001,t0);gg.gain.linearRampToValueAtTime(0.022,t0+0.35);gg.gain.setValueAtTime(0.022,t0+bar-0.1);gg.gain.linearRampToValueAtTime(0.0001,t0+bar+0.45);o.start(t0);o.stop(t0+bar+0.5)});
+    for(var k=0;k<4;k++){var tb=t0+k*beat;
+      var ko=ctx.createOscillator(),kg=ctx.createGain();ko.frequency.setValueAtTime(150,tb);ko.frequency.exponentialRampToValueAtTime(48,tb+0.12);ko.connect(kg);kg.connect(master);env(ctx,kg,tb,0.55,0.004,0.26);ko.start(tb);ko.stop(tb+0.32);
+      var cl=ctx.createBufferSource(),cg=ctx.createGain(),cf=ctx.createBiquadFilter();cf.type='bandpass';cf.frequency.value=2500;cl.buffer=nb;cl.connect(cf);cf.connect(cg);cg.connect(master);env(ctx,cg,tb,0.06,0.001,0.02);cl.start(tb,Math.random()*0.5,0.04);
+      if(k%2===1){var sn=ctx.createBufferSource(),sf=ctx.createBiquadFilter(),sg=ctx.createGain();sf.type='bandpass';sf.frequency.value=1800;sf.Q.value=0.8;sn.buffer=nb;sn.connect(sf);sf.connect(sg);sg.connect(master);env(ctx,sg,tb,0.16,0.003,0.14);sn.start(tb,Math.random()*0.5,0.2)}
+      var th=tb+beat/2,hs=ctx.createBufferSource(),hf=ctx.createBiquadFilter(),hg=ctx.createGain();hf.type='highpass';hf.frequency.value=6500;hs.buffer=nb;hs.connect(hf);hf.connect(hg);hg.connect(master);env(ctx,hg,th,0.07,0.002,0.05);hs.start(th,Math.random()*0.5,0.08);
+      if(k===0||k===2){var bo=ctx.createOscillator(),bg=ctx.createGain();bo.type='triangle';bo.frequency.value=ROOT[b%4];bo.connect(bg);bg.connect(master);env(ctx,bg,tb,0.2,0.01,beat*1.6);bo.start(tb);bo.stop(tb+beat*1.8)}
+    }
+    var pat=[0,1,2,3,2,1,2,3];
+    for(var e=0;e<8;e++){var te=t0+e*beat/2,ao=ctx.createOscillator(),ag=ctx.createGain();ao.type='triangle';ao.frequency.value=c[pat[e]]*2;ao.connect(ag);ag.connect(master);env(ctx,ag,te,0.065,0.005,0.32);ao.start(te);ao.stop(te+0.4)}
+  }
+  var fx=new OAC(1,Math.ceil(1.8*SR),SR),fm=fx.createGain();fm.gain.value=1;fm.connect(fx.destination);
+  var ws=fx.createBufferSource(),wf=fx.createBiquadFilter(),wg=fx.createGain();ws.buffer=noiseBuf(fx,1.6);wf.type='bandpass';wf.Q.value=0.9;wf.frequency.setValueAtTime(300,0);wf.frequency.exponentialRampToValueAtTime(5000,0.6);wf.frequency.exponentialRampToValueAtTime(1500,1.0);ws.connect(wf);wf.connect(wg);wg.connect(fm);wg.gain.setValueAtTime(0.0001,0);wg.gain.linearRampToValueAtTime(0.32,0.55);wg.gain.exponentialRampToValueAtTime(0.0001,1.05);ws.start(0);
+  [[1046.5,0.6,0.12,0.9],[1567.98,0.62,0.07,0.7]].forEach(function(q){var o=fx.createOscillator(),gg=fx.createGain();o.frequency.value=q[0];o.connect(gg);gg.connect(fm);env(fx,gg,q[1],q[2],0.005,q[3]);o.start(q[1]);o.stop(q[1]+q[3]+0.1)});
+  return Promise.all([renderCtx(ctx),renderCtx(fx)]).then(function(res){
+    var ch=res[0].getChannelData(0),L=Math.round(loop*SR),lp=ch.subarray(L,2*L),fxd=res[1].getChannelData(0);
+    var N=Math.ceil((total+1)*SR),out=new Float32Array(N),i;
+    for(i=0;i<N;i++)out[i]=lp[i%L];
+    starts.forEach(function(s,k){if(!k)return;var off=Math.round((s-0.6)*SR);for(var j=0;j<fxd.length;j++){var q=off+j;if(q>=0&&q<N)out[q]+=fxd[j]}});
+    var fin=Math.round(1.5*SR),fout=Math.round(3*SR);for(i=0;i<fin;i++)out[i]*=i/fin;for(i=0;i<fout;i++)out[N-1-i]*=i/fout;
+    var pk=0;for(i=0;i<N;i++){var a=Math.abs(out[i]);if(a>pk)pk=a}if(pk>0){var gn=0.9/pk;for(i=0;i<N;i++)out[i]*=gn}
+    return wavBlob(out);
+  });
+}
+var silentURL=URL.createObjectURL(wavBlob(new Float32Array(2205)));
+function startMusic(){buildMusic().then(function(bl){if(!bl)return;audio.src=URL.createObjectURL(bl);audioReady=true;if(playing&&!useAudio)attachAudio()}).catch(function(){})}
+if(window.requestIdleCallback)requestIdleCallback(startMusic,{timeout:1500});else setTimeout(startMusic,300);
+
+/* ---------- clock & controls ---------- */
+var playing=false,t=0,perfBase=0,started=false,lastAT=-1,lastPerf=0,raf=0;
+function now(){
+  if(useAudio){var a=audio.currentTime,p=performance.now();if(a!==lastAT){lastAT=a;lastPerf=p;return a}return audio.paused?a:a+Math.min(0.3,(p-lastPerf)/1000)}
+  return playing?(performance.now()-perfBase)/1000:t;
+}
+function attachAudio(){try{audio.currentTime=t}catch(e){}var p=audio.play();useAudio=true;lastAT=-1;if(p&&p.catch)p.catch(function(){useAudio=false;perfBase=performance.now()-t*1000})}
+function setIcons(){$('mvPlayIcon').setAttribute('d',playing?'M7 5h4v14H7zM13 5h4v14h-4z':'M8 5v14l11-7z');btnPlay.setAttribute('aria-label',playing?'暫停':'播放');
+  $('mvMuteIcon').setAttribute('d',audio.muted?'M4 9v6h4l5 4V5L8 9H4zm11.6.4 1.4-1.4 2 2 2-2 1.4 1.4-2 2 2 2-1.4 1.4-2-2-2 2-1.4-1.4 2-2z':'M4 9v6h4l5 4V5L8 9H4zm12.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4z');btnMute.setAttribute('aria-label',audio.muted?'開啟聲音':'靜音')}
+function tick(){if(!playing)return;t=now();if(t>=total){t=total;playing=false;useAudio&&audio.pause();render(total-0.001);big.hidden=false;big.querySelector('span').textContent='重播';setIcons();return}render(t);raf=requestAnimationFrame(tick)}
+function play(){
+  if(t>=total-0.05)t=0;
+  if(!started){started=true;frame.classList.remove('poster')}
+  big.hidden=true;playing=true;
+  if(audioReady){attachAudio()}else{useAudio=false;perfBase=performance.now()-t*1000;if(!unlocked){unlocked=true;audio.src=silentURL;var p=audio.play();if(p&&p.catch)p.catch(function(){})}}
+  setIcons();cancelAnimationFrame(raf);raf=requestAnimationFrame(tick);
+}
+function pause(){t=now();playing=false;if(useAudio)audio.pause();cancelAnimationFrame(raf);render(t);setIcons()}
+function toggle(){playing?pause():play()}
+function seekTo(T){t=clamp(T,0,total-0.01);if(useAudio&&audioReady){try{audio.currentTime=t}catch(e){}lastAT=-1}else perfBase=performance.now()-t*1000;if(!started){started=true;frame.classList.remove('poster');big.hidden=true}render(t)}
+big.addEventListener('click',function(e){e.stopPropagation();play()});
+frame.addEventListener('click',function(){toggle()});
+btnPlay.addEventListener('click',toggle);
+btnMute.addEventListener('click',function(){audio.muted=!audio.muted;setIcons()});
+function ratio(ev){var rc=track.getBoundingClientRect();return clamp((ev.clientX-rc.left)/rc.width,0,1)}
+var dragging=false;
+track.addEventListener('pointerdown',function(ev){dragging=true;try{track.setPointerCapture(ev.pointerId)}catch(e){}seekTo(ratio(ev)*total)});
+track.addEventListener('pointermove',function(ev){if(dragging)seekTo(ratio(ev)*total)});
+track.addEventListener('pointerup',function(){dragging=false});
+track.addEventListener('keydown',function(ev){if(ev.key==='ArrowRight'){seekTo(now()+5);ev.preventDefault()}if(ev.key==='ArrowLeft'){seekTo(now()-5);ev.preventDefault()}});
+audio.addEventListener('ended',function(){if(playing){t=total;tick()}});
+document.addEventListener('visibilitychange',function(){if(document.hidden&&playing)pause()});
+
+render(starts[0]+scenes[0].d.last+0.5);t=0;setIcons();
+fillEl.style.width='0%';timeEl.textContent='0:00 / '+mmss(total);
+window.__mv={audio:audio,isReady:function(){return audioReady},render:render,starts:starts,total:total,scenes:scenes.map(function(s){return{dur:s.dur,last:s.d.last,tag:s.d.tag}})};
+})();
+</script>
+
 <nav class="toc"><a href="#s0">先看這裡</a><a href="#s1">第一步</a><a href="#s2">第二步</a><a href="#s3">第三步</a><a href="#s4">第四步</a><a href="#s5">第五步</a><a href="#s6">第六步</a><a href="#s7">第七步</a><a href="#s8">第八步</a><a href="#s9">找誰辦</a><a href="#s10">準備文件</a><a href="#s11">分工與窗口</a><a href="#s12">參考資料</a></nav>
 <main>
 <h2 id="s0">先看這裡：最重要的期限</h2>
