@@ -216,7 +216,14 @@ const CONFIG = {
 /* ================================================================ */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-let FILES = [], VIEW = "tree", QUERY = "", CURRENT = null;
+let FILES = [], FOLDERS = {}, VIEW = "tree", QUERY = "", CURRENT = null;
+// 資料夾顯示名稱：folders.json 有設定就用，否則用資料夾名
+const label = p => FOLDERS[p] || p.split("/").pop();
+const dirLabel = dir => { if(!dir) return ""; let acc = ""; return dir.split("/").map(s => label(acc = acc ? acc+"/"+s : s)).join(" / "); };
+// 網址用的短路徑：去掉 .html，子資料夾的 index.html 只留資料夾
+const slug = p => p.replace(/(^|\/)index\.html?$/i, "$1").replace(/\.html?$/i, "");
+// 分享連結：GitHub Pages 上用不含 .html 的短網址
+const shareURL = p => new URL(encodeURI(/\.github\.io$/i.test(location.hostname) ? slug(p) : p), new URL(".", location.href)).href;
 const store = {
   get(k, d){ try{ const v = localStorage.getItem("cab:"+k); return v==null ? d : JSON.parse(v);}catch{ return d; } },
   set(k, v){ try{ localStorage.setItem("cab:"+k, JSON.stringify(v)); }catch{} }
@@ -235,6 +242,7 @@ async function load(){
     const r = await fetch(CONFIG.manifest + "?t=" + Date.now(), {cache:"no-store"});
     if(!r.ok) throw 0;
     const m = await r.json();
+    FOLDERS = m.folders || {};
     return (m.files || m).map(norm);
   }catch{}
   // fallback: GitHub API
@@ -312,7 +320,7 @@ function renderTree(node, depth=0){
     html += `<div class="folder ${open?"open":""}" data-dir="${esc(d.path)}">
       <button class="row" data-toggle="${esc(d.path)}" aria-expanded="${!!open}">
         <span class="tw">▶</span>${open?ICON.folderOpen:ICON.folder}
-        <span class="nm">${hl(d.name)}</span><span class="meta">${count(d)}</span>
+        <span class="nm">${hl(label(d.path))}</span><span class="meta">${count(d)}</span>
       </button>
       <div class="kids">${renderTree(d, depth+1)}</div></div>`;
   }
@@ -327,7 +335,7 @@ function pruneTree(node){
   const out = {name:node.name, path:node.path, dirs:new Map(), files:node.files.filter(matches)};
   for(const [k,d] of node.dirs){
     const p = pruneTree(d);
-    if(p.files.length || p.dirs.size || (QUERY && d.name.toLowerCase().includes(QUERY))) out.dirs.set(k, p);
+    if(p.files.length || p.dirs.size || (QUERY && label(d.path).toLowerCase().includes(QUERY))) out.dirs.set(k, p);
   }
   return out;
 }
@@ -341,7 +349,7 @@ function renderTimeline(){
     if(m!==lastM){ html += `<div class="month">${m}</div>`; lastM = m; }
     html += `<button class="card ${CURRENT===f.path?"on":""}" data-open="${esc(f.path)}">
       <div class="d">${d?d.getDate():"–"}<small>${d?["SUN","MON","TUE","WED","THU","FRI","SAT"][d.getDay()]:""}</small></div>
-      <div><div class="t">${hl(f.title)}</div><div class="p">${hl(f.dir||"/")}</div>
+      <div><div class="t">${hl(f.title)}</div><div class="p">${hl(dirLabel(f.dir)||"/")}</div>
       ${f.tags.length?`<div class="tags">${f.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>`:""}</div></button>`;
   }
   return html;
@@ -364,7 +372,7 @@ function renderCover(){
   const tile = (f,i) => `<button class="tile" data-open="${esc(f.path)}">
       <div class="n"><span>${String(i+1).padStart(2,"0")}</span><span>${fmtDate(f.date)}</span></div>
       <div class="t">${esc(f.title)}</div>
-      <div class="s">${esc(f.description || f.dir || "")}</div>
+      <div class="s">${esc(f.description || dirLabel(f.dir))}</div>
       ${f.tags.length?`<div class="tags">${f.tags.slice(0,3).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>`:""}
     </button>`;
   $("#cover").innerHTML = `
@@ -375,7 +383,7 @@ function renderCover(){
     ${topics.length?`<div class="section-h">依主題瀏覽</div><div class="grid">${topics.map(d=>`
       <button class="tile" data-reveal="${esc(d.path)}">
         <div class="n"><span>${ICON.folder.replace('class="ic"','width="14" height="14"')}</span><span>${count(d)} 頁</span></div>
-        <div class="t">${esc(d.name)}</div>
+        <div class="t">${esc(label(d.path))}</div>
         <div class="s">最近更新 ${fmtDate(latest(d)||null)||"—"}</div>
       </button>`).join("")}</div>`:""}
   `;
@@ -383,20 +391,20 @@ function renderCover(){
 
 /* ---------- open / route ---------- */
 function show(path, push=true){
-  const f = FILES.find(x=>x.path===path);
+  const f = FILES.find(x=>x.path===path || slug(x.path)===path);
   if(!f){ home(push); return; }
-  CURRENT = path;
+  path = CURRENT = f.path;
   const url = encodeURI(path);
   const frame = $("#frame");
   if(frame.getAttribute("src")!==url) frame.src = url;
   frame.hidden = false; $("#cover").hidden = true;
   $("#open").href = url; ["open","copy","full"].forEach(id=>$("#"+id).hidden=false);
   const segs = path.split("/");
-  $("#crumb").innerHTML = segs.slice(0,-1).map(s=>`<span>${esc(s)}</span><span class="sep">/</span>`).join("") + `<b>${esc(f.title)}</b>`;
+  $("#crumb").innerHTML = segs.slice(0,-1).map((s,i)=>`<span>${esc(label(segs.slice(0,i+1).join("/")))}</span><span class="sep">/</span>`).join("") + `<b>${esc(f.title)}</b>`;
   document.title = `${f.title} · ${CONFIG.title}`;
   // 展開祖先資料夾
   let acc=""; for(const s of segs.slice(0,-1)){ acc = acc?acc+"/"+s:s; OPEN.add(acc); } store.set("open",[...OPEN]);
-  if(push) history.pushState(null,"","#/"+path);
+  if(push) history.pushState(null,"","#/"+slug(path));
   render();
   document.body.classList.remove("drawer");
   requestAnimationFrame(()=> document.querySelector(`[data-open="${CSS.escape(path)}"].on`)?.scrollIntoView({block:"nearest"}));
@@ -436,7 +444,7 @@ $("#menu").onclick = ()=>document.body.classList.toggle("drawer");
 $("#scrim").onclick = ()=>document.body.classList.remove("drawer");
 $("#full").onclick = ()=>document.body.classList.toggle("full");
 $("#copy").onclick = async ()=>{
-  try{ await navigator.clipboard.writeText(location.href); const s=$("#copy span"); const o=s.textContent; s.textContent="已複製 ✓"; setTimeout(()=>s.textContent=o,1400);}catch{}
+  try{ await navigator.clipboard.writeText(shareURL(CURRENT)); const s=$("#copy span"); const o=s.textContent; s.textContent="已複製 ✓"; setTimeout(()=>s.textContent=o,1400);}catch{}
 };
 $("#theme").onclick = ()=>{
   const dark = matchMedia("(prefers-color-scheme: dark)").matches;

@@ -17,6 +17,7 @@ push 任何 `.html` 後，GitHub Action「Build manifest」會執行 `scripts/bu
 | `scripts/build-manifest.mjs` | 產生 manifest 的腳本 |
 | `.github/workflows/manifest.yml` | push 時自動執行上述腳本 |
 | `.nojekyll` | 讓 GitHub Pages 直接提供檔案，不要刪 |
+| `folders.json` | 資料夾的中文顯示名稱，需要手動編輯（見「命名規則」） |
 
 ## 新增頁面
 
@@ -44,14 +45,28 @@ push 任何 `.html` 後，GitHub Action「Build manifest」會執行 `scripts/bu
 
 ## 命名規則
 
-- 檔名建議加日期前綴，格式為 `YYYYMMDD`，例如 `20261012-台灣薪資.html`。日期會自動帶入，標題也會自動去掉前綴。
-- 用 `-` 或 `_` 取代空白。中文檔名可以用，但分享連結會比較長。
-- 以 `_` 或 `.` 開頭的檔案或資料夾不會出現在導覽頁，適合放草稿。不過 repo 是公開的，知道網址的人仍然能打開。
-- `assets/`、`scripts/` 資料夾內的 HTML 不會被列出，可以用來放共用素材。
+網址由「資料夾名/檔名」組成，所以這兩者都用簡短英文。導覽頁上顯示的中文來自頁面的 `<title>` 和 `folders.json`，因此不影響辨識。
 
-目前的主題資料夾（新增主題時一併更新）：
+- **檔名與資料夾名**：只用小寫英文、數字和 `-`，盡量 1–3 個字。例如 `tech/cloudflare-d1.html`，分享網址就是 `https://miiiiiiw.github.io/milo/tech/cloudflare-d1`。
+- **日期**：寫在 `<meta name="date">`，不建議放進檔名，以免網址變長。如果檔名仍以 `YYYYMMDD` 開頭（`20261012-wages.html`），會被當作日期。
+- **資料夾的中文名稱**：寫在根目錄的 `folders.json`，鍵是完整的資料夾路徑。沒設定的資料夾直接顯示英文名稱。
 
-- `技術筆記/`：開發、部署與工具相關的筆記和指南
+  ```json
+  {
+    "tech": "技術筆記",
+    "tech/cloudflare": "Cloudflare"
+  }
+  ```
+
+- **隱藏**：以 `_` 或 `.` 開頭的檔案或資料夾不會出現在導覽頁，適合放草稿。不過 repo 是公開的，知道網址的人仍然能打開。
+- **共用素材**：`assets/`、`scripts/` 資料夾內的 HTML 不會被列出。
+- **分享後不要改名**：網址分享出去之後，改檔名或資料夾名會讓舊連結失效。
+
+## 分享連結
+
+在導覽頁打開頁面後按「複製連結」，會得到不含 `.html` 的短網址，例如 `https://miiiiiiw.github.io/milo/tech/cloudflare-d1`。這個網址只會打開頁面本身，不包含導覽頁。
+
+如果想讓對方也看到導覽頁，就分享瀏覽器網址列上的網址，例如 `https://miiiiiiw.github.io/milo/#/tech/cloudflare-d1`。
 
 ## 修改、改名、刪除
 
@@ -72,7 +87,7 @@ push 任何 `.html` 後，GitHub Action「Build manifest」會執行 `scripts/bu
 |---|---|
 | 新頁面沒出現 | 先等 2 分鐘再強制重新整理。接著確認檔名不是 `_`／`.` 開頭、檔案不在 `assets/`／`scripts/` 內，並且是 push 到 `main`。 |
 | Build manifest 失敗 | 到 Settings → Actions → General，確認 Workflow permissions 為 Read and write。 |
-| 需要手動更新清單 | 到 Actions → Build manifest → Run workflow。自動觸發只在 `.html` 或腳本變動時發生。 |
+| 需要手動更新清單 | 到 Actions → Build manifest → Run workflow。自動觸發只在 `.html`、`folders.json` 或腳本變動時發生。 |
 | 圖片或 CSS 讀不到 | 改用相對路徑，並檢查大小寫（GitHub Pages 會區分大小寫）。 |
 | 預覽框內顯示異常 | 部分功能（全螢幕、攝影機、彈出視窗）在預覽框中會受限，改按右上角「新分頁」開啟。 |
 | 整個網站 404 | 到 Settings → Pages，確認來源為 `main` 分支的 `/ (root)`。 |
@@ -106,7 +121,9 @@ push 任何 `.html` 後，GitHub Action「Build manifest」會執行 `scripts/bu
 - 補齊上述四個 meta 標籤，並檢查資源是否使用相對路徑。
 - 在本機產生 manifest，確認新頁面有被掃描到。push 之後，再確認網站上已經出現。
 - commit 訊息以「新增：」「更新：」「刪除：」「維護：」開頭。
-- 新增主題資料夾時，更新「命名規則」裡的主題清單。導覽頁機制有變動時，記錄到「更新紀錄」。
+- 檔名與資料夾名使用簡短英文。新增資料夾時，在 `folders.json` 加上中文名稱。
+- push 後回報分享用的短網址。
+- 導覽頁機制有變動時，記錄到「更新紀錄」。
 
 **Claude 不會主動做：** 修改導覽頁的設計或功能、刪除或改名既有頁面、force push。
 
@@ -115,3 +132,4 @@ push 任何 `.html` 後，GitHub Action「Build manifest」會執行 `scripts/bu
 只記錄導覽頁與維運機制的變更，作品的新增請看 git log。
 
 - 2026-10-20：建立導覽頁與 manifest 自動更新機制，GitHub Pages 上線。
+- 2026-10-21：檔名改用簡短英文，新增 `folders.json` 設定資料夾的中文名稱；「複製連結」改為產生不含 `.html` 的短網址。

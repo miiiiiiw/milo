@@ -9,7 +9,7 @@
 //   <meta name="date" content="2026-10-20">                     ← 覆蓋自動日期
 // 都沒寫也沒關係：標題會用檔名，日期會用 git 第一次 commit 的時間。
 
-import { readdirSync, readFileSync, writeFileSync, statSync } from "node:fs";
+import { readdirSync, readFileSync, writeFileSync, statSync, existsSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { execSync } from "node:child_process";
 
@@ -61,5 +61,12 @@ const files = walk(ROOT).map(({ full, rel, mtime }) => {
   };
 }).sort((a, b) => (b.date || "").localeCompare(a.date || ""));
 
-writeFileSync("manifest.json", JSON.stringify({ generated: new Date().toISOString(), files }, null, 2) + "\n");
+// folders.json：資料夾的中文顯示名稱，例如 { "tech": "技術筆記" }
+let folders = {};
+if (existsSync("folders.json")) {
+  try { folders = JSON.parse(readFileSync("folders.json", "utf8")); }
+  catch (e) { console.error("folders.json 格式錯誤，已略過：" + e.message); }
+}
+
+writeFileSync("manifest.json", JSON.stringify({ generated: new Date().toISOString(), folders, files }, null, 2) + "\n");
 console.log(`manifest.json: ${files.length} pages`);
