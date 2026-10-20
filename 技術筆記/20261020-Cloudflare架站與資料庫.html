@@ -128,6 +128,17 @@ ul.points{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:8px
 .d .lg-backend{fill:var(--node);stroke:var(--ink)}
 .d .lg-ext{fill:var(--ext);stroke:var(--ext-stroke)}
 
+.stage{position:relative}
+.play-cover{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;gap:14px;width:100%;
+  border:0;margin:0;padding:16px;background:color-mix(in srgb,var(--paper) 55%,transparent);color:var(--ink);font-family:var(--sans);cursor:pointer;text-align:left}
+.play-cover .pc-icon{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;background:var(--accent);color:var(--paper);flex:none;padding-left:3px}
+.play-cover .pc-text{display:flex;flex-direction:column;gap:2px;background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:10px 14px}
+.play-cover b{font-size:1rem;font-weight:600}
+.play-cover small{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.play-cover:hover .pc-icon{filter:brightness(1.08)}
+.play-cover:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.motion-note{font-size:.88rem;color:var(--muted);border:1px solid var(--rule);border-radius:6px;padding:10px 12px;max-width:none}
+@media (prefers-reduced-motion:reduce){.play-cover{display:none!important}}
 /* motion (diagram-design animation contract: static source complete, step mode) */
 .motion-fig{--motion-fast:160ms;--motion-step:480ms;--motion-hold:1200ms;--motion-total:7200ms;--motion-ease:cubic-bezier(.2,.8,.2,1);min-width:0}
 .motion-ready [data-motion-item]{opacity:.12;transform:translateY(8px);transform-box:fill-box;transform-origin:center;
@@ -182,7 +193,13 @@ html[data-motion="step"] [data-motion-item]{animation:none!important;transition:
   <p>三個服務各有分工：GitHub 存放程式碼；Workers 執行後端程式，也能同時提供前端的靜態檔；D1 存放資料。</p>
   <p>你在本機開發後 push 到 GitHub，Cloudflare 的 Workers Builds 會自動建置並部署 Worker。使用者的請求進到 Worker 後，Worker 透過名為 <code>DB</code> 的 binding 查詢 D1，不需要連線字串，也不必另外架設資料庫伺服器。</p>
   <figure class="motion-fig" data-motion-root data-motion-mode="step" data-step-count="6" data-step-current="6" data-frame="static" data-static-frame="complete">
+    <p class="motion-note" data-reduced-note hidden>你的裝置開啟了「減少動態效果」，所以這裡只顯示完整的靜態圖，不提供播放。想看動畫，可到裝置的輔助使用設定中關閉這個選項（iPhone：設定 → 輔助使用 → 動態效果）。</p>
     <span class="swipe">← 左右滑動看完整圖 →</span>
+    <div class="stage">
+    <button type="button" class="play-cover" data-play-cover hidden>
+      <span class="pc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span>
+      <span class="pc-text"><b>播放流程動畫</b><small>6 個步驟 · 約 7 秒 · 有配樂</small></span>
+    </button>
     <div class="scroll">
 <svg class="d" viewBox="0 0 640 452" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="arch-title arch-desc">
   <title id="arch-title">GitHub、Workers 與 D1 的部署架構</title>
@@ -273,6 +290,7 @@ html[data-motion="step"] [data-motion-item]{animation:none!important;transition:
   <line class="a-dash" x1="472" y1="422" x2="500" y2="422"/><text class="lbl-zh" x="508" y="427">選用流程</text>
 </svg>
     </div>
+    </div>
     <p class="motion-caption" data-motion-caption aria-hidden="true">完整流程：本機開發 → push → 自動建置 → 部署 → 使用者請求 → 查詢 D1</p>
     <div data-motion-controls role="group" aria-label="架構圖播放控制">
       <button type="button" data-motion-action="prev">上一步</button>
@@ -286,7 +304,7 @@ html[data-motion="step"] [data-motion-item]{animation:none!important;transition:
     </div>
     <p class="sr-only" data-motion-status role="status" aria-live="polite" aria-atomic="true"></p>
     <noscript><p class="note">動畫需要 JavaScript，上方顯示的是完整架構圖。</p></noscript>
-    <figcaption>按「播放」可以依序看完六個步驟，配樂在播放時才會響起；也可以用「上一步」「下一步」自己控制節奏。虛線的 MIGRATE 是選用做法：把 migration 指令加進部署指令，建置時順便更新資料表（見步驟 06）。</figcaption>
+    <figcaption>按圖上的播放鍵，六個步驟會依序亮起；也可以用「上一步」「下一步」自己控制節奏。虛線的 MIGRATE 是選用做法：把 migration 指令加進部署指令，建置時順便更新資料表（見步驟 06）。</figcaption>
   </figure>
 
   <h2><span class="no">02</span>建置步驟</h2>
@@ -749,6 +767,9 @@ document.querySelectorAll('.copy').forEach(function(btn){
   if (!root) return;
   const cap = root.querySelector('[data-motion-caption]');
   const toggle = root.querySelector('[data-music-toggle]');
+  const cover = root.querySelector('[data-play-cover]');
+  const reducedNote = root.querySelector('[data-reduced-note]');
+  cover.addEventListener('click', () => { const b = root.querySelector('[data-motion-action="play"]'); if (b && !b.disabled) b.click(); });
   const total = Number(root.dataset.stepCount);
   const fullText = cap.textContent;
   const items = [...root.querySelectorAll('[data-motion-item]:not([data-motion-decorative])')];
@@ -869,12 +890,16 @@ document.querySelectorAll('.copy').forEach(function(btn){
     const playing = root.classList.contains('is-playing');
 
     if (frame === 'static') cap.textContent = fullText;
-    else if (step === 0) cap.textContent = '按「播放」開始，或用「下一步」逐步看。';
+    else if (step === 0) cap.textContent = '按圖上的播放鍵開始，或用「下一步」逐步看。';
     else cap.innerHTML = '<span class="cap-n">' + step + ' / ' + total + '</span>' + labelFor(step);
 
     if (playing && !wasPlaying && enabled) startPad();
     if (!playing && wasPlaying) stopPad(frame === 'end' ? 2.8 : 0.6);
     if (lastStep !== null && step !== lastStep && step > 0 && frame !== 'static') bell(step);
+
+    const controlsOn = !root.querySelector('[data-motion-controls]').hidden;
+    cover.hidden = !(root.classList.contains('motion-ready') && controlsOn && step === 0 && !playing);
+    reducedNote.hidden = root.dataset.motionState !== 'reduced';
 
     wasPlaying = playing; lastStep = step;
   }
