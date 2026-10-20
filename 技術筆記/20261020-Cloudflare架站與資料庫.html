@@ -130,100 +130,29 @@ ul.points{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:8px
 
 [hidden]{display:none!important}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-/* trailer: a 10-scene overview video of the whole guide */
+/* trailer: canvas motion graphics; the video screen is deliberately dark in both themes */
 .trailer{display:flex;flex-direction:column;gap:10px;margin-top:8px}
 .tr-h{margin:0}
-.player{width:100%;display:flex;flex-direction:column;border:1px solid var(--rule-solid);border-radius:8px;overflow:hidden;background:var(--paper)}
-.stage{position:relative;height:440px;overflow:hidden;background:var(--paper)}
-@media (min-width:640px){.stage{height:400px}}
-.scene{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:14px;padding:24px 20px;
-  opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}
-@media (min-width:640px){.scene{padding:32px 48px}}
-.scene.act{opacity:1;visibility:visible;transition:opacity .35s ease}
-.scene p{margin:0;max-width:none}
-.sc-title{align-items:flex-start}
-.t-xl{font-family:var(--serif);font-size:clamp(1.9rem,6.4vw,2.6rem);line-height:1.15;text-wrap:balance}
-.t-l{font-family:var(--serif);font-size:clamp(1.45rem,5vw,1.9rem);line-height:1.2;text-wrap:balance}
-.t-sub{font-size:1.05rem;color:var(--muted)}
-.t-note{font-size:.92rem;color:var(--muted);line-height:1.6}
-.t-note.strong{color:var(--ink);font-weight:600}
-.sc-k{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;color:var(--accent);text-transform:uppercase}
-.tagc{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;color:var(--soft);border:1px solid var(--rule-solid);border-radius:2px;padding:0 5px;align-self:flex-start}
-.card{display:flex;flex-direction:column;gap:4px;background:var(--node);border:1px solid var(--ink);border-radius:6px;padding:10px 12px;min-width:0}
-.card b{font-size:1rem}
-.card span:last-child{font-size:.86rem;color:var(--muted);line-height:1.5}
-.card.focal,.chip.focal,.lane.focal{background:var(--accent-tint);border-color:var(--accent)}
-.cards3{display:grid;grid-template-columns:1fr;gap:8px}
-.cards2{display:grid;grid-template-columns:1fr;gap:8px}
-@media (min-width:640px){.cards3{grid-template-columns:1fr 1.15fr .9fr}.cards2{grid-template-columns:1fr 1fr}}
-.chain,.queue{display:flex;flex-direction:column;align-items:flex-start;gap:0}
-@media (min-width:640px){.chain,.queue{flex-direction:row;align-items:center;flex-wrap:wrap}}
-.chip{display:inline-block;background:var(--node);border:1px solid var(--ink);border-radius:6px;padding:8px 12px;font-weight:600;font-size:.95rem}
-.chip.ext{background:var(--ext);border-color:var(--ext-stroke)}
-.draw{position:relative;display:block;width:1px;height:26px;margin-left:24px;background:var(--muted);font-style:normal}
-.draw.link{background:var(--link)}
-.draw em{position:absolute;left:10px;top:50%;transform:translateY(-50%);font:400 .66rem var(--mono);letter-spacing:.06em;color:var(--soft);font-style:normal;white-space:nowrap}
-@media (min-width:640px){
-  .draw{width:44px;height:1px;margin:0 6px}
-  .draw em{left:50%;top:-16px;transform:translateX(-50%)}
-}
-.steps7{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr;gap:4px}
-@media (min-width:640px){.steps7{grid-template-columns:1fr 1fr;gap:6px 24px}}
-.steps7 li{display:flex;gap:10px;align-items:baseline;font-size:.95rem;padding:3px 0;border-bottom:1px solid var(--rule)}
-.steps7 li span{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
-.steps7 li.key{color:var(--accent);font-weight:600}
-.steps7 li.key span{color:var(--accent)}
-.lanes2{display:flex;flex-direction:column;gap:8px}
-.lane{display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center;background:var(--node);border:1px solid var(--ink);border-radius:6px;padding:10px 12px}
-.lane b{font-size:1rem}
-.lane span{grid-column:1;font-size:.88rem;color:var(--muted)}
-.lane em{grid-row:1 / span 2;grid-column:2;font:500 .7rem var(--mono);letter-spacing:.08em;font-style:normal;border-radius:2px;padding:3px 7px;border:1px solid}
-.lane em.ok{color:var(--muted);border-color:var(--rule-solid)}
-.lane em.warn{color:var(--accent);border-color:var(--accent)}
-.bars{display:flex;flex-direction:column;gap:12px}
-.bar{display:grid;grid-template-columns:1fr auto;grid-template-areas:"l v" "t t";gap:4px 12px;align-items:end}
-.bl{grid-area:l;font-size:.9rem}
-.bv{grid-area:v;font:600 .95rem var(--mono);text-align:right;font-variant-numeric:tabular-nums}
-.bv small{display:block;font-weight:400;font-size:.66rem;color:var(--soft)}
-.track{grid-area:t;display:block;height:8px;border-radius:2px;background:var(--rule-solid);overflow:hidden}
-.fill{display:block;height:100%;width:var(--w);background:var(--accent)}
-.queue .dot{display:inline-block;width:14px;height:14px;border-radius:3px;background:var(--muted);margin:0 0 6px 18px}
-@media (min-width:640px){.queue .dot{margin:0 6px 0 0}}
-.toc{display:flex;flex-wrap:wrap;gap:6px}
-.toc span{font:500 .75rem var(--mono);border:1px solid var(--rule-solid);border-radius:4px;padding:5px 9px;color:var(--muted)}
-code{overflow-wrap:anywhere}
-
-/* motion: elements enter only while their scene is active and the player has started */
-.player.started .scene.act .in{animation:tr-rise .5s cubic-bezier(.2,.8,.2,1) var(--d,0s) both}
-.player.started .scene.act .draw{animation:tr-grow-v .45s ease var(--d,0s) both;transform-origin:top}
-.player.started .scene.act .fill{animation:tr-fill .9s ease var(--d,0s) both}
-@media (min-width:640px){.player.started .scene.act .draw{animation-name:tr-grow-h;transform-origin:left}}
-.player.paused .scene *{animation-play-state:paused!important}
-@keyframes tr-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-@keyframes tr-grow-v{from{transform:scaleY(0)}to{transform:none}}
-@keyframes tr-grow-h{from{transform:scaleX(0)}to{transform:none}}
-@keyframes tr-fill{from{width:0}to{width:var(--w)}}
-@media (prefers-reduced-motion:reduce){
-  .scene{transition:none}
-  .player.started .scene.act .in,.player.started .scene.act .draw,.player.started .scene.act .fill{animation-duration:.001ms}
-}
-
-.pv-big{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:12px;width:100%;
-  border:0;margin:0;padding:0 0 32px;background:linear-gradient(to bottom,transparent 35%,color-mix(in srgb,var(--paper) 85%,transparent));color:var(--ink);font:600 1rem var(--sans);cursor:pointer}
-.pv-big-icon{display:grid;place-items:center;width:76px;height:76px;border-radius:50%;background:var(--accent);color:var(--paper);padding-left:4px}
-.pv-big-text{background:var(--paper);border:1px solid var(--rule-solid);border-radius:999px;padding:6px 14px;font-size:.9rem}
-.pv-big:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
-.pv-bar{display:flex;align-items:center;gap:8px;padding:6px 8px;border-top:1px solid var(--rule)}
-.pv-btn{display:grid;place-items:center;width:44px;height:44px;flex:none;border:0;border-radius:6px;background:transparent;color:var(--ink);cursor:pointer}
-.pv-btn:hover{background:var(--paper-2)}
-.pv-btn:focus-visible{outline:2px solid var(--accent);outline-offset:0}
-.pv-sound[aria-pressed="false"]{color:var(--soft)}
+.player{width:100%;display:flex;flex-direction:column;border-radius:8px;overflow:hidden;background:#1b1e2d;color:#f5f5f5}
+.stage{position:relative;display:flex;justify-content:center;background:#1b1e2d}
+canvas.mg{display:block;width:100%;max-width:560px;aspect-ratio:1/1;height:auto}
+.pv-big{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;width:100%;
+  border:0;margin:0;padding:0;background:rgba(27,30,45,.45);color:#f5f5f5;font:600 1rem var(--sans);cursor:pointer}
+.pv-big-icon{display:grid;place-items:center;width:84px;height:84px;border-radius:50%;background:#f08a59;color:#1b1e2d;padding-left:4px}
+.pv-big-text{background:#1b1e2d;border:1px solid rgba(245,245,245,.25);border-radius:999px;padding:7px 16px;font-size:.92rem}
+.pv-big:hover .pv-big-icon{filter:brightness(1.08)}
+.pv-big:focus-visible{outline:3px solid #f08a59;outline-offset:-3px}
+.pv-bar{display:flex;align-items:center;gap:8px;padding:6px 8px;border-top:1px solid rgba(245,245,245,.12)}
+.pv-btn{display:grid;place-items:center;width:44px;height:44px;flex:none;border:0;border-radius:6px;background:transparent;color:#f5f5f5;cursor:pointer}
+.pv-btn:hover{background:rgba(245,245,245,.08)}
+.pv-btn:focus-visible{outline:2px solid #f08a59;outline-offset:0}
+.pv-sound[aria-pressed="false"]{color:#949eb2}
 .pv-segs{flex:1;min-width:0;display:flex;gap:3px;align-items:center;height:44px}
 .pv-seg{flex:1;min-width:0;height:44px;border:0;padding:0;background:transparent;cursor:pointer;display:flex;align-items:center}
-.pv-seg i{display:block;width:100%;height:4px;border-radius:2px;background:var(--rule-solid);overflow:hidden}
-.pv-seg i b{display:block;height:100%;width:0;background:var(--accent)}
-.pv-seg:focus-visible i{outline:2px solid var(--accent);outline-offset:3px}
-.pv-time{flex:none;font:500 .72rem var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.pv-seg i{display:block;width:100%;height:4px;border-radius:2px;background:rgba(245,245,245,.22);overflow:hidden}
+.pv-seg i b{display:block;height:100%;width:0;background:#f08a59}
+.pv-seg:focus-visible i{outline:2px solid #f08a59;outline-offset:3px}
+.pv-time{flex:none;font:500 .72rem var(--mono);color:#bfc0c0;font-variant-numeric:tabular-nums}
 @media (max-width:400px){.pv-time{display:none}}
 </style>
 </head>
@@ -235,115 +164,13 @@ code{overflow-wrap:anywhere}
   <p class="lede">這份指南說明如何把放在 GitHub 的程式部署到 Cloudflare Workers，並用 D1（Cloudflare 提供的 SQLite 資料庫）儲存資料。設定完成後，每次 push 到 GitHub，網站就會自動更新。</p>
 
   <section class="trailer" aria-labelledby="tr-h">
-    <h2 id="tr-h" class="tr-h"><span class="no">▶</span>先看動畫：50 秒看懂整份指南</h2>
+    <h2 id="tr-h" class="tr-h"><span class="no">▶</span>先看動畫：一分鐘看懂整份指南</h2>
     <div class="player" data-player>
-      <div class="stage" data-stage>
-
-        <div class="scene sc-title" data-scene>
-          <p class="eyebrow in">部署筆記 · 50 秒導覽</p>
-          <p class="t-xl in" style="--d:.15s">用 GitHub、Workers 與 D1 部署網站</p>
-          <p class="t-sub in" style="--d:.5s">寫好程式 push 上去，網站就自動更新。</p>
-        </div>
-
-        <div class="scene" data-scene>
-          <p class="sc-k in">01 · 運作方式</p>
-          <p class="t-l in" style="--d:.1s">三個服務，各管一件事</p>
-          <div class="cards3">
-            <div class="card in" style="--d:.4s"><span class="tagc">GIT</span><b>GitHub</b><span>存放程式碼</span></div>
-            <div class="card in" style="--d:.8s"><span class="tagc">API</span><b>Workers</b><span>執行後端程式，也提供前端檔案</span></div>
-            <div class="card focal in" style="--d:1.2s"><span class="tagc">DB</span><b>D1</b><span>存放資料（SQLite）</span></div>
-          </div>
-        </div>
-
-        <div class="scene" data-scene>
-          <p class="sc-k in">01 · 運作方式</p>
-          <p class="t-l in" style="--d:.1s">從 push 到上線，全自動</p>
-          <div class="chain">
-            <span class="chip in" style="--d:.3s">你的電腦</span><i class="draw" style="--d:.6s"><em>push</em></i>
-            <span class="chip in" style="--d:.8s">GitHub</span><i class="draw" style="--d:1.1s"><em>觸發</em></i>
-            <span class="chip in" style="--d:1.3s">Workers Builds</span><i class="draw" style="--d:1.6s"><em>部署</em></i>
-            <span class="chip focal in" style="--d:1.8s">Worker 上線</span>
-          </div>
-          <p class="t-note in" style="--d:2.4s">不用手動上傳檔案，每次 push 都會自動跑一次。</p>
-        </div>
-
-        <div class="scene" data-scene>
-          <p class="sc-k in">01 · 運作方式</p>
-          <p class="t-l in" style="--d:.1s">使用者怎麼讀到資料</p>
-          <div class="chain">
-            <span class="chip ext in" style="--d:.3s">使用者瀏覽器</span><i class="draw link" style="--d:.6s"><em>HTTPS</em></i>
-            <span class="chip in" style="--d:.8s">Worker</span><i class="draw" style="--d:1.1s"><em>env.DB</em></i>
-            <span class="chip focal in" style="--d:1.3s">D1 資料庫</span>
-          </div>
-          <p class="t-note in" style="--d:1.9s">Worker 透過 binding 直接查詢，不需要連線字串，也不必另外架資料庫伺服器。</p>
-        </div>
-
-        <div class="scene" data-scene>
-          <p class="sc-k in">02 · 建置步驟</p>
-          <p class="t-l in" style="--d:.1s">建置只要 7 步</p>
-          <ol class="steps7">
-            <li class="in" style="--d:.3s"><span>01</span>建立專案</li>
-            <li class="in" style="--d:.55s"><span>02</span>建立 D1 並綁定</li>
-            <li class="in" style="--d:.8s"><span>03</span>用 migration 建表</li>
-            <li class="in" style="--d:1.05s"><span>04</span>在程式中查詢</li>
-            <li class="in" style="--d:1.3s"><span>05</span>本機測試</li>
-            <li class="key in" style="--d:1.55s"><span>06</span>接上 GitHub 自動部署</li>
-            <li class="in" style="--d:1.8s"><span>07</span>設定機密資訊</li>
-          </ol>
-        </div>
-
-        <div class="scene" data-scene>
-          <p class="sc-k in">02 · 建置步驟</p>
-          <p class="t-l in" style="--d:.1s">最常忘記的一件事</p>
-          <div class="lanes2">
-            <div class="lane in" style="--d:.4s"><b>程式碼</b><span>push 後自動更新</span><em class="ok">自動</em></div>
-            <div class="lane focal in" style="--d:1s"><b>資料表結構</b><span>要自己執行 <code>apply --remote</code></span><em class="warn">手動</em></div>
-          </div>
-          <p class="t-note in" style="--d:1.7s">新程式要用新欄位時：先 apply，再 push。</p>
-        </div>
-
-        <div class="scene" data-scene>
-          <p class="sc-k in">03 · 限制</p>
-          <p class="t-l in" style="--d:.1s">免費方案的上限</p>
-          <div class="bars">
-            <div class="bar in" style="--d:.3s"><span class="bl">資料庫容量</span><span class="track"><i class="fill" style="--w:5%;--d:.5s"></i></span><span class="bv">500 MB<small>付費 10 GB</small></span></div>
-            <div class="bar in" style="--d:.6s"><span class="bl">每次請求的查詢數</span><span class="track"><i class="fill" style="--w:5%;--d:.8s"></i></span><span class="bv">50<small>付費 1,000</small></span></div>
-            <div class="bar in" style="--d:.9s"><span class="bl">時間點還原</span><span class="track"><i class="fill" style="--w:23%;--d:1.1s"></i></span><span class="bv">7 天<small>付費 30 天</small></span></div>
-          </div>
-          <p class="t-note in" style="--d:1.6s">灰色長條是付費方案的上限，橘色是免費方案。</p>
-        </div>
-
-        <div class="scene" data-scene>
-          <p class="sc-k in">03 · 限制</p>
-          <p class="t-l in" style="--d:.1s">D1 一次只處理一個查詢</p>
-          <div class="queue">
-            <span class="dot in" style="--d:.3s"></span><span class="dot in" style="--d:.5s"></span><span class="dot in" style="--d:.7s"></span><span class="dot in" style="--d:.9s"></span>
-            <i class="draw" style="--d:1.1s"><em>排隊</em></i>
-            <span class="chip focal in" style="--d:1.3s">D1</span>
-          </div>
-          <p class="t-note in" style="--d:1.8s">請求太多就排隊；佇列滿了會回傳 <code>overloaded</code> 錯誤。</p>
-          <p class="t-note strong in" style="--d:2.4s">解法：依使用者或租戶拆成多個資料庫。</p>
-        </div>
-
-        <div class="scene" data-scene>
-          <p class="sc-k in">04 · 快取</p>
-          <p class="t-l in" style="--d:.1s">快取讓網站更快</p>
-          <div class="cards2">
-            <div class="card in" style="--d:.4s"><span class="tagc">前端</span><b>靜態檔長期快取</b><span>檔名帶雜湊的 JS、CSS，用 <code>_headers</code> 設定</span></div>
-            <div class="card in" style="--d:.9s"><span class="tagc">後端</span><b>熱門資料先存起來</b><span>Cache API 或 KV，少查幾次 D1</span></div>
-          </div>
-          <p class="t-note in" style="--d:1.5s">登入後的個人資料和寫入操作不要快取。</p>
-        </div>
-
-        <div class="scene sc-title" data-scene>
-          <p class="t-xl in">大概就是這樣</p>
-          <p class="t-sub in" style="--d:.3s">往下看每一步的指令和細節。</p>
-          <div class="toc in" style="--d:.6s"><span>01 運作方式</span><span>02 建置步驟</span><span>03 限制</span><span>04 快取</span></div>
-        </div>
-
+      <div class="stage">
+        <canvas class="mg" data-canvas width="1000" height="1000" role="img" aria-label="導覽動畫：GitHub、Workers、D1 各自的分工，push 後自動部署的流程，使用者如何讀到資料，七個建置步驟，資料表需要手動套用 migration，免費方案的上限，D1 一次只處理一個查詢的排隊問題，以及快取的做法。"></canvas>
         <button type="button" class="pv-big" data-big>
-          <span class="pv-big-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span>
-          <span class="pv-big-text" data-big-text>播放導覽動畫（50 秒）</span>
+          <span class="pv-big-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span>
+          <span class="pv-big-text" data-big-text>播放（約 1 分鐘，有配樂）</span>
         </button>
       </div>
       <div class="pv-bar">
@@ -351,15 +178,16 @@ code{overflow-wrap:anywhere}
           <svg data-icon-play viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg>
           <svg data-icon-pause viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" hidden><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/></svg>
         </button>
-        <div class="pv-segs" data-segs role="group" aria-label="跳到第幾個畫面"></div>
-        <span class="pv-time" data-time>0:00 / 0:50</span>
-        <button type="button" class="pv-btn pv-sound" data-sound aria-pressed="true" aria-label="配樂">
+        <div class="pv-segs" data-segs role="group" aria-label="跳到第幾段"></div>
+        <span class="pv-time" data-time>0:00 / 0:59</span>
+        <button type="button" class="pv-btn pv-sound" data-sound aria-pressed="true" aria-label="關閉配樂">
           <svg data-icon-on viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4zM16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <svg data-icon-off viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" hidden><path d="M4 9h4l5-4v14l-5-4H4zM16.5 9.5l5 5M21.5 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>
       <p class="sr-only" data-live aria-live="polite"></p>
     </div>
+    <p class="note">沒聽到配樂的話：確認右下角喇叭不是關閉狀態；iPhone 請關掉側邊的靜音開關，或把系統更新到 iOS 17 以上。</p>
   </section>
 
   <h2><span class="no">01</span>運作方式</h2>
@@ -712,153 +540,483 @@ document.querySelectorAll('.copy').forEach(function(btn){
 </script>
 
 <script>
-/* Overview video: 10 HTML scenes with CSS entrances; original Web Audio soundtrack that starts only on a press. */
+/* Motion-graphics trailer. Every frame is drawn from the playhead time, so pause and seek are exact.
+   Soundtrack: an original beat synthesized live with Web Audio, started only by a press. */
 (() => {
   const P = document.querySelector('[data-player]');
   if (!P) return;
-  const scenes = [...P.querySelectorAll('[data-scene]')];
-  const DURS = [4, 5, 5, 5, 6, 5, 5, 5, 5, 5].map((s) => s * 1000);
-  const STARTS = DURS.map((_, i) => DURS.slice(0, i).reduce((a, b) => a + b, 0));
-  const TOTAL = DURS.reduce((a, b) => a + b, 0);
+  const cv = P.querySelector('[data-canvas]');
+  const g = cv.getContext('2d');
+
+  /* ---------- palette & type ---------- */
+  const BG = '#1b1e2d', INK = '#f5f5f5', MUTED = '#9aa3b8', ACC = '#f08a59', HOT = '#ff6b3d', LINK = '#7fa8e6', LINE = 'rgba(245,245,245,.5)';
+  const F = {
+    sans: '"Geist","Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif',
+    serif: '"Instrument Serif","Noto Serif TC",serif',
+    mono: '"Geist Mono",ui-monospace,Menlo,monospace'
+  };
+
+  /* ---------- helpers ---------- */
+  const cl = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+  const p = (t, a, b) => cl((t - a) / (b - a));
+  const eo = (x) => 1 - Math.pow(1 - x, 3);
+  const eb = (x) => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+  const lerp = (a, b, x) => a + (b - a) * x;
+  function T(s, x, y, o = {}) {
+    const { size = 32, weight = 600, color = INK, align = 'left', font = 'sans', alpha = 1, base = 'alphabetic' } = o;
+    if (alpha <= 0) return;
+    g.save(); g.globalAlpha *= alpha; g.fillStyle = color; g.textAlign = align; g.textBaseline = base;
+    g.font = weight + ' ' + size + 'px ' + F[font]; g.fillText(s, x, y); g.restore();
+  }
+  function rr(x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+  function node(cx, cy, w, h, label, sub, o = {}) {
+    const { a = 1, acc = false, pulse = 0, s = 1, size = 34 } = o;
+    if (a <= 0) return;
+    g.save(); g.globalAlpha *= a; g.translate(cx, cy); g.scale(s, s);
+    if (pulse > 0) { g.save(); g.globalAlpha *= pulse; g.strokeStyle = ACC; g.lineWidth = 3; rr(-w / 2 - 14 * (1 - pulse) - 6, -h / 2 - 14 * (1 - pulse) - 6, w + 28 * (1 - pulse) + 12, h + 28 * (1 - pulse) + 12, 18); g.stroke(); g.restore(); }
+    rr(-w / 2, -h / 2, w, h, 14); g.fillStyle = acc ? 'rgba(240,138,89,.18)' : 'rgba(245,245,245,.06)'; g.fill();
+    g.lineWidth = 2; g.strokeStyle = acc ? ACC : LINE; g.stroke();
+    T(label, 0, sub ? -2 : 12, { size, align: 'center' });
+    if (sub) T(sub, 0, 32, { size: 21, weight: 400, font: 'mono', color: acc ? ACC : MUTED, align: 'center' });
+    g.restore();
+  }
+  function dot(x, y, color, r = 9, a = 1) {
+    if (a <= 0) return;
+    g.save(); g.globalAlpha *= a; g.shadowColor = color; g.shadowBlur = 18; g.fillStyle = color; g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill(); g.restore();
+  }
+  function line(x1, y1, x2, y2, color = LINE, w = 2, dash) {
+    g.save(); g.strokeStyle = color; g.lineWidth = w; if (dash) g.setLineDash(dash); g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke(); g.restore();
+  }
+  function cyl(cx, cy, rx, h, o = {}) {
+    const { a = 1, label = '', s = 1, hot = false } = o;
+    if (a <= 0) return;
+    const ry = rx * 0.28, col = hot ? HOT : ACC;
+    g.save(); g.globalAlpha *= a; g.translate(cx, cy); g.scale(s, s);
+    g.fillStyle = hot ? 'rgba(255,107,61,.22)' : 'rgba(240,138,89,.16)'; g.strokeStyle = col; g.lineWidth = 3;
+    g.beginPath(); g.ellipse(0, -h / 2, rx, ry, 0, Math.PI, 0); g.lineTo(rx, h / 2); g.ellipse(0, h / 2, rx, ry, 0, 0, Math.PI); g.closePath(); g.fill(); g.stroke();
+    g.beginPath(); g.ellipse(0, -h / 2, rx, ry, 0, 0, Math.PI * 2); g.stroke();
+    if (label) T(label, 0, 18, { size: 38, align: 'center' });
+    g.restore();
+  }
+  function person(x, y, a = 1) {
+    if (a <= 0) return;
+    g.save(); g.globalAlpha *= a; g.fillStyle = MUTED;
+    g.beginPath(); g.arc(x, y - 22, 15, 0, Math.PI * 2); g.fill();
+    g.beginPath(); g.ellipse(x, y + 16, 26, 18, 0, Math.PI, 0); g.fill(); g.restore();
+  }
+  function title(s, t, y = 140) { T(s, 80, y + 16 * (1 - eo(p(t, 0.25, 0.7))), { size: 56, alpha: p(t, 0.25, 0.6) }); }
+  function kicker(s, t) { T(s, 80, 74, { size: 22, weight: 500, font: 'mono', color: ACC, alpha: p(t, 0.3, 0.6) }); }
+  function grid(t, a = 1) {
+    g.save(); g.globalAlpha = 0.07 * a; g.strokeStyle = INK; g.lineWidth = 1;
+    const off = (t * 24) % 100;
+    for (let x = -100; x <= 1100; x += 100) { g.beginPath(); g.moveTo(x + off, 0); g.lineTo(x + off, 1000); g.stroke(); }
+    for (let y = -100; y <= 1100; y += 100) { g.beginPath(); g.moveTo(0, y + off); g.lineTo(1000, y + off); g.stroke(); }
+    g.restore();
+  }
+
+  /* ---------- scenes (logical canvas 1000 x 1000) ---------- */
+  const SCENES = [
+    { d: 5, say: '寫程式，push，上線。', draw: s1 },
+    { d: 6, say: '三個服務各管一件事：GitHub 存程式碼，Workers 執行程式，D1 存資料。', draw: s2 },
+    { d: 7, say: 'push 之後，Workers Builds 自動建置並部署 Worker。', draw: s3 },
+    { d: 6, say: '使用者透過 HTTPS 呼叫 Worker，Worker 用 binding 讀寫 D1。', draw: s4 },
+    { d: 5, say: '建置只要 7 步，第 6 步是接上 GitHub 自動部署。', draw: s5 },
+    { d: 6, say: '最常忘記的事：程式碼會自動更新，資料表要自己 apply。', draw: s6 },
+    { d: 7, say: '免費方案上限：資料庫 500 MB、每次請求 50 個查詢、還原 7 天。', draw: s7 },
+    { d: 7, say: 'D1 一次只處理一個查詢，太多會排隊甚至回傳錯誤；拆成多個資料庫可以分散。', draw: s8 },
+    { d: 6, say: '快取：第一次查 D1 並存起來，之後直接從快取拿。', draw: s9 },
+    { d: 4, say: '往下看每一步的指令和細節。', draw: s10 }
+  ];
+  const STARTS = []; let acc = 0; SCENES.forEach((s) => { STARTS.push(acc); acc += s.d; });
+  const TOTAL = acc;
+
+  function s1(t) {
+    grid(t);
+    const words = [['寫程式', 0.15, INK], ['push', 0.75, INK], ['上線', 1.35, ACC]];
+    words.forEach(([w, a, c], i) => {
+      const k = p(t, a, a + 0.42); if (k <= 0) return;
+      g.save(); g.translate(80, 330 + i * 165); const s = lerp(1.7, 1, eo(k)); g.scale(s, s);
+      T(w, 0, 0, { size: 150, color: c, alpha: k }); g.restore();
+      T('0' + (i + 1), 930, 330 + i * 165 - 100, { size: 22, weight: 500, font: 'mono', color: MUTED, align: 'right', alpha: k });
+    });
+    g.fillStyle = ACC; g.fillRect(80, 740, 840 * eo(p(t, 2.1, 2.7)), 8);
+    T('GitHub × Cloudflare Workers × D1', 80, 820, { size: 30, weight: 500, font: 'mono', color: MUTED, alpha: p(t, 2.5, 3) });
+    T('一分鐘看懂整份指南', 80, 890, { size: 40, alpha: p(t, 2.9, 3.4) });
+  }
+
+  function s2(t) {
+    grid(t, 0.5);
+    kicker('01 · 運作方式', t); title('三個服務，各管一件事', t);
+    const xs = [200, 500, 800], y = 450;
+    const k = (i) => p(t, 0.55 + i * 0.45, 1.05 + i * 0.45);
+    const la = p(t, 2.1, 2.5);
+    if (la > 0) {
+      g.save(); g.globalAlpha = la; g.setLineDash([10, 10]); g.lineDashOffset = -t * 40; g.strokeStyle = LINE; g.lineWidth = 2;
+      g.beginPath(); g.moveTo(320, y); g.lineTo(380, y); g.moveTo(620, y); g.lineTo(680, y); g.stroke(); g.restore();
+    }
+    const names = [['GitHub', '存放程式碼'], ['Workers', '執行程式'], ['D1', '存放資料']];
+    xs.forEach((x, i) => {
+      const kk = k(i); if (kk <= 0) return;
+      const s = eb(kk);
+      g.save(); g.translate(x, y); g.scale(s, s); g.globalAlpha = cl(kk * 2);
+      g.beginPath(); g.arc(0, 0, 112, 0, Math.PI * 2);
+      g.fillStyle = i === 2 ? 'rgba(240,138,89,.18)' : 'rgba(245,245,245,.06)'; g.fill();
+      g.lineWidth = 3; g.strokeStyle = i === 2 ? ACC : LINE; g.stroke();
+      if (i === 0) T('</>', 0, 22, { size: 62, weight: 500, font: 'mono', align: 'center' });
+      if (i === 1) { g.fillStyle = INK; g.beginPath(); [[-14, -58], [30, -58], [8, -10], [36, -10], [-22, 62], [-6, 8], [-34, 8]].forEach(([a, b], j) => (j ? g.lineTo(a, b) : g.moveTo(a, b))); g.closePath(); g.fill(); }
+      if (i === 2) cyl(0, 0, 44, 60, {});
+      g.restore();
+      T(names[i][0], x, 640, { size: 46, align: 'center', alpha: kk });
+      T(names[i][1], x, 690, { size: 30, weight: 400, color: MUTED, align: 'center', alpha: kk });
+    });
+    T('Workers 也能同時提供前端網頁', 500, 850, { size: 32, weight: 400, color: MUTED, align: 'center', alpha: p(t, 3, 3.5) });
+  }
+
+  function s3(t) {
+    grid(t, 0.5);
+    kicker('01 · 運作方式', t); title('從 push 到上線', t);
+    const N = [[175, 380, '你的電腦', 'wrangler dev'], [500, 380, 'GitHub', 'repo'], [825, 380, 'Builds', 'Workers'], [825, 690, 'Worker', '']];
+    const segs = [[300, 380, 375, 380, 0.7, 1.4], [625, 380, 700, 380, 1.7, 2.4], [825, 440, 825, 630, 3.9, 4.6]];
+    segs.forEach(([x1, y1, x2, y2, a, b]) => {
+      line(x1, y1, x2, y2, LINE, 2);
+      const k = eo(p(t, a, b)); if (k > 0) line(x1, y1, lerp(x1, x2, k), lerp(y1, y2, k), ACC, 4);
+    });
+    const arrive = [0.5, 1.4, 2.4, 4.6];
+    N.forEach(([x, y, l, s], i) => {
+      const a = p(t, 0.3 + i * 0.12, 0.6 + i * 0.12);
+      const pulse = t > arrive[i] ? 1 - p(t, arrive[i], arrive[i] + 0.6) : 0;
+      let sub = s;
+      if (i === 2) { const b = p(t, 2.4, 3.8); sub = b <= 0 ? s : b < 1 ? '建置中 ' + Math.round(b * 100) + '%' : '建置完成'; }
+      if (i === 3) sub = t > 4.6 ? 'LIVE' : 'fetch()';
+      node(x, y, 250, 120, l, sub, { a, pulse, acc: i === 3 && t > 4.6, size: 34 });
+      if (i === 2) { const b = p(t, 2.4, 3.8); if (b > 0 && b < 1) { g.fillStyle = ACC; g.fillRect(x - 100, y + 48, 200 * b, 5); } }
+    });
+    segs.forEach(([x1, y1, x2, y2, a, b]) => {
+      const k = p(t, a, b); if (k <= 0 || k >= 1) return;
+      const x = lerp(x1, x2, eo(k)), y = lerp(y1, y2, eo(k));
+      dot(x, y, ACC, 11); T('commit', x, y - 22, { size: 18, weight: 500, font: 'mono', color: ACC, align: 'center' });
+    });
+    const bk = p(t, 4.6, 4.95);
+    if (bk > 0) { g.save(); g.translate(560, 690); const s = eb(bk); g.scale(s, s); rr(-120, -36, 240, 72, 36); g.fillStyle = ACC; g.fill(); T('上線了！', 0, 12, { size: 34, color: BG, align: 'center' }); g.restore(); }
+    T('push 一次，', 80, 860, { size: 44, alpha: p(t, 5, 5.4) });
+    T('自動建置、自動上線。', 80, 920, { size: 44, color: ACC, alpha: p(t, 5.3, 5.7) });
+  }
+
+  function s4(t) {
+    grid(t, 0.5);
+    kicker('01 · 運作方式', t); title('使用者怎麼拿到資料', t);
+    const ux = [180, 340, 500, 660, 820], uy = 280;
+    ux.forEach((x, i) => person(x, uy, p(t, 0.4 + i * 0.08, 0.7 + i * 0.08)));
+    node(500, 520, 300, 120, 'Worker', 'fetch()', { a: p(t, 0.5, 0.8), acc: true });
+    cyl(500, 790, 96, 100, { a: p(t, 0.7, 1), label: 'D1' });
+    T('HTTPS', 610, 400, { size: 22, weight: 500, font: 'mono', color: LINK, alpha: p(t, 1, 1.4) });
+    T('binding · env.DB', 560, 660, { size: 22, weight: 500, font: 'mono', color: MUTED, alpha: p(t, 1.6, 2) });
+    for (let k = 0; k < 24; k++) {
+      const s0 = 0.9 + k * 0.18, tt = t - s0; if (tt < 0 || tt > 1.5 || s0 > 5.2) continue;
+      const x0 = ux[(k * 3) % 5], y0 = uy + 40;
+      if (tt < 0.5) { const e = eo(tt / 0.5); dot(lerp(x0, 500, e), lerp(y0, 458, e), LINK, 8); }
+      else if (tt < 0.8) { const e = (tt - 0.5) / 0.3; dot(500 - 10, lerp(582, 735, e), MUTED, 6); }
+      else if (tt < 1.1) { const e = (tt - 0.8) / 0.3; dot(500 + 10, lerp(735, 582, e), ACC, 6); }
+      else { const e = eo((tt - 1.1) / 0.4); dot(lerp(500, x0, e), lerp(458, y0, e), ACC, 8); }
+    }
+    T('不用連線字串，也不必另外架資料庫伺服器', 500, 950, { size: 30, weight: 400, color: MUTED, align: 'center', alpha: p(t, 2.6, 3.1) });
+  }
+
+  function s5(t) {
+    grid(t, 0.5);
+    kicker('02 · 建置步驟', t);
+    const steps = ['建立專案', '建立 D1 並綁定', '用 migration 建表', '在程式中查詢', '本機測試', '接上 GitHub 自動部署', '設定機密資訊'];
+    const n = t < 0.4 ? 0 : Math.min(7, 1 + Math.floor((t - 0.4) / 0.48));
+    T('建置只要', 80, 210, { size: 40, weight: 500, color: MUTED, alpha: p(t, 0.2, 0.5) });
+    if (n > 0) {
+      const k = p(t, 0.4 + (n - 1) * 0.48, 0.4 + (n - 1) * 0.48 + 0.2);
+      g.save(); g.translate(70, 560); const s = lerp(1.25, 1, eo(k)); g.scale(s, s);
+      T(String(n), 0, 0, { size: 380, weight: 400, font: 'serif', color: ACC }); g.restore();
+      T('步', 300, 560, { size: 60, alpha: p(t, 3.8, 4.1) });
+    }
+    steps.forEach((s, i) => {
+      if (n <= i) return;
+      const k = p(t, 0.4 + i * 0.48, 0.65 + i * 0.48), y = 240 + i * 92, key = i === 5;
+      T('0' + (i + 1), 430, y, { size: 24, weight: 500, font: 'mono', color: key ? ACC : MUTED, alpha: k });
+      T(s, 480 + 20 * (1 - eo(k)), y, { size: key ? 36 : 32, weight: key ? 600 : 500, color: key ? ACC : (i === n - 1 ? INK : 'rgba(245,245,245,.72)'), alpha: k });
+    });
+    T('第 6 步最常出問題 →', 80, 900, { size: 34, color: ACC, alpha: p(t, 4.1, 4.5) });
+  }
+
+  function s6(t) {
+    grid(t, 0.5);
+    kicker('02 · 建置步驟', t); title('最常忘記的一件事', t);
+    T('程式碼', 80, 300, { size: 38, alpha: p(t, 0.4, 0.7) });
+    T('push 後自動更新', 920, 300, { size: 24, weight: 500, font: 'mono', color: MUTED, align: 'right', alpha: p(t, 0.6, 0.9) });
+    line(80, 400, 920, 400, LINE, 2);
+    for (let j = 0; j < 5; j++) {
+      const x = 80 + ((t * 230 + j * 180) % 840);
+      g.save(); g.globalAlpha = p(t, 0.5, 0.8) * (x > 860 ? (920 - x) / 60 : 1); rr(x, 362, 64, 32, 6); g.fillStyle = 'rgba(245,245,245,.8)'; g.fill(); g.restore();
+    }
+    T('資料表結構', 80, 610, { size: 38, alpha: p(t, 0.9, 1.2) });
+    line(80, 710, 920, 710, LINE, 2);
+    const bx = lerp(80, 470, eo(p(t, 1.1, 2)));
+    g.save(); g.globalAlpha = p(t, 1, 1.2); rr(bx, 672, 64, 32, 6); g.fillStyle = 'rgba(245,245,245,.8)'; g.fill(); g.restore();
+    g.fillStyle = HOT; g.globalAlpha = p(t, 1.5, 1.8); g.fillRect(560, 650, 8, 120); g.globalAlpha = 1;
+    const sk = p(t, 2.1, 2.4);
+    if (sk > 0) {
+      g.save(); g.translate(740, 640); g.rotate(-0.1); const s = lerp(2.2, 1, eo(sk)); g.scale(s, s); g.globalAlpha = sk;
+      rr(-170, -46, 340, 92, 8); g.fillStyle = 'rgba(255,107,61,.15)'; g.fill(); g.lineWidth = 5; g.strokeStyle = HOT; g.stroke();
+      T('要自己 apply', 0, -2, { size: 38, color: HOT, align: 'center' });
+      T('--remote', 0, 32, { size: 22, weight: 500, font: 'mono', color: HOT, align: 'center' }); g.restore();
+    }
+    T('新程式要用新欄位時：', 80, 860, { size: 36, alpha: p(t, 3.4, 3.8) });
+    T('先 apply，再 push。', 80, 920, { size: 44, color: ACC, alpha: p(t, 3.8, 4.2) });
+  }
+
+  function s7(t) {
+    grid(t, 0.5);
+    kicker('03 · 限制', t); title('免費方案的上限', t);
+    const rows = [['資料庫容量', 500, ' MB', '付費 10 GB', 0.05], ['每次請求的查詢數', 50, ' 次', '付費 1,000', 0.05], ['時間點還原', 7, ' 天', '付費 30 天', 0.233]];
+    rows.forEach(([l, v, u, paid, frac], i) => {
+      const s = 0.6 + i * 1.9, y0 = 260 + i * 220, a = p(t, s, s + 0.3);
+      if (a <= 0) return;
+      T(l, 80, y0, { size: 32, weight: 500, alpha: a });
+      T(paid, 920, y0, { size: 24, weight: 500, font: 'mono', color: MUTED, align: 'right', alpha: a });
+      T(Math.round(v * eo(p(t, s, s + 0.9))) + u, 80, y0 + 120, { size: 120, weight: 400, font: 'serif', color: INK, alpha: a });
+      g.save(); g.globalAlpha = a; g.fillStyle = 'rgba(245,245,245,.18)'; g.fillRect(80, y0 + 146, 840 * eo(p(t, s + 0.1, s + 0.6)), 14);
+      g.fillStyle = ACC; g.fillRect(80, y0 + 146, 840 * frac * eo(p(t, s + 0.6, s + 1.2)), 14); g.restore();
+    });
+    T('長條全長＝付費方案上限，橘色＝免費方案', 80, 960, { size: 24, weight: 400, color: MUTED, alpha: p(t, 5.5, 6) });
+  }
+
+  function queueSim(t) {
+    const SPLIT = 4.6, CAP = 8;
+    const ev = [];
+    for (let k = 0; ; k++) { const a = 0.5 + k * 0.24; if (a > 6.4) break; ev.push([a, 'a']); }
+    for (let j = 0; ; j++) { const s = 0.9 + j * 0.62; if (s >= SPLIT) break; ev.push([s, 's']); }
+    for (let j = 0; ; j++) { const s = SPLIT + 0.2 + j * 0.15; if (s > 7) break; ev.push([s, 's']); }
+    ev.sort((x, y) => x[0] - y[0] || (x[1] === 's' ? -1 : 1));
+    let q = [], served = [], rej = [], lastShift = -9, n = 0;
+    for (const [tm, ty] of ev) {
+      if (tm > t) break;
+      if (ty === 'a') { if (q.length >= CAP && tm < SPLIT) rej.push(tm); else q.push(tm); }
+      else if (q.length) { q.shift(); served.push([tm, n++]); lastShift = tm; }
+    }
+    return { q, served, rej, lastShift, split: SPLIT };
+  }
+  function s8(t) {
+    grid(t, 0.5);
+    kicker('03 · 限制', t); title('D1 一次只處理一個查詢', t);
+    const S = queueSim(t), sp = eo(p(t, S.split, S.split + 0.5));
+    const ys = [lerp(520, 340, sp), 520, lerp(520, 700, sp)];
+    const full = S.q.length >= 8 && t < S.split;
+    if (sp > 0) { cyl(800, ys[0], 74, 80, { label: 'D1' }); cyl(800, ys[2], 74, 80, { label: 'D1', a: sp }); }
+    cyl(800, ys[1], 74, 80, { label: 'D1', hot: full, a: p(t, 0.3, 0.6) });
+    line(60, 520, 680, 520, 'rgba(245,245,245,.18)', 2);
+    const shift = 54 * (1 - eo(p(t, S.lastShift, S.lastShift + 0.22)));
+    S.q.forEach((at, i) => {
+      const tx = 650 - i * 54 + shift, k = eo(p(t, at, at + 0.35));
+      dot(lerp(40, tx, k), 520, full ? HOT : LINK, 13);
+    });
+    S.served.forEach(([tm, n]) => {
+      const k = p(t, tm, tm + 0.3); if (k <= 0 || k >= 1) return;
+      const ty = ys[t >= S.split ? n % 3 : 1];
+      dot(lerp(650, 790, k), lerp(520, ty, k), ACC, 13 * (1 - k * 0.6));
+    });
+    S.rej.forEach((tm) => { const k = t - tm; if (k < 0 || k > 1) return; dot(180 + k * 60, 520 + k * k * 380, HOT, 12, 1 - k); });
+    if (S.rej.length && t < S.split) {
+      const a = p(t, S.rej[0], S.rej[0] + 0.2) * (0.75 + 0.25 * Math.sin(t * Math.PI * 2.4));
+      g.save(); g.globalAlpha = a; rr(220, 300, 400, 80, 8); g.fillStyle = 'rgba(255,107,61,.16)'; g.fill(); g.lineWidth = 3; g.strokeStyle = HOT; g.stroke();
+      T('overloaded', 420, 354, { size: 40, weight: 600, font: 'mono', color: HOT, align: 'center' }); g.restore();
+    }
+    T('請求太多就排隊，滿了就回傳錯誤', 80, 880, { size: 34, alpha: p(t, 1, 1.4) * (1 - p(t, S.split - 0.2, S.split)) });
+    T('解法：拆成多個資料庫，分散負載', 80, 880, { size: 38, color: ACC, alpha: p(t, S.split + 0.4, S.split + 0.8) });
+  }
+
+  function s9(t) {
+    grid(t, 0.5);
+    kicker('04 · 快取', t); title('快取讓網站更快', t);
+    person(140, 520, p(t, 0.3, 0.6));
+    node(470, 500, 230, 120, '快取', 'Cache API · KV', { a: p(t, 0.4, 0.7), acc: true, size: 38 });
+    cyl(830, 500, 80, 90, { a: p(t, 0.5, 0.8), label: 'D1' });
+    line(185, 500, 355, 500, 'rgba(245,245,245,.18)', 2); line(585, 500, 750, 500, 'rgba(245,245,245,.18)', 2);
+    const leg = (a, b, x1, x2, c, y = 500) => { const k = p(t, a, b); if (k > 0 && k < 1) dot(lerp(x1, x2, eo(k)), y, c, 10); };
+    leg(0.6, 1.0, 185, 355, LINK); leg(1.15, 1.6, 585, 750, MUTED, 488); leg(1.7, 2.15, 750, 585, ACC, 512); leg(2.3, 2.7, 355, 185, ACC);
+    if (t > 1 && t < 2.8) T('沒有 → 去查 D1', 470, 400, { size: 24, weight: 500, font: 'mono', color: MUTED, align: 'center', alpha: p(t, 1, 1.2) });
+    const stored = p(t, 2.15, 2.35);
+    if (stored > 0) T('已存入', 470, 590, { size: 22, weight: 500, font: 'mono', color: ACC, align: 'center', alpha: stored });
+    T('第一次：查 D1，順便存起來', 80, 730, { size: 34, alpha: p(t, 0.6, 1) * (1 - p(t, 2.8, 3)) });
+    for (let k = 0; k < 7; k++) {
+      const s0 = 3 + k * 0.32, tt = t - s0; if (tt < 0 || tt > 0.6) continue;
+      if (tt < 0.25) dot(lerp(185, 355, eo(tt / 0.25)), 500, LINK, 9); else dot(lerp(355, 185, eo((tt - 0.25) / 0.3)), 500, ACC, 9);
+      if (tt > 0.2 && tt < 0.45) T('HIT', 470, 400, { size: 34, weight: 600, font: 'mono', color: ACC, align: 'center', alpha: 1 - p(tt, 0.35, 0.45) });
+    }
+    T('之後：直接從快取拿，不用再查 D1', 80, 730, { size: 34, color: ACC, alpha: p(t, 3, 3.4) });
+    T('前端：靜態檔設長期快取　後端：Cache API 或 KV', 80, 840, { size: 26, weight: 400, color: MUTED, alpha: p(t, 4.2, 4.6) });
+    T('登入後的個人資料不要快取', 80, 895, { size: 30, alpha: p(t, 4.6, 5) });
+  }
+
+  function s10(t) {
+    grid(t);
+    const k = p(t, 0.1, 0.5);
+    g.save(); g.translate(80, 400); const s = lerp(1.4, 1, eo(k)); g.scale(s, s); T('就是這樣。', 0, 0, { size: 140, alpha: k }); g.restore();
+    T('往下看每一步的指令和細節', 80, 500, { size: 40, weight: 500, color: MUTED, alpha: p(t, 0.5, 0.9) });
+    ['01 運作方式', '02 建置步驟', '03 限制', '04 快取'].forEach((c, i) => {
+      const a = p(t, 0.9 + i * 0.15, 1.2 + i * 0.15), x = 80 + (i % 2) * 430, y = 580 + Math.floor(i / 2) * 100;
+      g.save(); g.globalAlpha = a; rr(x, y, 400, 76, 10); g.strokeStyle = LINE; g.lineWidth = 2; g.stroke(); g.restore();
+      T(c, x + 28, y + 50, { size: 30, weight: 500, font: 'mono', alpha: a });
+    });
+    T('↓', 80, 900 + Math.sin(t * 3) * 8, { size: 90, color: ACC, alpha: p(t, 1.6, 2) });
+  }
+
+  /* ---------- canvas sizing ---------- */
+  function size() {
+    const w = cv.getBoundingClientRect().width || 560;
+    const px = Math.round(w * Math.min(2, window.devicePixelRatio || 1));
+    if (cv.width !== px) { cv.width = px; cv.height = px; }
+    draw();
+  }
+
+  /* ---------- playback state ---------- */
   const big = P.querySelector('[data-big]'), bigText = P.querySelector('[data-big-text]');
   const toggleBtn = P.querySelector('[data-toggle]');
   const iPlay = P.querySelector('[data-icon-play]'), iPause = P.querySelector('[data-icon-pause]');
-  const timeEl = P.querySelector('[data-time]');
+  const timeEl = P.querySelector('[data-time]'), live = P.querySelector('[data-live]');
   const soundBtn = P.querySelector('[data-sound]');
   const iOn = P.querySelector('[data-icon-on]'), iOff = P.querySelector('[data-icon-off]');
-  const live = P.querySelector('[data-live]');
   const segWrap = P.querySelector('[data-segs]');
-  const segs = scenes.map((_, i) => {
+  const segs = SCENES.map((sc, i) => {
     const b = document.createElement('button');
-    b.type = 'button'; b.className = 'pv-seg'; b.setAttribute('aria-label', '第 ' + (i + 1) + ' 個畫面');
+    b.type = 'button'; b.className = 'pv-seg'; b.setAttribute('aria-label', '第 ' + (i + 1) + ' 段');
     b.innerHTML = '<i><b></b></i>';
     b.addEventListener('click', () => { unlock(); seek(STARTS[i]); });
     segWrap.appendChild(b);
     return b.querySelector('b');
   });
-  let t = 0, playing = false, last = 0, raf = 0, scene = -1, started = false;
-  const fmt = (ms) => { const s = Math.floor(ms / 1000); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
-  const sceneAt = (ms) => { let i = 0; while (i < STARTS.length - 1 && ms >= STARTS[i + 1]) i++; return i; };
+  let t = 0, playing = false, started = false, last = 0, raf = 0, scene = -1;
+  const fmt = (s) => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+  const sceneAt = (s) => { let i = 0; while (i < STARTS.length - 1 && s >= STARTS[i + 1]) i++; return i; };
 
-  /* ---------- audio ---------- */
-  let soundOn = true;
-  try { if (localStorage.getItem('d1-guide-music') === 'off') soundOn = false; } catch (e) {}
-  let ctx = null, master, padBus, send, padTimer = 0, nextTime = 0, chordIndex = 0;
-  const CHORDS = [[130.81,164.81,196.00,246.94,293.66],[110.00,130.81,164.81,196.00,246.94],[87.31,110.00,130.81,164.81,196.00],[98.00,123.47,146.83,164.81,220.00]];
-  const BELLS = [523.25,587.33,659.25,783.99,880.00,1046.50,1174.66,1318.51,1567.98,1046.50];
-  const CL = 2.4;
-  function unlock() {
-    if (!soundOn) return;
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC) return;
-    if (!ctx) {
-      ctx = new AC();
-      master = ctx.createGain(); master.gain.value = 0.5; master.connect(ctx.destination);
-      const d = ctx.createDelay(1); d.delayTime.value = 0.36;
-      const fb = ctx.createGain(); fb.gain.value = 0.3;
-      const wet = ctx.createGain(); wet.gain.value = 0.28;
-      send = ctx.createGain(); send.connect(d); d.connect(fb); fb.connect(d); d.connect(wet); wet.connect(master);
-      const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1100; lp.Q.value = 0.4;
-      padBus = ctx.createGain(); padBus.gain.value = 0.0001; padBus.connect(lp); lp.connect(master); lp.connect(send);
+  function draw() {
+    const W = cv.width; g.setTransform(W / 1000, 0, 0, W / 1000, 0, 0);
+    g.fillStyle = BG; g.fillRect(0, 0, 1000, 1000);
+    const i = started ? sceneAt(Math.min(t, TOTAL - 0.001)) : 0;
+    const lt = started ? t - STARTS[i] : 4.5;
+    SCENES[i].draw(lt);
+    if (started && i > 0 && lt < 0.45) {             /* wipe between scenes */
+      const k = eo(lt / 0.45);
+      g.fillStyle = ACC; g.fillRect(1000 * k, 0, 1000 * (1 - k), 1000);
+      g.fillStyle = BG; g.fillRect(1000 * k - 6, 0, 6, 1000);
     }
-    if (ctx.state === 'suspended') ctx.resume();
   }
-  function chord(fs, at) {
-    const peak = 0.11 / fs.length;
-    fs.forEach((f, i) => [['triangle', 0], ['sine', 7]].forEach(([type, dt]) => {
-      const o = ctx.createOscillator(); o.type = type; o.frequency.value = f; o.detune.value = dt * (i % 2 ? 1 : -1);
-      const g = ctx.createGain();
-      g.gain.setValueAtTime(0.0001, at); g.gain.linearRampToValueAtTime(peak, at + 0.9);
-      g.gain.setValueAtTime(peak, at + CL - 0.2); g.gain.linearRampToValueAtTime(0.0001, at + CL + 1);
-      o.connect(g); g.connect(padBus); o.start(at); o.stop(at + CL + 1.1);
-    }));
-  }
-  function schedule() {
-    while (nextTime < ctx.currentTime + 1.2) { chord(CHORDS[chordIndex % 4], nextTime); nextTime += CL; chordIndex++; }
-    padTimer = setTimeout(schedule, 300);
-  }
-  function padOn() {
-    if (!soundOn || !ctx || padTimer) return;
-    const n = ctx.currentTime;
-    padBus.gain.cancelScheduledValues(n); padBus.gain.setValueAtTime(Math.max(padBus.gain.value, 0.0001), n);
-    padBus.gain.linearRampToValueAtTime(1, n + 0.8);
-    chordIndex = 0; nextTime = n + 0.05; schedule();
-  }
-  function padOff(fade) {
-    clearTimeout(padTimer); padTimer = 0;
-    if (!ctx) return;
-    const n = ctx.currentTime;
-    padBus.gain.cancelScheduledValues(n); padBus.gain.setValueAtTime(Math.max(padBus.gain.value, 0.0001), n);
-    padBus.gain.linearRampToValueAtTime(0.0001, n + fade);
-  }
-  function bell(i) {
-    if (!soundOn || !ctx) return;
-    const at = ctx.currentTime + 0.01, f = BELLS[i % BELLS.length];
-    [[f, 0.16], [f * 2, 0.035]].forEach(([fr, amp]) => {
-      const o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = fr;
-      const g = ctx.createGain();
-      g.gain.setValueAtTime(0.0001, at); g.gain.exponentialRampToValueAtTime(amp, at + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, at + 1.6);
-      o.connect(g); g.connect(master); g.connect(send); o.start(at); o.stop(at + 1.7);
-    });
-  }
-  function paintSound() {
-    soundBtn.setAttribute('aria-pressed', String(soundOn));
-    soundBtn.setAttribute('aria-label', soundOn ? '關閉配樂' : '開啟配樂');
-    iOn.hidden = !soundOn; iOff.hidden = soundOn;
-  }
-
-  /* ---------- picture ---------- */
-  function show(i, restart) {
-    scenes.forEach((s, k) => {
-      const on = k === i;
-      if (on && restart) { s.classList.remove('act'); void s.offsetWidth; }
-      s.classList.toggle('act', on);
-      s.setAttribute('aria-hidden', String(!on));
-    });
-  }
-  function render(force) {
-    const i = started ? sceneAt(Math.min(t, TOTAL - 1)) : 0;
-    if (i !== scene || force) {
-      show(i, started);
-      if (started) {
-        bell(i);
-        const h = scenes[i].querySelector('.t-xl, .t-l');
-        live.textContent = '第 ' + (i + 1) + ' / ' + scenes.length + ' 個畫面：' + (h ? h.textContent : '');
-      }
+  function render() {
+    const i = sceneAt(Math.min(t, TOTAL - 0.001));
+    if (started && i !== scene) {
+      if (scene !== -1 || playing) whoosh();
+      live.textContent = '第 ' + (i + 1) + ' / ' + SCENES.length + ' 段：' + SCENES[i].say;
       scene = i;
     }
-    segs.forEach((b, k) => { b.style.width = Math.max(0, Math.min(1, (t - STARTS[k]) / DURS[k])) * 100 + '%'; });
+    draw();
+    segs.forEach((b, k) => { b.style.width = cl((t - STARTS[k]) / SCENES[k].d) * 100 + '%'; });
     timeEl.textContent = fmt(t) + ' / ' + fmt(TOTAL);
   }
   function paintControls() {
     iPlay.toggleAttribute('hidden', playing); iPause.toggleAttribute('hidden', !playing);
     toggleBtn.setAttribute('aria-label', playing ? '暫停' : '播放');
     big.hidden = playing;
-    bigText.textContent = !started ? '播放導覽動畫（50 秒）' : t >= TOTAL ? '重新播放' : '繼續播放';
-    P.classList.toggle('started', started);
-    P.classList.toggle('paused', started && !playing);
+    bigText.textContent = !started ? '播放（約 1 分鐘，有配樂）' : t >= TOTAL ? '重新播放' : '繼續播放';
   }
   function frame(now) {
     if (!playing) return;
-    t += Math.max(0, now - last); last = now;
-    if (t >= TOTAL) { t = TOTAL; playing = false; render(false); paintControls(); padOff(3); return; }
-    render(false);
+    t += Math.max(0, now - last) / 1000; last = now;
+    if (t >= TOTAL) { t = TOTAL; playing = false; musicStop(); render(); paintControls(); return; }
+    render();
     raf = requestAnimationFrame(frame);
   }
   function play() {
     unlock();
-    const fresh = !started || t >= TOTAL;
-    if (fresh) t = 0;
+    if (!started || t >= TOTAL) { t = 0; scene = -1; }
     started = true; playing = true; last = performance.now();
-    paintControls();
-    render(fresh);
-    padOn();
+    paintControls(); render(); musicStart();
     raf = requestAnimationFrame(frame);
   }
-  function pause() { playing = false; cancelAnimationFrame(raf); paintControls(); padOff(0.6); }
-  function seek(ms) {
-    started = true; t = Math.max(0, Math.min(TOTAL - 1, ms)); last = performance.now();
-    paintControls(); render(true);
+  function pause() { playing = false; cancelAnimationFrame(raf); musicStop(); paintControls(); }
+  function seek(s) {
+    started = true; t = cl(s, 0, TOTAL - 0.05); last = performance.now(); scene = -2;
+    render(); paintControls(); if (playing) musicStart();
+  }
+
+  /* ---------- music ---------- */
+  let soundOn = true;
+  try { if (localStorage.getItem('d1-guide-music') === 'off') soundOn = false; } catch (e) {}
+  let ctx = null, master, sendFx, noiseBuf, schedTimer = 0, stepIdx = 0, stepTime = 0;
+  const BPM = 104, S16 = 60 / BPM / 4;
+  const mtof = (m) => 440 * Math.pow(2, (m - 69) / 12);
+  const CHORDS = [[60, 64, 67, 71], [57, 60, 64, 67], [53, 57, 60, 64], [55, 59, 62, 67]];
+  const ROOTS = [48, 45, 41, 43];
+  function unlock() {
+    if (!soundOn) return;
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    if (!ctx) {
+      ctx = new AC();
+      const comp = ctx.createDynamicsCompressor(); comp.threshold.value = -16; comp.ratio.value = 4; comp.connect(ctx.destination);
+      master = ctx.createGain(); master.gain.value = 0.9; master.connect(comp);
+      const d = ctx.createDelay(1); d.delayTime.value = S16 * 3;
+      const fb = ctx.createGain(); fb.gain.value = 0.28; const wet = ctx.createGain(); wet.gain.value = 0.3;
+      sendFx = ctx.createGain(); sendFx.connect(d); d.connect(fb); fb.connect(d); d.connect(wet); wet.connect(master);
+      noiseBuf = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+      const ch = noiseBuf.getChannelData(0); for (let i = 0; i < ch.length; i++) ch[i] = Math.random() * 2 - 1;
+      const sil = ctx.createBufferSource(); sil.buffer = ctx.createBuffer(1, 1, 22050); sil.connect(ctx.destination); sil.start(0);
+    }
+    if (ctx.state !== 'running') ctx.resume();
+  }
+  function env(gn, at, peak, atk, dec) { gn.gain.setValueAtTime(0.0001, at); gn.gain.exponentialRampToValueAtTime(peak, at + atk); gn.gain.exponentialRampToValueAtTime(0.0001, at + atk + dec); }
+  function kick(at) {
+    const o = ctx.createOscillator(), gn = ctx.createGain(); o.frequency.setValueAtTime(160, at); o.frequency.exponentialRampToValueAtTime(48, at + 0.14);
+    env(gn, at, 0.9, 0.004, 0.28); o.connect(gn); gn.connect(master); o.start(at); o.stop(at + 0.32);
+  }
+  function noise(at, type, freq, peak, dec, q = 0.8) {
+    const s = ctx.createBufferSource(); s.buffer = noiseBuf; const f = ctx.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q;
+    const gn = ctx.createGain(); env(gn, at, peak, 0.002, dec); s.connect(f); f.connect(gn); gn.connect(master); s.start(at, Math.random() * 0.5); s.stop(at + dec + 0.05);
+  }
+  function tone(at, freq, type, peak, atk, dec, cutoff, fx) {
+    const o = ctx.createOscillator(); o.type = type; o.frequency.value = freq;
+    const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.setValueAtTime(cutoff, at); f.frequency.exponentialRampToValueAtTime(Math.max(200, cutoff / 4), at + atk + dec);
+    const gn = ctx.createGain(); env(gn, at, peak, atk, dec); o.connect(f); f.connect(gn); gn.connect(master); if (fx) gn.connect(sendFx);
+    o.start(at); o.stop(at + atk + dec + 0.05);
+  }
+  function step(n, at) {
+    const sec = n * S16; if (sec >= TOTAL) return;
+    const bar = Math.floor(n / 16), s = n % 16, ch = CHORDS[bar % 4], root = ROOTS[bar % 4];
+    const intro = sec < SCENES[0].d, outro = sec >= STARTS[STARTS.length - 1];
+    if (s === 0) ch.forEach((m) => { tone(at, mtof(m), 'triangle', 0.05, 0.25, 16 * S16, 2400, true); tone(at, mtof(m) * 1.003, 'sawtooth', 0.012, 0.3, 16 * S16, 1500, false); });
+    if ([0, 3, 6, 8, 11, 14].includes(s)) tone(at, mtof(ch[[0, 1, 2, 3, 2, 1][[0, 3, 6, 8, 11, 14].indexOf(s)]] + 12), 'triangle', intro ? 0.09 : 0.13, 0.005, 0.28, 3200, true);
+    if (intro || outro) return;
+    if (s === 0 || s === 8 || (s === 10 && bar % 2)) kick(at);
+    if (s === 4 || s === 12) noise(at, 'bandpass', 1900, 0.32, 0.16, 0.9);
+    if (s % 4 === 2) noise(at, 'highpass', 7500, 0.16, 0.05);
+    if (s === 0 || s === 6 || s === 8 || s === 14) tone(at, mtof(root), 'sawtooth', 0.16, 0.01, 0.32, 900, false);
+  }
+  function schedule() {
+    while (stepTime < ctx.currentTime + 0.15) { step(stepIdx, stepTime); stepIdx++; stepTime += S16; }
+    schedTimer = setTimeout(schedule, 25);
+  }
+  function musicStart() {
+    clearTimeout(schedTimer); schedTimer = 0;
+    if (!soundOn || !ctx) return;
+    stepIdx = Math.ceil(t / S16 - 1e-6); stepTime = ctx.currentTime + 0.03 + (stepIdx * S16 - t);
+    master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setValueAtTime(0.9, ctx.currentTime);
+    schedule();
+  }
+  function musicStop() { clearTimeout(schedTimer); schedTimer = 0; }
+  function whoosh() {
+    if (!soundOn || !ctx) return;
+    const at = ctx.currentTime + 0.005, s = ctx.createBufferSource(); s.buffer = noiseBuf;
+    const f = ctx.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 1.2; f.frequency.setValueAtTime(300, at); f.frequency.exponentialRampToValueAtTime(5000, at + 0.4);
+    const gn = ctx.createGain(); gn.gain.setValueAtTime(0.0001, at); gn.gain.exponentialRampToValueAtTime(0.28, at + 0.2); gn.gain.exponentialRampToValueAtTime(0.0001, at + 0.5);
+    s.connect(f); f.connect(gn); gn.connect(master); gn.connect(sendFx); s.start(at); s.stop(at + 0.55);
+  }
+  function paintSound() {
+    soundBtn.setAttribute('aria-pressed', String(soundOn)); soundBtn.setAttribute('aria-label', soundOn ? '關閉配樂' : '開啟配樂');
+    iOn.toggleAttribute('hidden', !soundOn); iOff.toggleAttribute('hidden', soundOn);
   }
 
   big.addEventListener('click', play);
@@ -867,11 +1025,19 @@ document.querySelectorAll('.copy').forEach(function(btn){
     soundOn = !soundOn;
     try { localStorage.setItem('d1-guide-music', soundOn ? 'on' : 'off'); } catch (e) {}
     paintSound();
-    if (!soundOn) padOff(0.3); else { unlock(); if (playing) padOn(); }
+    if (!soundOn) { musicStop(); if (master) master.gain.setTargetAtTime(0.0001, ctx.currentTime, 0.05); }
+    else { unlock(); if (playing) musicStart(); }
   });
   document.addEventListener('visibilitychange', () => { if (document.hidden && playing) pause(); });
+  window.addEventListener('resize', size);
 
-  paintSound(); render(true); paintControls();
+  /* canvas text needs the web fonts loaded for exactly the characters it draws */
+  const sample = SCENES.map((s) => s.say).join('') + '寫程式上線一分鐘看懂整份指南三個服務各管一件事存放程式碼執行資料也能同時提供前端網頁從到你的電腦建置中完成了自動使用者怎麼拿不用連線字串必另外架伺服器步第最常出問題忘記結構新欄位時先再免費方案限容量每次請求查詢數還原付費長條全等於橘色處理太多就排隊滿回傳錯誤解法拆成分散負載快取讓網站更去已存入第一順便起來之後直接從靜態檔設期或登個人往下看指令和細節運作方式限制就是這樣＝，。：！→↓·';
+  const specs = ['600 40px "Noto Sans TC"', '500 40px "Noto Sans TC"', '400 40px "Noto Sans TC"', '400 40px "Noto Serif TC"', '600 40px "Geist"', '400 40px "Instrument Serif"', '500 40px "Geist Mono"'];
+  size();
+  if (document.fonts && document.fonts.load) Promise.all(specs.map((s) => document.fonts.load(s, sample).catch(() => {}))).then(draw);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+  paintSound(); paintControls(); render();
 })();
 </script>
 
