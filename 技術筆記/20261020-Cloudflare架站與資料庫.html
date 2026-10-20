@@ -154,6 +154,9 @@ canvas.mg{display:block;width:100%;max-width:560px;aspect-ratio:1/1;height:auto}
 .pv-seg:focus-visible i{outline:2px solid #f08a59;outline-offset:3px}
 .pv-time{flex:none;font:500 .72rem var(--mono);color:#bfc0c0;font-variant-numeric:tabular-nums}
 @media (max-width:400px){.pv-time{display:none}}
+.pv-state{margin:0;padding:0 12px;font:500 .72rem var(--mono);color:#bfc0c0;max-width:none}
+.pv-state:empty{display:none}
+.pv-state:not(:empty){padding-bottom:8px}
 </style>
 </head>
 <body>
@@ -185,9 +188,11 @@ canvas.mg{display:block;width:100%;max-width:560px;aspect-ratio:1/1;height:auto}
           <svg data-icon-off viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" hidden><path d="M4 9h4l5-4v14l-5-4H4zM16.5 9.5l5 5M21.5 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>
+      <p class="pv-state" data-sound-state aria-live="polite"></p>
+      <audio data-audio preload="auto" playsinline></audio>
       <p class="sr-only" data-live aria-live="polite"></p>
     </div>
-    <p class="note">沒聽到配樂的話：確認右下角喇叭不是關閉狀態；iPhone 請關掉側邊的靜音開關，或把系統更新到 iOS 17 以上。</p>
+    <p class="note">沒聽到配樂的話，先確認播放器右下角的喇叭不是關閉狀態，再檢查裝置音量。</p>
   </section>
 
   <h2><span class="no">01</span>運作方式</h2>
@@ -926,7 +931,7 @@ document.querySelectorAll('.copy').forEach(function(btn){
     if (!playing) return;
     t += Math.max(0, now - last) / 1000; last = now;
     if (t >= TOTAL) { t = TOTAL; playing = false; musicStop(); render(); paintControls(); return; }
-    render();
+    render(); musicSync();
     raf = requestAnimationFrame(frame);
   }
   function play() {
@@ -942,78 +947,145 @@ document.querySelectorAll('.copy').forEach(function(btn){
     render(); paintControls(); if (playing) musicStart();
   }
 
-  /* ---------- music ---------- */
+  /* ---------- music ----------
+     The whole soundtrack is rendered once, offline, into a WAV and played through an <audio> element.
+     Media elements play on phones where live Web Audio is often muted (iPhone silent switch, in-app browsers). */
   let soundOn = true;
   try { if (localStorage.getItem('d1-guide-music') === 'off') soundOn = false; } catch (e) {}
-  let ctx = null, master, sendFx, noiseBuf, schedTimer = 0, stepIdx = 0, stepTime = 0;
+  const audio = P.querySelector('[data-audio]');
+  const soundState = P.querySelector('[data-sound-state]');
+  audio.muted = !soundOn;
+  let audioReady = false, unlocked = false, blobUrl = '', dataUrl = '';
   const BPM = 104, S16 = 60 / BPM / 4;
   const mtof = (m) => 440 * Math.pow(2, (m - 69) / 12);
   const CHORDS = [[60, 64, 67, 71], [57, 60, 64, 67], [53, 57, 60, 64], [55, 59, 62, 67]];
   const ROOTS = [48, 45, 41, 43];
+
+  function synth(ac) {
+    const comp = ac.createDynamicsCompressor(); comp.threshold.value = -16; comp.ratio.value = 4; comp.connect(ac.destination);
+    const master = ac.createGain(); master.gain.value = 0.9; master.connect(comp);
+    const d = ac.createDelay(1); d.delayTime.value = S16 * 3;
+    const fb = ac.createGain(); fb.gain.value = 0.28; const wet = ac.createGain(); wet.gain.value = 0.3;
+    const fx = ac.createGain(); fx.connect(d); d.connect(fb); fb.connect(d); d.connect(wet); wet.connect(master);
+    const nb = ac.createBuffer(1, ac.sampleRate, ac.sampleRate);
+    const ch = nb.getChannelData(0); let seed = 7; for (let i = 0; i < ch.length; i++) { seed = (seed * 16807) % 2147483647; ch[i] = seed / 1073741823.5 - 1; }
+    const env = (gn, at, peak, atk, dec) => { gn.gain.setValueAtTime(0.0001, at); gn.gain.exponentialRampToValueAtTime(peak, at + atk); gn.gain.exponentialRampToValueAtTime(0.0001, at + atk + dec); };
+    const kick = (at) => {
+      const o = ac.createOscillator(), gn = ac.createGain(); o.frequency.setValueAtTime(160, at); o.frequency.exponentialRampToValueAtTime(48, at + 0.14);
+      env(gn, at, 0.9, 0.004, 0.28); o.connect(gn); gn.connect(master); o.start(at); o.stop(at + 0.32);
+    };
+    const noise = (at, type, freq, peak, dec, q = 0.8, off = 0) => {
+      const s = ac.createBufferSource(); s.buffer = nb; const f = ac.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q;
+      const gn = ac.createGain(); env(gn, at, peak, 0.002, dec); s.connect(f); f.connect(gn); gn.connect(master); s.start(at, off); s.stop(at + dec + 0.05);
+    };
+    const tone = (at, freq, type, peak, atk, dec, cutoff, useFx) => {
+      const o = ac.createOscillator(); o.type = type; o.frequency.value = freq;
+      const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.setValueAtTime(cutoff, at); f.frequency.exponentialRampToValueAtTime(Math.max(200, cutoff / 4), at + atk + dec);
+      const gn = ac.createGain(); env(gn, at, peak, atk, dec); o.connect(f); f.connect(gn); gn.connect(master); if (useFx) gn.connect(fx);
+      o.start(at); o.stop(at + atk + dec + 0.05);
+    };
+    const step = (n, soft) => {
+      const at = n * S16;
+      const bar = Math.floor(n / 16), s = n % 16, chd = CHORDS[bar % 4], root = ROOTS[bar % 4];
+      const intro = soft, outro = soft;
+      if (s === 0) chd.forEach((m) => { tone(at, mtof(m), 'triangle', 0.05, 0.25, 16 * S16, 2400, true); tone(at, mtof(m) * 1.003, 'sawtooth', 0.012, 0.3, 16 * S16, 1500, false); });
+      const arp = [0, 3, 6, 8, 11, 14].indexOf(s);
+      if (arp >= 0) tone(at, mtof(chd[[0, 1, 2, 3, 2, 1][arp]] + 12), 'triangle', intro ? 0.09 : 0.13, 0.005, 0.28, 3200, true);
+      if (intro || outro) return;
+      if (s === 0 || s === 8 || (s === 10 && bar % 2)) kick(at);
+      if (s === 4 || s === 12) noise(at, 'bandpass', 1900, 0.32, 0.16, 0.9, (n % 7) * 0.05);
+      if (s % 4 === 2) noise(at, 'highpass', 7500, 0.16, 0.05, 0.8, (n % 5) * 0.07);
+      if (s === 0 || s === 6 || s === 8 || s === 14) tone(at, mtof(root), 'sawtooth', 0.16, 0.01, 0.32, 900, false);
+    };
+    const whoosh = (at) => {
+      const s = ac.createBufferSource(); s.buffer = nb;
+      const f = ac.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 1.2; f.frequency.setValueAtTime(300, at); f.frequency.exponentialRampToValueAtTime(5000, at + 0.4);
+      const gn = ac.createGain(); gn.gain.setValueAtTime(0.0001, at); gn.gain.exponentialRampToValueAtTime(0.3, at + 0.2); gn.gain.exponentialRampToValueAtTime(0.0001, at + 0.5);
+      s.connect(f); f.connect(gn); gn.connect(master); gn.connect(fx); s.start(at); s.stop(at + 0.55);
+    };
+    return { step, whoosh };
+  }
+
+  function wav(buf) {
+    const data = buf.getChannelData(0), n = data.length, rate = buf.sampleRate;
+    let peak = 0; for (let i = 0; i < n; i++) peak = Math.max(peak, Math.abs(data[i]));
+    const gain = peak > 0 ? 0.92 / peak : 1;
+    const ab = new ArrayBuffer(44 + n * 2), v = new DataView(ab);
+    const str = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+    str(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); str(8, 'WAVE'); str(12, 'fmt '); v.setUint32(16, 16, true);
+    v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true);
+    v.setUint16(32, 2, true); v.setUint16(34, 16, true); str(36, 'data'); v.setUint32(40, n * 2, true);
+    for (let i = 0; i < n; i++) v.setInt16(44 + i * 2, Math.max(-1, Math.min(1, data[i] * gain)) * 32767, true);
+    return ab;
+  }
+  function toDataUrl(ab) {
+    const bytes = new Uint8Array(ab); let bin = '';
+    for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+    return 'data:audio/wav;base64,' + btoa(bin);
+  }
+  /* a 0.1 s silent clip so the first tap can unlock the element before the real track is ready */
+  const silent = (() => { const rate = 8000, n = 800, ab = new ArrayBuffer(44 + n * 2), v = new DataView(ab);
+    const str = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+    str(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); str(8, 'WAVE'); str(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+    v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true); str(36, 'data'); v.setUint32(40, n * 2, true);
+    return toDataUrl(ab); })();
+
+  function setState(msg) { if (soundState) soundState.textContent = msg; }
+  async function build() {
+    const OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+    if (!OAC) { setState('這個瀏覽器無法產生配樂'); return; }
+    setState('配樂準備中…');
+    try {
+      /* The groove repeats every 4 bars, so render one loop of each texture (twice, keeping the second pass
+         so delay tails wrap seamlessly) and one whoosh, then lay them out along the timeline. */
+      const rate = 22050, L = Math.round(64 * S16 * rate);
+      const loop = async (soft) => {
+        const oac = new OAC(1, 2 * L, rate), sy = synth(oac);
+        for (let n = 0; n < 128; n++) sy.step(n, soft);
+        return (await oac.startRendering()).getChannelData(0).slice(L, 2 * L);
+      };
+      const hit = async () => { const oac = new OAC(1, Math.round(rate * 0.7), rate); synth(oac).whoosh(0); return (await oac.startRendering()).getChannelData(0); };
+      const [soft, full, wh] = await Promise.all([loop(true), loop(false), hit()]);
+      const N = Math.ceil(rate * (TOTAL + 0.5)), out = new Float32Array(N);
+      const a = Math.round(SCENES[0].d * rate), b = Math.round(STARTS[STARTS.length - 1] * rate), X = 512;
+      for (let i = 0; i < N; i++) {
+        const j = i % L;
+        let w = 0;                                  /* weight of the full groove, crossfaded at the section edges */
+        if (i >= a - X && i < b + X) w = Math.min(1, (i - (a - X)) / (2 * X), (b + X - i) / (2 * X));
+        out[i] = soft[j] * (1 - w) + full[j] * w;
+      }
+      STARTS.slice(1).forEach((st) => { const o = Math.round(st * rate); for (let k = 0; k < wh.length && o + k < N; k++) out[o + k] += wh[k]; });
+      const fade = Math.round(rate * 2.5); for (let k = 0; k < fade; k++) out[N - 1 - k] *= k / fade;
+      const ab = wav({ getChannelData: () => out, sampleRate: rate });
+      dataUrl = toDataUrl(ab);
+      try { blobUrl = URL.createObjectURL(new Blob([ab], { type: 'audio/wav' })); } catch (e) { blobUrl = ''; }
+      audio.src = blobUrl || dataUrl;
+      audio.load();
+      audioReady = true; setState('');
+      if (playing) musicStart();
+    } catch (e) { setState('配樂產生失敗'); }
+  }
+  audio.addEventListener('error', () => {
+    if (audioReady && blobUrl && audio.src === blobUrl) { blobUrl = ''; audio.src = dataUrl; audio.load(); if (playing) musicStart(); }
+  });
+
   function unlock() {
-    if (!soundOn) return;
     try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC) return;
-    if (!ctx) {
-      ctx = new AC();
-      const comp = ctx.createDynamicsCompressor(); comp.threshold.value = -16; comp.ratio.value = 4; comp.connect(ctx.destination);
-      master = ctx.createGain(); master.gain.value = 0.9; master.connect(comp);
-      const d = ctx.createDelay(1); d.delayTime.value = S16 * 3;
-      const fb = ctx.createGain(); fb.gain.value = 0.28; const wet = ctx.createGain(); wet.gain.value = 0.3;
-      sendFx = ctx.createGain(); sendFx.connect(d); d.connect(fb); fb.connect(d); d.connect(wet); wet.connect(master);
-      noiseBuf = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
-      const ch = noiseBuf.getChannelData(0); for (let i = 0; i < ch.length; i++) ch[i] = Math.random() * 2 - 1;
-      const sil = ctx.createBufferSource(); sil.buffer = ctx.createBuffer(1, 1, 22050); sil.connect(ctx.destination); sil.start(0);
-    }
-    if (ctx.state !== 'running') ctx.resume();
-  }
-  function env(gn, at, peak, atk, dec) { gn.gain.setValueAtTime(0.0001, at); gn.gain.exponentialRampToValueAtTime(peak, at + atk); gn.gain.exponentialRampToValueAtTime(0.0001, at + atk + dec); }
-  function kick(at) {
-    const o = ctx.createOscillator(), gn = ctx.createGain(); o.frequency.setValueAtTime(160, at); o.frequency.exponentialRampToValueAtTime(48, at + 0.14);
-    env(gn, at, 0.9, 0.004, 0.28); o.connect(gn); gn.connect(master); o.start(at); o.stop(at + 0.32);
-  }
-  function noise(at, type, freq, peak, dec, q = 0.8) {
-    const s = ctx.createBufferSource(); s.buffer = noiseBuf; const f = ctx.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q;
-    const gn = ctx.createGain(); env(gn, at, peak, 0.002, dec); s.connect(f); f.connect(gn); gn.connect(master); s.start(at, Math.random() * 0.5); s.stop(at + dec + 0.05);
-  }
-  function tone(at, freq, type, peak, atk, dec, cutoff, fx) {
-    const o = ctx.createOscillator(); o.type = type; o.frequency.value = freq;
-    const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.setValueAtTime(cutoff, at); f.frequency.exponentialRampToValueAtTime(Math.max(200, cutoff / 4), at + atk + dec);
-    const gn = ctx.createGain(); env(gn, at, peak, atk, dec); o.connect(f); f.connect(gn); gn.connect(master); if (fx) gn.connect(sendFx);
-    o.start(at); o.stop(at + atk + dec + 0.05);
-  }
-  function step(n, at) {
-    const sec = n * S16; if (sec >= TOTAL) return;
-    const bar = Math.floor(n / 16), s = n % 16, ch = CHORDS[bar % 4], root = ROOTS[bar % 4];
-    const intro = sec < SCENES[0].d, outro = sec >= STARTS[STARTS.length - 1];
-    if (s === 0) ch.forEach((m) => { tone(at, mtof(m), 'triangle', 0.05, 0.25, 16 * S16, 2400, true); tone(at, mtof(m) * 1.003, 'sawtooth', 0.012, 0.3, 16 * S16, 1500, false); });
-    if ([0, 3, 6, 8, 11, 14].includes(s)) tone(at, mtof(ch[[0, 1, 2, 3, 2, 1][[0, 3, 6, 8, 11, 14].indexOf(s)]] + 12), 'triangle', intro ? 0.09 : 0.13, 0.005, 0.28, 3200, true);
-    if (intro || outro) return;
-    if (s === 0 || s === 8 || (s === 10 && bar % 2)) kick(at);
-    if (s === 4 || s === 12) noise(at, 'bandpass', 1900, 0.32, 0.16, 0.9);
-    if (s % 4 === 2) noise(at, 'highpass', 7500, 0.16, 0.05);
-    if (s === 0 || s === 6 || s === 8 || s === 14) tone(at, mtof(root), 'sawtooth', 0.16, 0.01, 0.32, 900, false);
-  }
-  function schedule() {
-    while (stepTime < ctx.currentTime + 0.15) { step(stepIdx, stepTime); stepIdx++; stepTime += S16; }
-    schedTimer = setTimeout(schedule, 25);
+    if (unlocked || audioReady) return;
+    unlocked = true;
+    audio.src = silent; const pr = audio.play(); if (pr && pr.catch) pr.then(() => audio.pause()).catch(() => {});
   }
   function musicStart() {
-    clearTimeout(schedTimer); schedTimer = 0;
-    if (!soundOn || !ctx) return;
-    stepIdx = Math.ceil(t / S16 - 1e-6); stepTime = ctx.currentTime + 0.03 + (stepIdx * S16 - t);
-    master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setValueAtTime(0.9, ctx.currentTime);
-    schedule();
+    if (!audioReady) return;
+    audio.muted = !soundOn;
+    try { audio.currentTime = Math.min(t, TOTAL); } catch (e) {}
+    const pr = audio.play(); if (pr && pr.catch) pr.catch(() => setState('點一下播放鍵即可開啟配樂'));
   }
-  function musicStop() { clearTimeout(schedTimer); schedTimer = 0; }
-  function whoosh() {
-    if (!soundOn || !ctx) return;
-    const at = ctx.currentTime + 0.005, s = ctx.createBufferSource(); s.buffer = noiseBuf;
-    const f = ctx.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 1.2; f.frequency.setValueAtTime(300, at); f.frequency.exponentialRampToValueAtTime(5000, at + 0.4);
-    const gn = ctx.createGain(); gn.gain.setValueAtTime(0.0001, at); gn.gain.exponentialRampToValueAtTime(0.28, at + 0.2); gn.gain.exponentialRampToValueAtTime(0.0001, at + 0.5);
-    s.connect(f); f.connect(gn); gn.connect(master); gn.connect(sendFx); s.start(at); s.stop(at + 0.55);
+  function musicStop() { if (!audio.paused) audio.pause(); }
+  function musicSync() {
+    if (audioReady && playing && !audio.paused && Math.abs(audio.currentTime - t) > 0.3) { try { audio.currentTime = t; } catch (e) {} }
   }
+  function whoosh() {}
   function paintSound() {
     soundBtn.setAttribute('aria-pressed', String(soundOn)); soundBtn.setAttribute('aria-label', soundOn ? '關閉配樂' : '開啟配樂');
     iOn.toggleAttribute('hidden', !soundOn); iOff.toggleAttribute('hidden', soundOn);
@@ -1024,10 +1096,10 @@ document.querySelectorAll('.copy').forEach(function(btn){
   soundBtn.addEventListener('click', () => {
     soundOn = !soundOn;
     try { localStorage.setItem('d1-guide-music', soundOn ? 'on' : 'off'); } catch (e) {}
-    paintSound();
-    if (!soundOn) { musicStop(); if (master) master.gain.setTargetAtTime(0.0001, ctx.currentTime, 0.05); }
-    else { unlock(); if (playing) musicStart(); }
+    paintSound(); audio.muted = !soundOn;
+    if (soundOn) { unlock(); if (playing) musicStart(); }
   });
+  build();
   document.addEventListener('visibilitychange', () => { if (document.hidden && playing) pause(); });
   window.addEventListener('resize', size);
 
