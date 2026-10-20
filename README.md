@@ -1,292 +1,115 @@
 # milo
 
-info sharing — 放想法、infographic 與各種 HTML 實驗的地方。
+放想法、infographic 與 HTML 實驗的地方。網站：https://miiiiiiw.github.io/milo/
 
-🔗 **網站：https://miiiiiiw.github.io/milo/**
+首頁 `index.html` 是導覽頁，會把 repo 裡所有 HTML 依資料夾列成樹狀目錄，點選即可在右側預覽。
 
-首頁 `index.html` 是總控導覽頁：左側用資料夾樹列出 repo 裡所有 HTML，點一下就在右側預覽，也能開新分頁或複製連結分享。
+## 運作方式
 
----
+push 任何 `.html` 後，GitHub Action「Build manifest」會執行 `scripts/build-manifest.mjs`，掃描所有 HTML 並更新 `manifest.json`，導覽頁再依這份清單顯示。資料夾結構就是導覽頁的目錄，不需要另外維護。從 push 到網站更新約 1–2 分鐘。
 
-## 目錄
+以下檔案是導覽頁機制本身，一般不需要動：
 
-1. [運作原理](#1-運作原理)
-2. [Repo 結構](#2-repo-結構)
-3. [新增一個頁面（SOP）](#3-新增一個頁面sop)
-4. [頁面資訊（標題、簡介、標籤、日期）](#4-頁面資訊標題簡介標籤日期)
-5. [命名與資料夾規則](#5-命名與資料夾規則)
-6. [修改、搬移、刪除頁面](#6-修改搬移刪除頁面)
-7. [上線後檢查清單](#7-上線後檢查清單)
-8. [常見問題排除](#8-常見問題排除)
-9. [自訂導覽頁外觀](#9-自訂導覽頁外觀)
-10. [一次性設定（已完成，備查）](#10-一次性設定已完成備查)
-11. [與 Claude 協作的約定](#11-與-claude-協作的約定)
-12. [更新紀錄](#12-更新紀錄)
+| 檔案 | 用途 |
+|---|---|
+| `index.html` | 導覽頁 |
+| `manifest.json` | 自動產生的頁面清單，不要手動編輯 |
+| `scripts/build-manifest.mjs` | 產生 manifest 的腳本 |
+| `.github/workflows/manifest.yml` | push 時自動執行上述腳本 |
+| `.nojekyll` | 讓 GitHub Pages 直接提供檔案，不要刪 |
 
----
+## 新增頁面
 
-## 1. 運作原理
+**用 GitHub 網頁：** 進入目標資料夾 → Add file → Upload files → 拖入 HTML → Commit changes。要建立新資料夾時，改用 Add file → Create new file，並在檔名欄輸入 `資料夾名/檔名.html`。
 
-```
-你 push 一個 .html
-      │
-      ▼
-GitHub Action「Build manifest」自動執行
-      │  執行 scripts/build-manifest.mjs
-      │  掃描所有 .html → 讀取標題/簡介/標籤/日期
-      ▼
-產生並自動 commit manifest.json（commit 訊息：chore: update manifest [skip ci]）
-      │
-      ▼
-GitHub Pages 重新部署（約 1–2 分鐘）
-      │
-      ▼
-index.html 讀 manifest.json → 畫出資料夾樹、時間軸、首頁卡片
-```
+**用 git：** 把檔案放進資料夾後執行 `git add . && git commit -m "新增：標題" && git push`。
 
-- **資料夾結構 = 導覽頁的樹狀結構**，不用另外維護目錄。
-- 如果 `manifest.json` 讀不到，導覽頁會改用 GitHub API 直接抓檔案清單（這時只有檔名，沒有簡介、標籤和日期）。
+**頁面有圖片、CSS、JS 時：** 和 HTML 放在同一個資料夾，並用相對路徑引用（`img/a.png`）。不要用 `/` 開頭的路徑，那會指到 `miiiiiiw.github.io` 而不是 `/milo/`。
 
----
+## 頁面資訊
 
-## 2. Repo 結構
-
-```
-milo/
-├── index.html                  ← 導覽頁（總控頁），不要放作品內容
-├── manifest.json               ← 自動產生，⚠️ 不要手動編輯
-├── README.md                   ← 本文件
-├── .nojekyll                   ← 讓 GitHub Pages 不經過 Jekyll 處理，不要刪
-├── scripts/
-│   └── build-manifest.mjs      ← 掃描 HTML、產生 manifest 的腳本
-├── .github/workflows/
-│   └── manifest.yml            ← push 時自動執行上面那支腳本
-│
-└── （以下是作品，依主題自由建立資料夾）
-    ├── infographics/
-    │   ├── 經濟/
-    │   │   └── 2026-10-12-台灣薪資.html
-    │   └── coffee-chain.html
-    ├── experiments/
-    └── notes/
-```
-
----
-
-## 3. 新增一個頁面（SOP）
-
-### 方法 A：GitHub 網頁上傳（最簡單）
-
-1. 打開 https://github.com/miiiiiiw/milo
-2. 進到想放的資料夾（沒有的話，見下方「建立新資料夾」）
-3. 點 **Add file → Upload files**，把 HTML 拖進去
-4. 下方填寫 commit 訊息（例如 `新增：台灣薪資 infographic`），按 **Commit changes**
-5. 等 1–2 分鐘，到網站確認是否出現（見 [第 7 節](#7-上線後檢查清單)）
-
-**建立新資料夾**：在 GitHub 網頁點 **Add file → Create new file**，檔名欄位輸入 `新資料夾名/檔名.html`，打 `/` 就會自動變成資料夾。
-
-### 方法 B：用 git 指令
-
-```bash
-git pull
-# 把 HTML 放到想要的資料夾
-git add .
-git commit -m "新增：頁面名稱"
-git push
-```
-
-### 方法 C：交給 Claude
-
-把 HTML 檔（或想做的內容）丟給 Claude，並說明要放在哪個資料夾。參考 [第 11 節](#11-與-claude-協作的約定)。
-
-### 頁面需要圖片、CSS 或 JS 怎麼辦？
-
-建議**一個作品一個資料夾**，相關檔案都放在一起，HTML 裡用相對路徑引用：
-
-```
-infographics/台灣薪資/
-├── index.html        ← 導覽頁會列成「台灣薪資/index」，建議另外取有意義的檔名
-├── chart.js
-└── img/map.png
-```
-
-> 💡 比較建議命名成 `infographics/台灣薪資/台灣薪資.html`，在樹狀目錄裡比較好辨認。
-> 子資料夾裡的 `index.html` 會被列出，只有 repo 根目錄的 `index.html`（導覽頁本身）不會。
-> 名為 `assets/`、`scripts/` 的資料夾裡的 HTML 不會被列出，適合放共用素材。
-
----
-
-## 4. 頁面資訊（標題、簡介、標籤、日期）
-
-在每個作品 HTML 的 `<head>` 加上以下標籤，導覽頁就會顯示得更完整。**全部都是選填。**
+在 HTML 的 `<head>` 加入以下標籤，導覽頁就會顯示對應資訊，每一項都可省略：
 
 ```html
-<head>
-  <meta charset="utf-8">
-  <title>台灣薪資二十年</title>
-  <meta name="description" content="實質薪資與物價的長期走勢">
-  <meta name="keywords" content="infographic, 經濟">
-  <meta name="date" content="2026-10-12">
-</head>
+<title>台灣薪資二十年</title>
+<meta name="description" content="實質薪資與物價的長期走勢">
+<meta name="keywords" content="infographic, 經濟">
+<meta name="date" content="2026-10-12">
 ```
 
-| 欄位 | 用途 | 沒寫的話 |
-|---|---|---|
-| `<title>` | 樹狀目錄、卡片上的標題 | 用檔名（去掉日期前綴與 `-` `_`） |
-| `description` | 首頁卡片的一句話簡介 | 顯示所在資料夾路徑 |
-| `keywords` | 標籤，用半形或全形逗號分隔；可被搜尋 | 不顯示標籤 |
-| `date` | 排序、時間軸分組、「新」紅點 | 依序改用：檔名開頭的 `YYYY-MM-DD` → git 第一次加入的時間 → 檔案修改時間 |
+- **title**：顯示的標題。省略時使用檔名。
+- **description**：首頁卡片上的一句話簡介。
+- **keywords**：標籤，以逗號分隔，可以被搜尋。
+- **date**：用於排序與時間軸，格式為 `YYYY-MM-DD`。省略時依序改用檔名開頭的日期、git 首次加入的日期。14 天內的頁面會顯示橘色圓點。
 
-- 14 天內新增的頁面，樹狀目錄會出現**橘色小紅點**。
-- 首頁「最近放進來的」顯示日期最新的 6 個頁面。
+## 命名規則
 
----
+- 檔名建議加日期前綴，例如 `2026-10-12-台灣薪資.html`。日期會自動帶入，標題也會自動去掉前綴。
+- 用 `-` 或 `_` 取代空白。中文檔名可以用，但分享連結會比較長。
+- 以 `_` 或 `.` 開頭的檔案或資料夾不會出現在導覽頁，適合放草稿。不過 repo 是公開的，知道網址的人仍然能打開。
+- `assets/`、`scripts/` 資料夾內的 HTML 不會被列出，可以用來放共用素材。
 
-## 5. 命名與資料夾規則
+目前的主題資料夾（新增主題時一併更新）：尚未建立。
 
-| 規則 | 說明 |
+## 修改、改名、刪除
+
+- **修改**：直接編輯後 push。日期不會跟著改變，需要調整時請修改 `<meta name="date">`。
+- **改名或搬移**：在 GitHub 編輯頁面修改檔名或路徑。舊的分享連結會失效。
+- **刪除**：開啟檔案 → `⋯` → Delete file。
+- **暫時下架**：在檔名前加 `_`。
+
+## 新增後確認
+
+1. 到 [Actions](https://github.com/miiiiiiw/milo/actions) 確認「Build manifest」和「pages build and deployment」都是綠色勾勾。
+2. 打開網站並強制重新整理（`Cmd/Ctrl + Shift + R`），確認頁面出現在正確的資料夾。
+3. 點進頁面，確認圖片、樣式、互動都正常。
+
+## 問題排除
+
+| 狀況 | 處理方式 |
 |---|---|
-| 檔名可用中文 | 例如 `台灣薪資.html`，不過分享連結時網址會被編碼，英文檔名的連結比較短 |
-| 日期前綴（建議） | `2026-10-12-台灣薪資.html`，會自動當作日期，標題也會自動去掉前綴 |
-| `_` 開頭 = 隱藏 | `_draft.html` 或 `_草稿/` 資料夾不會出現在導覽頁，**但網址知道的人仍能直接打開**（repo 是 public） |
-| `.` 開頭 = 隱藏 | 同上 |
-| 避免空白 | 用 `-` 或 `_` 取代空白，網址比較乾淨 |
-| 副檔名 | `.html` 或 `.htm` 都會被列出 |
+| 新頁面沒出現 | 先等 2 分鐘再強制重新整理。接著確認檔名不是 `_`／`.` 開頭、檔案不在 `assets/`／`scripts/` 內，並且是 push 到 `main`。 |
+| Build manifest 失敗 | 到 Settings → Actions → General，確認 Workflow permissions 為 Read and write。 |
+| 需要手動更新清單 | 到 Actions → Build manifest → Run workflow。自動觸發只在 `.html` 或腳本變動時發生。 |
+| 圖片或 CSS 讀不到 | 改用相對路徑，並檢查大小寫（GitHub Pages 會區分大小寫）。 |
+| 預覽框內顯示異常 | 部分功能（全螢幕、攝影機、彈出視窗）在預覽框中會受限，改按右上角「新分頁」開啟。 |
+| 整個網站 404 | 到 Settings → Pages，確認來源為 `main` 分支的 `/ (root)`。 |
 
-**目前的主題資料夾**（新增主題時請更新這張表，方便之後對焦）：
+本機預覽：執行 `node scripts/build-manifest.mjs`，再執行 `python3 -m http.server`，然後開啟 http://localhost:8000 。本機產生的 `manifest.json` 不需要 commit。
 
-| 資料夾 | 放什麼 |
-|---|---|
-| _（尚未建立）_ | |
+## 自訂導覽頁
 
----
+以下設定都在 `index.html` 中：
 
-## 6. 修改、搬移、刪除頁面
+- 標題、副標、「新」標記的天數：`<script>` 裡的 `CONFIG`
+- 配色：`:root` 區塊（暗色模式另有兩處同名變數，需要一起修改）
+- 隱藏規則：`CONFIG.ignore` 必須和 `scripts/build-manifest.mjs` 的 `SKIP_DIRS` 保持一致
 
-| 動作 | 做法 | 注意 |
-|---|---|---|
-| 修改內容 | 直接編輯 HTML 後 push | 日期不會變（以第一次加入為準）；想改日期就改 `<meta name="date">` |
-| 改名或搬移 | 在 GitHub 網頁編輯檔案時，修改上方的檔名或路徑欄位 | ⚠️ 舊的分享連結會失效 |
-| 刪除 | 打開檔案 → 右上角 `⋯` → Delete file | manifest 會自動更新 |
-| 暫時下架 | 檔名前面加 `_` | 從導覽頁消失，但網址仍可直接打開 |
+導覽頁快捷鍵：`/` 搜尋、`F` 專注模式、`Esc` 離開。
 
-> 刪除或改名後如果導覽頁沒更新，見 [第 8 節](#8-常見問題排除) 的「手動重跑 manifest」。
+## Repo 設定（已完成）
 
----
+搬到其他 repo 時，需要重新做以下設定：
 
-## 7. 上線後檢查清單
+- Settings → Pages：Deploy from a branch，選 `main` / `(root)`
+- Settings → Actions → General → Workflow permissions：Read and write
+- Claude GitHub App：授權存取此 repo（讓 Claude 能 push）
 
-每次新增或修改頁面後：
+## 與 Claude 協作
 
-- [ ] 到 [Actions 分頁](https://github.com/miiiiiiw/milo/actions) 確認 **Build manifest** 是綠色勾勾 ✅
-- [ ] 確認 repo 多了一個 `chore: update manifest [skip ci]` 的 commit
-- [ ] 到 [Actions 分頁](https://github.com/miiiiiiw/milo/actions) 確認 **pages build and deployment** 也是綠色勾勾
-- [ ] 打開 https://miiiiiiw.github.io/milo/ （必要時按 `Cmd/Ctrl + Shift + R` 強制重新整理），確認頁面出現在正確的資料夾
-- [ ] 點進去確認圖片、樣式、互動都正常（相對路徑是否正確）
-- [ ] 手機寬度看一下，確認版面沒有跑掉
+**交辦新增頁面時請提供：** HTML 檔案或內容、要放的資料夾，以及（選填的）標題、簡介、標籤、日期。
 
----
+**Claude 每次會做：**
+- 使用繁體中文（台灣用語）。
+- 補齊上述四個 meta 標籤，並檢查資源是否使用相對路徑。
+- 在本機產生 manifest，確認新頁面有被掃描到。push 之後，再確認網站上已經出現。
+- commit 訊息以「新增：」「更新：」「刪除：」「維護：」開頭。
+- 新增主題資料夾時，更新「命名規則」裡的主題清單。導覽頁機制有變動時，記錄到「更新紀錄」。
 
-## 8. 常見問題排除
+**Claude 不會主動做：** 修改導覽頁的設計或功能、刪除或改名既有頁面、force push。
 
-**Q：push 了但導覽頁沒出現新頁面**
-1. 等 2 分鐘後強制重新整理（`Cmd/Ctrl + Shift + R`）
-2. 檢查 [Actions](https://github.com/miiiiiiw/milo/actions)：
-   - **Build manifest 紅色 ❌** → 點進去看錯誤。最常見的原因是權限：Settings → Actions → General → Workflow permissions 要選 **Read and write**
-   - **Build manifest 沒有執行** → 確認檔案副檔名是 `.html`，而且 push 到 `main` 分支
-3. 確認檔名或資料夾不是 `_` 或 `.` 開頭，也不在 `assets/`、`scripts/` 裡
+## 更新紀錄
 
-**Q：手動重跑 manifest**
-到 [Actions → Build manifest](https://github.com/miiiiiiw/milo/actions/workflows/manifest.yml) → 右側 **Run workflow** → Run。
-（只有 `.html`／`.htm` 或 `scripts/build-manifest.mjs` 有變動時才會自動觸發，新增、修改、刪除、改名都算。其他情況，或自動執行失敗時，就手動跑。）
+只記錄導覽頁與維運機制的變更，作品的新增請看 git log。
 
-**Q：頁面裡的圖片或 CSS 讀不到**
-- 用相對路徑（`img/a.png`、`./style.css`），不要用 `/img/a.png`（開頭的 `/` 會指向 `miiiiiiw.github.io` 根目錄，而不是 `/milo/`）
-- GitHub Pages 有區分大小寫：`Image.PNG` ≠ `image.png`
-
-**Q：標題、日期、標籤顯示不對**
-- 確認 `<meta>` 寫在 `<head>` 裡，而且在檔案的前 20,000 個字元內
-- `date` 格式必須是 `YYYY-MM-DD`
-
-**Q：網站整個打不開（404）**
-到 Settings → Pages 確認 Source 是 **Deploy from a branch / main / (root)**。
-
-**Q：某個作品在預覽框裡怪怪的，但開新分頁正常**
-有些頁面（例如需要全螢幕、攝影機、彈出視窗）在 iframe 裡會受限制，用右上角 **新分頁** 開啟即可。
-
-**Q：在本機預覽**
-```bash
-node scripts/build-manifest.mjs   # 產生 manifest.json
-python3 -m http.server            # 打開 http://localhost:8000
-```
-> 本機產生的 `manifest.json` 不需要 commit，push 後 Action 會重新產生。
-
----
-
-## 9. 自訂導覽頁外觀
-
-都在 `index.html` 裡修改：
-
-| 想改什麼 | 位置 |
-|---|---|
-| 大標題、小標、副標 | 檔案下方 `<script>` 裡的 `CONFIG` 物件：`title`、`kicker`、`subtitle` |
-| 「新」紅點的天數 | `CONFIG.newDays`（預設 14） |
-| 配色（亮色／暗色） | 檔案上方 `:root{ ... }`，暗色在 `@media (prefers-color-scheme: dark)` 和 `[data-theme="dark"]` 兩處 |
-| 字型 | `<head>` 裡的 Google Fonts 連結 + `:root` 的 `--serif` `--sans` `--mono` |
-| 首頁大標語 | 搜尋 `一個放<i>想法</i>的抽屜` |
-| 不想被列出的路徑 | `CONFIG.ignore`（前端）＋ `scripts/build-manifest.mjs` 的 `SKIP_DIRS`（兩邊要一致） |
-
-**導覽頁功能速查**：`/` 搜尋 · `F` 專注模式（全螢幕預覽）· `Esc` 離開 · 右上 ◐ 切換明暗 · 「資料夾／時間軸」切換檢視
-
----
-
-## 10. 一次性設定（已完成，備查）
-
-| 項目 | 設定值 | 位置 |
-|---|---|---|
-| GitHub Pages | Deploy from a branch → `main` / `(root)` | Settings → Pages |
-| Workflow 權限 | Read and write permissions | Settings → Actions → General |
-| Claude GitHub App | 已安裝，授權 `milo` repo | https://github.com/settings/installations |
-
-如果重新建立 repo，或把這套導覽頁搬到別的 repo，需要把上面三項重新設定一次。
-
----
-
-## 11. 與 Claude 協作的約定
-
-之後請 Claude 處理這個 repo 時，以這一節為準，減少來回確認。
-
-### 請 Claude 新增頁面時，告訴它
-
-1. **HTML 檔案**（附件）或**想做的內容**
-2. **放在哪個資料夾**（沒指定時，Claude 會依 [第 5 節](#5-命名與資料夾規則) 的主題表挑最接近的，或提議新資料夾）
-3. （選填）標題、一句話簡介、標籤、日期
-
-### Claude 會固定執行的動作
-
-- [ ] 用繁體中文（台灣用語）撰寫所有文字與 commit 訊息
-- [ ] 確認或補上 `<title>`、`description`、`keywords`、`date` 四個 meta
-- [ ] 檢查資源路徑是否為相對路徑
-- [ ] 本機執行 `node scripts/build-manifest.mjs`，確認新頁面有被掃到
-- [ ] commit 訊息格式：`新增：<標題>`／`更新：<標題>`／`刪除：<標題>`／`維護：<說明>`
-- [ ] push 到 `main` 後，確認網站上已出現
-- [ ] 新增了主題資料夾的話，同步更新 [第 5 節的主題表](#5-命名與資料夾規則)
-- [ ] 在 [第 12 節](#12-更新紀錄) 記錄導覽頁本身的結構性變更（一般新增作品不需要記錄）
-
-### Claude 不會做的事（除非明確要求）
-
-- 不修改 `index.html` 的設計與功能
-- 不手動編輯 `manifest.json`
-- 不刪除、不改名既有頁面（避免分享連結失效）
-- 不使用 force push
-
----
-
-## 12. 更新紀錄
-
-只記錄**導覽頁或維運機制本身**的變更；一般新增作品請看 git log。
-
-| 日期 | 變更 |
-|---|---|
-| 2026-10-20 | 建立導覽頁（資料夾樹＋時間軸＋預覽）、manifest 自動產生機制、GitHub Pages 上線 |
-| 2026-10-20 | 新增本 README 維運手冊 |
+- 2026-10-20：建立導覽頁與 manifest 自動更新機制，GitHub Pages 上線。
