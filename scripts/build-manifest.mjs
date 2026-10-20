@@ -47,7 +47,9 @@ function gitDate(rel) {
 
 const files = walk(ROOT).map(({ full, rel, mtime }) => {
   const html = readFileSync(full, "utf8").slice(0, 20000);
-  const fromName = rel.split("/").pop().match(/^(\d{4}-\d{2}-\d{2})/)?.[1];
+  // 檔名前綴 YYYYMMDD（例如 20261012-台灣薪資.html）→ 2026-10-12
+  const m = rel.split("/").pop().match(/^(\d{4})(\d{2})(\d{2})(?!\d)/);
+  const fromName = m && +m[2] >= 1 && +m[2] <= 12 && +m[3] >= 1 && +m[3] <= 31 ? `${m[1]}-${m[2]}-${m[3]}` : null;
   const date = meta(html, "date") || fromName || gitDate(rel) || mtime.toISOString();
   const kw = meta(html, "keywords");
   return {

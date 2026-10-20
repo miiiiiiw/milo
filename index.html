@@ -268,7 +268,7 @@ function norm(f){
     dir: path.includes("/") ? path.slice(0, path.lastIndexOf("/")) : ""
   };
 }
-function prettify(n){ return n.replace(/\.html?$/i,"").replace(/^\d{4}-\d{2}-\d{2}[-_ ]?/,"").replace(/[-_]+/g," ").trim() || n; }
+function prettify(n){ return n.replace(/\.html?$/i,"").replace(/^\d{8}(?!\d)[-_ ]?/,"").replace(/[-_]+/g," ").trim() || n; }
 
 /* ---------- tree build ---------- */
 function buildTree(files){
