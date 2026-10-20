@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="把 GitHub 上的程式部署到 Cloudflare Workers 並使用 D1：運作方式、建置步驟、限制與快取建議">
+<meta name="keywords" content="Cloudflare, Workers, D1, 部署, 快取">
+<meta name="date" content="2026-10-20">
+<title>D1 部署指南</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@400;600&display=swap">
+<style>
+/* Layout: one editorial reading column; diagrams sit on the page paper, prose interleaved (text → figure → text). Skin = diagram-design default tokens. */
+:root{
+  --paper:#f5f5f5; --paper-2:#ececec; --node:#ffffff;
+  --ink:#2d3142; --muted:#4f5d75; --soft:#5a6580;
+  --rule:rgba(45,49,66,.12); --rule-solid:#bfc0c0;
+  --accent:#bf4520; --accent-tint:rgba(191,69,32,.08); --accent-soft:rgba(191,69,32,.5); --accent-faint:rgba(191,69,32,.05);
+  --link:#2e5aa8;
+  --zone:rgba(45,49,66,.025); --ext:rgba(45,49,66,.03); --ext-stroke:rgba(45,49,66,.30);
+  --input:rgba(79,93,117,.10); --store:rgba(45,49,66,.05);
+  --code-bg:#ececec;
+  --serif:'Instrument Serif','Noto Serif TC',serif;
+  --sans:'Geist','Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;
+  --mono:'Geist Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#2d3142; --paper-2:#393e53; --node:#393e53;
+  --ink:#f5f5f5; --muted:#bfc0c0; --soft:#949eb2;
+  --rule:rgba(245,245,245,.12); --rule-solid:rgba(191,192,192,.25);
+  --accent:#f08a59; --accent-tint:rgba(240,138,89,.10); --accent-soft:rgba(240,138,89,.5); --accent-faint:rgba(240,138,89,.06);
+  --link:#739fdf;
+  --zone:rgba(245,245,245,.025); --ext:rgba(245,245,245,.04); --ext-stroke:rgba(245,245,245,.30);
+  --input:rgba(191,192,192,.10); --store:rgba(245,245,245,.06);
+  --code-bg:#252836; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#2d3142; --paper-2:#393e53; --node:#393e53;
+  --ink:#f5f5f5; --muted:#bfc0c0; --soft:#949eb2;
+  --rule:rgba(245,245,245,.12); --rule-solid:rgba(191,192,192,.25);
+  --accent:#f08a59; --accent-tint:rgba(240,138,89,.10); --accent-soft:rgba(240,138,89,.5); --accent-faint:rgba(240,138,89,.06);
+  --link:#739fdf;
+  --zone:rgba(245,245,245,.025); --ext:rgba(245,245,245,.04); --ext-stroke:rgba(245,245,245,.30);
+  --input:rgba(191,192,192,.10); --store:rgba(245,245,245,.06);
+  --code-bg:#252836; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.75;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 64px}
+.wrap{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.eyebrow{font-family:var(--mono);font-size:.7rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,5vw,2.75rem);line-height:1.15;letter-spacing:-.01em;margin:0;text-wrap:balance}
+h2{font-family:var(--serif);font-weight:400;font-size:1.65rem;line-height:1.25;margin:28px 0 0;text-wrap:balance;display:flex;gap:12px;align-items:baseline}
+h2 .no{font-family:var(--mono);font-size:.75rem;color:var(--accent);letter-spacing:.1em}
+h3{font-size:1rem;font-weight:600;margin:8px 0 0}
+p{margin:0;max-width:65ch}
+.lede{font-size:1.05rem;color:var(--muted)}
+.verdict{border-left:2px solid var(--accent);padding:4px 0 4px 16px;font-size:1.05rem}
+.verdict strong{color:var(--accent)}
+code{font-family:var(--mono);font-size:.86em;background:var(--code-bg);padding:1px 5px;border-radius:4px}
+a{color:var(--link);text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* figures */
+figure{margin:4px 0;display:flex;flex-direction:column;gap:8px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.scroll svg{display:block;width:100%;min-width:640px;height:auto}
+figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
+.swipe{display:none;font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;color:var(--soft)}
+@media (max-width:680px){.swipe{display:block}}
+
+/* steps */
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:24px;counter-reset:s}
+ol.steps>li{counter-increment:s;display:grid;grid-template-columns:32px minmax(0,1fr);gap:8px 12px;min-width:0}
+ol.steps>li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:.78rem;color:var(--muted);padding-top:4px;grid-column:1;grid-row:1}
+ol.steps>li>*{grid-column:2;min-width:0}
+@media (max-width:480px){
+  ol.steps>li{grid-template-columns:minmax(0,1fr);gap:6px}
+  ol.steps>li::before{padding-top:0}
+  ol.steps>li>*{grid-column:1}
+  .code pre{font-size:.78rem;padding:10px 12px 10px 12px;padding-top:34px}
+}
+ol.steps>li.key::before{color:var(--accent)}
+.step-t{font-weight:600}
+.code{position:relative;background:var(--code-bg);border-radius:6px;border:1px solid var(--rule)}
+.code pre{margin:0;padding:12px 56px 12px 14px;overflow-x:auto;font-family:var(--mono);font-size:.82rem;line-height:1.6}
+.code pre code{background:none;padding:0;font-size:inherit}
+.copy{position:absolute;top:6px;right:6px;font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:var(--muted);background:var(--paper);
+  border:1px solid var(--rule);border-radius:4px;padding:3px 8px;cursor:pointer}
+.copy:hover{color:var(--ink);border-color:var(--rule-solid)}
+.note{font-size:.9rem;color:var(--muted)}
+.note b{color:var(--ink);font-weight:600}
+
+/* limits table */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--mono);font-size:.68rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+td.n{font-family:var(--mono);white-space:nowrap}
+td.paid{color:var(--ink);font-weight:500}
+ul.points{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:8px;max-width:65ch}
+
+.sources{font-size:.85rem;color:var(--soft);border-top:1px solid var(--rule);padding-top:16px;margin-top:16px}
+.sources ul{margin:6px 0 0;padding-left:1.2em}
+
+/* svg skin */
+.d .bg,.d .mask{fill:var(--paper)}
+.d .zone{fill:var(--zone);stroke:var(--rule);stroke-width:.8}
+.d .n-backend{fill:var(--node);stroke:var(--ink);stroke-width:1}
+.d .n-focal{fill:var(--accent-tint);stroke:var(--accent);stroke-width:1.2}
+.d .n-ext{fill:var(--ext);stroke:var(--ext-stroke);stroke-width:1}
+.d .n-input{fill:var(--input);stroke:var(--soft);stroke-width:1}
+.d .n-store{fill:var(--store);stroke:var(--muted);stroke-width:1}
+.d .n-warn{fill:var(--accent-faint);stroke:var(--accent-soft);stroke-width:1;stroke-dasharray:4 4}
+.d .tag{fill:none;stroke:var(--soft);stroke-opacity:.5;stroke-width:.8}
+.d .tag-t{fill:var(--soft);font:500 7px var(--mono);letter-spacing:.08em}
+.d .nm{fill:var(--ink);font:600 12px var(--sans)}
+.d .sub{fill:var(--muted);font:400 9px var(--mono)}
+.d .lbl{fill:var(--soft);font:400 8px var(--mono);letter-spacing:.06em}
+.d .lbl-zh{fill:var(--soft);font:500 12px var(--sans)}
+.d .eb{fill:var(--muted);font:500 8px var(--mono);letter-spacing:.18em}
+.d .callout{fill:var(--muted);font:italic 400 14px var(--serif)}
+.d .a{fill:none;stroke:var(--muted);stroke-width:1.2}
+.d .a-link{fill:none;stroke:var(--link);stroke-width:1.2}
+.d .a-dash{fill:none;stroke:var(--muted);stroke-width:1;stroke-dasharray:4 3}
+.d .hair{stroke:var(--rule);stroke-width:.8}
+.d .m-muted{fill:var(--muted)} .d .m-link{fill:var(--link)}
+.d .lg-focal{fill:var(--accent-tint);stroke:var(--accent)}
+.d .lg-backend{fill:var(--node);stroke:var(--ink)}
+.d .lg-ext{fill:var(--ext);stroke:var(--ext-stroke)}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <p class="eyebrow">部署筆記 · GitHub → Cloudflare</p>
+  <h1>用 GitHub、Workers 與 D1 部署網站</h1>
+  <p class="lede">這份指南說明如何把放在 GitHub 的程式部署到 Cloudflare Workers，並用 D1（Cloudflare 提供的 SQLite 資料庫）儲存資料。設定完成後，每次 push 到 GitHub，網站就會自動更新。</p>
+
+  <h2><span class="no">01</span>運作方式</h2>
+  <p>三個服務各有分工：GitHub 存放程式碼；Workers 執行後端程式，也能同時提供前端的靜態檔；D1 存放資料。</p>
+  <p>你在本機開發後 push 到 GitHub，Cloudflare 的 Workers Builds 會自動建置並部署 Worker。使用者的請求進到 Worker 後，Worker 透過名為 <code>DB</code> 的 binding 查詢 D1，不需要連線字串，也不必另外架設資料庫伺服器。</p>
+  <figure>
+    <span class="swipe">← 左右滑動看完整圖 →</span>
+    <div class="scroll">
+<svg class="d" viewBox="0 0 640 452" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="arch-title arch-desc">
+  <title id="arch-title">GitHub、Workers 與 D1 的部署架構</title>
+  <desc id="arch-desc">程式碼從本機 push 到 GitHub，觸發 Workers Builds 部署 Worker；使用者透過 HTTPS 呼叫 Worker，Worker 經由 DB binding 讀寫 D1，migration 可選擇在建置時套用。</desc>
+  <defs>
+    <marker id="arch-ar" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker>
+    <marker id="arch-ar-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-link" points="0 0, 8 3, 0 6"/></marker>
+  </defs>
+  <rect class="bg" width="640" height="452"/>
+
+  <!-- zone -->
+  <rect class="zone" x="184" y="148" width="432" height="228" rx="8"/>
+  <text class="eb" x="200" y="168">CLOUDFLARE</text>
+
+  <!-- arrows first -->
+  <line class="a" x1="84" y1="96" x2="84" y2="191" marker-end="url(#arch-ar)"/>
+  <rect class="mask" x="92" y="136" width="48" height="12" rx="2"/>
+  <text class="lbl" x="116" y="145" text-anchor="middle">GIT PUSH</text>
+
+  <line class="a" x1="144" y1="220" x2="207" y2="220" marker-end="url(#arch-ar)"/>
+  <rect class="mask" x="156" y="200" width="40" height="12" rx="2"/>
+  <text class="lbl" x="176" y="209" text-anchor="middle">TRIGGER</text>
+
+  <line class="a" x1="336" y1="220" x2="399" y2="220" marker-end="url(#arch-ar)"/>
+  <rect class="mask" x="348" y="200" width="40" height="12" rx="2"/>
+  <text class="lbl" x="368" y="209" text-anchor="middle">DEPLOY</text>
+
+  <line class="a-link" x1="468" y1="96" x2="468" y2="191" marker-end="url(#arch-ar-link)"/>
+  <rect class="mask" x="476" y="116" width="36" height="12" rx="2"/>
+  <text class="lbl" x="494" y="125" text-anchor="middle">HTTPS</text>
+
+  <line class="a" x1="468" y1="248" x2="468" y2="295" marker-end="url(#arch-ar)"/>
+  <rect class="mask" x="476" y="266" width="40" height="12" rx="2"/>
+  <text class="lbl" x="496" y="275" text-anchor="middle">ENV.DB</text>
+
+  <path class="a-dash" d="M272,248 V316 Q272,324 280,324 H399" marker-end="url(#arch-ar)"/>
+  <rect class="mask" x="316" y="304" width="44" height="12" rx="2"/>
+  <text class="lbl" x="338" y="313" text-anchor="middle">MIGRATE</text>
+
+  <!-- nodes -->
+  <rect class="mask" x="24" y="40" width="120" height="56" rx="6"/>
+  <rect class="n-input" x="24" y="40" width="120" height="56" rx="6"/>
+  <rect class="tag" x="32" y="46" width="28" height="12" rx="2"/><text class="tag-t" x="46" y="55" text-anchor="middle">DEV</text>
+  <text class="nm" x="84" y="74" text-anchor="middle">你的電腦</text>
+  <text class="sub" x="84" y="88" text-anchor="middle">wrangler dev</text>
+
+  <rect class="mask" x="24" y="192" width="120" height="56" rx="6"/>
+  <rect class="n-backend" x="24" y="192" width="120" height="56" rx="6"/>
+  <rect class="tag" x="32" y="198" width="28" height="12" rx="2"/><text class="tag-t" x="46" y="207" text-anchor="middle">GIT</text>
+  <text class="nm" x="84" y="226" text-anchor="middle">GitHub repo</text>
+  <text class="sub" x="84" y="240" text-anchor="middle">branch: main</text>
+
+  <rect class="mask" x="208" y="192" width="128" height="56" rx="6"/>
+  <rect class="n-backend" x="208" y="192" width="128" height="56" rx="6"/>
+  <rect class="tag" x="216" y="198" width="28" height="12" rx="2"/><text class="tag-t" x="230" y="207" text-anchor="middle">CI</text>
+  <text class="nm" x="272" y="226" text-anchor="middle">Workers Builds</text>
+  <text class="sub" x="272" y="240" text-anchor="middle">build · deploy</text>
+
+  <rect class="mask" x="400" y="40" width="136" height="56" rx="6"/>
+  <rect class="n-ext" x="400" y="40" width="136" height="56" rx="6"/>
+  <rect class="tag" x="408" y="46" width="28" height="12" rx="2"/><text class="tag-t" x="422" y="55" text-anchor="middle">WEB</text>
+  <text class="nm" x="468" y="74" text-anchor="middle">使用者瀏覽器</text>
+  <text class="sub" x="468" y="88" text-anchor="middle">*.workers.dev</text>
+
+  <rect class="mask" x="400" y="192" width="136" height="56" rx="6"/>
+  <rect class="n-focal" x="400" y="192" width="136" height="56" rx="6"/>
+  <rect class="tag" x="408" y="198" width="28" height="12" rx="2"/><text class="tag-t" x="422" y="207" text-anchor="middle">API</text>
+  <text class="nm" x="468" y="226" text-anchor="middle">Worker</text>
+  <text class="sub" x="468" y="240" text-anchor="middle">fetch() · assets</text>
+
+  <rect class="mask" x="400" y="296" width="136" height="56" rx="6"/>
+  <rect class="n-focal" x="400" y="296" width="136" height="56" rx="6"/>
+  <rect class="tag" x="408" y="302" width="28" height="12" rx="2"/><text class="tag-t" x="422" y="311" text-anchor="middle">DB</text>
+  <text class="nm" x="468" y="330" text-anchor="middle">D1 資料庫</text>
+  <text class="sub" x="468" y="344" text-anchor="middle">SQLite · binding</text>
+
+  <!-- legend -->
+  <line class="hair" x1="24" y1="396" x2="616" y2="396"/>
+  <text class="eb" x="24" y="428">LEGEND</text>
+  <rect class="lg-focal" x="96" y="416" width="16" height="12" rx="2"/><text class="lbl-zh" x="120" y="427">重點元件</text>
+  <rect class="lg-backend" x="196" y="416" width="16" height="12" rx="2"/><text class="lbl-zh" x="220" y="427">服務</text>
+  <rect class="lg-ext" x="272" y="416" width="16" height="12" rx="2"/><text class="lbl-zh" x="296" y="427">外部</text>
+  <line class="a-link" x1="348" y1="422" x2="376" y2="422"/><text class="lbl-zh" x="384" y="427">HTTP 請求</text>
+  <line class="a-dash" x1="472" y1="422" x2="500" y2="422"/><text class="lbl-zh" x="508" y="427">選用流程</text>
+</svg>
+    </div>
+    <figcaption>虛線的 MIGRATE 是選用做法：把 migration 指令加進部署指令，建置時順便更新資料表（見步驟 06）。</figcaption>
+  </figure>
+
+  <h2><span class="no">02</span>建置步驟</h2>
+  <p>開始前需要準備 Cloudflare 帳號、GitHub 帳號，以及已安裝 Node.js 的電腦。步驟 01 會建立專案資料夾，之後的指令都在該資料夾中執行。</p>
+  <ol class="steps">
+    <li>
+      <span class="step-t">本機建立專案</span>
+      <p>選 Worker 範本；需要前端的話選框架範本，例如 React 或 Astro。</p>
+      <div class="code"><pre><code>npm create cloudflare@latest</code></pre><button class="copy" type="button" id="cp1">複製</button></div>
+    </li>
+    <li>
+      <span class="step-t">建立 D1 資料庫並綁定</span>
+      <p>執行後把輸出的 <code>database_id</code> 填進 <code>wrangler.jsonc</code>。<code>binding</code> 的名稱就是程式裡 <code>env.DB</code> 的名字。</p>
+      <div class="code"><pre><code>npx wrangler d1 create my-db</code></pre><button class="copy" type="button" id="cp2">複製</button></div>
+      <div class="code"><pre><code>"d1_databases": [
+  { "binding": "DB", "database_name": "my-db", "database_id": "xxxx" }
+]</code></pre><button class="copy" type="button" id="cp3">複製</button></div>
+    </li>
+    <li>
+      <span class="step-t">用 migration 建表</span>
+      <p>先建立 migration 檔，在產生的 <code>.sql</code> 裡寫 <code>CREATE TABLE</code>，再套用。加 <code>--remote</code> 套用到正式環境；不加則套用到本機測試庫。</p>
+      <div class="code"><pre><code>npx wrangler d1 migrations create my-db init
+npx wrangler d1 migrations apply my-db --remote</code></pre><button class="copy" type="button" id="cp4">複製</button></div>
+    </li>
+    <li>
+      <span class="step-t">在程式中查詢</span>
+      <p>透過 binding 存取資料庫。參數一律用 <code>bind()</code> 傳入，不要拼接字串，以防 SQL injection。</p>
+      <div class="code"><pre><code>const { results } = await env.DB
+  .prepare("SELECT * FROM users WHERE id = ?")
+  .bind(id).all();</code></pre><button class="copy" type="button" id="cp5">複製</button></div>
+    </li>
+    <li>
+      <span class="step-t">本機測試</span>
+      <p>會使用本機模擬的 D1，不會動到正式資料。</p>
+      <div class="code"><pre><code>npx wrangler dev</code></pre><button class="copy" type="button" id="cp6">複製</button></div>
+    </li>
+    <li class="key">
+      <span class="step-t">接上 GitHub 自動部署</span>
+      <p>程式碼推上 GitHub 後，到 Cloudflare 後台「Workers &amp; Pages → 建立 → 匯入 Git repository」選擇該 repo。</p>
+      <p class="note"><b>注意：</b>自動部署只更新程式碼，資料表變更仍要另外執行 migration。可以手動跑，或把 <code>wrangler d1 migrations apply --remote</code> 加進部署指令。</p>
+    </li>
+    <li>
+      <span class="step-t">設定機密資訊</span>
+      <p>API key 等機密用下列指令設定，不要寫進 repo。</p>
+      <div class="code"><pre><code>npx wrangler secret put 名稱</code></pre><button class="copy" type="button" id="cp7">複製</button></div>
+    </li>
+  </ol>
+
+  <h3>程式碼與資料表是兩條各自的更新路線</h3>
+  <p>步驟 06 最容易漏掉。push 會自動讓新程式上線，但 D1 的資料表結構不會跟著變。若新程式要用到新欄位，應先套用 migration 再 push，否則新程式上線時會查不到欄位而出錯。</p>
+  <figure>
+    <span class="swipe">← 左右滑動看完整圖 →</span>
+    <div class="scroll">
+<svg class="d" viewBox="0 0 640 284" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="lanes-title lanes-desc">
+  <title id="lanes-title">程式碼更新與資料表更新的兩條路線</title>
+  <desc id="lanes-desc">程式碼在 git push 後由 Workers Builds 自動部署；資料表結構則需自行撰寫 migration 並以 --remote 套用到正式 D1。</desc>
+  <defs>
+    <marker id="lanes-ar" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker>
+  </defs>
+  <rect class="bg" width="640" height="284"/>
+
+  <rect class="zone" x="8" y="16" width="624" height="104" rx="8"/>
+  <text class="lbl-zh" x="24" y="40">程式碼 · push 後自動完成</text>
+  <rect class="zone" x="8" y="136" width="624" height="104" rx="8"/>
+  <text class="lbl-zh" x="24" y="160">資料表結構 · 需要自己執行</text>
+
+  <line class="a" x1="148" y1="80" x2="179" y2="80" marker-end="url(#lanes-ar)"/>
+  <line class="a" x1="304" y1="80" x2="335" y2="80" marker-end="url(#lanes-ar)"/>
+  <line class="a" x1="460" y1="80" x2="491" y2="80" marker-end="url(#lanes-ar)"/>
+  <line class="a" x1="148" y1="200" x2="179" y2="200" marker-end="url(#lanes-ar)"/>
+  <line class="a" x1="304" y1="200" x2="335" y2="200" marker-end="url(#lanes-ar)"/>
+  <line class="a" x1="460" y1="200" x2="491" y2="200" marker-end="url(#lanes-ar)"/>
+
+  <rect class="mask" x="24" y="56" width="124" height="48" rx="6"/><rect class="n-backend" x="24" y="56" width="124" height="48" rx="6"/>
+  <text class="nm" x="86" y="78" text-anchor="middle">修改程式</text><text class="sub" x="86" y="94" text-anchor="middle">src/index.js</text>
+  <rect class="mask" x="180" y="56" width="124" height="48" rx="6"/><rect class="n-backend" x="180" y="56" width="124" height="48" rx="6"/>
+  <text class="nm" x="242" y="78" text-anchor="middle">推上 GitHub</text><text class="sub" x="242" y="94" text-anchor="middle">git push</text>
+  <rect class="mask" x="336" y="56" width="124" height="48" rx="6"/><rect class="n-backend" x="336" y="56" width="124" height="48" rx="6"/>
+  <text class="nm" x="398" y="78" text-anchor="middle">自動建置</text><text class="sub" x="398" y="94" text-anchor="middle">Workers Builds</text>
+  <rect class="mask" x="492" y="56" width="124" height="48" rx="6"/><rect class="n-ext" x="492" y="56" width="124" height="48" rx="6"/>
+  <text class="nm" x="554" y="78" text-anchor="middle">新版程式上線</text><text class="sub" x="554" y="94" text-anchor="middle">*.workers.dev</text>
+
+  <rect class="mask" x="24" y="176" width="124" height="48" rx="6"/><rect class="n-backend" x="24" y="176" width="124" height="48" rx="6"/>
+  <text class="nm" x="86" y="198" text-anchor="middle">撰寫 migration</text><text class="sub" x="86" y="214" text-anchor="middle">0001_init.sql</text>
+  <rect class="mask" x="180" y="176" width="124" height="48" rx="6"/><rect class="n-backend" x="180" y="176" width="124" height="48" rx="6"/>
+  <text class="nm" x="242" y="198" text-anchor="middle">本機測試</text><text class="sub" x="242" y="214" text-anchor="middle">apply (local)</text>
+  <rect class="mask" x="336" y="176" width="124" height="48" rx="6"/><rect class="n-focal" x="336" y="176" width="124" height="48" rx="6"/>
+  <text class="nm" x="398" y="198" text-anchor="middle">套用到正式庫</text><text class="sub" x="398" y="214" text-anchor="middle">apply --remote</text>
+  <rect class="mask" x="492" y="176" width="124" height="48" rx="6"/><rect class="n-store" x="492" y="176" width="124" height="48" rx="6"/>
+  <text class="nm" x="554" y="198" text-anchor="middle">D1 結構更新</text><text class="sub" x="554" y="214" text-anchor="middle">schema updated</text>
+
+  <text class="callout" x="24" y="268">push 不會更新資料表；有新欄位時，先 apply 再 push。</text>
+</svg>
+    </div>
+  </figure>
+
+  <h2><span class="no">03</span>需要留意的限制</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>項目</th><th>免費方案</th><th>Workers Paid</th></tr></thead>
+      <tbody>
+        <tr><td>單一資料庫容量上限</td><td class="n">500 MB</td><td class="n paid">10 GB</td></tr>
+        <tr><td>每次 Worker 請求可執行的查詢數</td><td class="n">50</td><td class="n paid">1,000</td></tr>
+        <tr><td>Time Travel 時間點還原</td><td class="n">7 天</td><td class="n paid">30 天</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul class="points">
+    <li>單一資料庫的 10 GB 上限無法再提高。資料量大時，改為依使用者或租戶拆成多個資料庫。</li>
+    <li>免費方案的每日讀寫或儲存額度用完後，D1 會回傳錯誤；升級到 Workers Paid 後，限制通常幾分鐘內解除。</li>
+  </ul>
+
+  <h3>併發：每個 D1 資料庫一次只處理一個查詢</h3>
+  <p>同時湧入的請求會先排隊；佇列滿了就直接回傳 overloaded 錯誤。寫入量大的應用要減少每個請求的查詢數，或把資料拆到多個資料庫，分散負載。</p>
+  <figure>
+    <span class="swipe">← 左右滑動看完整圖 →</span>
+    <div class="scroll">
+<svg class="d" viewBox="0 0 640 248" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="queue-title queue-desc">
+  <title id="queue-title">D1 單執行緒處理與排隊</title>
+  <desc id="queue-desc">多個同時到達的請求進入佇列，由 D1 逐一處理；佇列滿時回傳 overloaded 錯誤。</desc>
+  <defs>
+    <marker id="queue-ar" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker>
+  </defs>
+  <rect class="bg" width="640" height="248"/>
+
+  <path class="a" d="M120,50 H144 Q152,50 152,58 V88 Q152,96 160,96 H183" marker-end="url(#queue-ar)"/>
+  <line class="a" x1="120" y1="120" x2="183" y2="120" marker-end="url(#queue-ar)"/>
+  <path class="a" d="M120,190 H144 Q152,190 152,182 V152 Q152,144 160,144 H183" marker-end="url(#queue-ar)"/>
+
+  <line class="a" x1="304" y1="120" x2="367" y2="120" marker-end="url(#queue-ar)"/>
+  <rect class="mask" x="308" y="98" width="56" height="16" rx="2"/>
+  <text class="lbl-zh" x="336" y="111" text-anchor="middle">逐一處理</text>
+
+  <path class="a-dash" d="M244,168 V196 Q244,204 252,204 H367" marker-end="url(#queue-ar)"/>
+  <rect class="mask" x="282" y="182" width="56" height="16" rx="2"/>
+  <text class="lbl-zh" x="310" y="195" text-anchor="middle">佇列滿時</text>
+
+  <rect class="mask" x="24" y="32" width="96" height="36" rx="6"/><rect class="n-ext" x="24" y="32" width="96" height="36" rx="6"/>
+  <text class="nm" x="72" y="54" text-anchor="middle">請求 A</text>
+  <rect class="mask" x="24" y="102" width="96" height="36" rx="6"/><rect class="n-ext" x="24" y="102" width="96" height="36" rx="6"/>
+  <text class="nm" x="72" y="124" text-anchor="middle">請求 B</text>
+  <rect class="mask" x="24" y="172" width="96" height="36" rx="6"/><rect class="n-ext" x="24" y="172" width="96" height="36" rx="6"/>
+  <text class="nm" x="72" y="194" text-anchor="middle">請求 C</text>
+
+  <rect class="mask" x="184" y="72" width="120" height="96" rx="6"/><rect class="n-store" x="184" y="72" width="120" height="96" rx="6"/>
+  <rect class="tag" x="192" y="78" width="28" height="12" rx="2"/><text class="tag-t" x="206" y="87" text-anchor="middle">QUEUE</text>
+  <text class="nm" x="244" y="122" text-anchor="middle">等待佇列</text>
+  <text class="sub" x="244" y="138" text-anchor="middle">queued</text>
+
+  <rect class="mask" x="368" y="96" width="120" height="48" rx="6"/><rect class="n-focal" x="368" y="96" width="120" height="48" rx="6"/>
+  <text class="nm" x="428" y="118" text-anchor="middle">D1 資料庫</text>
+  <text class="sub" x="428" y="134" text-anchor="middle">1 query at a time</text>
+
+  <rect class="mask" x="368" y="180" width="120" height="48" rx="6"/><rect class="n-warn" x="368" y="180" width="120" height="48" rx="6"/>
+  <text class="nm" x="428" y="208" text-anchor="middle">overloaded 錯誤</text>
+
+  <text class="callout" x="512" y="112">解法：依使用者</text>
+  <text class="callout" x="512" y="132">或租戶拆成</text>
+  <text class="callout" x="512" y="152">多個資料庫</text>
+</svg>
+    </div>
+  </figure>
+
+  <h2><span class="no">04</span>補充：要不要做快取</h2>
+  <p>剛上線時不一定需要。建議先處理成本低、效益明確的前端快取；等流量變大，或發現同一批資料被大量重複查詢時，再加後端快取。</p>
+
+  <h3>前端快取：先處理靜態檔</h3>
+  <p>Workers 提供靜態檔時，預設會帶 <code>Cache-Control: public, max-age=0, must-revalidate</code> 和 <code>ETag</code>。瀏覽器每次使用前都會向伺服器確認；檔案沒變就只回小小的 304，不必重新下載整個檔案。</p>
+  <p>建置工具輸出的 JS、CSS 檔名通常帶有雜湊值（例如 <code>app.3f9a1c.js</code>），內容一改檔名就跟著變，所以可以放心讓瀏覽器長期快取。在靜態檔目錄（例如 <code>public/</code>）新增一個名為 <code>_headers</code> 的檔案：</p>
+  <div class="code"><pre><code>/assets/*
+  Cache-Control: public, max-age=31536000, immutable</code></pre><button class="copy" type="button" id="cp8">複製</button></div>
+  <p class="note"><b>注意：</b><code>index.html</code> 這類檔名不會變的頁面不要設長快取，否則使用者可能拿不到新版。另外，<code>_headers</code> 只對靜態檔有效；API 這類由 Worker 程式產生的回應，要在程式中自行設定標頭。</p>
+
+  <h3>後端快取：減少重複查詢 D1</h3>
+  <p>適合「很多人讀同一份資料、資料不常變」的情境，例如文章列表、商品目錄、設定值。快取命中時不必查 D1，能降低延遲，也能減輕 D1 一次只處理一個查詢造成的排隊。</p>
+  <figure>
+    <span class="swipe">← 左右滑動看完整圖 →</span>
+    <div class="scroll">
+<svg class="d" viewBox="0 0 640 316" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="cache-title cache-desc">
+  <title id="cache-title">API 讀取時的後端快取流程</title>
+  <desc id="cache-desc">GET 請求先查快取，有資料就直接回傳；沒有才查詢 D1，並把結果存入快取後回傳。</desc>
+  <defs>
+    <marker id="cache-ar" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker>
+  </defs>
+  <rect class="bg" width="640" height="316"/>
+
+  <line class="a" x1="320" y1="64" x2="320" y2="95" marker-end="url(#cache-ar)"/>
+  <line class="a" x1="408" y1="136" x2="479" y2="136" marker-end="url(#cache-ar)"/>
+  <rect class="mask" x="430" y="114" width="28" height="16" rx="2"/>
+  <text class="lbl-zh" x="444" y="127" text-anchor="middle">有</text>
+  <line class="a" x1="320" y1="176" x2="320" y2="215" marker-end="url(#cache-ar)"/>
+  <rect class="mask" x="328" y="188" width="32" height="16" rx="2"/>
+  <text class="lbl-zh" x="344" y="201" text-anchor="middle">沒有</text>
+  <line class="a" x1="384" y1="240" x2="479" y2="240" marker-end="url(#cache-ar)"/>
+
+  <rect class="mask" x="240" y="24" width="160" height="40" rx="20"/>
+  <rect class="n-ext" x="240" y="24" width="160" height="40" rx="20"/>
+  <text class="nm" x="320" y="48" text-anchor="middle">API 請求（GET）</text>
+
+  <polygon class="mask" points="320,96 408,136 320,176 232,136"/>
+  <polygon class="n-focal" points="320,96 408,136 320,176 232,136"/>
+  <text class="nm" x="320" y="140" text-anchor="middle">快取有資料？</text>
+
+  <rect class="mask" x="480" y="112" width="136" height="48" rx="6"/>
+  <rect class="n-backend" x="480" y="112" width="136" height="48" rx="6"/>
+  <text class="nm" x="548" y="134" text-anchor="middle">直接回傳</text>
+  <text class="sub" x="548" y="150" text-anchor="middle">cache hit</text>
+
+  <rect class="mask" x="256" y="216" width="128" height="48" rx="6"/>
+  <rect class="n-store" x="256" y="216" width="128" height="48" rx="6"/>
+  <text class="nm" x="320" y="238" text-anchor="middle">查詢 D1</text>
+  <text class="sub" x="320" y="254" text-anchor="middle">env.DB</text>
+
+  <rect class="mask" x="480" y="216" width="136" height="48" rx="6"/>
+  <rect class="n-backend" x="480" y="216" width="136" height="48" rx="6"/>
+  <text class="nm" x="548" y="238" text-anchor="middle">存入快取並回傳</text>
+  <text class="sub" x="548" y="254" text-anchor="middle">cache.put()</text>
+
+  <text class="callout" x="24" y="300">快取內容會過時：設定合理的有效期限，或在資料更新時清除。</text>
+</svg>
+    </div>
+  </figure>
+  <p>常見的三種做法：</p>
+  <ul class="points">
+    <li><b>Cache API</b>（<code>caches.default</code>）：把整個 GET 回應存在 Cloudflare 的機房，不必額外建立資源。快取只存在處理請求的那個機房，不會同步到其他地方；<code>cache.delete</code> 也只清得掉該機房的副本，所以通常靠較短的有效期限讓資料自然更新。官方文件列出的可用環境是自訂網域，在後台編輯器的預覽中則不會生效，建議綁定自訂網域後再使用。</li>
+    <li><b>Workers KV</b>：全球分散的鍵值儲存，讀取快，適合放查詢結果或設定值。寫入後，其他地區可能要 60 秒以上才讀得到新值，不適合需要即時一致的資料。</li>
+    <li><b>D1 讀取副本</b>（read replication）：這不是快取，而是在多個地區建立唯讀副本，縮短各地使用者的讀取延遲，而且不另外收費。寫入仍集中在主資料庫；搭配 Sessions API（<code>env.DB.withSession()</code>）可確保讀得到自己剛寫入的資料。這項功能推出時是公開測試版，使用前請先到官方文件確認目前狀態。</li>
+  </ul>
+  <p class="note"><b>不要快取：</b>登入後的個人資料（例如帶有 <code>Authorization</code> 的請求）和寫入操作（POST、PUT、DELETE）。<code>cache.put</code> 只接受 GET 請求，而且帶 <code>Set-Cookie</code> 的回應不會被存入快取。</p>
+
+  <div class="sources">
+    資料來源
+    <ul>
+      <li><a href="https://developers.cloudflare.com/d1/platform/limits">D1 Limits · Cloudflare Docs</a></li>
+      <li><a href="https://developers.cloudflare.com/changelog/2025-02-07-new-ways-to-get-started-on-workers">Create and deploy Workers from Git repositories · Cloudflare Changelog</a></li>
+      <li><a href="https://developers.cloudflare.com/d1/reference/faq/">D1 FAQs · Cloudflare Docs</a></li>
+      <li><a href="https://developers.cloudflare.com/workers/static-assets/headers/">Static Assets Headers · Cloudflare Docs</a></li>
+      <li><a href="https://developers.cloudflare.com/workers/reference/cache-api/">Cache API · Cloudflare Docs</a></li>
+      <li><a href="https://developers.cloudflare.com/workers/reference/how-the-cache-works/">How the Cache works · Cloudflare Docs</a></li>
+      <li><a href="https://developers.cloudflare.com/d1/best-practices/read-replication/">Global read replication · Cloudflare Docs</a></li>
+    </ul>
+    圖表依 <a href="https://github.com/cathrynlavery/diagram-design">diagram-design</a> 的設計規範繪製。
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.copy').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var code=btn.parentElement.querySelector('code');
+    var text=code.innerText;
+    function done(){btn.textContent='已複製';setTimeout(function(){btn.textContent='複製';},1500);}
+    function fallback(){var r=document.createRange();r.selectNodeContents(code);var s=window.getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='已選取';setTimeout(function(){btn.textContent='複製';},1500);}
+    try{navigator.clipboard.writeText(text).then(done,fallback);}catch(e){fallback();}
+  });
+});
+</script>
+
+</body>
+</html>
