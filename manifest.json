@@ -1,9 +1,9 @@
 {
-  "generated": "2026-10-20T11:20:39.919Z",
+  "generated": "2026-10-20T13:40:19.948Z",
   "files": [
     {
-      "path": "技術筆記/20261020-D1部署指南.html",
-      "title": "D1 部署指南",
+      "path": "技術筆記/20261020-Cloudflare架站與資料庫.html",
+      "title": "Cloudflare 架站與資料庫",
       "description": "把 GitHub 上的程式部署到 Cloudflare Workers 並使用 D1：運作方式、建置步驟、限制與快取建議",
       "tags": [
         "Cloudflare",
