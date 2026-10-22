@@ -1,0 +1,1246 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 產品經理知識地圖</title>
+<meta name="description" content="AI 產品經理五大能力領域的知識筆記，附動態導覽影片與圖解">
+<meta name="keywords" content="AI, 產品經理, 知識地圖, infographic">
+<meta name="date" content="2026-10-23">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@400;600&display=swap">
+<style>
+html{color-scheme:light}
+:root{padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<style>
+/* Layout: one reading column (~38em) on smoke paper. Every figure is a grey "diagram container"
+   spanning the full column width. Figures reflow at phone width; only the dense RAG diagram scrolls.
+   One accent (burnt tangerine) marks the focal idea in each figure. */
+:root{
+  --paper:#f5f5f5; --paper-2:#ececec; --node:#ffffff;
+  --ink:#2d3142; --muted:#4f5d75; --soft:#5a6580;
+  --rule:rgba(45,49,66,.12); --rule-solid:#bfc0c0; --node-stroke:rgba(45,49,66,.28);
+  --accent:#bf4520; --accent-tint:rgba(191,69,32,.08);
+  --d1:#5e7a9b; --d2:#7c8f6f; --d3:#b8915a; --d4:#6e6479; --d5:#bf4520;
+  --serif:'Instrument Serif','Noto Serif TC','PingFang TC',serif;
+  --sans:'Geist','Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;
+  --mono:'Geist Mono','Noto Sans TC',ui-monospace,monospace;
+  --cc:52px; /* capability number column */
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#2d3142; --paper-2:#393e53; --node:#33384c;
+    --ink:#f5f5f5; --muted:#bfc0c0; --soft:#949eb2;
+    --rule:rgba(245,245,245,.12); --rule-solid:rgba(191,192,192,.25); --node-stroke:rgba(245,245,245,.24);
+    --accent:#f08a59; --accent-tint:rgba(240,138,89,.12);
+    --d1:#82a0c0; --d2:#9caf8f; --d3:#d3ad7a; --d4:#a99cb6; --d5:#f08a59;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#2d3142; --paper-2:#393e53; --node:#33384c;
+  --ink:#f5f5f5; --muted:#bfc0c0; --soft:#949eb2;
+  --rule:rgba(245,245,245,.12); --rule-solid:rgba(191,192,192,.25); --node-stroke:rgba(245,245,245,.24);
+  --accent:#f08a59; --accent-tint:rgba(240,138,89,.12);
+  --d1:#82a0c0; --d2:#9caf8f; --d3:#d3ad7a; --d4:#a99cb6; --d5:#f08a59;
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{
+  background:var(--paper); color:var(--ink);
+  font:400 17px/1.85 var(--sans);
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:760px; margin:0 auto; padding-block:56px 72px}
+p{margin:0 0 1em}
+strong{font-weight:600}
+a{color:inherit}
+
+.eyebrow{font:500 12px/1.4 var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--soft); margin:0 0 12px; display:flex; align-items:center; gap:10px}
+.dot{width:8px; height:8px; border-radius:50%; background:var(--c, var(--soft)); flex:none; display:inline-block}
+.c1{--c:var(--d1)} .c2{--c:var(--d2)} .c3{--c:var(--d3)} .c4{--c:var(--d4)} .c5{--c:var(--d5)}
+
+header{padding-bottom:32px; border-bottom:1px solid var(--rule); margin-bottom:40px}
+h1{font:400 clamp(2.2rem, 6vw, 3.4rem)/1.12 var(--serif); letter-spacing:-.01em; margin:0 0 20px; text-wrap:balance}
+.lede{font-size:19px; line-height:1.8; color:var(--muted); max-width:36em; margin:0}
+.lede strong{color:var(--ink)}
+
+section{padding-top:48px; margin-top:48px; border-top:1px solid var(--rule)}
+section.first{border-top:0; margin-top:0; padding-top:0}
+h2{font:400 clamp(1.7rem, 4.4vw, 2.3rem)/1.25 var(--serif); margin:0 0 20px; text-wrap:balance}
+h2 .sub{display:block; font-size:.62em; color:var(--muted); margin-top:6px}
+h3{font:600 19px/1.5 var(--sans); margin:40px 0 4px; display:flex; gap:12px; align-items:baseline}
+h3 .tag{font:500 13px var(--mono); color:var(--soft)}
+
+/* Capability items */
+.caps{margin:24px 0 0; padding:0; list-style:none}
+.cap{display:grid; grid-template-columns:var(--cc) minmax(0,1fr); gap:0 8px; padding:18px 0; border-top:1px solid var(--rule)}
+.cap:last-child{border-bottom:1px solid var(--rule)}
+.cap-num{font:500 14px/1.9 var(--mono); color:var(--soft); font-variant-numeric:tabular-nums; display:flex; align-items:center; align-self:start; height:1.9em; gap:6px}
+.cap-num::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--c, var(--soft)); flex:none}
+.nd .num .dot{width:6px; height:6px}
+.cap h4{font:600 17px/1.6 var(--sans); margin:0 0 4px}
+.cap p{margin:0}
+.cap ul{margin:6px 0 0; padding-left:1.2em}
+.cap li{margin:2px 0}
+
+.note{background:var(--paper-2); border:1px solid var(--rule); border-radius:6px; padding:18px 20px; margin:24px 0 0}
+.note h4{font:600 16px/1.6 var(--sans); margin:0 0 6px}
+.note p:last-child,.note ul:last-child{margin-bottom:0}
+.note ul{margin:0; padding-left:1.2em}
+.note li{margin:6px 0}
+
+/* Figures — one width, one padding, everywhere */
+.fig{margin:32px 0}
+.fig.in{margin:20px 0 4px calc(-1 * (var(--cc) + 8px))} /* break out of the number column so every box spans the full column */
+.fig-box{background:var(--paper-2); border:1px solid var(--rule); border-radius:8px; padding:20px}
+.fig-box.scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
+.fig figcaption{margin-top:10px; font-size:13px; line-height:1.6; color:var(--muted); display:flex; gap:10px; align-items:baseline}
+.fig figcaption b{font:500 11px var(--mono); letter-spacing:.14em; color:var(--soft); flex:none}
+.note .fig{margin:20px 0 0}
+
+/* Shared node */
+.nd{background:var(--node); border:1px solid var(--node-stroke); border-radius:6px; padding:10px 14px; min-width:0}
+.nd.focal{background:var(--accent-tint); border-color:var(--accent)}
+.nd .num{font:500 11px/1.4 var(--mono); color:var(--soft); display:flex; align-items:center; gap:6px}
+.nd.focal .num{color:var(--accent)}
+.nd .nm{display:block; font-weight:600; font-size:15px; line-height:1.5}
+.nd .sb{display:block; font-size:13px; line-height:1.55; color:var(--muted)}
+.focal-t{color:var(--accent)}
+.glyph{font-family:var(--mono); color:var(--soft); text-align:center; line-height:1}
+
+/* FIG 01 — five domains */
+.d5{display:flex; flex-direction:column; gap:10px}
+.d5 .top{text-align:center; padding:14px}
+.d5 .mid{text-align:center; font-size:13px; color:var(--soft); margin:0}
+.base4{display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:8px}
+.brace{border:1px solid var(--rule-solid); border-bottom:0; height:8px; margin-top:4px}
+.brace-t{text-align:center; font-size:13px; color:var(--muted); margin:0}
+@media (max-width:560px){ .base4{grid-template-columns:repeat(2, minmax(0,1fr))} }
+
+/* FIG 02 — quadrant */
+.quad{display:grid; grid-template-columns:minmax(0,1fr); gap:6px}
+.q-y{font-size:12px; font-weight:500; color:var(--soft)}
+.q-x{font-size:12px; font-weight:500; color:var(--soft); text-align:right}
+.q-grid{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); border:1px solid var(--rule-solid); background:var(--node)}
+.q-cell{min-height:132px; padding:16px 12px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; gap:4px}
+.q-cell:nth-child(1){border-right:1px solid var(--rule-solid); border-bottom:1px solid var(--rule-solid)}
+.q-cell:nth-child(2){border-bottom:1px solid var(--rule-solid); background:var(--accent-tint); outline:1px solid var(--accent); outline-offset:-1px}
+.q-cell:nth-child(3){border-right:1px solid var(--rule-solid)}
+.q-cell .nm{font-weight:600; font-size:15px; line-height:1.45}
+.q-cell .sb{font-size:13px; color:var(--muted); line-height:1.55}
+
+/* FIG 03 — lifecycle */
+.life{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:12px 28px; counter-reset:none}
+.life li{position:relative}
+.life li .nd{height:100%}
+.life .num i{margin-left:auto; padding-left:8px}
+.life .num i{font:normal 12px var(--sans); color:var(--muted)}
+.life li::after{position:absolute; font-family:var(--mono); color:var(--muted)}
+@media (min-width:561px){ .life li:not(:nth-child(3n)):not(:last-child)::after{content:"→"; right:-21px; top:50%; transform:translateY(-50%)} }
+.loopbar{margin-top:14px; border:1px dashed var(--accent); border-radius:6px; padding:8px 14px; font-size:14px; color:var(--ink); display:flex; gap:10px; align-items:center}
+.loopbar .glyph{color:var(--accent); font-size:16px}
+@media (max-width:560px){
+  .life{grid-template-columns:minmax(0,1fr); gap:20px}
+  .life li:not(:last-child)::after{content:"↓"; left:50%; bottom:-18px; transform:translateX(-50%)}
+}
+
+/* FIG 04 — funnel */
+.funnel{display:flex; flex-direction:column; align-items:center; gap:8px}
+.f-row{width:var(--w); display:grid; grid-template-columns:auto minmax(0,1fr); gap:4px 14px; align-items:baseline}
+.f-step{font:500 12px var(--sans); color:var(--soft)}
+.f-row.focal .f-step{color:var(--accent)}
+.f-title{font-weight:600; font-size:15px; line-height:1.5}
+.f-chips{grid-column:2; display:flex; flex-wrap:wrap; gap:6px}
+@media (max-width:560px){
+  .f-row:nth-child(1){--w:100%!important} .f-row:nth-child(2){--w:94%!important} .f-row:nth-child(3){--w:88%!important} .f-row:nth-child(4){--w:82%!important}
+}
+
+.chip{display:inline-flex; align-items:center; gap:6px; font:400 12.5px/1.5 var(--sans); color:var(--muted); border:1px solid var(--rule-solid); border-radius:4px; padding:1px 8px; white-space:nowrap; background:var(--node)}
+.chip::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--c, var(--soft))}
+.chip .k{font:500 12px var(--mono); color:var(--ink)}
+
+/* Steppers (FIG 05, 11) */
+.steps{display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:28px; margin:0; padding:0; list-style:none}
+.steps li{position:relative; display:flex}
+.steps li .nd{width:100%; text-align:center; display:flex; flex-direction:column; justify-content:center}
+.steps li:not(:last-child)::after{content:"→"; position:absolute; right:-21px; top:50%; transform:translateY(-50%); font-family:var(--mono); color:var(--muted)}
+.steps-q{margin:14px 0 0; font-size:13px; color:var(--muted); text-align:center}
+@media (max-width:560px){
+  .steps{grid-template-columns:minmax(0,1fr); gap:20px}
+  .steps li:not(:last-child)::after{content:"↓"; right:auto; left:50%; top:auto; bottom:-18px; transform:translateX(-50%)}
+}
+
+/* FIG 06 — chart */
+svg.dg{display:block; width:100%; height:auto; margin:0 auto}
+svg.dg text{font-family:var(--sans); fill:var(--ink)}
+.chart{max-width:520px}
+.t-body{fill:var(--muted)!important}
+.t-acc{fill:var(--accent)!important}
+.lbl{font-weight:500; fill:var(--soft)!important}
+.n{fill:var(--node); stroke:var(--node-stroke); stroke-width:1}
+.nf{fill:var(--accent-tint); stroke:var(--accent); stroke-width:1.2}
+.t-name{font-size:13px; font-weight:600}
+.t-mono{font:400 10px var(--mono)!important; fill:var(--muted)!important}
+.conn{fill:none; stroke:var(--muted); stroke-width:1}
+.conn.acc{stroke:var(--accent); stroke-width:1.2}
+.dash{stroke-dasharray:5 4}
+.lm{fill:var(--paper-2)}
+.scroll-hint{display:none}
+@media (max-width:620px){ .scroll-hint{display:inline} }
+
+/* FIG 07 — pair */
+.pair{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px}
+.panel h5{font:500 11px var(--mono); letter-spacing:.14em; color:var(--soft); margin:0 0 6px; text-transform:uppercase}
+.panel h6{font:600 15px/1.5 var(--sans); margin:0 0 12px}
+.stack{display:flex; flex-direction:column; gap:4px}
+.stack span{border:1px solid var(--rule-solid); border-radius:4px; padding:4px 10px; font-size:14px; display:flex; justify-content:space-between}
+.stack span i{font:normal 11px var(--mono); color:var(--soft)}
+.stack .out{margin-top:8px; border-style:dashed; color:var(--muted); font-size:13px}
+.metric{display:flex; align-items:center; justify-content:space-between; padding:9px 0; border-top:1px solid var(--rule); font-size:14px}
+.panel h6 + .metric{border-top:0}
+.arrow{font:600 13px var(--mono); padding:1px 8px; border-radius:4px; border:1px solid var(--rule-solid); color:var(--muted)}
+.arrow.dn{border-color:var(--accent); color:var(--accent)}
+@media (max-width:560px){ .pair{grid-template-columns:minmax(0,1fr)} }
+
+/* Qualities grid */
+.quals{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; margin:12px 0 0; padding:0; list-style:none}
+.note .quals{padding:0}
+.quals li{background:var(--node); border:1px solid var(--rule); border-radius:6px; padding:12px 14px; font-size:15px; line-height:1.7; margin:0}
+.quals li strong{display:block; margin-bottom:2px}
+@media (max-width:560px){ .quals{grid-template-columns:minmax(0,1fr)} }
+
+/* FIG 09 — layers */
+.layers{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:8px}
+.layer .L{font:400 34px/1 var(--serif); color:var(--soft); display:block}
+.layer.focal .L{color:var(--accent)}
+.layer .nm{margin-top:8px}
+.layer .sb{margin:0 0 10px}
+.layer .chips{display:flex; flex-wrap:wrap; gap:4px}
+@media (max-width:560px){ .layers{grid-template-columns:minmax(0,1fr)} }
+
+/* FIG 12 — eval loop */
+.loop{display:grid; grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr); grid-template-rows:auto 28px auto; align-items:stretch}
+.loop .nd{text-align:center; display:flex; flex-direction:column; justify-content:center; min-height:72px; padding:10px}
+.loop .glyph{display:flex; align-items:center; justify-content:center; font-size:15px}
+.lp-a{grid-area:1/1} .lp-r{grid-area:1/2} .lp-b{grid-area:1/3}
+.lp-u{grid-area:2/1} .lp-d{grid-area:2/3}
+.lp-d2{grid-area:3/1} .lp-l{grid-area:3/2} .lp-c{grid-area:3/3}
+
+/* Workflow matrix */
+.flow{display:grid; grid-template-columns:minmax(0,1fr) 40px 40px; gap:0 8px}
+.stages{list-style:none; margin:0; padding:0; grid-column:1; grid-row:1}
+.stage{display:grid; grid-template-columns:28px minmax(0,8.5em) minmax(0,1fr); gap:4px 12px; align-items:start; padding:12px 0; border-top:1px solid var(--rule)}
+.stage:first-child{border-top:0; padding-top:0}
+.s-n{font:500 13px/1.6 var(--mono); color:var(--soft)}
+.s-name{font-weight:600; font-size:15px; line-height:1.6}
+.s-name small{display:block; font-weight:400; font-size:12.5px; color:var(--muted)}
+.s-chips{display:flex; flex-wrap:wrap; gap:4px; padding-top:2px}
+.band{grid-row:1; border-radius:6px; writing-mode:vertical-rl; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:500; letter-spacing:.12em; padding:8px 0; border:1px solid var(--node-stroke); background:var(--node); color:var(--muted)}
+.band b{color:var(--ink); font-weight:600}
+.band.b2{border-color:var(--accent); background:var(--accent-tint)}
+.legend{display:flex; flex-wrap:wrap; gap:6px 14px; margin-top:14px; padding-top:12px; border-top:1px solid var(--rule); font-size:12.5px; color:var(--muted)}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+@media (max-width:620px){
+  .flow{grid-template-columns:minmax(0,1fr); gap:8px}
+  .band{grid-row:auto; writing-mode:horizontal-tb; letter-spacing:.04em; padding:8px 12px; justify-content:flex-start}
+  .stages{grid-row:auto; margin-bottom:8px}
+  .stage{grid-template-columns:24px minmax(0,1fr)}
+  .s-chips{grid-column:2}
+}
+
+/* Pyramid */
+.pyr{display:flex; flex-direction:column; align-items:center; gap:6px}
+.pyr .nd{width:var(--w); text-align:center}
+.pyr .num{justify-content:center}
+@media (max-width:560px){
+  .pyr .nd:nth-child(1){--w:76%!important} .pyr .nd:nth-child(2){--w:88%!important} .pyr .nd:nth-child(3){--w:100%!important}
+}
+
+/* Closing list */
+ol.how{margin:20px 0 0; padding:0; list-style:none; counter-reset:h}
+ol.how > li{counter-increment:h; display:grid; grid-template-columns:var(--cc) minmax(0,1fr); gap:0 8px; padding:16px 0; border-top:1px solid var(--rule)}
+ol.how > li:last-child{border-bottom:1px solid var(--rule)}
+ol.how > li::before{content:counter(h, decimal-leading-zero); font:500 14px/1.9 var(--mono); color:var(--soft)}
+
+/* Domain index */
+.index{margin:28px 0 0; padding:0; list-style:none; border-top:1px solid var(--rule)}
+.index li{border-bottom:1px solid var(--rule)}
+.index a{display:grid; grid-template-columns:44px minmax(0,11em) minmax(0,1fr); gap:4px 16px; padding:14px 4px; text-decoration:none; align-items:baseline}
+.index a:hover .ix-name, .index a:focus-visible .ix-name{color:var(--accent)}
+.index a:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:4px}
+.ix-num{font:500 14px var(--mono); color:var(--soft); display:flex; align-items:center; gap:8px}
+.ix-name{font-weight:600}
+.ix-q{color:var(--muted); font-size:15px}
+@media (max-width:620px){
+  .index a{grid-template-columns:44px minmax(0,1fr)}
+  .ix-q{grid-column:2}
+}
+
+footer{margin-top:64px; padding-top:20px; border-top:1px solid var(--rule); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; font:400 12px var(--mono); color:var(--soft); letter-spacing:.04em}
+
+@media (max-width:480px){
+  :root{--cc:46px}
+  body{font-size:16px}
+  .fig-box{padding:14px}
+}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <marker id="arw" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" style="fill:var(--muted)"/></marker>
+    <marker id="arw-a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" style="fill:var(--accent)"/></marker>
+  </defs>
+</svg>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">AI Product Manager · 知識筆記</p>
+  <h1>AI 產品經理的五大能力：一份知識地圖</h1>
+  <p class="lede">AI 產品經理的角色，是貫穿產品全生命週期，<strong>懂產品、懂 AI、會用 AI，並且創造業務價值</strong>。這份筆記既可以用來檢視自己，也可以用來帶新人。</p>
+</header>
+
+<!-- ═════════ 導覽影片（新增區塊） ═════════ -->
+<style>
+:root{ --alert:#c8283c; --scrim:rgba(245,245,245,.72) }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --alert:#ff7a85; --scrim:rgba(45,49,66,.72) } }
+:root[data-theme="dark"]{ --alert:#ff7a85; --scrim:rgba(45,49,66,.72) }
+.tour{margin:0 0 56px}
+.tour [hidden]{display:none!important}
+.tour-stage{position:relative; aspect-ratio:4/3; background:var(--paper); border:1px solid var(--rule); border-radius:8px; overflow:hidden}
+.tour-stage canvas{position:absolute; inset:0; width:100%; height:100%; display:block}
+.tour-cover{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; background:var(--scrim); border:0; width:100%; cursor:pointer; color:var(--ink); font:inherit; padding:16px}
+.tour-cover:focus-visible{outline:2px solid var(--accent); outline-offset:-4px}
+.tour-cover .big{width:76px; height:76px; border-radius:50%; background:var(--accent); display:grid; place-items:center; box-shadow:0 6px 24px rgba(0,0,0,.18)}
+.tour-cover .big svg{width:30px; height:30px; fill:var(--paper); margin-left:4px}
+.tour-cover .cl{font-weight:600; font-size:16px}
+.tour-cover .cs{font:400 12px var(--mono); color:var(--soft); letter-spacing:.06em}
+.tour-wait{position:absolute; right:12px; top:12px; font:400 11px var(--mono); color:var(--soft); background:var(--node); border:1px solid var(--rule); border-radius:4px; padding:2px 8px}
+.tour-bar{display:flex; align-items:center; gap:10px; margin-top:10px}
+.tbtn{width:40px; height:40px; flex:none; border-radius:50%; border:1px solid var(--node-stroke); background:var(--node); color:var(--ink); display:grid; place-items:center; cursor:pointer; padding:0}
+.tbtn svg{width:16px; height:16px; fill:currentColor}
+.tbtn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.ttime{font:500 12px var(--mono); color:var(--soft); flex:none; font-variant-numeric:tabular-nums}
+.tseek{position:relative; flex:1; min-width:0; height:40px; display:flex; align-items:center}
+.tseek input{width:100%; margin:0; -webkit-appearance:none; appearance:none; background:transparent; height:40px; cursor:pointer}
+.tseek input::-webkit-slider-runnable-track{height:4px; border-radius:2px; background:linear-gradient(90deg, var(--accent) var(--p,0%), var(--rule-solid) var(--p,0%))}
+.tseek input::-moz-range-track{height:4px; border-radius:2px; background:linear-gradient(90deg, var(--accent) var(--p,0%), var(--rule-solid) var(--p,0%))}
+.tseek input::-webkit-slider-thumb{-webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--accent); margin-top:-5px; border:2px solid var(--paper)}
+.tseek input::-moz-range-thumb{width:12px; height:12px; border-radius:50%; background:var(--accent); border:2px solid var(--paper)}
+.tseek input:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:4px}
+.tticks{position:absolute; left:7px; right:7px; top:50%; height:0; pointer-events:none}
+.tticks i{position:absolute; top:-6px; width:1px; height:12px; background:var(--soft); opacity:.5}
+.tchap{margin:2px 0 0; font-size:13px; color:var(--muted); display:flex; gap:10px; align-items:baseline; min-height:1.6em}
+.tchap b{font:500 11px var(--mono); color:var(--soft); letter-spacing:.12em; flex:none}
+.tcredit{margin:6px 0 0; font-size:12px; line-height:1.6; color:var(--soft)}
+.tcredit a{color:inherit}
+@media (max-width:560px){
+  .tour-stage{margin-left:calc(-1 * max(16px, env(safe-area-inset-left, 0px))); margin-right:calc(-1 * max(16px, env(safe-area-inset-right, 0px))); border-radius:0; border-left:0; border-right:0}
+}
+</style>
+
+<div class="tour" id="tour">
+  <p class="eyebrow">導覽影片 · 先看大意</p>
+  <div class="tour-stage" id="tour-stage">
+    <canvas id="tour-canvas" role="img" aria-label="全文導覽動態影片，依序介紹五大能力領域、工作流程與使用方式"></canvas>
+    <button class="tour-cover" id="tour-cover" type="button" aria-label="播放導覽影片">
+      <span class="big"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span>
+      <span class="cl">播放導覽影片</span>
+      <span class="cs" id="tour-len">含配樂 · 請開啟聲音</span>
+    </button>
+    <span class="tour-wait" id="tour-wait" hidden>配樂載入中…</span>
+  </div>
+  <div class="tour-bar">
+    <button class="tbtn" id="tour-pp" type="button" aria-label="播放"><svg viewBox="0 0 24 24" id="tour-pp-i"><path d="M7 4l13 8-13 8z"/></svg></button>
+    <span class="ttime" id="tour-time">0:00 / 0:00</span>
+    <div class="tseek"><input id="tour-seek" type="range" min="0" max="100" step="0.1" value="0" aria-label="影片進度"><div class="tticks" id="tour-ticks"></div></div>
+    <button class="tbtn" id="tour-mute" type="button" aria-label="靜音"><svg viewBox="0 0 24 24" id="tour-mute-i"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <button class="tbtn" id="tour-fs" type="button" aria-label="全螢幕" hidden><svg viewBox="0 0 24 24"><path d="M4 9V4h5v2H6v3zm11-5h5v5h-2V6h-3zM4 15h2v3h3v2H4zm14 0h2v5h-5v-2h3z"/></svg></button>
+  </div>
+  <p class="tchap" id="tour-chap"><b>CH</b><span>開場</span></p>
+  <p class="tcredit">背景音樂與提示音的音色取自 <a href="https://github.com/sgossner/VSCO-2-CE">VSCO 2 CE</a>（CC0）。</p>
+</div>
+
+<script>
+(()=>{
+const W=1200,H=900,TR=0.8;
+const stage=document.getElementById('tour-stage'), cv=document.getElementById('tour-canvas'), ctx=cv.getContext('2d');
+const SANS='"Geist","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif';
+const SERIF='"Instrument Serif","Noto Serif TC","PingFang TC",serif';
+const MONO='"Geist Mono","Noto Sans TC",ui-monospace,monospace';
+const TOK=['paper','paper-2','node','ink','muted','soft','rule','rule-solid','node-stroke','accent','accent-tint','d1','d2','d3','d4','d5','alert'];
+let C={}, cAt=0;
+function readC(force){const n=performance.now(); if(!force&&n-cAt<400)return; cAt=n; const cs=getComputedStyle(document.documentElement); TOK.forEach(k=>{C[k]=cs.getPropertyValue('--'+k).trim()||'#888'});}
+const col=k=>C[k]||k;
+const cl=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
+const P=(t,a,d)=>cl((t-a)/d);
+const eo=x=>1-Math.pow(1-x,3);
+const eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const back=x=>{const c1=1.4,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+const lerp=(a,b,x)=>a+(b-a)*x;
+let BOX=null;
+
+/* ── drawing primitives ── */
+function fam(f){return f==='mono'?MONO:f==='serif'?SERIF:SANS}
+function T(s,x,y,o={}){
+  const al=o.al==null?1:o.al; if(al<=0.001)return;
+  const size=o.s||44, w=o.w||400;
+  ctx.save(); ctx.globalAlpha*=al; ctx.font=`${w} ${size}px ${fam(o.f)}`;
+  ctx.fillStyle=col(o.c||'ink'); ctx.textAlign=o.a||'left'; ctx.textBaseline='alphabetic';
+  ctx.fillText(s,x,y);
+  if(BOX&&ctx.globalAlpha>0.2){const m=ctx.measureText(s).width; const l=o.a==='center'?x-m/2:o.a==='right'?x-m:x;
+    const M=ctx.getTransform(), S=cv.width/W; const p1=M.transformPoint(new DOMPoint(l,y-size*.88)), p2=M.transformPoint(new DOMPoint(l+m,y+size*.22));
+    BOX.push({s,l:p1.x/S,r:p2.x/S,t:p1.y/S,b:p2.y/S});}
+  ctx.restore();
+}
+function mw(s,size,w=400,f){ctx.save();ctx.font=`${w} ${size}px ${fam(f)}`;const m=ctx.measureText(s).width;ctx.restore();return m}
+function rr(x,y,w,h,r){r=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function box(x,y,w,h,o={}){
+  const al=o.al==null?1:o.al; if(al<=0.001)return;
+  ctx.save(); ctx.globalAlpha*=al; rr(x,y,w,h,o.r==null?10:o.r);
+  if(o.fill!==null){ctx.fillStyle=col(o.fill||'node');ctx.fill();}
+  if(o.stroke!==null){ctx.lineWidth=o.lw||1.5;ctx.strokeStyle=col(o.stroke||'node-stroke'); if(o.dash)ctx.setLineDash(o.dash); ctx.stroke();}
+  ctx.restore();
+}
+function dot(x,y,r,c,al=1){if(al<=0.001)return;ctx.save();ctx.globalAlpha*=al;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=col(c);ctx.fill();ctx.restore()}
+function ring(x,y,r,c,lw,al=1){if(al<=0.001)return;ctx.save();ctx.globalAlpha*=al;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.strokeStyle=col(c);ctx.lineWidth=lw;ctx.stroke();ctx.restore()}
+function line(x1,y1,x2,y2,c,lw=2,al=1,dash){if(al<=0.001)return;ctx.save();ctx.globalAlpha*=al;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=col(c);ctx.lineWidth=lw;if(dash)ctx.setLineDash(dash);ctx.stroke();ctx.restore()}
+function plen(p){let L=0;for(let i=1;i<p.length;i++)L+=Math.hypot(p[i][0]-p[i-1][0],p[i][1]-p[i-1][1]);return L}
+function pointAt(p,f){let L=plen(p)*cl(f),i=1;for(;i<p.length;i++){const s=Math.hypot(p[i][0]-p[i-1][0],p[i][1]-p[i-1][1]);if(L<=s||i===p.length-1){const k=s?L/s:0;return[lerp(p[i-1][0],p[i][0],cl(k)),lerp(p[i-1][1],p[i][1],cl(k))]}L-=s}return p[p.length-1]}
+function arrowHead(x,y,ang,c,sz=16){ctx.save();ctx.translate(x,y);ctx.rotate(ang);ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-sz,-sz*.55);ctx.lineTo(-sz,sz*.55);ctx.closePath();ctx.fillStyle=col(c);ctx.fill();ctx.restore()}
+function conn(p,prog,o={}){
+  if(prog<=0)return; const c=o.c||'muted', lw=o.lw||3, L=plen(p);
+  ctx.save(); ctx.globalAlpha*=(o.al==null?1:o.al)*(o.dash?cl(prog*1.5):1);
+  ctx.beginPath(); ctx.moveTo(p[0][0],p[0][1]);
+  for(let i=1;i<p.length-1;i++)ctx.arcTo(p[i][0],p[i][1],p[i+1][0],p[i+1][1],14);
+  ctx.lineTo(p[p.length-1][0],p[p.length-1][1]);
+  ctx.strokeStyle=col(c); ctx.lineWidth=lw; ctx.lineCap='round';
+  ctx.setLineDash(o.dash?o.dash:[L*prog,L+20]); ctx.stroke(); ctx.restore();
+  if(prog>=.98&&o.arrow!==false){const a=p[p.length-2],b=p[p.length-1];ctx.save();ctx.globalAlpha*=(o.al==null?1:o.al);arrowHead(b[0],b[1],Math.atan2(b[1]-a[1],b[0]-a[0]),c);ctx.restore()}
+}
+function packet(x,y,c='accent',r=10){dot(x,y,r+10,c,.18);dot(x,y,r,c)}
+function head(t,ey,title,dc){
+  const a=eo(P(t,0,.5)), b=eo(P(t,.12,.55));
+  dot(80,94,8,dc,a); T(ey,100,105,{f:'mono',s:32,c:'soft',w:500,al:a});
+  ctx.save(); ctx.translate(0,(1-b)*22); T(title,72,184,{s:62,w:600,al:b}); ctx.restore();
+}
+function bg(Tg){
+  ctx.fillStyle=col('paper'); ctx.fillRect(0,0,W,H);
+  ctx.save(); ctx.globalAlpha=.09; ctx.fillStyle=col('ink'); const off=(Tg*7)%40;
+  for(let x=-40+off;x<W+40;x+=40)for(let y=20;y<H;y+=40){ctx.fillRect(x,y,2.4,2.4)}
+  ctx.restore();
+}
+
+/* ── scenes ── */
+const LIFE=[['1.1','市場與競品分析','機會是否存在'],['1.2','用戶研究與調研','為誰而做'],['1.3','業務分析與流程梳理','劃出邊界'],['1.4','需求挖掘與管理','需求池'],['1.5','產品規劃與功能設計','路線圖'],['1.6','交互設計與原型製作','設計規範'],['1.7','產品需求與規格設計','研發與測試的合約'],['1.8','產品研發與交付管理','順利上線'],['1.9','產品運營與迭代','灰度發布']];
+const rnd=i=>{const x=Math.sin(i*127.1+11.7)*43758.5453;return x-Math.floor(x)};
+
+const SC=[
+{n:'開場',anim:5.4,ch:34,cues:[[1.2,'glock',0],[1.6,'pizz',0],[1.9,'pizz',1],[2.2,'pizz',2],[2.5,'pizz',3],[4.4,'hit'],[4.75,'hit'],[5.1,'orch']],d(t){
+  T('AI PRODUCT MANAGER · 導覽',72,110,{f:'mono',s:32,c:'soft',w:500,al:P(t,0,.5)});
+  const a1=eo(P(t,.2,.6)); T('AI 產品經理的',72,250+(1-a1)*20,{s:52,c:'muted',al:a1});
+  const a2=eio(P(t,.5,.9)); ctx.save(); ctx.beginPath(); ctx.rect(60,260,1100*a2,190); ctx.clip(); T('五大能力',66,410,{f:'serif',s:150}); ctx.restore();
+  const a3=eo(P(t,1.2,.7)); if(a3>0){ctx.fillStyle=col('accent');ctx.fillRect(72,436,600*a3,5)}
+  [['懂產品','d1'],['懂 AI','d5'],['會用 AI','d5'],['創造業務價值','d3']].forEach(([s,c],i)=>{
+    const a=eo(P(t,1.6+i*.3,.5)); if(a<=0)return; const x=72+(i%2)*540, y=478+Math.floor(i/2)*92;
+    ctx.save(); ctx.globalAlpha=a; ctx.translate(0,(1-a)*24); box(x,y,516,74); dot(x+34,y+37,9,c); T(s,x+60,y+52,{s:42,w:600}); ctx.restore();});
+  line(72,690,72+1056*eo(P(t,3.0,.8)),690,'rule-solid',2);
+  [[5,'大能力領域'],[41,'項能力'],[7,'個工作階段']].forEach(([n,l],i)=>{const x=72+i*360, a=P(t,3.3+i*.35,1.1); if(a<=0)return;
+    T(String(Math.round(eo(a)*n)),x,800,{f:'serif',s:120,c:i===1?'accent':'ink'}); T(l,x,852,{s:36,c:'muted',al:cl(a*2)});});
+}},
+{n:'導讀：五大領域',anim:4.4,ch:42,cues:[[1.2,'pizz',0],[1.38,'pizz',1],[1.56,'pizz',2],[1.74,'hit'],[2.18,'orch'],[3.6,'glock',1]],d(t){
+  head(t,'導讀 · 五大領域','四塊基本功，一塊差異化','soft');
+  const names=['產品專業','行業與業務','商業與經營','軟實力'];
+  for(let i=0;i<4;i++){const x=72+i*268,w=252,g=eo(P(t,.4+i*.18,.8)),h=270*g; if(h<=1)continue;
+    box(x,790-h,w,h,{r:8}); const a=P(t,.9+i*.18,.4);
+    dot(x+30,570,9,'d'+(i+1),a); T('0'+(i+1),x+48,582,{f:'mono',s:34,c:'soft',al:a}); T(names[i],x+26,660,{s:42,w:600,al:a});}
+  const d=P(t,1.8,.9); if(d>0){const y=lerp(-170,300,back(d));
+    box(72,y,1056,150,{stroke:null}); box(72,y,1056,150,{fill:'accent-tint',stroke:'accent',lw:3});
+    T('05',108,y+68,{f:'mono',s:38,c:'accent',w:500}); T('AI 專項能力',180,y+70,{s:54,w:600}); T('差異化能力：理解、設計並運用 AI',108,y+124,{s:38,c:'muted'});}
+  if(t>2.8){const ph=((t-2.8)%2)/2; box(72-ph*14,300-ph*14,1056+ph*28,150+ph*28,{fill:null,stroke:'accent',lw:2,al:.4*(1-ph),r:10+ph*14});}
+  T('↑ 建立在基本功之上',600,492,{s:34,c:'soft',a:'center',al:P(t,2.8,.5)});
+  const b=eo(P(t,3.2,.7)); if(b>0){line(600-528*b,812,600+528*b,812,'rule-solid',2); if(b>.98){line(72,800,72,812,'rule-solid',2);line(1128,800,1128,812,'rule-solid',2)}}
+  T('基本功：任何好產品經理都該具備',600,868,{s:38,c:'muted',a:'center',al:P(t,3.6,.5)});
+}},
+{n:'導讀：兩種失衡',anim:6.6,ch:56,cues:[[.8,'pizz',0],[2.0,'err'],[4.0,'err'],[6.0,'orch']],d(t){
+  head(t,'導讀 · 兩種失衡','只補一邊，就會失衡','soft');
+  const a=eo(P(t,.3,.6));
+  box(160,262,880,540,{r:4,stroke:'rule-solid',al:a}); line(600,262,600,802,'rule-solid',2,a); line(160,532,1040,532,'rule-solid',2,a);
+  T('↑ 懂 AI',160,246,{s:32,c:'soft',w:500,al:a}); T('懂產品・懂業務 →',1040,850,{s:32,c:'soft',w:500,a:'right',al:a});
+  const flash=(x,y,t0,c)=>{if(t<t0)return;const k=t-t0;const pu=k<1?(.5+.5*Math.cos(k*Math.PI*6))*(1-k):0;
+    box(x+4,y+4,432,262,{fill:c,stroke:null,al:.07+.12*pu,r:4}); box(x+4,y+4,432,262,{fill:null,stroke:c,lw:3,al:.55+.45*pu,r:4});};
+  flash(160,262,2.0,'alert'); flash(600,532,4.0,'alert');
+  if(t>=6.0){const k=eo(P(t,6.0,.5)); box(604,266,432,262,{fill:'accent-tint',stroke:'accent',lw:3,al:k,r:4});}
+  const ta=P(t,2.0,.4), tb=P(t,4.0,.4), tc=P(t,6.0,.4);
+  T('只懂 AI，不懂業務',380,372,{s:40,w:600,a:'center',al:ta}); T('技術很炫，',380,428,{s:34,c:'muted',a:'center',al:ta}); T('卻沒人買單',380,472,{s:34,c:'muted',a:'center',al:ta});
+  T('只懂產品，不懂 AI',820,642,{s:40,w:600,a:'center',al:tb}); T('無法判斷什麼可行、',820,698,{s:34,c:'muted',a:'center',al:tb}); T('成本多少、風險在哪',820,742,{s:34,c:'muted',a:'center',al:tb});
+  T('兩邊都補齊',820,382,{s:44,w:600,c:'accent',a:'center',al:tc}); T('真正勝任',820,438,{s:34,c:'muted',a:'center',al:tc}); T('AI 產品經理',820,482,{s:34,c:'muted',a:'center',al:tc});
+  if(t>.8){const K=[[.8,196,568],[1.2,196,568],[2.0,196,300],[3.0,196,300],[4.0,636,568],[5.0,636,568],[6.0,636,300]];
+    let x=196,y=568; for(let i=1;i<K.length;i++){if(t<=K[i][0]){const f=eio(cl((t-K[i-1][0])/(K[i][0]-K[i-1][0])));x=lerp(K[i-1][1],K[i][1],f);y=lerp(K[i-1][2],K[i][2],f);break}x=K[i][1];y=K[i][2]}
+    const pr=Math.sin(t*4)*3; dot(x,y,22+pr,'accent',.18); dot(x,y,13,'accent',cl((t-.8)*3));}
+}},
+{n:'01 產品專業能力',anim:8.8,ch:96,cues:[...LIFE.map((_,i)=>[1.0+i*.75,'tick',i]),[8.6,'hit']],d(t){
+  head(t,'能力領域 01 · 9 項','產品專業能力：一條生命週期','d1');
+  const cx=330,cy=560,R=200,ang=i=>(-90+i*40)*Math.PI/180, ra=P(t,.3,.6);
+  ring(cx,cy,R,'rule-solid',3,ra);
+  const q=cl((t-1.0)/.75,0,8);
+  if(t>1.0){ctx.save();ctx.beginPath();ctx.arc(cx,cy,R,ang(0),ang(q));ctx.strokeStyle=col('d1');ctx.lineWidth=6;ctx.stroke();ctx.restore()}
+  for(let i=0;i<9;i++){const x=cx+R*Math.cos(ang(i)),y=cy+R*Math.sin(ang(i)),lit=t>=1.0&&q>=i-.001;
+    dot(x,y,19,lit?'d1':'node',ra); ring(x,y,19,lit?'d1':'node-stroke',2.5,ra);}
+  if(t>=1.0&&t<7.4){const x=cx+R*Math.cos(ang(q)),y=cy+R*Math.sin(ang(q)); packet(x,y,'accent',10);
+    const cur=Math.min(8,Math.round(q)); T(LIFE[cur][0],cx,cy+14,{f:'serif',s:96,a:'center'}); T(LIFE[cur][2],cx,cy+66,{s:32,c:'muted',a:'center'});}
+  if(t>=7.4){const lp=eio(P(t,7.4,1.2)),a0=ang(8),a1=ang(3)+Math.PI*2,ae=lerp(a0,a1,lp);
+    ctx.save();ctx.beginPath();ctx.arc(cx,cy,150,a0,ae);ctx.setLineDash([14,10]);ctx.strokeStyle=col('accent');ctx.lineWidth=4;ctx.stroke();ctx.restore();
+    arrowHead(cx+150*Math.cos(ae),cy+150*Math.sin(ae),ae+Math.PI/2,'accent',18);
+    T('1.9 → 1.4',cx,cy+8,{f:'serif',s:64,a:'center',al:P(t,7.6,.5)}); T('進入下一輪優化',cx,cy+58,{s:32,w:600,c:'accent',a:'center',al:P(t,7.8,.5)});
+    if(lp>=1){const k=(t-8.6)%1.2/1.2; const x=cx+R*Math.cos(ang(3)),y=cy+R*Math.sin(ang(3)); ring(x,y,19+k*22,'accent',3,1-k);}}
+  LIFE.forEach((r,i)=>{const y=318+i*58,lit=t>=1.0&&q>=i-.001,cur=t>=1.0&&t<7.4&&Math.round(q)===i,a=P(t,.4+i*.06,.4);
+    if(cur)box(616,y-40,512,54,{r:6});
+    dot(636,y-13,7,lit?'d1':'rule-solid',a); T(r[0],656,y,{f:'mono',s:32,c:lit?'ink':'soft',al:a}); T(r[1],736,y,{s:38,w:lit?600:400,c:lit?'ink':'muted',al:a});});
+}},
+{n:'02 行業與業務能力',anim:5.6,ch:52,cues:[[.3,'pizz',0],[.5,'pizz',1],[.7,'pizz',2],[.9,'pizz',3],[2.6,'err'],[3.225,'glock',0],[3.585,'glock',1],[3.945,'glock',2],[4.305,'glock',3],[4.665,'glock',4],[4.98,'glock',5],[5.0,'hit']],d(t){
+  head(t,'能力領域 02 · 7 項','行業與業務：找到 AI 價值','d2');
+  const L=[['先','認識行業','2.1–2.2'],['再','理解業務','2.3–2.5'],['最後','找出 AI 介入點','2.6'],['整合','可交付的方案','2.7']];
+  L.forEach((l,i)=>{const w=1056-i*156,x=600-w/2,y=268+i*104,f=i===2,a=eo(P(t,.3+i*.2,.5)); if(a<=0)return;
+    ctx.save();ctx.globalAlpha=a;ctx.translate(0,(1-a)*20);
+    box(x,y,w,90,{stroke:f?'accent':'node-stroke',lw:f?3:1.5}); if(f)box(x,y,w,90,{fill:'accent-tint',stroke:null});
+    T(l[0],x+28,y+58,{s:32,w:500,c:f?'accent':'soft'}); T(l[1],x+118,y+60,{s:40,w:600}); T(l[2],x+w-28,y+58,{f:'mono',s:32,c:'soft',a:'right'}); ctx.restore();});
+  const pass=[5,13,21,29,37,44]; let k=0;
+  for(let i=0;i<48;i++){const s=1.4+i*.045; if(t<s)continue; const u=rnd(i), ok=pass.includes(i), ki=ok?k++:0;
+    let y=250+(t-s)*240; const regL=yy=>lerp(652,629,cl((yy-268)/312)), regR=yy=>lerp(1018,784,cl((yy-268)/312));
+    if(!ok&&y>=529){const k2=cl((y-529)/240/.5); const x=lerp(regL(529),regR(529),u)+k2*90; dot(x,529+k2*20,6,'alert',1-k2); continue;}
+    if(ok&&y>=634){const fx=684+ki*18; const k3=eo(cl((y-634)/120)); const x0=lerp(regL(634),regR(634),u); dot(lerp(x0,fx,k3),634,7,'accent'); continue;}
+    const x=lerp(regL(y),regR(y),u); dot(x,y,6,y>480&&ok?'accent':'muted',.9);}
+  T('該不該用 AI 做，比怎麼做更重要',600,772,{s:44,w:600,a:'center',al:P(t,5.0,.5)});
+  if(t>5.2){const b=eo(P(t,5.2,.5)); line(600-330*b,792,600+330*b,792,'accent',4)}
+  T('AI 本身不產生價值，落在場景裡解決問題才會',600,856,{s:34,c:'muted',a:'center',al:P(t,5.3,.5)});
+}},
+{n:'02 行業選擇',anim:5.8,ch:48,cues:[...[0,1,2,3,4,5,6].map(i=>[.3+i*.12,'pizz',i]),[2.0,'glock',0],[3.4,'hit'],...[0,1,2,3,4,5,6].map(k=>[2.8+(k+1)*.35,'pizz',k]),[5.6,'hit']],d(t){
+  head(t,'能力領域 02 · 行業選擇','選一到兩個行業深耕','d2');
+  const IND=['政務','金融','醫療','製造','能源','教育','企業經營管理'], pick=[1,2], sel=eo(P(t,2.0,.5));
+  let x=72,y=270; IND.forEach((s,i)=>{if(i===4){x=72;y=378}const w=mw(s,42,500)+80, a=eo(P(t,.3+i*.12,.4)), p=pick.includes(i);
+    if(a>0){ctx.save();ctx.globalAlpha=a*(p?1:1-.62*sel);ctx.translate(0,(1-a)*16);
+      box(x,y,w,82,{stroke:p&&sel>0?'accent':'node-stroke',lw:p&&sel>0?3:1.5}); if(p&&sel>0)box(x,y,w,82,{fill:'accent-tint',stroke:null,al:sel});
+      dot(x+30,y+41,8,p&&sel>0?'accent':'d2'); T(s,x+52,y+56,{s:42,w:500}); ctx.restore();}
+    x+=w+24;});
+  T('例：選定其中兩個',1128,436,{s:32,c:'soft',a:'right',al:sel});
+  const la=P(t,2.6,.4);
+  T('通用能力',72,612,{s:40,w:600,al:la}); box(290,580,838,40,{r:6,fill:'rule',stroke:null,al:la});
+  const f1=eo(P(t,2.8,.6)); if(f1>0)box(290,580,838*f1,40,{r:6,fill:'soft',stroke:null});
+  T('行業知識',72,712,{s:40,w:600,al:la}); box(290,680,838,40,{r:6,fill:'rule',stroke:null,al:la});
+  const f2=P(t,2.8,2.8); const segs=Math.floor(f2*8); for(let i=0;i<segs;i++){box(290+i*104.75,680,100,40,{r:4,fill:'accent',stroke:null,al:.55+.45*(i/7)})}
+  T('容易學',1128,568,{s:30,c:'soft',a:'right',al:P(t,3.4,.4)}); T('累積得慢',1128,668,{s:30,c:'accent',a:'right',al:P(t,3.6,.4)});
+  T('行業知識累積得慢，卻是最難被取代的壁壘',600,830,{s:38,w:600,a:'center',al:P(t,5.2,.5)});
+}},
+{n:'03 商業：Token 成本',anim:4.4,ch:44,cues:[[1.4,'pizz',0],[2.42,'err'],[3.2,'hit'],[3.8,'glock',2]],d(t){
+  head(t,'能力領域 03 · 7 項','Token 成本：用戶越多越虧？','d3');
+  const a=P(t,.2,.5), yAt=x=>740-440*(x-120)/960;
+  line(120,760,1080,760,'rule-solid',2,a); line(120,290,120,760,'rule-solid',2,a);
+  T('↑ 金額',120,272,{s:32,c:'soft',w:500,al:a}); T('單一用戶用量 →',1080,808,{s:32,c:'soft',w:500,a:'right',al:a});
+  const rv=eio(P(t,.4,1.0)); if(rv>0)line(120,470,120+960*rv,470,'muted',4);
+  T('固定訂閱收入',136,450,{s:36,c:'muted',al:P(t,.9,.4)});
+  const cp=P(t,1.2,2.0), hx=120+960*cp;
+  if(hx>709){const pu=t>3.2?.5+.5*Math.sin((t-3.2)*5):1; ctx.save();ctx.globalAlpha=.12+.10*pu;ctx.beginPath();ctx.moveTo(709,470);ctx.lineTo(hx,470);ctx.lineTo(hx,yAt(hx));ctx.closePath();ctx.fillStyle=col('alert');ctx.fill();ctx.restore();}
+  if(cp>0)line(120,740,hx,yAt(hx),'accent',5);
+  if(cp>0&&cp<1){line(hx,760,hx,yAt(hx),'soft',2,.8,[6,6]); packet(hx,yAt(hx),hx>709?'alert':'accent',9);}
+  if(hx>=709){ring(709,470,10,'ink',3); T('損益平衡點',709,568,{s:34,a:'center',al:P(t,2.42,.4)})}
+  T('Token 成本',880,330,{s:36,w:600,c:'accent',a:'right',al:P(t,2.6,.4)});
+  if(t>3.2){const k=t-3.2,pu=.5+.5*Math.sin(k*6); T('虧損區',960,436,{s:44,w:600,c:'alert',a:'center',al:P(t,3.2,.3)*(k<1.6?.55+.45*pu:1)});}
+  T('用量越大成本越高，定價不當就會用戶越多越虧',600,866,{s:36,a:'center',al:P(t,3.8,.5)});
+}},
+{n:'03 商業：成本與價值',anim:4.4,ch:52,cues:[[.65,'pizz',0],[.95,'pizz',1],[1.25,'pizz',2],[1.55,'pizz',3],[3.6,'hit'],[3.9,'hit'],[4.2,'orch']],d(t){
+  head(t,'能力領域 03 · AI 經營','成本要精算，價值要量化','d3');
+  T('COST · 成本結構',72,292,{f:'mono',s:32,c:'soft',w:500,al:P(t,.2,.4)});
+  [['模型','model'],['Token','token'],['推理','inference'],['存儲','storage']].forEach(([n,e],i)=>{const d=P(t,.4+i*.3,.6); if(d<=0)return; const y=lerp(-100,624-i*86,back(d));
+    box(72,y,480,76,{r:6}); T(n,100,y+51,{s:40,w:600}); T(e,524,y+50,{f:'mono',s:32,c:'soft',a:'right'});});
+  T('→ 反映在定價與架構選擇',72,764,{s:36,c:'muted',al:P(t,1.9,.4)});
+  T('VALUE · 價值指標',648,292,{f:'mono',s:32,c:'soft',w:500,al:P(t,2.0,.4)});
+  [['任務完成率','↑',0,.86],['人工介入率','↓',.82,.26],['效率提升','↑',0,.74]].forEach(([n,ar,f0,f1],i)=>{const y=380+i*150,a=P(t,2.1+i*.2,.4);
+    T(n,648,y,{s:40,w:600,al:a}); T(ar,1128,y,{f:'mono',s:44,w:600,c:i===1?'accent':'ink',a:'right',al:a});
+    box(648,y+26,480,28,{r:6,fill:'rule',stroke:null,al:a}); const v=lerp(f0,f1,eio(P(t,2.4+i*.3,1.2))); if(a>0&&v>0)box(648,y+26,480*v,28,{r:6,fill:i===1?'accent':'d3',stroke:null,al:a});});
+  T('不停留在「感覺變聰明了」',600,852,{s:40,w:600,a:'center',al:P(t,3.8,.5)});
+}},
+{n:'04 軟實力',anim:3.8,ch:44,cues:[[.3,'glock',0],[1.3,'pizz',0],[1.55,'pizz',1],[1.8,'pizz',2],[2.6,'glock',1]],d(t){
+  head(t,'能力領域 04 · 8 項','同一個方案，三種聽眾','d4');
+  const sa=eo(P(t,.3,.5)); box(72,450,320,120,{stroke:'accent',lw:3,al:sa}); box(72,450,320,120,{fill:'accent-tint',stroke:null,al:sa}); T('同一個方案',232,524,{s:44,w:600,a:'center',al:sa});
+  const TG=[['研發','講清楚邏輯',340,480],['管理層','講清楚價值',510,510],['用戶','講清楚好處',680,540]];
+  TG.forEach(([w,s,ty,sy],i)=>{const p=sy===ty?[[392,sy],[638,ty]]:[[392,sy],[516,sy],[516,ty],[638,ty]], pr=eio(P(t,.8+i*.25,.6));
+    conn(p,pr,{c:'muted',lw:3});
+    const a=eo(P(t,1.3+i*.25,.4)); box(640,ty-50,488,100,{al:a}); T(w,672,ty+15,{s:44,w:600,al:a}); T(s,1096,ty+14,{s:38,c:'muted',a:'right',al:a});
+    if(t>2.2)for(let k=0;k<3;k++){const ph=((t-2.2)*.45+k/3+i*.11)%1; const [x,y]=pointAt(p,ph); dot(x,y,7,'d4',cl((t-2.2)*2))}});
+  T('沒有職權，靠軟實力推動事情',600,816,{s:40,w:600,a:'center',al:P(t,2.6,.5)});
+  T('這一塊，決定一個人的天花板',600,866,{s:34,c:'muted',a:'center',al:P(t,3.0,.5)});
+}},
+{n:'04 AI 時代的素質',anim:3.4,ch:64,cues:[[.3,'pizz',0],[.55,'pizz',1],[.8,'pizz',2],[1.05,'pizz',3]],d(t){
+  head(t,'能力領域 04 · AI 時代','最關鍵的四種素質','d4');
+  const Q=[['人機協同意識','哪些交給 AI、','哪些由人把關'],['AI 輔助決策','用 AI 蒐集分析，','判斷自己負責'],['好奇與持續學習','對新模型、新工具','保持敏感'],['結果導向','用業務成果','衡量工作']];
+  Q.forEach((q,i)=>{const x=72+(i%2)*540,y=276+Math.floor(i/2)*272,a=eo(P(t,.3+i*.25,.5)); if(a<=0)return;
+    ctx.save();ctx.translate(x+258,y+124);ctx.scale(1,a);ctx.translate(-x-258,-y-124);
+    box(x,y,516,248,{r:8}); dot(x+478,y+40,8,'d4'); T(q[0],x+32,y+84,{s:44,w:600}); T(q[1],x+32,y+150,{s:36,c:'muted'}); T(q[2],x+32,y+198,{s:36,c:'muted'}); ctx.restore();});
+  if(t>2.6){const i=Math.floor((t-2.6)/1.3)%4,k=((t-2.6)%1.3)/1.3,x=72+(i%2)*540,y=276+Math.floor(i/2)*272; box(x-4,y-4,524,256,{fill:null,stroke:'accent',lw:3,al:Math.sin(k*Math.PI),r:10});}
+}},
+{n:'05 AI 專項能力',anim:3.6,ch:52,cues:[[.9,'pizz',0],[1.2,'hit'],[1.5,'pizz',2]],d(t){
+  head(t,'能力領域 05 · 10 項','AI 專項能力：三層','d5');
+  const L=[['A','理解 AI','技術與能力基礎','5.1–5.3'],['B','用 AI 做產品','產品設計與落地','5.4–5.7'],['C','用 AI 做事','賦能自己的工作','5.8–5.10']];
+  L.forEach((l,i)=>{const x=72+i*368,f=i===1,a=eo(P(t,.3+i*.3,.6)); if(a<=0)return; ctx.save();ctx.globalAlpha=a;ctx.translate(0,(1-a)*40);
+    box(x,290,320,430,{r:8,stroke:f?'accent':'node-stroke',lw:f?3:1.5}); if(f)box(x,290,320,430,{r:8,fill:'accent-tint',stroke:null});
+    T(l[0],x+32,450,{f:'serif',s:150,c:f?'accent':'soft'}); T(l[1],x+32,540,{s:44,w:600}); T(l[2],x+32,594,{s:36,c:'muted'}); T(l[3],x+32,666,{f:'mono',s:32,c:'soft'}); ctx.restore();
+    if(i<2)T('→',x+344,520,{f:'mono',s:40,c:'muted',a:'center',al:P(t,.6+i*.3,.4)});});
+  T('這是與一般產品經理拉開差距的地方',600,806,{s:38,w:600,a:'center',al:P(t,1.8,.5)});
+  T('先理解，再落地，再改造自己的工作方式',600,860,{s:34,c:'muted',a:'center',al:P(t,2.2,.5)});
+}},
+{n:'05 一次請求的流程',anim:4.6,ch:46,cues:[...[0,1,2,3,4,5].map(i=>[.2+i*.1,'glock',i])],d(t){
+  head(t,'能力領域 05 · 5.2','一次請求裡發生什麼','d5');
+  const N=[[72,470,220,'問題','input','mono'],[352,270,260,'向量數據庫','RAG','mono'],[372,470,220,'Prompt','問題＋資料','sans'],[672,470,220,'大模型','LLM','mono',1],[972,470,156,'回答','output','mono'],[592,680,380,'外部工具 / API','Function Calling','mono']];
+  const PATHS=[[[182,470],[182,325],[350,325]],[[482,380],[482,468]],[[292,525],[370,525]],[[592,525],[670,525]],[[752,580],[752,678]],[[812,680],[812,582]],[[892,525],[970,525]]];
+  PATHS.forEach((p,i)=>conn(p,eio(P(t,.8+i*.22,.45)),{c:i===6?'accent':'muted',lw:3,dash:i===5?[10,8]:null}));
+  const la=P(t,2.4,.4); T('檢索',266,308,{s:32,w:500,c:'soft',a:'center',al:la}); T('相關資料',496,440,{s:32,w:500,c:'soft',al:la}); T('呼叫',738,642,{s:32,w:500,c:'soft',a:'right',al:la}); T('結果',826,642,{s:32,w:500,c:'soft',al:la});
+  N.forEach((n,i)=>{const [x,y,w,nm,sb,sf,f]=n,a=eo(P(t,.2+i*.1,.4)); if(a<=0)return; ctx.save();ctx.globalAlpha=a;
+    box(x,y,w,110,{stroke:f?'accent':'node-stroke',lw:f?3:1.5}); if(f)box(x,y,w,110,{fill:'accent-tint',stroke:null});
+    T(nm,x+w/2,y+54,{s:40,w:600,a:'center'}); T(sb,x+w/2,y+94,{f:sf,s:32,c:'muted',a:'center'}); ctx.restore();});
+  if(t>2.6){const cyc=(t-2.6)%4.2, seq=[0,1,3,4,5,6]; const si=Math.floor(cyc/.6); if(si<6){const f=(cyc-si*.6)/.6; const [x,y]=pointAt(PATHS[seq[si]],eio(f)); packet(x,y,'accent',9)} if(cyc<.6){const [x,y]=pointAt(PATHS[2],eio(cyc/.6)); packet(x,y,'d5',7)}}
+  T('RAG 讓回答有根據 · Function Calling 讓模型能動手',600,862,{s:34,w:500,a:'center',al:P(t,3.4,.5)});
+}},
+{n:'05 評測與運營',anim:6.0,ch:50,cues:[[.3,'pizz',0],[2.6,'err'],[3.4,'pizz',1],[5.2,'orch']],d(t){
+  head(t,'能力領域 05 · 5.7','沒有評測，就只剩感覺','d5');
+  const A=[172,290],B=[648,290],Cc=[648,560],D=[172,560],w=380,h=110;
+  const PA=[[[552,345],[646,345]],[[838,400],[838,558]],[[648,615],[554,615]],[[362,560],[362,402]]];
+  PA.forEach((p,i)=>conn(p,eio(P(t,.9+i*.15,.4)),{c:'muted',lw:3}));
+  const na=eo(P(t,.3,.5)), solid=eo(P(t,3.4,.6));
+  box(A[0],A[1],w,h,{al:na}); T('一次改動',A[0]+w/2,A[1]+68,{s:42,w:600,a:'center',al:na});
+  box(B[0],B[1],w,h,{al:na*(.35+.65*solid),dash:solid<1?[8,8]:null,stroke:solid<1?'soft':'node-stroke'});
+  T('跑評測集',B[0]+w/2,B[1]+54,{s:42,w:600,a:'center',al:na*(.3+.7*solid)});
+  T('（沒有評測）',B[0]+w/2,B[1]+94,{s:32,c:'alert',a:'center',al:na*(1-solid)}); T('同一批題目，前後對照',B[0]+w/2,B[1]+94,{s:32,c:'muted',a:'center',al:solid});
+  const ok=t>=5.2, bad=t>=2.6&&!ok;
+  box(Cc[0],Cc[1],w,h,{al:na,stroke:ok?'accent':bad?'alert':'node-stroke',lw:ok||bad?3:1.5}); if(ok)box(Cc[0],Cc[1],w,h,{fill:'accent-tint',stroke:null});
+  if(bad){const k=t-2.6,pu=k<1?.5+.5*Math.cos(k*Math.PI*6):0; box(Cc[0],Cc[1],w,h,{fill:'alert',stroke:null,al:.06+.12*pu});}
+  T('判斷變好或變差',Cc[0]+w/2,Cc[1]+54,{s:42,w:600,a:'center',al:na});
+  T('變好還是變差？',Cc[0]+w/2,Cc[1]+94,{s:32,w:600,c:'alert',a:'center',al:bad?1:0}); T('效果・幻覺：有尺可量',Cc[0]+w/2,Cc[1]+94,{s:32,w:600,c:'accent',a:'center',al:ok?P(t,5.2,.3):0});
+  box(D[0],D[1],w,h,{al:na}); T('持續觀測與優化',D[0]+w/2,D[1]+68,{s:42,w:600,a:'center',al:na});
+  const run=(t0,segs)=>{if(t<t0)return; const k=(t-t0)/.5,i=Math.floor(k); if(i<segs.length){const [x,y]=pointAt(PA[segs[i]],eio(k-i)); packet(x,y,i>=1&&t0<3?'alert':'accent',9)}};
+  run(1.6,[0,1]); run(4.2,[0,1]);
+  if(t>5.6){const k=((t-5.6)/.5)%4,i=Math.floor(k),seq=[2,3,0,1]; const [x,y]=pointAt(PA[seq[i]],eio(k-i)); packet(x,y,'accent',9)}
+  T('AI 產品與傳統產品最大的流程差異',600,790,{s:38,w:600,a:'center',al:P(t,5.6,.4)});
+  T('沒有評測，就無法判斷一次改動是變好還是變差',600,846,{s:34,c:'muted',a:'center',al:P(t,5.8,.4)});
+}},
+{n:'05 可信任設計',anim:4.6,ch:46,cues:[[.3,'pizz',0],[.5,'pizz',1],[.7,'pizz',2],[.9,'pizz',3],[1.8,'err'],[3.8,'orch']],d(t){
+  head(t,'能力領域 05 · 5.5','可信任設計是一條鏈','d5');
+  const N=[['理解依據','為何這樣答'],['檢查結果','能逐項核對'],['修正結果','錯了能改'],['真正依賴','才敢放手']];
+  const fix=eio(P(t,3.2,.6)), lit=t>=3.8;
+  for(let i=0;i<3;i++){const x1=72+i*280+216,x2=x1+62,a=P(t,1.0+i*.15,.3);
+    if(i===1){line(x1,430,x1+14,430,'muted',4,a); line(x2-14,430,x2,430,'muted',4,a); if(fix>0)line(x1,430,lerp(x1,x2,fix),430,'accent',4);
+      if(t>=1.8&&fix<1){const k=t-1.8,pu=k<1.4?.5+.5*Math.cos(k*Math.PI*5):.6; T('✕',(x1+x2)/2,446,{s:40,w:600,c:'alert',a:'center',al:(1-fix)*(.4+.6*pu)})}}
+    else line(x1,430,x2,430,lit?'accent':'muted',4,a);}
+  N.forEach(([n,s],i)=>{const x=72+i*280,a=eo(P(t,.3+i*.2,.4)),last=i===3; if(a<=0)return; const dim=last&&!lit?.38:1;
+    ctx.save();ctx.globalAlpha=a*dim; box(x,360,216,140,{stroke:last&&lit?'accent':'node-stroke',lw:last&&lit?3:1.5}); if(last&&lit)box(x,360,216,140,{fill:'accent-tint',stroke:null});
+    T(n,x+108,426,{s:40,w:600,a:'center'}); T(s,x+108,472,{s:32,c:'muted',a:'center'}); ctx.restore();
+    if(last&&lit){const k=((t-3.8)%1.4)/1.4; box(x-k*14,360-k*14,216+k*28,140+k*28,{fill:null,stroke:'accent',lw:2,al:.5*(1-k),r:10+k*14})}});
+  T('少了一環，用戶就不敢依賴',600,640,{s:40,w:600,c:'alert',a:'center',al:P(t,1.9,.4)*(1-P(t,3.4,.4))});
+  T('理解、檢查、修正都做到，才敢真正依賴',600,640,{s:40,w:600,c:'accent',a:'center',al:P(t,4.0,.4)});
+  T('最容易被忽略的，是可信任設計',600,770,{s:34,c:'muted',a:'center',al:P(t,.8,.5)});
+}},
+{n:'工作流程',anim:7.0,ch:64,cues:[...[0,1,2,3,4,5,6].map(i=>[.9+i*.6,'tick',i]),[5.7,'hit'],[6.2,'orch']],d(t){
+  head(t,'串起來','七個階段，調用不同能力','soft');
+  const ST=[['市場洞察',[1,2,2,3]],['用戶研究',[1,2]],['業務分析',[1,2,2,5]],['需求分析',[1,4]],['產品設計',[1,1,1,5,5]],['研發交付',[1,4,4,5]],['運營迭代',[1,3,3,5]]];
+  const a=eo(P(t,.3,.6)); line(120,320,120+960*a,320,'rule-solid',3);
+  const cq=cl((t-.9)/.6,0,6), cx=120+160*cq; if(t>.9)line(120,320,cx,320,'ink',4);
+  ST.forEach(([n,ds],i)=>{const x=120+i*160,r0=.9+i*.6,lit=t>=r0;
+    dot(x,320,13,lit?'ink':'node',a); ring(x,320,13,lit?'ink':'node-stroke',2.5,a);
+    T(n,x,384,{s:34,w:600,a:'center',al:lit?1:.3*a});
+    ds.forEach((d,k)=>{const p=eo(P(t,r0+.1+k*.08,.3)); if(p>0)dot(x,428+k*34,11*p,'d'+d)});});
+  if(t>.9&&t<5.2)packet(cx,320,'accent',11);
+  const band=(y,txt,fill,stroke,t0)=>{const p=eio(P(t,t0,.8)); if(p<=0)return; box(72,y,1056,62,{r:8,fill:'node',stroke:stroke,lw:stroke==='accent'?2.5:1.5,al:cl(p*2)}); box(72,y,1056*p,62,{r:8,fill:fill,stroke:null}); T(txt,100,y+42,{s:34,w:600,al:P(t,t0+.4,.4)})};
+  band(640,'04 軟實力 · 貫穿全程，讓事情推得動','rule','node-stroke',4.9);
+  band(722,'5.8–5.10 AI 賦能 · 讓每個階段更快','accent-tint','accent',5.4);
+  let lx=72; [['01 產品','d1'],['02 行業','d2'],['03 商業','d3'],['04 軟實力','d4'],['05 AI','d5']].forEach(([s,c],i)=>{const al=P(t,6.0+i*.08,.3); dot(lx+8,830,8,c,al); T(s,lx+24,842,{s:32,c:'muted',al}); lx+=mw(s,32)+76;});
+}},
+{n:'如何使用',anim:4.4,ch:54,cues:[[.55,'hit'],[1.0,'hit'],[1.45,'orch'],[2.0,'pizz',0],[2.3,'pizz',1],[2.6,'pizz',2],[2.9,'pizz',3]],d(t){
+  head(t,'寫在最後','先補基本功，再建差異化','soft');
+  const B=[[960,560,'01 · 04','底盤',[1,4]],[720,450,'02 · 03','創造價值',[2,3]],[480,340,'05','勝任 AI 產品',[5],1]];
+  B.forEach(([w,y,n,tt,ds,f],i)=>{const d=P(t,.3+i*.45,.6); if(d<=0)return; const yy=lerp(y-200,y,back(d)),x=600-w/2;
+    ctx.save();ctx.globalAlpha=cl(d*2); box(x,yy,w,96,{r:8,stroke:f?'accent':'node-stroke',lw:f?3:1.5}); if(f)box(x,yy,w,96,{r:8,fill:'accent-tint',stroke:null});
+    const nw=mw(n,32,500,'mono'),tw=mw(tt,42,600),dw=ds.length*20,G=dw+12+nw+22+tw; let sx=600-G/2;
+    ds.forEach((dd,k)=>dot(sx+8+k*20,yy+50,8,'d'+dd)); sx+=dw+12; T(n,sx,yy+61,{f:'mono',s:32,w:500,c:f?'accent':'soft'}); T(tt,sx+nw+22,yy+63,{s:42,w:600}); ctx.restore();});
+  const S=['自我盤點','補基本功','深耕行業','用 AI 做事'],ws=S.map(s=>mw(s,38,500)+48),tot=ws.reduce((a,b)=>a+b,0)+3*48; let x=600-tot/2;
+  S.forEach((s,i)=>{const a=eo(P(t,2.0+i*.3,.4)); ctx.save();ctx.globalAlpha=a;ctx.translate(0,(1-a)*16); box(x,716,ws[i],76,{r:38}); T(s,x+ws[i]/2,766,{s:38,w:500,a:'center'}); ctx.restore();
+    if(i<3)T('→',x+ws[i]+24,766,{f:'mono',s:36,c:'muted',a:'center',al:a}); x+=ws[i]+48;});
+  T('由下往上補，上層才站得穩',600,866,{s:34,c:'muted',a:'center',al:P(t,3.6,.5)});
+}},
+{n:'結尾',anim:2.2,ch:16,cues:[[.6,'glock',0]],d(t){
+  const a=eio(P(t,.2,.9)); ctx.save();ctx.beginPath();ctx.rect(0,300,W*a,200);ctx.clip(); T('從底盤開始，往上補。',600,440,{f:'serif',s:96,a:'center'}); ctx.restore();
+  T('往下閱讀全文 ↓',600,540,{s:40,c:'muted',a:'center',al:P(t,1.0,.5)});
+  for(let i=0;i<5;i++){const al=P(t,1.2+i*.1,.3),y=650-Math.max(0,Math.sin((t-1.2)*3-i*.6))*18; dot(600-88+i*44,y,12,'d'+(i+1),al)}
+}}
+];
+SC.forEach(s=>{s.hold=cl(3+s.ch/25,3,5); s.dur=s.anim+s.hold+TR});
+let acc=0; SC.forEach(s=>{s.start=acc; acc+=s.dur-TR}); const TOTAL=acc+TR;
+const CUES=[]; SC.forEach((s,si)=>s.cues.forEach(([t,k,a])=>CUES.push([s.start+t,k,a,si])));
+const BOUNDS=SC.slice(1).map(s=>s.start);
+
+function frame(Tg){
+  readC(); const S=cv.width/W; ctx.setTransform(S,0,0,S,0,0); ctx.globalAlpha=1;
+  Tg=cl(Tg,0,TOTAL); bg(Tg);
+  let i=SC.length-1; for(let k=1;k<SC.length;k++){if(Tg<SC[k].start){i=k-1;break}}
+  const prev=i>0?SC[i-1]:null;
+  if(prev&&Tg<prev.start+prev.dur){
+    ctx.save(); prev.d(Tg-prev.start); ctx.restore();
+    const p=eio(cl((Tg-SC[i].start)/TR)); ctx.save(); ctx.beginPath(); ctx.rect(0,0,W*p,H); ctx.clip(); bg(Tg); SC[i].d(Tg-SC[i].start); ctx.restore();
+    ctx.save(); ctx.globalAlpha=.25; ctx.fillStyle=col('accent'); ctx.fillRect(W*p-24,0,24,H); ctx.globalAlpha=1; ctx.fillRect(W*p-3,0,6,H); ctx.restore();
+  } else { ctx.save(); SC[i].d(Tg-SC[i].start); ctx.restore(); }
+  return i;
+}
+
+/* ── soundtrack: ambient piano-and-strings bed (one chord per scene) plus soft chord-matched accents on the CUES timestamps,
+   pre-rendered from CC0 VSCO 2 CE samples to one MP3. ── */
+const SCORE_URL='ai-pm-map-score.mp3';
+
+/* ── player ── */
+const audio=new Audio(); audio.preload='none'; audio.setAttribute('playsinline',''); audio.setAttribute('webkit-playsinline','');
+let mode='clock', musicAB=null, ac=null, waGain=null, waSrc=null, waStart=0, srcSet=false, waTried=false;
+let playing=false, pos=0, clock0=0, muted=false, started=false, pendingAudio=false;
+const $=id=>document.getElementById(id), cover=$('tour-cover'), seek=$('tour-seek'), ppI=$('tour-pp-i'), wait=$('tour-wait');
+seek.max=TOTAL.toFixed(1);
+const fmt=s=>{s=Math.max(0,Math.floor(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+$('tour-len').textContent=`約 ${Math.round(TOTAL/60*2)/2} 分鐘 · 含配樂，請開啟聲音`;
+$('tour-ticks').innerHTML=SC.slice(1).map(s=>`<i style="left:${(s.start/TOTAL*100).toFixed(2)}%"></i>`).join('');
+// the soundtrack (~2 MB) is fetched only when the video comes near the screen or is played
+function ensureSrc(){if(srcSet)return; srcSet=true; audio.preload='auto'; audio.src=SCORE_URL; audio.load()}
+if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){ensureSrc(); io.disconnect()}},{rootMargin:'300px 0px'}); io.observe(stage)}
+const audioReady=()=>srcSet&&audio.readyState>=2&&!audio.error;
+function now(){
+  if(mode==='el'&&!audio.paused)return audio.currentTime;
+  if(mode==='wa'&&playing)return ac.currentTime-waStart;
+  if(playing)return performance.now()/1000-clock0;
+  return pos;
+}
+function setIcon(){ppI.innerHTML=playing?'<path d="M6 4h4v16H6zM14 4h4v16h-4z"/>':'<path d="M7 4l13 8-13 8z"/>'; $('tour-pp').setAttribute('aria-label',playing?'暫停':'播放')}
+function stopWA(){if(waSrc){try{waSrc.stop()}catch(e){} waSrc=null}}
+function startWA(at){stopWA(); if(!ac||!musicAB)return; waSrc=ac.createBufferSource(); waSrc.buffer=musicAB; waSrc.connect(waGain); waStart=ac.currentTime-at; waSrc.start(0,Math.max(0,at))}
+function fallbackWA(){ // only if the <audio> element cannot play the file
+  if(waTried||!ac)return; waTried=true;
+  fetch(SCORE_URL).then(r=>r.arrayBuffer()).then(ab=>new Promise((res,rej)=>{const p=ac.decodeAudioData(ab,res,rej); if(p&&p.then)p.then(res,rej)}))
+    .then(buf=>{musicAB=buf; if(playing){mode='wa'; waGain.gain.value=muted?0:1; startWA(now()); wait.hidden=true}}).catch(()=>{wait.hidden=true});
+}
+function useAudioFrom(at){
+  if(mode!=='clock'||!audioReady())return;
+  mode='el'; audio.muted=muted; try{audio.currentTime=at}catch(e){}
+  const p=audio.play(); if(p&&p.then)p.then(()=>{wait.hidden=true}).catch(()=>{mode='clock'; clock0=performance.now()/1000-at; fallbackWA()}); else wait.hidden=true;
+}
+function play(){
+  if(pos>=TOTAL-.05)pos=0;
+  try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
+  if(!ac){try{const A=window.AudioContext||window.webkitAudioContext; ac=new A(); waGain=ac.createGain(); waGain.connect(ac.destination)}catch(e){}}
+  if(ac&&ac.state!=='running')ac.resume().catch(()=>{});
+  ensureSrc(); playing=true; started=true; cover.hidden=true; setIcon();
+  if(mode==='wa'&&musicAB){startWA(pos)}
+  else if(audioReady()){mode='clock'; useAudioFrom(pos)}
+  else{mode='clock'; clock0=performance.now()/1000-pos; pendingAudio=true; wait.hidden=false;
+    const p=audio.play(); if(p&&p.catch)p.catch(()=>{});}   // a play() inside the tap lets the element start later on iOS
+  loop();
+}
+function pause(){pos=now(); playing=false; pendingAudio=false; audio.pause(); if(mode==='wa')stopWA(); if(mode==='el')mode='clock'; setIcon();}
+function seekTo(v){const was=playing; pos=cl(v,0,TOTAL); if(!playing){draw(pos);return}
+  if(mode==='el'){try{audio.currentTime=pos}catch(e){}} else if(mode==='wa'){startWA(pos)} else clock0=performance.now()/1000-pos; if(!was)draw(pos)}
+let raf=0, lastScene=-1;
+function draw(tg){const i=frame(tg), shown=started?tg:0; seek.value=shown.toFixed(1); seek.style.setProperty('--p',(shown/TOTAL*100).toFixed(2)+'%'); $('tour-time').textContent=fmt(shown)+' / '+fmt(TOTAL);
+  if(i!==lastScene){lastScene=i; $('tour-chap').innerHTML=`<b>${String(i+1).padStart(2,'0')}/${SC.length}</b><span>${SC[i].n}</span>`}}
+function loop(){cancelAnimationFrame(raf); const step=()=>{const tg=now(); if(playing&&pendingAudio&&audioReady()){pendingAudio=false; useAudioFrom(tg)}
+  draw(tg); if(playing&&tg>=TOTAL){pos=TOTAL; pause(); cover.hidden=false; cover.querySelector('.cl').textContent='重新播放'; return} if(playing)raf=requestAnimationFrame(step)}; raf=requestAnimationFrame(step)}
+
+cover.addEventListener('click',play);
+$('tour-pp').addEventListener('click',()=>playing?pause():play());
+seek.addEventListener('input',()=>seekTo(parseFloat(seek.value)));
+$('tour-mute').addEventListener('click',()=>{muted=!muted; audio.muted=muted; if(waGain)waGain.gain.value=muted?0:1;
+  $('tour-mute').setAttribute('aria-label',muted?'取消靜音':'靜音'); $('tour-mute-i').innerHTML=muted?'<path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9l6 6M22 9l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>':'<path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'});
+stage.addEventListener('keydown',e=>{if(e.key===' '&&e.target===stage){e.preventDefault();playing?pause():play()}});
+const fsOk=document.fullscreenEnabled||document.webkitFullscreenEnabled; if(fsOk){$('tour-fs').hidden=false; $('tour-fs').addEventListener('click',()=>{const el=stage; const req=el.requestFullscreen||el.webkitRequestFullscreen; if(document.fullscreenElement||document.webkitFullscreenElement){(document.exitFullscreen||document.webkitExitFullscreen).call(document)} else if(req){try{const r=req.call(el); if(r&&r.catch)r.catch(()=>{})}catch(e){}}})}
+audio.addEventListener('error',()=>{if(playing&&mode!=='wa'){mode='clock'; clock0=performance.now()/1000-now(); fallbackWA()}});
+audio.addEventListener('canplay',()=>{if(playing&&pendingAudio){pendingAudio=false; useAudioFrom(now())}});
+audio.addEventListener('waiting',()=>{if(playing)wait.hidden=false}); audio.addEventListener('playing',()=>{wait.hidden=true});
+
+function resize(){const r=stage.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1); cv.width=Math.round(r.width*dpr); cv.height=Math.round(r.height*dpr); if(!playing)draw(started?pos:posterT())}
+const posterT=()=>SC[0].anim+.6;
+new ResizeObserver(resize).observe(stage);
+const mq=window.matchMedia('(prefers-color-scheme: dark)'); const redraw=()=>{readC(true); if(!playing)draw(started?pos:posterT())};
+mq.addEventListener&&mq.addEventListener('change',redraw); new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+
+// fonts: collect every string the scenes draw, then load those glyphs
+readC(true); resize();
+const strs=new Set(); BOX=[]; const S0=cv.width/W||1; SC.forEach(s=>{ctx.save(); ctx.setTransform(S0,0,0,S0,0,0); s.d(s.anim+.5); ctx.restore()}); BOX.forEach(b=>strs.add(b.s)); BOX=null;
+const txt=[...strs].join('')+'0123456789';
+Promise.all(['400','500','600'].flatMap(w=>[document.fonts.load(`${w} 40px "Noto Sans TC"`,txt),document.fonts.load(`${w} 40px "Geist"`,txt),document.fonts.load(`${w} 40px "Geist Mono"`,txt)]).concat([document.fonts.load('400 40px "Noto Serif TC"',txt),document.fonts.load('400 40px "Instrument Serif"',txt)])).catch(()=>{}).then(()=>{if(!playing)draw(started?pos:posterT())});
+
+// hooks for automated checks
+window.__tour={total:TOTAL,scenes:SC.map(s=>({n:s.n,start:s.start,dur:s.dur,anim:s.anim,hold:s.hold})),
+  check(tg){BOX=[]; draw(tg); const out=BOX.filter(b=>b.l<24||b.r>W-24||b.t<8||b.b>H-8); const n=BOX.length; BOX=null; return {out,count:n}},
+  ready:()=>audioReady(), mode:()=>mode, src:()=>srcSet};
+})();
+</script>
+
+
+<!-- ───────────── 導讀 ───────────── -->
+<section class="first" id="why">
+  <p class="eyebrow">導讀</p>
+  <h2>為什麼用五個領域來看這份工作</h2>
+  <p>AI 產品經理需要的能力，可以分成五塊：</p>
+
+  <ul class="index">
+    <li><a href="#d1"><span class="ix-num"><span class="dot c1"></span>01</span><span class="ix-name">產品專業能力</span><span class="ix-q">如何從機會走到持續營運，把產品做好？</span></a></li>
+    <li><a href="#d2"><span class="ix-num"><span class="dot c2"></span>02</span><span class="ix-name">行業與業務能力</span><span class="ix-q">在哪個業務場景裡，AI 才真的有價值？</span></a></li>
+    <li><a href="#d3"><span class="ix-num"><span class="dot c3"></span>03</span><span class="ix-name">商業與經營能力</span><span class="ix-q">產品如何賺錢、如何持續創造商業價值？</span></a></li>
+    <li><a href="#d4"><span class="ix-num"><span class="dot c4"></span>04</span><span class="ix-name">軟實力</span><span class="ix-q">如何跨角色協作、推動事情發生？</span></a></li>
+    <li><a href="#d5"><span class="ix-num"><span class="dot c5"></span>05</span><span class="ix-name">AI 專項能力</span><span class="ix-q">如何理解、設計並運用 AI，做出 AI 原生產品？</span></a></li>
+  </ul>
+
+  <figure class="fig">
+    <div class="fig-box">
+      <div class="d5">
+        <div class="nd focal top"><span class="nm">05 · AI 專項能力</span><span class="sb">差異化能力：理解、設計並運用 AI</span></div>
+        <p class="mid">↑ 建立在基本功之上</p>
+        <div class="base4">
+          <div class="nd"><span class="num"><span class="dot c1"></span>01</span><span class="nm">產品專業能力</span></div>
+          <div class="nd"><span class="num"><span class="dot c2"></span>02</span><span class="nm">行業與業務能力</span></div>
+          <div class="nd"><span class="num"><span class="dot c3"></span>03</span><span class="nm">商業與經營能力</span></div>
+          <div class="nd"><span class="num"><span class="dot c4"></span>04</span><span class="nm">軟實力</span></div>
+        </div>
+        <div class="brace" aria-hidden="true"></div>
+        <p class="brace-t">基本功：任何好產品經理都該具備</p>
+      </div>
+    </div>
+    <figcaption><b>FIG. 01</b>四塊基本功撐起一塊差異化能力。</figcaption>
+  </figure>
+
+  <p>前四塊是任何好產品經理都該具備的基本功，第五塊才是 AI 產品經理的差異化能力。常見的失衡有兩種：只懂 AI 不懂業務，容易做出技術很炫、卻沒人買單的產品；只懂產品不懂 AI，則無法判斷什麼可行、成本多少、風險在哪。兩邊都補齊，才算真正勝任這個角色。</p>
+
+  <figure class="fig">
+    <div class="fig-box">
+      <div class="quad" role="img" aria-label="兩種失衡象限圖：左上只懂 AI 不懂業務，右下只懂產品不懂 AI，右上兩邊都補齊">
+        <span class="q-y">↑ 懂 AI</span>
+        <div class="q-grid">
+          <div class="q-cell"><span class="nm">只懂 AI，<br>不懂業務</span><span class="sb">技術很炫，<br>卻沒人買單</span></div>
+          <div class="q-cell"><span class="nm focal-t">兩邊都補齊</span><span class="sb">真正勝任<br>AI 產品經理</span></div>
+          <div class="q-cell"></div>
+          <div class="q-cell"><span class="nm">只懂產品，<br>不懂 AI</span><span class="sb">無法判斷什麼可行、<br>成本多少、風險在哪</span></div>
+        </div>
+        <span class="q-x">懂產品・懂業務 →</span>
+      </div>
+    </div>
+    <figcaption><b>FIG. 02</b>只補一邊，會落在左上或右下；目標是右上角。</figcaption>
+  </figure>
+</section>
+
+<!-- ───────────── 01 ───────────── -->
+<section id="d1" class="c1">
+  <p class="eyebrow"><span class="dot c1"></span>能力領域 01</p>
+  <h2>產品專業能力<span class="sub">從機會到持續營運，打磨好產品</span></h2>
+  <p>這九項能力按照產品從無到有、再到迭代的順序排列，本身就是一條完整的生命週期。</p>
+
+  <figure class="fig">
+    <div class="fig-box">
+      <ol class="life">
+        <li><div class="nd"><span class="num"><span class="dot c1"></span>1.1<i>機會是否存在</i></span><span class="nm">市場與競品分析</span></div></li>
+        <li><div class="nd"><span class="num"><span class="dot c1"></span>1.2<i>為誰而做</i></span><span class="nm">用戶研究與調研</span></div></li>
+        <li><div class="nd"><span class="num"><span class="dot c1"></span>1.3<i>劃出邊界</i></span><span class="nm">業務分析與流程梳理</span></div></li>
+        <li><div class="nd"><span class="num"><span class="dot c1"></span>1.4<i>需求池</i></span><span class="nm">需求挖掘與管理</span></div></li>
+        <li><div class="nd"><span class="num"><span class="dot c1"></span>1.5<i>路線圖</i></span><span class="nm">產品規劃與功能設計</span></div></li>
+        <li><div class="nd"><span class="num"><span class="dot c1"></span>1.6<i>設計規範</i></span><span class="nm">交互設計與原型製作</span></div></li>
+        <li><div class="nd"><span class="num"><span class="dot c1"></span>1.7<i>研發與測試的合約</i></span><span class="nm">產品需求與規格設計</span></div></li>
+        <li><div class="nd"><span class="num"><span class="dot c1"></span>1.8<i>順利上線</i></span><span class="nm">產品研發與交付管理</span></div></li>
+        <li><div class="nd"><span class="num"><span class="dot c1"></span>1.9<i>灰度發布</i></span><span class="nm">產品運營與迭代</span></div></li>
+      </ol>
+      <div class="loopbar"><span class="glyph">↺</span><span>1.9 之後回到 1.4，進入下一輪優化</span></div>
+    </div>
+    <figcaption><b>FIG. 03</b>九項能力就是一條生命週期；上線之後，回到需求端開始下一輪。</figcaption>
+  </figure>
+
+  <ul class="caps">
+    <li class="cap"><span class="cap-num">1.1</span><div><h4>市場與競品分析</h4><p>起點永遠是看清市場：做市場分析、行業調研、競品分析，再把結論寫成報告。這一步要回答的是機會是否存在、對手做到哪裡、能從哪裡切入。</p></div></li>
+    <li class="cap"><span class="cap-num">1.2</span><div><h4>用戶研究與調研</h4><p>市場說明「有沒有機會」，用戶研究說明「為誰而做」。常用的方法是用戶畫像、問卷調研、用戶訪談與體驗分析。</p></div></li>
+    <li class="cap"><span class="cap-num">1.3</span><div><h4>業務分析與流程梳理</h4><p>做 B 端或 AI 應用時，產品幾乎都要嵌進既有的業務運作。因此要先做業務調研、梳理流程、釐清業務規則，並且明確劃出邊界——哪些事產品負責，哪些不負責。邊界不清，是專案失控最常見的原因。</p></div></li>
+    <li class="cap"><span class="cap-num">1.4</span><div><h4>需求挖掘與管理</h4><p>接著把觀察到的問題轉成需求：獲取、分析、排優先級，再用需求池持續管理。沒有需求池，需求就會散落各處，或被臨時插單打亂節奏。</p></div></li>
+    <li class="cap"><span class="cap-num">1.5</span><div><h4>產品規劃與功能設計</h4><p>確立產品定位與目標後，設計功能架構並排出路線圖，讓團隊知道先做什麼、後做什麼，以及為什麼。</p></div></li>
+    <li class="cap"><span class="cap-num">1.6</span><div><h4>交互設計與原型製作</h4><p>功能要變成用戶看得到、用得到的形態，靠的是交互方法、頁面設計、原型製作，以及一致的設計規範。</p></div></li>
+    <li class="cap"><span class="cap-num">1.7</span><div><h4>產品需求與規格設計</h4><p>PRD、功能規格、業務規則與驗收標準，是研發與測試共同依據的「合約」。寫得越清楚，返工就越少。</p></div></li>
+    <li class="cap"><span class="cap-num">1.8</span><div><h4>產品研發與交付管理</h4><p>需求交出去不代表工作結束。專案管理、研發協作、測試驗收與版本發布都還需要參與，才能確保做出來的東西符合原意並順利上線。</p></div></li>
+    <li class="cap"><span class="cap-num">1.9</span><div><h4>產品運營與迭代</h4><p>上線只是開始。透過數據分析與用戶反饋判斷效果，用灰度發布控制風險，再進入下一輪優化。</p></div></li>
+  </ul>
+</section>
+
+<!-- ───────────── 02 ───────────── -->
+<section id="d2" class="c2">
+  <p class="eyebrow"><span class="dot c2"></span>能力領域 02</p>
+  <h2>行業與業務能力<span class="sub">理解業務場景，找到 AI 價值</span></h2>
+  <p><strong>AI 本身不產生價值，落在具體業務場景裡解決真實問題才會。</strong> 所以這一塊要由淺入深：先認識行業，再理解業務，最後找出 AI 可以介入的位置。</p>
+
+  <figure class="fig">
+    <div class="fig-box">
+      <div class="funnel">
+        <div class="f-row nd" style="--w:100%"><span class="f-step">先</span><span class="f-title">認識行業</span>
+          <span class="f-chips"><span class="chip c2"><span class="k">2.1</span>行業基礎認知</span><span class="chip c2"><span class="k">2.2</span>行業政策與監管</span></span></div>
+        <div class="f-row nd" style="--w:88%"><span class="f-step">再</span><span class="f-title">理解業務</span>
+          <span class="f-chips"><span class="chip c2"><span class="k">2.3</span>行業業務知識</span><span class="chip c2"><span class="k">2.4</span>業務架構與流程</span><span class="chip c2"><span class="k">2.5</span>行業數字化轉型</span></span></div>
+        <div class="f-row nd focal" style="--w:76%"><span class="f-step">最後</span><span class="f-title">找出 AI 可以介入的位置</span>
+          <span class="f-chips"><span class="chip c5"><span class="k">2.6</span>AI 業務場景分析</span></span></div>
+        <div class="f-row nd" style="--w:64%"><span class="f-step">整合</span><span class="f-title">可交付的方案</span>
+          <span class="f-chips"><span class="chip c2"><span class="k">2.7</span>行業解決方案</span></span></div>
+      </div>
+    </div>
+    <figcaption><b>FIG. 04</b>由淺入深，範圍逐層收斂到 AI 真正該介入的那一點。</figcaption>
+  </figure>
+
+  <ul class="caps">
+    <li class="cap"><span class="cap-num">2.1</span><div><h4>行業基礎認知</h4><p>先掌握行業的發展歷程、產業鏈結構、市場格局與趨勢，知道這個行業的錢與價值怎麼流動。</p></div></li>
+    <li class="cap"><span class="cap-num">2.2</span><div><h4>行業政策與監管</h4><p>很多行業受到嚴格規範。政策法規、合規要求、數據安全與行業標準，往往直接決定一個 AI 方案能不能上線，越早納入評估越好。</p></div></li>
+    <li class="cap"><span class="cap-num">2.3</span><div><h4>行業業務知識</h4><p>熟悉業務術語、業務對象、組織角色與核心流程。能用業務方的語言對話，是取得信任的前提。</p></div></li>
+    <li class="cap"><span class="cap-num">2.4</span><div><h4>業務架構與流程</h4><p>站高一點看業務：繪製業務能力地圖、做價值鏈分析、梳理並優化流程，找出真正的效率瓶頸。</p></div></li>
+    <li class="cap"><span class="cap-num">2.5</span><div><h4>行業數字化轉型</h4><p>先判斷客戶處在哪個轉型階段——信息化、數字化，還是已走向智能化——以及他們通往 AI 的路徑。階段不同，適合的方案就截然不同。</p>
+      <figure class="fig in">
+        <div class="fig-box">
+          <ol class="steps">
+            <li><div class="nd"><span class="nm">信息化</span></div></li>
+            <li><div class="nd"><span class="nm">數字化</span></div></li>
+            <li><div class="nd"><span class="nm">智能化</span></div></li>
+            <li><div class="nd focal"><span class="nm">走向 AI</span></div></li>
+          </ol>
+          <p class="steps-q">客戶站在哪一格，決定了適合哪一種方案。</p>
+        </div>
+        <figcaption><b>FIG. 05</b>轉型的四個階段。</figcaption>
+      </figure>
+    </div></li>
+    <li class="cap"><span class="cap-num">2.6</span><div><h4>AI 業務場景分析</h4><p>這是這一塊最關鍵的產出：識別場景、分析痛點、評估 AI 的適配性、估算價值。判斷「這件事該不該用 AI 做」，比「怎麼用 AI 做」重要得多。</p></div></li>
+    <li class="cap"><span class="cap-num">2.7</span><div><h4>行業解決方案</h4><p>最後把能力整合成可交付的方案：行業產品方案、系統集成、標竿案例，再把成功的實踐複製給更多客戶。</p></div></li>
+  </ul>
+
+  <div class="note">
+    <h4>關於行業選擇</h4>
+    <p>政務、金融、醫療、製造、能源、教育、企業經營管理都是值得投入的方向。比較好的策略是選定一到兩個行業深耕，因為行業知識累積得慢，卻是最難被取代的壁壘。</p>
+  </div>
+</section>
+
+<!-- ───────────── 03 ───────────── -->
+<section id="d3" class="c3">
+  <p class="eyebrow"><span class="dot c3"></span>能力領域 03</p>
+  <h2>商業與經營能力<span class="sub">創造可持續的商業價值</span></h2>
+  <p>好產品如果無法持續創造營收或效益，終究活不久。這一塊要求用經營者的視角看產品。</p>
+
+  <ul class="caps">
+    <li class="cap"><span class="cap-num">3.1</span><div><h4>商業模式設計</h4><p>定義價值主張、客戶細分、收入模式，並思考有沒有商業創新的空間。</p></div></li>
+    <li class="cap"><span class="cap-num">3.2</span><div><h4>產品定價與成本</h4><p>定價策略、訂閱模式、毛利分析都要算清楚。AI 產品尤其要盯緊 <strong>Token 成本</strong>：每次推理都有實際花費，用量越大成本越高，定價設計不當就會出現「用戶越多越虧」的局面。</p>
+      <figure class="fig in">
+        <div class="fig-box">
+          <svg class="dg chart" viewBox="0 0 400 244" role="img" aria-labelledby="f6t">
+            <title id="f6t">示意圖：固定訂閱收入是一條水平線，Token 成本隨用量上升，越過交點後進入虧損區</title>
+            <polygon points="258,100 384,100 384,40" style="fill:var(--accent-tint)"/>
+            <line x1="48" y1="212" x2="384" y2="212" style="stroke:var(--rule-solid)"/>
+            <line x1="48" y1="28" x2="48" y2="212" style="stroke:var(--rule-solid)"/>
+            <line x1="48" y1="100" x2="384" y2="100" style="stroke:var(--muted); stroke-width:1.5"/>
+            <line x1="48" y1="200" x2="384" y2="40" style="stroke:var(--accent); stroke-width:2"/>
+            <circle cx="258" cy="100" r="4" style="fill:var(--paper-2); stroke:var(--ink); stroke-width:1.2"/>
+            <text x="56" y="90" font-size="13" class="t-body">固定訂閱收入</text>
+            <text x="124" y="198" font-size="13" font-weight="600" class="t-acc">Token 成本</text>
+            <text x="250" y="88" font-size="13" text-anchor="end" class="t-body">損益平衡點</text>
+            <text x="352" y="92" font-size="13" font-weight="600" text-anchor="middle" class="t-acc">虧損區</text>
+            <text x="48" y="18" font-size="12" class="lbl">↑ 金額</text>
+            <text x="384" y="234" font-size="12" text-anchor="end" class="lbl">單一用戶用量 →</text>
+          </svg>
+        </div>
+        <figcaption><b>FIG. 06</b>示意圖，非實際數據。收入固定、成本隨用量上升，交點之後每多用一次就多虧一次。</figcaption>
+      </figure>
+    </div></li>
+    <li class="cap"><span class="cap-num">3.3</span><div><h4>市場推廣與增長</h4><p>包含 GTM 策略、營銷推廣、渠道建設，並用增長漏斗找出轉化流失的環節。</p></div></li>
+    <li class="cap"><span class="cap-num">3.4</span><div><h4>客戶價值管理</h4><p>理解客戶需求、做好客戶成功、提升留存與續費，管理完整的客戶生命週期。對訂閱制產品來說，續費率往往比新簽更關鍵。</p></div></li>
+    <li class="cap"><span class="cap-num">3.5</span><div><h4>數據驅動經營</h4><p>設定北極星指標，搭配 KPI、OKR 與經營數據分析，讓決策有依據、成果可衡量。</p></div></li>
+    <li class="cap"><span class="cap-num">3.6</span><div><h4>商業價值與 ROI</h4><p>成本收益分析、效率提升、價值驗證，以及規模化的可能性。向客戶或管理層爭取資源時，ROI 是最有說服力的語言。</p></div></li>
+    <li class="cap"><span class="cap-num">3.7</span><div><h4>產品商業化運營</h4><p>透過產品包裝、產品矩陣、生態合作與規模化推廣，把單一產品擴展成可持續的業務。</p></div></li>
+  </ul>
+
+  <div class="note">
+    <h4>AI 經營的兩個獨特課題</h4>
+    <ul>
+      <li><strong>AI 成本經濟學</strong>：模型、Token、推理、存儲的成本結構必須精算，並反映在定價與架構選擇上。</li>
+      <li><strong>AI 價值量化</strong>：用任務完成率、人工介入率、效率提升等指標具體說明價值，而不是停留在「感覺變聰明了」。</li>
+    </ul>
+  </div>
+
+  <figure class="fig">
+    <div class="fig-box">
+      <div class="pair">
+        <div class="nd panel">
+          <h5>Cost</h5>
+          <h6>成本結構要精算</h6>
+          <div class="stack">
+            <span>模型<i>model</i></span>
+            <span>Token<i>token</i></span>
+            <span>推理<i>inference</i></span>
+            <span>存儲<i>storage</i></span>
+            <span class="out">→ 反映在定價與架構選擇</span>
+          </div>
+        </div>
+        <div class="nd panel">
+          <h5>Value</h5>
+          <h6>價值要用指標說話</h6>
+          <div class="metric"><span>任務完成率</span><span class="arrow">↑</span></div>
+          <div class="metric"><span>人工介入率</span><span class="arrow dn">↓</span></div>
+          <div class="metric"><span>效率提升</span><span class="arrow">↑</span></div>
+        </div>
+      </div>
+    </div>
+    <figcaption><b>FIG. 07</b>一邊算清楚花了多少，一邊證明換來了什麼。人工介入率是唯一要往下壓的指標。</figcaption>
+  </figure>
+</section>
+
+<!-- ───────────── 04 ───────────── -->
+<section id="d4" class="c4">
+  <p class="eyebrow"><span class="dot c4"></span>能力領域 04</p>
+  <h2>軟實力<span class="sub">跨角色協同推動，成為優秀產品人</span></h2>
+  <p>產品經理通常沒有直接的管理權，事情能不能推動，很大程度取決於軟實力。做得越久越會發現，這一塊決定了一個人的天花板。</p>
+
+  <ul class="caps">
+    <li class="cap"><span class="cap-num">4.1</span><div><h4>結構化思維</h4><p>用 MECE、金字塔原理做問題分析與系統思考，把複雜問題拆解清楚。</p></div></li>
+    <li class="cap"><span class="cap-num">4.2</span><div><h4>溝通與表達</h4><p>需求溝通、方案匯報、技術溝通、故事化表達，都值得刻意練習。同一個方案，對研發要講清楚邏輯，對管理層要講清楚價值，對用戶要講清楚好處。</p>
+      <figure class="fig in">
+        <div class="fig-box">
+          <svg class="dg" viewBox="0 0 340 240" style="max-width:440px" role="img" aria-labelledby="f8t">
+            <title id="f8t">同一個方案，對研發講清楚邏輯，對管理層講清楚價值，對用戶講清楚好處</title>
+            <path class="conn" d="M112 108 H142 Q150 108 150 100 V44 Q150 36 158 36 H186" marker-end="url(#arw)"/>
+            <path class="conn" d="M112 120 H186" marker-end="url(#arw)"/>
+            <path class="conn" d="M112 132 H142 Q150 132 150 140 V196 Q150 204 158 204 H186" marker-end="url(#arw)"/>
+            <rect x="8" y="92" width="104" height="56" rx="6" class="n"/>
+            <rect x="8" y="92" width="104" height="56" rx="6" class="nf"/>
+            <text x="60" y="125" text-anchor="middle" class="t-name">同一個方案</text>
+            <rect x="188" y="8" width="144" height="56" rx="6" class="n"/>
+            <text x="260" y="33" text-anchor="middle" class="t-name">研發</text>
+            <text x="260" y="51" text-anchor="middle" font-size="11" class="t-body">講清楚邏輯</text>
+            <rect x="188" y="92" width="144" height="56" rx="6" class="n"/>
+            <text x="260" y="117" text-anchor="middle" class="t-name">管理層</text>
+            <text x="260" y="135" text-anchor="middle" font-size="11" class="t-body">講清楚價值</text>
+            <rect x="188" y="176" width="144" height="56" rx="6" class="n"/>
+            <text x="260" y="201" text-anchor="middle" class="t-name">用戶</text>
+            <text x="260" y="219" text-anchor="middle" font-size="11" class="t-body">講清楚好處</text>
+          </svg>
+        </div>
+        <figcaption><b>FIG. 08</b>內容不變，換的是聽眾在意的那一面。</figcaption>
+      </figure>
+    </div></li>
+    <li class="cap"><span class="cap-num">4.3</span><div><h4>跨團隊協作</h4><p>和研發、設計、業務協作，並妥善處理衝突。</p></div></li>
+    <li class="cap"><span class="cap-num">4.4</span><div><h4>項目推動力</h4><p>對齊目標、協調資源、推動進度、管理風險，讓項目在多方牽制下仍能前進。</p></div></li>
+    <li class="cap"><span class="cap-num">4.5</span><div><h4>決策與判斷</h4><p>優先級判斷、成本收益權衡、風險決策。產品經理最常面對的不是「對與錯」，而是「取與捨」。</p></div></li>
+    <li class="cap"><span class="cap-num">4.6</span><div><h4>創新與批判性思維</h4><p>運用第一性原理、設計思維、創新方法與假設驗證，既不盲從既有做法，也不輕信未經驗證的想法。</p></div></li>
+    <li class="cap"><span class="cap-num">4.7</span><div><h4>學習與知識管理</h4><p>持續學習、檢索信息、整理並複用知識。AI 領域變化極快，這項能力決定了其他能力的保鮮期。</p></div></li>
+    <li class="cap"><span class="cap-num">4.8</span><div><h4>領導力與影響力</h4><p>透過團隊賦能、建立共識、推動變革與培訓分享，在沒有職權的情況下影響他人。</p></div></li>
+  </ul>
+
+  <div class="note">
+    <h4>AI 時代最關鍵的四種素質</h4>
+    <ul class="quals">
+      <li><strong>人機協同意識</strong>清楚哪些工作交給 AI、哪些必須由人把關。</li>
+      <li><strong>AI 輔助決策能力</strong>善用 AI 蒐集與分析資訊，但最終判斷由自己負責。</li>
+      <li><strong>保持好奇與持續學習</strong>對新模型、新工具保持敏感。</li>
+      <li><strong>結果導向與業務思維</strong>用業務成果而非技術新穎度衡量工作。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ───────────── 05 ───────────── -->
+<section id="d5" class="c5">
+  <p class="eyebrow"><span class="dot c5"></span>能力領域 05</p>
+  <h2>AI 專項能力<span class="sub">理解、設計和運用 AI，打造 AI 原生產品</span></h2>
+  <p>這是 AI 產品經理與一般產品經理真正拉開差距的地方，可以分成三層：<strong>A 技術基礎</strong>（理解 AI）→ <strong>B 產品設計與落地</strong>（用 AI 做產品）→ <strong>C 賦能自身工作</strong>（用 AI 做事）。</p>
+
+  <figure class="fig">
+    <div class="fig-box">
+      <div class="layers">
+        <div class="nd layer"><span class="L">A</span><span class="nm">技術與能力基礎</span><span class="sb">理解 AI</span>
+          <div class="chips"><span class="chip c5"><span class="k">5.1</span>大模型</span><span class="chip c5"><span class="k">5.2</span>技術架構</span><span class="chip c5"><span class="k">5.3</span>Agent</span></div></div>
+        <div class="nd layer focal"><span class="L">B</span><span class="nm">產品設計與落地</span><span class="sb">用 AI 做產品</span>
+          <div class="chips"><span class="chip c5"><span class="k">5.4</span>場景規劃</span><span class="chip c5"><span class="k">5.5</span>體驗設計</span><span class="chip c5"><span class="k">5.6</span>工程與安全</span><span class="chip c5"><span class="k">5.7</span>評測與運營</span></div></div>
+        <div class="nd layer"><span class="L">C</span><span class="nm">賦能產品經理工作</span><span class="sb">用 AI 做事</span>
+          <div class="chips"><span class="chip c5"><span class="k">5.8</span>工具</span><span class="chip c5"><span class="k">5.9</span>Prompt 與 Skill</span><span class="chip c5"><span class="k">5.10</span>SOP</span></div></div>
+      </div>
+    </div>
+    <figcaption><b>FIG. 09</b>三層由內而外：先理解，再落地成產品，最後回頭改造自己的工作方式。</figcaption>
+  </figure>
+
+  <h3><span class="tag">A</span>AI 技術與能力基礎</h3>
+  <ul class="caps">
+    <li class="cap"><span class="cap-num">5.1</span><div><h4>AI 基礎與大模型</h4><p>理解機器學習、Transformer、LLM 的基本原理，但更重要的是掌握<strong>能力邊界</strong>：模型擅長什麼、會在哪裡出錯。產品經理不需要會訓練模型，但要能判斷一個需求在技術上是否合理。</p></div></li>
+    <li class="cap"><span class="cap-num">5.2</span><div><h4>AI 應用技術架構</h4><p>構成 AI 應用的幾項主要技術，一定要搞懂：</p>
+      <ul>
+        <li><strong>Prompt</strong>：透過提示詞引導模型輸出。</li>
+        <li><strong>RAG</strong>（檢索增強生成）：先檢索相關資料再交給模型生成，讓回答建立在企業自有知識上。</li>
+        <li><strong>向量數據庫</strong>：支撐 RAG 的語意檢索。</li>
+        <li><strong>Function Calling</strong>：讓模型呼叫外部工具或 API，從「會說」走向「會做」。</li>
+      </ul>
+      <figure class="fig in">
+        <div class="fig-box scroll">
+          <svg class="dg" viewBox="0 0 640 268" style="min-width:560px; max-width:640px" role="img" aria-labelledby="f10t">
+            <title id="f10t">用戶問題先經由向量數據庫檢索相關資料，與問題一起組成 Prompt 交給大模型；模型可透過 Function Calling 呼叫外部工具，最後產出回答或行動</title>
+            <path class="conn" d="M72 104 V48 Q72 40 80 40 H174" marker-end="url(#arw)"/>
+            <rect class="lm" x="100" y="16" width="48" height="16" rx="2"/>
+            <text x="124" y="28" font-size="12" text-anchor="middle" class="lbl">檢索</text>
+            <path class="conn" d="M236 68 V102" marker-end="url(#arw)"/>
+            <rect class="lm" x="244" y="76" width="56" height="16" rx="2"/>
+            <text x="248" y="88" font-size="12" class="lbl">相關資料</text>
+            <path class="conn" d="M128 132 H174" marker-end="url(#arw)"/>
+            <path class="conn" d="M296 132 H342" marker-end="url(#arw)"/>
+            <path class="conn acc" d="M472 132 H518" marker-end="url(#arw-a)"/>
+            <path class="conn" d="M392 160 V198" marker-end="url(#arw)"/>
+            <path class="conn dash" d="M424 200 V162" marker-end="url(#arw)"/>
+            <rect class="lm" x="344" y="172" width="40" height="16" rx="2"/>
+            <text x="380" y="184" font-size="12" text-anchor="end" class="lbl">呼叫</text>
+            <rect class="lm" x="432" y="172" width="40" height="16" rx="2"/>
+            <text x="436" y="184" font-size="12" class="lbl">結果</text>
+
+            <rect x="16" y="104" width="112" height="56" rx="6" class="n"/>
+            <text x="72" y="130" text-anchor="middle" class="t-name">用戶問題</text>
+            <text x="72" y="148" text-anchor="middle" class="t-mono">input</text>
+            <rect x="176" y="12" width="120" height="56" rx="6" class="n"/>
+            <text x="236" y="38" text-anchor="middle" class="t-name">向量數據庫</text>
+            <text x="236" y="56" text-anchor="middle" class="t-mono">RAG · 語意檢索</text>
+            <rect x="176" y="104" width="120" height="56" rx="6" class="n"/>
+            <text x="236" y="130" text-anchor="middle" class="t-name">Prompt</text>
+            <text x="236" y="148" text-anchor="middle" class="t-mono">問題 + 資料</text>
+            <rect x="344" y="104" width="128" height="56" rx="6" class="nf"/>
+            <text x="408" y="130" text-anchor="middle" class="t-name">大模型</text>
+            <text x="408" y="148" text-anchor="middle" class="t-mono">LLM</text>
+            <rect x="520" y="104" width="104" height="56" rx="6" class="n"/>
+            <text x="572" y="130" text-anchor="middle" class="t-name">回答／行動</text>
+            <text x="572" y="148" text-anchor="middle" class="t-mono">output</text>
+            <rect x="344" y="200" width="128" height="56" rx="6" class="n"/>
+            <text x="408" y="226" text-anchor="middle" class="t-name">外部工具 / API</text>
+            <text x="408" y="244" text-anchor="middle" class="t-mono">Function Calling</text>
+          </svg>
+        </div>
+        <figcaption><b>FIG. 10</b><span>四項技術在一次請求裡各自的位置：RAG 讓回答有根據，Function Calling 讓模型能動手。<span class="scroll-hint">可左右滑動查看全圖。</span></span></figcaption>
+      </figure>
+    </div></li>
+    <li class="cap"><span class="cap-num">5.3</span><div><h4>AI Agent 與多智能體</h4><p>理解 Agent 架構、工具調用、任務規劃，以及多個智能體分工協作的模式。Agent 讓 AI 能自主完成多步驟任務，但也帶來更高的設計與控制難度。</p></div></li>
+  </ul>
+
+  <h3><span class="tag">B</span>AI 產品設計與落地</h3>
+  <ul class="caps">
+    <li class="cap"><span class="cap-num">5.4</span><div><h4>AI 場景與產品規劃</h4><p>從場景發現出發，評估價值與技術可行性，再用 MVP 快速驗證。這和 2.6 是同一個原則：先確認值得做，再投入。</p></div></li>
+    <li class="cap"><span class="cap-num">5.5</span><div><h4>AI 產品體驗設計</h4><p>AI 產品的體驗形態和傳統軟體不同，常見的有對話式 UI、Copilot（嵌入既有工作中的助手）、工作流設計。其中最容易被忽略的是<strong>可信任設計</strong>：讓用戶理解 AI 的依據、能檢查與修正結果，他們才敢真正依賴它。</p>
+      <figure class="fig in">
+        <div class="fig-box">
+          <ol class="steps">
+            <li><div class="nd"><span class="nm">理解依據</span><span class="sb">AI 為什麼這樣答</span></div></li>
+            <li><div class="nd"><span class="nm">檢查結果</span><span class="sb">能逐項核對</span></div></li>
+            <li><div class="nd"><span class="nm">修正結果</span><span class="sb">錯了能改</span></div></li>
+            <li><div class="nd focal"><span class="nm">真正依賴</span><span class="sb">用戶才敢放手</span></div></li>
+          </ol>
+        </div>
+        <figcaption><b>FIG. 11</b>信任是一條鏈，少了前面任何一環，最後一步就不會發生。</figcaption>
+      </figure>
+    </div></li>
+    <li class="cap"><span class="cap-num">5.6</span><div><h4>AI 應用工程與安全</h4><p>參與模型選型、RAG 與 Agent 的工程設計，並處理權限與合規——AI 能存取哪些資料、能執行哪些操作，都必須事先想清楚。</p></div></li>
+    <li class="cap"><span class="cap-num">5.7</span><div><h4>AI 評測與運營</h4><p>建立評測集、評估效果、控制幻覺、持續觀測與優化。AI 的輸出具有不確定性，<strong>沒有評測，就無法判斷一次改動是變好還是變差</strong>。這是 AI 產品與傳統產品在流程上最大的差異。</p>
+      <figure class="fig in">
+        <div class="fig-box">
+          <div class="loop" role="img" aria-label="評測循環：一次改動，跑評測集，判斷變好或變差，持續觀測與優化，再回到下一次改動">
+            <div class="nd lp-a"><span class="nm">一次改動</span></div>
+            <span class="glyph lp-r">→</span>
+            <div class="nd lp-b"><span class="nm">跑評測集</span><span class="sb">同一批題目，前後對照</span></div>
+            <span class="glyph lp-u">↑</span>
+            <span class="glyph lp-d">↓</span>
+            <div class="nd lp-d2"><span class="nm">持續觀測與優化</span></div>
+            <span class="glyph lp-l">←</span>
+            <div class="nd focal lp-c"><span class="nm">判斷變好或變差</span><span class="sb">效果・幻覺</span></div>
+          </div>
+        </div>
+        <figcaption><b>FIG. 12</b>評測集是循環裡的那把尺。拿掉它，右下角的判斷就只剩感覺。</figcaption>
+      </figure>
+    </div></li>
+  </ul>
+
+  <h3><span class="tag">C</span>AI 賦能產品經理工作</h3>
+  <ul class="caps">
+    <li class="cap"><span class="cap-num">5.8</span><div><h4>AI 工具與工作台</h4><p>熟練使用 ChatGPT、Claude、Cursor、AI 搜尋等工具，建立屬於自己的 AI 工作台。</p></div></li>
+    <li class="cap"><span class="cap-num">5.9</span><div><h4>Prompt 與 Skill</h4><p>掌握提示詞工程、Skill 設計、MCP（Model Context Protocol，讓 AI 連接外部工具與資料的協定），並把多個工具串成工具鏈。這樣重複性的工作就能被封裝、複用。</p></div></li>
+    <li class="cap"><span class="cap-num">5.10</span><div><h4>AI 產品設計 SOP</h4><p>把 AI 融進日常工作流程：用 AI 做市場調研、需求分析、原型生成，乃至研發交付，最後沉澱成可複製的標準作業程序。</p></div></li>
+  </ul>
+</section>
+
+<!-- ───────────── Workflow ───────────── -->
+<section id="flow">
+  <p class="eyebrow">串起來</p>
+  <h2>把能力串起來：產品工作流程</h2>
+  <p>能力清單如果不落到實際工作裡，就只是清單。產品工作大致依照以下七個階段推進，每個階段調用不同的能力：</p>
+
+  <figure class="fig">
+    <div class="fig-box">
+      <div class="flow">
+        <ol class="stages">
+          <li class="stage"><span class="s-n">1</span><span class="s-name">市場洞察<small>發現機會</small></span>
+            <span class="s-chips"><span class="chip c1"><span class="k">1.1</span>市場與競品分析</span><span class="chip c2"><span class="k">2.1</span>行業基礎認知</span><span class="chip c2"><span class="k">2.5</span>行業數字化轉型</span><span class="chip c3"><span class="k">3.1</span>商業模式設計</span></span></li>
+          <li class="stage"><span class="s-n">2</span><span class="s-name">用戶研究<small>理解用戶</small></span>
+            <span class="s-chips"><span class="chip c1"><span class="k">1.2</span>用戶研究與調研</span><span class="chip c2"><span class="k">2.3</span>行業業務知識</span></span></li>
+          <li class="stage"><span class="s-n">3</span><span class="s-name">業務分析<small>明確場景</small></span>
+            <span class="s-chips"><span class="chip c1"><span class="k">1.3</span>業務分析與流程梳理</span><span class="chip c2"><span class="k">2.4</span>業務架構與流程</span><span class="chip c2"><span class="k">2.6</span>AI 業務場景分析</span><span class="chip c5"><span class="k">5.4</span>AI 場景與產品規劃</span></span></li>
+          <li class="stage"><span class="s-n">4</span><span class="s-name">需求分析<small>定義需求</small></span>
+            <span class="s-chips"><span class="chip c1"><span class="k">1.4</span>需求挖掘與管理</span><span class="chip c4"><span class="k">4.5</span>決策與判斷</span></span></li>
+          <li class="stage"><span class="s-n">5</span><span class="s-name">產品設計<small>規劃方案</small></span>
+            <span class="s-chips"><span class="chip c1"><span class="k">1.5</span>產品規劃與功能設計</span><span class="chip c1"><span class="k">1.6</span>交互設計與原型製作</span><span class="chip c1"><span class="k">1.7</span>產品需求與規格設計</span><span class="chip c5"><span class="k">5.2</span>AI 應用技術架構</span><span class="chip c5"><span class="k">5.5</span>AI 產品體驗設計</span></span></li>
+          <li class="stage"><span class="s-n">6</span><span class="s-name">研發交付<small>構建產品</small></span>
+            <span class="s-chips"><span class="chip c1"><span class="k">1.8</span>產品研發與交付管理</span><span class="chip c4"><span class="k">4.3</span>跨團隊協作</span><span class="chip c4"><span class="k">4.4</span>項目推動力</span><span class="chip c5"><span class="k">5.6</span>AI 應用工程與安全</span></span></li>
+          <li class="stage"><span class="s-n">7</span><span class="s-name">運營迭代<small>持續優化</small></span>
+            <span class="s-chips"><span class="chip c1"><span class="k">1.9</span>產品運營與迭代</span><span class="chip c3"><span class="k">3.4</span>客戶價值管理</span><span class="chip c3"><span class="k">3.5</span>數據驅動經營</span><span class="chip c5"><span class="k">5.7</span>AI 評測與運營</span></span></li>
+        </ol>
+        <div class="band"><span><b>04 軟實力</b>・讓事情推得動</span></div>
+        <div class="band b2"><span><b>5.8–5.10 AI 賦能</b>・讓每個階段更快</span></div>
+      </div>
+      <div class="legend">
+        <span><span class="dot c1"></span>01 產品專業</span>
+        <span><span class="dot c2"></span>02 行業與業務</span>
+        <span><span class="dot c3"></span>03 商業與經營</span>
+        <span><span class="dot c4"></span>04 軟實力</span>
+        <span><span class="dot c5"></span>05 AI 專項</span>
+      </div>
+    </div>
+    <figcaption><b>FIG. 13</b>七個階段各自調用的能力；兩條貫穿全程的能力另外標出。</figcaption>
+  </figure>
+
+  <p>軟實力（04）與 AI 賦能工作（5.8–5.10）則貫穿每一個階段：前者讓事情推得動，後者讓每個階段做得更快。</p>
+</section>
+
+<!-- ───────────── Closing ───────────── -->
+<section id="use">
+  <p class="eyebrow">寫在最後</p>
+  <h2>如何使用這份框架</h2>
+  <ol class="how">
+    <li><div><strong>先自我盤點</strong>：逐項標記自己的熟練度，找出最薄弱的領域。</div></li>
+    <li><div><strong>先補基本功，再建差異化</strong>：01 與 04 是底盤；02 與 03 決定能不能創造價值；05 決定能不能勝任 AI 產品。
+      <figure class="fig in">
+        <div class="fig-box">
+          <div class="pyr">
+            <div class="nd focal" style="--w:52%"><span class="num"><span class="dot c5"></span>05</span><span class="nm">決定能不能勝任 AI 產品</span></div>
+            <div class="nd" style="--w:76%"><span class="num"><span class="dot c2"></span><span class="dot c3"></span>02 · 03</span><span class="nm">決定能不能創造價值</span></div>
+            <div class="nd" style="--w:100%"><span class="num"><span class="dot c1"></span><span class="dot c4"></span>01 · 04</span><span class="nm">底盤</span></div>
+          </div>
+        </div>
+        <figcaption><b>FIG. 14</b>由下往上補，上層才站得穩。</figcaption>
+      </figure>
+    </div></li>
+    <li><div><strong>選一個行業深耕</strong>：通用能力容易學，行業知識與 AI 場景判斷力才是長期壁壘。</div></li>
+    <li><div><strong>從自己的工作開始用 AI</strong>：5.8–5.10 是最容易立刻實踐的部分，而親手使用，也是理解 AI 能力邊界最快的方法。</div></li>
+  </ol>
+</section>
+
+<footer><span>AI 產品經理知識地圖</span><span>01 — 05 · 七階段工作流程</span></footer>
+</div>
+
+</body>
+</html>
