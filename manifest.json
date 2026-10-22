@@ -1,9 +1,22 @@
 {
-  "generated": "2026-10-20T23:08:33.459Z",
+  "generated": "2026-10-22T16:48:01.936Z",
   "folders": {
-    "tech": "技術筆記"
+    "tech": "技術筆記",
+    "product": "產品"
   },
   "files": [
+    {
+      "path": "product/ai-pm-map.html",
+      "title": "AI 產品經理知識地圖",
+      "description": "AI 產品經理五大能力領域的知識筆記，附動態導覽影片與圖解",
+      "tags": [
+        "AI",
+        "產品經理",
+        "知識地圖",
+        "infographic"
+      ],
+      "date": "2026-10-23"
+    },
     {
       "path": "tech/cloudflare-d1.html",
       "title": "Cloudflare 架站與資料庫",
