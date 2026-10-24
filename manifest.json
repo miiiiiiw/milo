@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-24T14:14:17.378Z",
+  "generated": "2026-10-24T14:20:39.756Z",
   "folders": {
     "tech": "技術筆記",
     "product": "產品"
@@ -7,7 +7,7 @@
   "files": [
     {
       "path": "tech/email-auth.html",
-      "title": "Email 寄件者驗證學習筆記",
+      "title": "Email 寄件者驗證",
       "description": "從 Outlook「無法驗證寄件者」看懂 SPF、DKIM、DMARC，附導覽影片與 14 張圖解",
       "tags": [
         "資安",
