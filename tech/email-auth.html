@@ -1,0 +1,2509 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Email 寄件者驗證學習筆記</title>
+<meta name="description" content="從 Outlook「無法驗證寄件者」看懂 SPF、DKIM、DMARC，附導覽影片與 14 張圖解">
+<meta name="keywords" content="資安, Email, SPF, DKIM, DMARC, 學習筆記">
+<meta name="date" content="2026-10-24">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: one editorial reading column on paper; figures sit directly on the page, no frames, no shadows. Skin follows diagram-design's style guide. */
+:root {
+  --paper: #f5f5f5;
+  --paper-2: #ececec;
+  --node: #ffffff;
+  --ink: #2d3142;
+  --muted: #4f5d75;
+  --soft: #5a6580;
+  --rule: rgba(45,49,66,0.12);
+  --rule-solid: #bfc0c0;
+  --accent: #bf4520;
+  --accent-tint: rgba(191,69,32,0.08);
+  --ext: rgba(45,49,66,0.03);
+  --ext-stroke: rgba(45,49,66,0.30);
+  --store: rgba(45,49,66,0.05);
+  --opt-stroke: rgba(45,49,66,0.28);
+  --code-bg: #ececec;
+
+  --serif: 'Instrument Serif', 'Noto Serif TC', serif;
+  --sans: 'Geist', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #2d3142; --paper-2: #393e53; --node: #353a4e; --ink: #f5f5f5; --muted: #bfc0c0; --soft: #949eb2;
+    --rule: rgba(245,245,245,0.12); --rule-solid: rgba(191,192,192,0.25); --accent: #f08a59; --accent-tint: rgba(240,138,89,0.10);
+    --ext: rgba(245,245,245,0.04); --ext-stroke: rgba(245,245,245,0.30); --store: rgba(245,245,245,0.06); --opt-stroke: rgba(245,245,245,0.28);
+    --code-bg: #393e53; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #2d3142; --paper-2: #393e53; --node: #353a4e; --ink: #f5f5f5; --muted: #bfc0c0; --soft: #949eb2;
+  --rule: rgba(245,245,245,0.12); --rule-solid: rgba(191,192,192,0.25); --accent: #f08a59; --accent-tint: rgba(240,138,89,0.10);
+  --ext: rgba(245,245,245,0.04); --ext-stroke: rgba(245,245,245,0.30); --store: rgba(245,245,245,0.06); --opt-stroke: rgba(245,245,245,0.28);
+  --code-bg: #393e53; color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.85;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 56px 96px;
+}
+
+/* ---------- type ---------- */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--soft);
+  margin: 0 0 12px;
+}
+h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(2.1rem, 4.2vw + 1rem, 3.1rem);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+  text-wrap: balance;
+}
+.subtitle { font-size: 1.12rem; color: var(--muted); margin: 0 0 32px; }
+h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.55rem, 1.6vw + 1rem, 1.95rem);
+  line-height: 1.3;
+  margin: 0 0 20px;
+  text-wrap: balance;
+}
+h2 .num {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 6px;
+}
+h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.55;
+  margin: 36px 0 12px;
+  text-wrap: balance;
+}
+h3 .abbr { font-weight: 400; color: var(--muted); }
+p { margin: 0 0 16px; }
+strong { font-weight: 600; }
+code, .mono {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+  overflow-wrap: anywhere;
+}
+a { color: var(--ink); text-decoration-color: var(--rule-solid); text-underline-offset: 3px; }
+a:hover { text-decoration-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+ul, ol { margin: 0 0 16px; padding-left: 1.4em; }
+li { margin-bottom: 6px; }
+li::marker { color: var(--soft); }
+
+/* ---------- structure ---------- */
+section { padding-top: 56px; margin-top: 56px; border-top: 1px solid var(--rule); }
+.source {
+  font-size: 0.92rem;
+  color: var(--muted);
+  border-left: 2px solid var(--rule-solid);
+  padding: 4px 0 4px 16px;
+  margin: 0 0 40px;
+}
+.source a { overflow-wrap: anywhere; }
+
+.toc { margin: 0; }
+.toc ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 4px 24px;
+  font-size: 0.95rem;
+}
+.toc li { margin: 0; display: flex; gap: 10px; align-items: baseline; }
+.toc .n { font-family: var(--mono); font-size: 0.75rem; color: var(--soft); min-width: 1.8em; }
+.toc a { text-decoration: none; }
+.toc a:hover { text-decoration: underline; }
+
+/* ---------- callouts ---------- */
+.note {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 14px;
+  border: 1px solid var(--rule-solid);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 20px 0;
+  background: var(--node);
+}
+.note .tag {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--muted);
+  border: 1px solid var(--rule-solid);
+  border-radius: 2px;
+  padding: 0 6px;
+  height: fit-content;
+  margin-top: 4px;
+  white-space: nowrap;
+}
+.note p { margin: 0; min-width: 0; }
+.note.key { border-color: var(--accent); background: var(--accent-tint); }
+.note.key .tag { color: var(--accent); border-color: var(--accent); }
+.pull {
+  font-size: 1.12rem;
+  font-weight: 500;
+  border-left: 2px solid var(--accent);
+  padding-left: 16px;
+  margin: 24px 0;
+}
+
+/* ---------- tables ---------- */
+.table-wrap { overflow-x: auto; margin: 20px 0 24px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.93rem; line-height: 1.65; }
+th, td { text-align: left; vertical-align: top; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--rule); }
+th {
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--soft);
+  border-bottom: 1px solid var(--rule-solid);
+  white-space: nowrap;
+}
+td:first-child { font-weight: 500; }
+td code { white-space: nowrap; }
+.pill {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 1px 8px;
+  border-radius: 2px;
+  border: 1px solid var(--rule-solid);
+  white-space: nowrap;
+}
+.pill.fail { color: var(--accent); border-color: var(--accent); background: var(--accent-tint); }
+.pill.none { color: var(--soft); border-style: dashed; }
+
+/* ---------- figures ---------- */
+figure { margin: 32px 0 36px; }
+.fig-head { display: flex; gap: 12px; align-items: baseline; margin-bottom: 12px; flex-wrap: wrap; }
+.fig-head .eyebrow { margin: 0; }
+.fig-head .fig-title { font-size: 0.95rem; font-weight: 600; }
+.fig-scroll { overflow-x: auto; }
+.fig-scroll svg { display: block; width: 100%; min-width: 600px; height: auto; }
+figcaption { font-size: 0.88rem; color: var(--muted); margin-top: 12px; line-height: 1.7; }
+
+/* svg tokens */
+.bg { fill: var(--paper); }
+.n-node { fill: var(--node); stroke: var(--ink); stroke-width: 1; }
+.n-ext { fill: var(--ext); stroke: var(--ext-stroke); stroke-width: 1; }
+.n-store { fill: var(--store); stroke: var(--muted); stroke-width: 1; }
+.n-focal { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1.2; }
+.n-opt { fill: var(--ext); stroke: var(--opt-stroke); stroke-width: 1; stroke-dasharray: 4 3; }
+.n-row { fill: var(--node); stroke: var(--rule-solid); stroke-width: 0.8; }
+.ln { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+.ln-acc { fill: none; stroke: var(--accent); stroke-width: 1.4; }
+.ln-dash { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.ln-life { fill: none; stroke: var(--rule-solid); stroke-width: 1; stroke-dasharray: 4 4; }
+.ln-rule { fill: none; stroke: var(--rule-solid); stroke-width: 1; }
+.ln-faint { fill: none; stroke: var(--opt-stroke); stroke-width: 1; stroke-dasharray: 4 3; }
+.mk { fill: var(--muted); }
+.mk-acc { fill: var(--accent); }
+.mask { fill: var(--paper); }
+.dot-ink { fill: var(--ink); }
+.dot-acc { fill: var(--accent); }
+.t-name { font-family: var(--sans); font-size: 13px; font-weight: 600; fill: var(--ink); }
+.t-label { font-family: var(--sans); font-size: 12px; font-weight: 500; fill: var(--muted); }
+.t-mono { font-family: var(--mono); font-size: 10.5px; fill: var(--muted); }
+.t-val { font-family: var(--mono); font-size: 12.5px; font-weight: 500; fill: var(--ink); }
+.t-eye { font-family: var(--mono); font-size: 9px; font-weight: 500; letter-spacing: 0.18em; fill: var(--soft); }
+.t-big { font-family: var(--serif); font-size: 34px; fill: var(--accent); }
+.t-acc { fill: var(--accent); }
+.t-soft { fill: var(--soft); }
+
+/* ---------- inline visuals ---------- */
+.lookalike { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 24px; }
+.lookalike .d {
+  font-family: var(--mono);
+  font-size: 1rem;
+  border: 1px solid var(--rule-solid);
+  border-radius: 6px;
+  padding: 8px 14px;
+  background: var(--node);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.lookalike .d small { font-family: var(--sans); font-size: 0.78rem; color: var(--muted); }
+.lookalike .d.fake { border-style: dashed; }
+.lookalike mark { background: var(--accent-tint); color: var(--accent); border-bottom: 2px solid var(--accent); padding: 0 1px; }
+
+.header-demo {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  line-height: 1.9;
+  background: var(--node);
+  border: 1px solid var(--rule-solid);
+  border-radius: 6px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  white-space: pre;
+  margin: 0;
+}
+.header-demo .hl { background: var(--code-bg); border-radius: 2px; padding: 1px 2px; }
+.header-demo .hl-acc { color: var(--accent); background: var(--accent-tint); border-radius: 2px; padding: 1px 2px; }
+.header-demo sup { font-family: var(--sans); font-size: 0.7rem; color: var(--accent); font-weight: 600; }
+.header-key { list-style: none; padding: 0; margin: 14px 0 0; font-size: 0.92rem; display: grid; gap: 4px; }
+.header-key li { display: flex; gap: 10px; margin: 0; }
+.header-key .k { color: var(--accent); font-weight: 600; min-width: 1.2em; }
+
+.steps { list-style: none; padding: 0; margin: 20px 0; display: grid; gap: 0; counter-reset: s; }
+.steps li {
+  counter-increment: s;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule);
+  margin: 0;
+}
+.steps li::before {
+  content: counter(s, decimal-leading-zero);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  padding-top: 4px;
+}
+.steps li > div { min-width: 0; }
+
+.closing {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  line-height: 1.6;
+  margin: 28px 0;
+  text-wrap: balance;
+}
+.closing em { font-style: normal; color: var(--accent); }
+
+footer { margin-top: 72px; padding-top: 20px; border-top: 1px solid var(--rule); font-size: 0.85rem; color: var(--muted); }
+
+@media (max-width: 520px) {
+  body { font-size: 16px; }
+  .page { padding-block: 32px 64px; }
+  section { padding-top: 40px; margin-top: 40px; }
+  .note { grid-template-columns: 1fr; }
+}
+
+/* ---------- guide video ---------- */
+.vg { margin: 0 0 44px; }
+.vg-head { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; margin-bottom: 12px; }
+.vg-head .eyebrow { margin: 0; color: var(--accent); }
+.vg-sub { font-size: 0.95rem; font-weight: 600; }
+.vg-stage {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  border: 1px solid var(--rule-solid);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--paper);
+  cursor: pointer;
+}
+.vg-stage canvas { display: block; width: 100%; height: 100%; }
+.vg-big {
+  position: absolute;
+  left: 50%;
+  bottom: 5%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 22px 10px 10px;
+  border-radius: 999px;
+  border: 1.5px solid var(--accent);
+  background: var(--node);
+  color: var(--ink);
+  font-family: var(--sans);
+  text-align: left;
+  cursor: pointer;
+  max-width: calc(100% - 24px);
+  white-space: nowrap;
+}
+.vg-big[hidden] { display: none; }
+.vg-big-txt { display: flex; flex-direction: column; gap: 2px; }
+.vg-big:hover { background: var(--accent-tint); }
+.vg-big:focus-visible, .vg-btn:focus-visible, .vg-track input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.vg-big-ic {
+  width: 52px; height: 52px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--accent); color: var(--paper);
+}
+.vg-big-t { font-size: 1.05rem; font-weight: 600; }
+.vg-big small { font-size: 0.8rem; color: var(--muted); }
+.vg-bar {
+  max-width: 640px;
+  margin: 10px auto 0;
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+.vg-btn {
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border-radius: 6px;
+  border: 1px solid var(--rule-solid);
+  background: var(--node);
+  color: var(--ink);
+  cursor: pointer;
+  padding: 0;
+}
+.vg-btn:hover { border-color: var(--ink); }
+.vg-btn .ic-pause, .vg-btn .ic-mute { display: none; }
+.vg.is-playing #vg-play .ic-play { display: none; }
+.vg.is-playing #vg-play .ic-pause { display: block; }
+.vg.is-muted #vg-mute .ic-vol { display: none; }
+.vg.is-muted #vg-mute .ic-mute { display: block; }
+.vg-time { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.vg-track { position: relative; min-width: 0; height: 28px; display: flex; align-items: center; }
+.vg-ticks { position: absolute; left: 0; right: 0; top: 50%; height: 10px; transform: translateY(-50%); pointer-events: none; }
+.vg-ticks i { position: absolute; top: 0; width: 1px; height: 10px; background: var(--rule-solid); }
+.vg-track input[type="range"] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 28px; margin: 0;
+  background: transparent; cursor: pointer; position: relative;
+}
+.vg-track input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px; border-radius: 2px;
+  background: linear-gradient(to right, var(--accent) 0 var(--fill, 0%), var(--rule-solid) var(--fill, 0%) 100%);
+}
+.vg-track input[type="range"]::-moz-range-track { height: 4px; border-radius: 2px; background: var(--rule-solid); }
+.vg-track input[type="range"]::-moz-range-progress { height: 4px; border-radius: 2px; background: var(--accent); }
+.vg-track input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--accent); border: 2px solid var(--paper);
+  margin-top: -6px;
+}
+.vg-track input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 2px solid var(--paper); }
+.vg-chapter { max-width: 640px; margin: 8px auto 0; font-size: 0.85rem; color: var(--muted); display: flex; gap: 10px; flex-wrap: wrap; }
+.vg-chapter-k { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; color: var(--soft); padding-top: 2px; }
+#vg-chapter { color: var(--ink); font-weight: 600; }
+.vg-status { color: var(--soft); }
+@media (max-width: 420px) {
+  .vg-bar { gap: 8px; }
+  .vg-time { font-size: 0.72rem; }
+  .vg-big { padding: 6px 16px 6px 6px; gap: 10px; bottom: 4%; }
+  .vg-big-ic { width: 38px; height: 38px; }
+  .vg-big-t { font-size: 0.92rem; }
+  .vg-big small { font-size: 0.72rem; }
+}
+
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+</style>
+
+<style>[hidden]{display:none!important}</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <marker id="ar" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="mk" points="0 0, 8 3, 0 6"/></marker>
+    <marker id="ar-acc" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="mk-acc" points="0 0, 8 3, 0 6"/></marker>
+  </defs>
+</svg>
+
+<main class="page">
+
+  <header>
+    <p class="eyebrow">學習筆記 · Email Authentication</p>
+    <h1>Email 寄件者驗證學習筆記</h1>
+    <p class="subtitle">從「Outlook 無法驗證寄件者」看 SPF、DKIM、DMARC</p>
+    <p class="source">來源案例：保哥〈從 TWNIC 資安通知信看 DMARC 網域對齊問題〉<br>
+      <a href="https://blog.miniasp.com/post/2026/10/24/outlook-unverified-sender-spf-dmarc-alignment" target="_blank" rel="noopener">https://blog.miniasp.com/post/2026/10/24/outlook-unverified-sender-spf-dmarc-alignment</a></p>
+
+    <section class="vg" id="guide-video" aria-label="導覽影片">
+      <div class="vg-head">
+        <p class="eyebrow">導覽影片</p>
+        <span class="vg-sub">先看影片掌握全文大意，再往下細讀</span>
+      </div>
+      <div class="vg-stage" id="vg-stage">
+        <canvas id="vg-canvas" role="img" aria-label="導覽影片畫面：依序介紹案例、基礎名詞、SPF、DKIM、DMARC、案例分析、解法、常見誤解與總結"></canvas>
+        <button type="button" class="vg-big" id="vg-big" aria-label="播放導覽影片">
+          <span class="vg-big-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span>
+          <span class="vg-big-txt"><span class="vg-big-t" id="vg-big-t">播放導覽影片</span>
+          <small id="vg-big-s">有配樂</small></span>
+        </button>
+      </div>
+      <div class="vg-bar">
+        <button type="button" class="vg-btn" id="vg-play" aria-label="播放">
+          <svg class="ic-play" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+          <svg class="ic-pause" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor"/></svg>
+        </button>
+        <span class="vg-time" id="vg-time">0:00 / 0:00</span>
+        <div class="vg-track">
+          <div class="vg-ticks" id="vg-ticks" aria-hidden="true"></div>
+          <input type="range" id="vg-seek" min="0" max="1000" value="0" step="1" aria-label="影片進度">
+        </div>
+        <button type="button" class="vg-btn" id="vg-mute" aria-label="靜音">
+          <svg class="ic-vol" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+          <svg class="ic-mute" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <p class="vg-chapter"><span class="vg-chapter-k">目前段落</span><span id="vg-chapter" aria-live="polite">導言</span><span class="vg-status" id="vg-status"></span></p>
+    </section>
+
+    <nav class="toc" aria-label="目錄">
+      <p class="eyebrow">目錄</p>
+      <ol>
+        <li><span class="n">01</span><a href="#s1">案例摘要</a></li>
+        <li><span class="n">02</span><a href="#s2">基礎名詞</a></li>
+        <li><span class="n">03</span><a href="#s3">一封 Email 有兩個寄件人</a></li>
+        <li><span class="n">04</span><a href="#s4">三道防偽檢查</a></li>
+        <li><span class="n">05</span><a href="#s5">案例分析：問題出在哪裡</a></li>
+        <li><span class="n">06</span><a href="#s6">正確解法</a></li>
+        <li><span class="n">07</span><a href="#s7">常見誤解</a></li>
+        <li><span class="n">08</span><a href="#s8">為什麼越來越重要</a></li>
+        <li><span class="n">09</span><a href="#s9">動手練習</a></li>
+        <li><span class="n">10</span><a href="#s10">值得學的排查思路</a></li>
+        <li><span class="n">A–C</span><a href="#appendix">附錄：用語與縮寫</a></li>
+        <li><span class="n">✦</span><a href="#summary">總結：知識架構</a></li>
+      </ol>
+    </nav>
+  </header>
+
+  <!-- ============ 一 ============ -->
+  <section id="s1">
+    <h2><span class="num">01</span>案例摘要</h2>
+    <p>2026 年 10 月，TWNIC 寄出一封 PHP 漏洞的資安提醒信，Outlook 卻在寄件者旁標示「無法驗證」。</p>
+    <p>作者分析後的結論是：<strong>信很可能真的是 TWNIC 委託寄出的，內容也正確，但寄件設定少了一步，所以 Outlook 無法替它背書。</strong></p>
+    <p class="pull">這個案例說明一件事：「驗證失敗」不一定是詐騙，可能只是寄件端設定不完整。</p>
+  </section>
+
+  <!-- ============ 二 ============ -->
+  <section id="s2">
+    <h2><span class="num">02</span>基礎名詞</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>名詞</th><th>意思</th><th>比喻</th></tr></thead>
+        <tbody>
+          <tr><td>網域（Domain）</td><td>網路上的名稱，Email 地址 <code>@</code> 後面那段，例如 <code>twnic.tw</code></td><td>公司招牌</td></tr>
+          <tr><td>子網域</td><td>在網域前加一段，例如 <code>bounce.twnic.tw</code></td><td>公司的分部</td></tr>
+          <tr><td>IP（Internet Protocol，網際網路協定）位址</td><td>連網電腦的數字地址，例如 <code>218.32.93.136</code></td><td>實際門牌號碼</td></tr>
+          <tr><td>伺服器</td><td>全天運作、提供服務的電腦；郵件伺服器負責收發信</td><td>郵局</td></tr>
+          <tr><td>DNS（Domain Name System，網域名稱系統）</td><td>把網域查成 IP 的系統，網域主人也能在上面公告資料</td><td>公開的電話簿兼公告欄，只有網域主人能改自己那頁</td></tr>
+          <tr><td>DNS 紀錄</td><td>DNS 上的一筆資料；SPF、DKIM、DMARC 的設定都寫在這裡</td><td>公告欄上的一張公告</td></tr>
+          <tr><td>代寄平台</td><td>替機構大量寄送電子報、通知信的服務商</td><td>代寄廣告信的公司</td></tr>
+          <tr><td>SMTP（Simple Mail Transfer Protocol，簡單郵件傳輸協定）</td><td>郵件伺服器之間傳遞信件的規則</td><td>郵局之間的交接流程</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure>
+      <div class="fig-head"><p class="eyebrow">Fig 01</p><span class="fig-title">DNS 就像一個網域的公告欄</span></div>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 720 280" role="img" aria-labelledby="f1t">
+          <title id="f1t">DNS 公告欄示意：任何人都能查詢，只有網域主人能修改；SPF、DKIM、DMARC 都是其中的一筆紀錄</title>
+          <rect class="bg" width="720" height="280"/>
+          <!-- arrows -->
+          <line class="ln" x1="168" y1="144" x2="212" y2="144" marker-end="url(#ar)"/>
+          <line class="ln" x1="552" y1="144" x2="508" y2="144" marker-end="url(#ar)"/>
+          <rect class="mask" x="166" y="116" width="48" height="16"/>
+          <text class="t-label" x="190" y="128" text-anchor="middle">查詢</text>
+          <rect class="mask" x="506" y="116" width="48" height="16"/>
+          <text class="t-label" x="530" y="128" text-anchor="middle">修改</text>
+          <!-- actors -->
+          <rect class="n-ext" x="40" y="116" width="128" height="56" rx="6"/>
+          <text class="t-name" x="104" y="140" text-anchor="middle">任何人</text>
+          <text class="t-label" x="104" y="158" text-anchor="middle">都能讀取</text>
+          <rect class="n-node" x="552" y="116" width="128" height="56" rx="6"/>
+          <text class="t-name" x="616" y="140" text-anchor="middle">網域主人</text>
+          <text class="t-label" x="616" y="158" text-anchor="middle">唯一能修改的人</text>
+          <!-- board -->
+          <rect class="n-store" x="216" y="16" width="288" height="252" rx="8"/>
+          <text class="t-eye" x="232" y="36">DNS</text>
+          <text class="t-name" x="264" y="37">twnic.tw 這一頁</text>
+          <rect class="n-row" x="232" y="52" width="256" height="44" rx="4"/>
+          <text class="t-label" x="244" y="70">電話簿功能</text>
+          <text class="t-mono" x="244" y="86">domain → IP address</text>
+          <rect class="n-row" x="232" y="104" width="256" height="44" rx="4"/>
+          <text class="t-label" x="244" y="122">SPF 授權名單</text>
+          <text class="t-mono" x="244" y="138">v=spf1 include:_spfv42.twnic.tw …</text>
+          <rect class="n-row" x="232" y="156" width="256" height="44" rx="4"/>
+          <text class="t-label" x="244" y="174">DKIM 公鑰</text>
+          <text class="t-mono" x="244" y="190">selector._domainkey.example.tw</text>
+          <rect class="n-focal" x="232" y="208" width="256" height="44" rx="4"/>
+          <text class="t-label" x="244" y="226">DMARC 規定</text>
+          <text class="t-mono" x="244" y="242">_dmarc.twnic.tw → p=none</text>
+        </svg>
+      </div>
+      <figcaption>SPF、DKIM、DMARC 都只是公告欄上的一筆紀錄。收件伺服器收到信後，會到寄件網域的這一頁查資料。SPF 與 DMARC 兩列是本案 <code>twnic.tw</code> 的真實內容（節錄），DKIM 列為通用示意。</figcaption>
+    </figure>
+  </section>
+
+  <!-- ============ 三 ============ -->
+  <section id="s3">
+    <h2><span class="num">03</span>核心觀念：一封 Email 有兩個寄件人</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>技術名稱</th><th>比喻</th><th>誰看得到</th></tr></thead>
+        <tbody>
+          <tr><td>①</td><td><strong>From</strong>（Header From，信紙寄件者）</td><td>信紙上的署名</td><td>收件人在信箱中看到的就是這個</td></tr>
+          <tr><td>②</td><td><strong>MAIL FROM</strong>（Envelope From，信封寄件者）</td><td>信封背面的寄件地址；寄不到時退信回這裡</td><td>只有郵件伺服器</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure>
+      <div class="fig-head"><p class="eyebrow">Fig 02</p><span class="fig-title">同一封信，信封與信紙寫著不同的寄件者</span></div>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 720 292" role="img" aria-labelledby="f2t">
+          <title id="f2t">信封上的 MAIL FROM 是 ascrm.newermail.com，信紙上的 From 是 twnic.tw，兩者可以不同</title>
+          <rect class="bg" width="720" height="292"/>
+          <!-- envelope -->
+          <text class="t-eye" x="40" y="40">ENVELOPE</text>
+          <text class="t-label" x="116" y="41">信封</text>
+          <rect class="n-node" x="40" y="52" width="300" height="200" rx="6"/>
+          <polyline class="ln-rule" points="40,52 190,136 340,52"/>
+          <text class="t-label" x="190" y="170" text-anchor="middle">MAIL FROM（信封寄件者）</text>
+          <text class="t-val" x="190" y="196" text-anchor="middle">ascrm.newermail.com</text>
+          <text class="t-label t-soft" x="190" y="228" text-anchor="middle">伺服器看這個 · 退信寄回這裡</text>
+          <!-- not equal -->
+          <text class="t-big" x="370" y="162" text-anchor="middle">≠</text>
+          <text class="t-label t-acc" x="370" y="188" text-anchor="middle">可以不同</text>
+          <!-- letter -->
+          <text class="t-eye" x="400" y="40">LETTER</text>
+          <text class="t-label" x="458" y="41">信紙</text>
+          <rect class="n-node" x="400" y="52" width="280" height="220" rx="4"/>
+          <text class="t-label" x="420" y="80">From（信紙署名）</text>
+          <text class="t-val" x="420" y="104">TWNIC · twnic.tw</text>
+          <line class="ln-rule" x1="420" y1="120" x2="660" y2="120"/>
+          <line class="ln-rule" x1="420" y1="144" x2="640" y2="144"/>
+          <line class="ln-rule" x1="420" y1="164" x2="652" y2="164"/>
+          <line class="ln-rule" x1="420" y1="184" x2="600" y2="184"/>
+          <line class="ln-rule" x1="420" y1="204" x2="632" y2="204"/>
+          <text class="t-label t-soft" x="660" y="252" text-anchor="end">收件人在信箱看到的是這個</text>
+        </svg>
+      </div>
+      <figcaption>本案的實際情況：信紙署名是 TWNIC，信封上卻是代寄平台自己的網域。</figcaption>
+    </figure>
+
+    <p><strong>這兩者可以不同。</strong>委託代寄平台時，常見情況是：署名是委託的機構，信封地址卻是代寄平台自己的網域。</p>
+    <p>每封信背後還有一段平常看不到的技術紀錄，稱為<strong>標頭（Header）</strong>，記錄信件經過哪些伺服器、驗證結果如何，就像包裹的物流追蹤單。在信箱選「檢視原始郵件」即可看到。</p>
+  </section>
+
+  <!-- ============ 四 ============ -->
+  <section id="s4">
+    <h2><span class="num">04</span>三道防偽檢查</h2>
+
+    <h3>1. SPF <span class="abbr">（Sender Policy Framework，寄件者政策框架）</span>：寄信的伺服器有沒有被授權？</h3>
+    <p>網域主人在 DNS 公告：「只有這些 IP 可以代表我寄信。」收件端檢查寄信伺服器是否在名單上。</p>
+    <ul>
+      <li>比喻：公司公告「只有這幾位郵差能替我送信」</li>
+      <li>名單中可用 <code>include</code> 引用別人的名單，意思是「另見某某的授權清單」。</li>
+    </ul>
+    <div class="note key"><span class="tag">重點</span><p><strong>SPF 檢查的是信封地址（MAIL FROM）的網域，不是收件人看到的署名。</strong></p></div>
+
+    <figure>
+      <div class="fig-head"><p class="eyebrow">Fig 03</p><span class="fig-title">SPF 檢查的四個步驟</span></div>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 720 296" role="img" aria-labelledby="f3t">
+          <title id="f3t">SPF 序列圖：寄件伺服器送信，收件伺服器查詢信封網域的 SPF 名單，DNS 回傳名單，收件伺服器比對 IP</title>
+          <rect class="bg" width="720" height="296"/>
+          <!-- lifelines -->
+          <line class="ln-life" x1="120" y1="72" x2="120" y2="284"/>
+          <line class="ln-life" x1="360" y1="72" x2="360" y2="284"/>
+          <line class="ln-life" x1="600" y1="72" x2="600" y2="284"/>
+          <!-- messages -->
+          <line class="ln" x1="124" y1="112" x2="352" y2="112" marker-end="url(#ar)"/>
+          <text class="t-label" x="238" y="102" text-anchor="middle">① 送出信件</text>
+          <text class="t-mono" x="238" y="130" text-anchor="middle">MAIL FROM: ascrm.newermail.com</text>
+          <line class="ln-acc" x1="364" y1="168" x2="592" y2="168" marker-end="url(#ar-acc)"/>
+          <text class="t-label t-acc" x="478" y="158" text-anchor="middle">② 查「信封網域」的 SPF 名單</text>
+          <line class="ln-dash" x1="596" y1="208" x2="368" y2="208" marker-end="url(#ar)"/>
+          <text class="t-label" x="482" y="198" text-anchor="middle">③ 回傳授權 IP 名單</text>
+          <!-- heads -->
+          <rect class="n-node" x="40" y="24" width="160" height="48" rx="6"/>
+          <text class="t-name" x="120" y="45" text-anchor="middle">寄件伺服器</text>
+          <text class="t-mono" x="120" y="61" text-anchor="middle">218.32.93.136</text>
+          <rect class="n-node" x="280" y="24" width="160" height="48" rx="6"/>
+          <text class="t-name" x="360" y="45" text-anchor="middle">收件伺服器</text>
+          <text class="t-mono" x="360" y="61" text-anchor="middle">Outlook</text>
+          <rect class="n-store" x="520" y="24" width="160" height="48" rx="6"/>
+          <text class="t-name" x="600" y="45" text-anchor="middle">DNS</text>
+          <text class="t-mono" x="600" y="61" text-anchor="middle">ascrm.newermail.com</text>
+          <!-- check -->
+          <rect class="n-node" x="248" y="232" width="224" height="40" rx="6"/>
+          <text class="t-label" x="360" y="257" text-anchor="middle" style="fill:var(--ink)">④ 寄件 IP 在名單上 → pass</text>
+        </svg>
+      </div>
+      <figcaption>第 ② 步是關鍵：收件伺服器查的是信封上那個網域的名單，跟信紙上署名是誰無關。</figcaption>
+    </figure>
+
+    <h3>2. DKIM <span class="abbr">（DomainKeys Identified Mail，網域金鑰識別郵件）</span>：信上有沒有寄件者的印章？</h3>
+    <p>寄件端用<strong>私鑰</strong>替信件加上數位簽章；收件端到寄件網域的 DNS 取得<strong>公鑰</strong>來驗證。</p>
+    <ul>
+      <li>比喻：私鑰是印章本體，只有寄件者持有；公鑰是公開的印鑑樣本，供人比對</li>
+      <li>簽章中的 <code>d=</code> 寫著「這個章是哪個網域蓋的」</li>
+      <li>優點：章跟著信走，轉寄也不會失效，還能證明內容沒被竄改</li>
+    </ul>
+
+    <figure>
+      <div class="fig-head"><p class="eyebrow">Fig 04</p><span class="fig-title">DKIM：私鑰蓋章，公鑰驗章</span></div>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 720 248" role="img" aria-labelledby="f4t">
+          <title id="f4t">DKIM 流程：寄件端用私鑰簽章，信件帶著簽章與 d= 網域送出，收件端到 DNS 取得公鑰驗證</title>
+          <rect class="bg" width="720" height="248"/>
+          <!-- arrows -->
+          <line class="ln" x1="184" y1="72" x2="276" y2="72" marker-end="url(#ar)"/>
+          <rect class="mask" x="208" y="44" width="40" height="16"/>
+          <text class="t-label" x="228" y="56" text-anchor="middle">寄出</text>
+          <line class="ln" x1="440" y1="72" x2="532" y2="72" marker-end="url(#ar)"/>
+          <rect class="mask" x="464" y="44" width="40" height="16"/>
+          <text class="t-label" x="484" y="56" text-anchor="middle">傳送</text>
+          <line class="ln" x1="616" y1="176" x2="616" y2="108" marker-end="url(#ar)"/>
+          <text class="t-label" x="604" y="146" text-anchor="end">取得公鑰</text>
+          <line class="ln-dash" x1="104" y1="176" x2="104" y2="108" marker-end="url(#ar)"/>
+          <text class="t-label" x="116" y="146">使用</text>
+          <!-- nodes -->
+          <rect class="n-node" x="24" y="40" width="160" height="64" rx="6"/>
+          <text class="t-name" x="104" y="66" text-anchor="middle">寄件端</text>
+          <text class="t-label" x="104" y="86" text-anchor="middle">用私鑰替信件蓋章</text>
+          <rect class="n-focal" x="280" y="40" width="160" height="64" rx="6"/>
+          <text class="t-name" x="360" y="66" text-anchor="middle">信件 + 數位簽章</text>
+          <text class="t-mono" x="360" y="86" text-anchor="middle">DKIM-Signature: d=…</text>
+          <rect class="n-node" x="536" y="40" width="160" height="64" rx="6"/>
+          <text class="t-name" x="616" y="66" text-anchor="middle">收件端</text>
+          <text class="t-label" x="616" y="86" text-anchor="middle">用公鑰驗證印章</text>
+          <rect class="n-ext" x="24" y="176" width="160" height="56" rx="6"/>
+          <text class="t-name" x="104" y="200" text-anchor="middle">私鑰</text>
+          <text class="t-label" x="104" y="218" text-anchor="middle">只存在寄件端</text>
+          <rect class="n-store" x="536" y="176" width="160" height="56" rx="6"/>
+          <text class="t-name" x="616" y="200" text-anchor="middle">DNS 公告欄</text>
+          <text class="t-label" x="616" y="218" text-anchor="middle">d= 網域公布的公鑰</text>
+          <text class="t-label t-soft" x="360" y="208" text-anchor="middle">印鑑樣本公開，印章本體不公開</text>
+        </svg>
+      </div>
+      <figcaption>簽章附在信件裡一起移動，所以中途被轉寄也不會失效；收件端只要知道 <code>d=</code> 是誰，就能到那個網域的 DNS 取得公鑰比對。</figcaption>
+    </figure>
+
+    <h3>3. DMARC <span class="abbr">（Domain-based Message Authentication, Reporting and Conformance，以網域為基礎的郵件驗證、回報與一致性）</span>：通過驗證的，和署名是同一個人嗎？</h3>
+    <p>網域主人規定：「署名是我的信，SPF 或 DKIM 至少一項要通過，<strong>而且通過的網域必須是我</strong>。」</p>
+    <p>名稱中的三個功能分別是：<strong>驗證</strong>寄件身分、把結果<strong>回報</strong>給網域主人、要求驗證網域與署名<strong>一致</strong>。</p>
+    <p>這個「一致」的要求稱為<strong>對齊（Alignment）</strong>：</p>
+    <ul>
+      <li><strong>SPF 路徑</strong>：SPF 通過，且信封網域與署名網域一致</li>
+      <li><strong>DKIM 路徑</strong>：DKIM 通過，且 <code>d=</code> 網域與署名網域一致</li>
+      <li>任一條路徑成立，DMARC 就通過</li>
+    </ul>
+
+    <figure>
+      <div class="fig-head"><p class="eyebrow">Fig 05</p><span class="fig-title">DMARC 的判斷邏輯：兩條路徑，任一成立即通過</span></div>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 720 408" role="img" aria-labelledby="f5t">
+          <title id="f5t">DMARC 流程圖：從信紙署名出發，分成 SPF 路徑與 DKIM 路徑，各自檢查是否通過及是否與署名網域一致，任一條成立則 DMARC 通過</title>
+          <rect class="bg" width="720" height="408"/>
+          <!-- connectors -->
+          <path class="ln" d="M360,64 V80 Q360,88 352,88 H188 Q180,88 180,96 V108" marker-end="url(#ar)"/>
+          <path class="ln" d="M360,80 Q360,88 368,88 H532 Q540,88 540,96 V108"  marker-end="url(#ar)"/>
+          <line class="ln" x1="180" y1="156" x2="180" y2="180" marker-end="url(#ar)"/>
+          <line class="ln" x1="540" y1="156" x2="540" y2="180" marker-end="url(#ar)"/>
+          <path class="ln" d="M180,240 V256 Q180,264 188,264 H352 Q360,264 360,272 V280" marker-end="url(#ar)"/>
+          <path class="ln" d="M540,240 V256 Q540,264 532,264 H368 Q360,264 360,272"/>
+          <line class="ln-acc" x1="360" y1="324" x2="360" y2="348" marker-end="url(#ar-acc)"/>
+          <line class="ln-dash" x1="448" y1="304" x2="500" y2="304" marker-end="url(#ar)"/>
+          <!-- labels -->
+          <text class="t-label" x="168" y="104" text-anchor="end">SPF 路徑</text>
+          <text class="t-label" x="552" y="104">DKIM 路徑</text>
+          <text class="t-label" x="190" y="173">是</text>
+          <text class="t-label" x="550" y="173">是</text>
+          <text class="t-label" x="190" y="256">是</text>
+          <text class="t-label" x="550" y="256">是</text>
+          <text class="t-label" x="508" y="308">兩條都不成立 → DMARC 失敗</text>
+          <!-- nodes -->
+          <rect class="n-ext" x="260" y="16" width="200" height="48" rx="6"/>
+          <text class="t-name" x="360" y="37" text-anchor="middle">信紙署名（From）</text>
+          <text class="t-mono" x="360" y="54" text-anchor="middle">header.from</text>
+          <rect class="n-node" x="80" y="112" width="200" height="44" rx="6"/>
+          <text class="t-name" x="180" y="139" text-anchor="middle">SPF 通過了嗎？</text>
+          <rect class="n-node" x="440" y="112" width="200" height="44" rx="6"/>
+          <text class="t-name" x="540" y="139" text-anchor="middle">DKIM 通過了嗎？</text>
+          <rect class="n-node" x="80" y="184" width="200" height="56" rx="6"/>
+          <text class="t-name" x="180" y="207" text-anchor="middle">信封網域 = 署名網域？</text>
+          <text class="t-mono" x="180" y="225" text-anchor="middle">smtp.mailfrom</text>
+          <rect class="n-node" x="440" y="184" width="200" height="56" rx="6"/>
+          <text class="t-name" x="540" y="207" text-anchor="middle">d= 網域 = 署名網域？</text>
+          <text class="t-mono" x="540" y="225" text-anchor="middle">header.d</text>
+          <rect class="n-ext" x="272" y="284" width="176" height="40" rx="6"/>
+          <text class="t-name" x="360" y="309" text-anchor="middle">任一條成立</text>
+          <rect class="n-focal" x="260" y="352" width="200" height="40" rx="6"/>
+          <text class="t-name" x="360" y="377" text-anchor="middle">DMARC 通過</text>
+        </svg>
+      </div>
+      <figcaption>每條路徑都要過兩關：先驗證通過，再確認通過的網域就是署名網域。</figcaption>
+    </figure>
+
+    <p><strong>為什麼需要對齊？</strong>詐騙者可以用自己的網域讓 SPF 通過，再把署名寫成「某銀行」。沒有對齊要求，SPF 通過就證明不了什麼。</p>
+
+    <p><strong>對齊的嚴格程度</strong>（由 <code>aspf</code>、<code>adkim</code> 設定）：</p>
+    <ul>
+      <li>寬鬆（relaxed，預設）：同一主網域即可，<code>bounce.twnic.tw</code> 可對齊 <code>twnic.tw</code></li>
+      <li>嚴格（strict）：必須完全相同，子網域也不行</li>
+    </ul>
+
+    <p><strong>DMARC 政策（<code>p=</code>）</strong>：驗證失敗時，網域主人希望收件端怎麼處理</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>設定</th><th>處理方式</th></tr></thead>
+        <tbody>
+          <tr><td><code>p=none</code></td><td>不處理，只回報（觀察期）</td></tr>
+          <tr><td><code>p=quarantine</code></td><td>放進垃圾郵件匣</td></tr>
+          <tr><td><code>p=reject</code></td><td>直接拒收</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure>
+      <div class="fig-head"><p class="eyebrow">Fig 06</p><span class="fig-title">DMARC 政策的三個階梯</span></div>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 720 200" role="img" aria-labelledby="f6t">
+          <title id="f6t">DMARC 政策由寬到嚴：p=none 不處理只回報，p=quarantine 放進垃圾郵件匣，p=reject 直接拒收；TWNIC 目前在 p=none</title>
+          <rect class="bg" width="720" height="200"/>
+          <line class="ln" x1="40" y1="24" x2="672" y2="24" marker-end="url(#ar)"/>
+          <rect class="mask" x="300" y="16" width="120" height="16"/>
+          <text class="t-label" x="360" y="28" text-anchor="middle">越往右越嚴格</text>
+          <line class="ln-rule" x1="24" y1="180" x2="696" y2="180"/>
+          <rect class="n-focal" x="40" y="116" width="200" height="64" rx="6"/>
+          <text class="t-val" x="56" y="142">p=none</text>
+          <text class="t-label" x="56" y="164">不處理，只回報</text>
+          <circle class="dot-acc" cx="56" cy="96" r="4"/>
+          <text class="t-label t-acc" x="68" y="100">TWNIC 目前在這裡</text>
+          <rect class="n-node" x="260" y="84" width="200" height="96" rx="6"/>
+          <text class="t-val" x="276" y="110">p=quarantine</text>
+          <text class="t-label" x="276" y="132">放進垃圾郵件匣</text>
+          <rect class="n-node" x="480" y="52" width="200" height="128" rx="6"/>
+          <text class="t-val" x="496" y="78">p=reject</text>
+          <text class="t-label" x="496" y="100">直接拒收</text>
+          <text class="t-label t-soft" x="496" y="160">真正擋下冒名信</text>
+        </svg>
+      </div>
+    </figure>
+
+    <p><code>p=none</code> 並非沒有作用：收件端仍會把驗證結果回報給網域主人，讓網域主人在收緊政策前，先找出哪些正當信件還沒設定好。</p>
+  </section>
+
+  <!-- ============ 五 ============ -->
+  <section id="s5">
+    <h2><span class="num">05</span>案例分析：問題出在哪裡？</h2>
+    <p>TWNIC 這封信的狀況：</p>
+    <ul>
+      <li>署名（From）：<code>twnic.tw</code></li>
+      <li>信封（MAIL FROM）：<code>ascrm.newermail.com</code>（代寄平台的網域）</li>
+    </ul>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>檢查</th><th>結果</th><th>原因</th></tr></thead>
+        <tbody>
+          <tr><td>SPF</td><td><span class="pill">pass</span></td><td>伺服器確實有授權，但授權它的是代寄平台，不是 TWNIC</td></tr>
+          <tr><td>DKIM</td><td><span class="pill none">none</span></td><td>信上沒有任何簽章</td></tr>
+          <tr><td>DMARC</td><td><span class="pill fail">fail</span></td><td>SPF 通過的網域不是 <code>twnic.tw</code>，又沒有 DKIM，兩條路都無法對齊</td></tr>
+          <tr><td>compauth</td><td><span class="pill fail">fail</span></td><td>微軟自己的綜合判定，同樣失敗</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure>
+      <div class="fig-head"><p class="eyebrow">Fig 07</p><span class="fig-title">把本案代入 DMARC 判斷邏輯</span></div>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 720 420" role="img" aria-labelledby="f7t">
+          <title id="f7t">本案的 DMARC 判斷：SPF 通過但信封網域 ascrm.newermail.com 不等於 twnic.tw；DKIM 沒有簽章；兩條路徑都不成立，DMARC 失敗</title>
+          <rect class="bg" width="720" height="420"/>
+          <!-- connectors -->
+          <path class="ln" d="M360,64 V80 Q360,88 352,88 H188 Q180,88 180,96 V108" marker-end="url(#ar)"/>
+          <path class="ln" d="M360,80 Q360,88 368,88 H532 Q540,88 540,96 V108" marker-end="url(#ar)"/>
+          <line class="ln" x1="180" y1="168" x2="180" y2="188" marker-end="url(#ar)"/>
+          <line class="ln-faint" x1="540" y1="168" x2="540" y2="188"/>
+          <path class="ln" d="M180,248 V264 Q180,272 188,272 H352 Q360,272 360,280 V284" marker-end="url(#ar)"/>
+          <path class="ln-faint" d="M540,248 V264 Q540,272 532,272 H368"/>
+          <line class="ln" x1="360" y1="328" x2="360" y2="352" marker-end="url(#ar)"/>
+          <!-- labels -->
+          <text class="t-label" x="168" y="104" text-anchor="end">SPF 路徑</text>
+          <text class="t-label" x="552" y="104">DKIM 路徑</text>
+          <!-- nodes -->
+          <rect class="n-ext" x="260" y="16" width="200" height="48" rx="6"/>
+          <text class="t-name" x="360" y="37" text-anchor="middle">署名 From</text>
+          <text class="t-mono" x="360" y="54" text-anchor="middle">header.from=twnic.tw</text>
+          <rect class="n-node" x="60" y="112" width="240" height="56" rx="6"/>
+          <text class="t-name" x="180" y="135" text-anchor="middle">SPF：pass</text>
+          <text class="t-label" x="180" y="154" text-anchor="middle">伺服器有授權（代寄平台的）</text>
+          <rect class="n-focal" x="420" y="112" width="240" height="56" rx="6"/>
+          <text class="t-name" x="540" y="135" text-anchor="middle">DKIM：none</text>
+          <text class="t-label t-acc" x="540" y="154" text-anchor="middle">斷點 ② 信上沒有任何簽章</text>
+          <rect class="n-focal" x="60" y="192" width="240" height="56" rx="6"/>
+          <text class="t-name" x="180" y="215" text-anchor="middle">斷點 ① 信封網域 ≠ 署名網域</text>
+          <text class="t-mono t-acc" x="180" y="234" text-anchor="middle">ascrm.newermail.com ≠ twnic.tw</text>
+          <rect class="n-opt" x="420" y="192" width="240" height="56" rx="6"/>
+          <text class="t-name" x="540" y="215" text-anchor="middle" style="fill:var(--soft)">無法比對</text>
+          <text class="t-label" x="540" y="234" text-anchor="middle">沒有簽章，就沒有 d= 網域</text>
+          <rect class="n-ext" x="264" y="288" width="192" height="40" rx="6"/>
+          <text class="t-name" x="360" y="313" text-anchor="middle">兩條都不成立</text>
+          <rect class="n-node" x="240" y="356" width="240" height="52" rx="6"/>
+          <text class="t-name" x="360" y="378" text-anchor="middle">DMARC：fail</text>
+          <text class="t-mono" x="360" y="396" text-anchor="middle">compauth=fail · reason=001</text>
+        </svg>
+      </div>
+      <figcaption>兩個斷點：SPF 路徑卡在「網域不一致」，DKIM 路徑則根本沒有開始。</figcaption>
+    </figure>
+
+    <div class="note key"><span class="tag">最反直覺</span><p>TWNIC 其實已經在自己的 SPF 名單裡授權了這個代寄平台，但完全沒用。因為 SPF 只看信封網域，而信封寫的是代寄平台的網域，收件端根本不會去查 TWNIC 的名單。</p></div>
+
+    <figure>
+      <div class="fig-head"><p class="eyebrow">Fig 08</p><span class="fig-title">TWNIC 的授權存在，只是沒有人去查</span></div>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 720 264" role="img" aria-labelledby="f8t">
+          <title id="f8t">上方是 TWNIC 自己的 SPF 授權鏈，透過 include 一路授權到代寄平台的 IP 範圍，但收件端沒有查這條；下方是收件端實際檢查的路徑：信封網域 ascrm.newermail.com 的 SPF，結果 pass</title>
+          <rect class="bg" width="720" height="264"/>
+          <!-- top chain (not consulted) -->
+          <text class="t-label" x="24" y="28">TWNIC 自己的 SPF 授權鏈（確實列出了代寄平台）</text>
+          <line class="ln-faint" x1="176" y1="66" x2="196" y2="66" marker-end="url(#ar)"/>
+          <line class="ln-faint" x1="352" y1="66" x2="372" y2="66" marker-end="url(#ar)"/>
+          <line class="ln-faint" x1="528" y1="66" x2="548" y2="66" marker-end="url(#ar)"/>
+          <rect class="n-opt" x="24" y="44" width="152" height="44" rx="6"/>
+          <text class="t-mono" x="100" y="70" text-anchor="middle">twnic.tw</text>
+          <rect class="n-opt" x="200" y="44" width="152" height="44" rx="6"/>
+          <text class="t-mono" x="276" y="70" text-anchor="middle">_spfv42.twnic.tw</text>
+          <rect class="n-opt" x="376" y="44" width="152" height="44" rx="6"/>
+          <text class="t-mono" x="452" y="70" text-anchor="middle">spf.neweredm.com</text>
+          <rect class="n-opt" x="552" y="44" width="144" height="44" rx="6"/>
+          <text class="t-mono" x="624" y="70" text-anchor="middle">218.32.93.0/24</text>
+          <text class="t-mono t-soft" x="188" y="104" text-anchor="middle">include</text>
+          <text class="t-mono t-soft" x="364" y="104" text-anchor="middle">include</text>
+          <text class="t-mono t-soft" x="540" y="104" text-anchor="middle">covers</text>
+          <!-- divider note -->
+          <line class="ln-rule" x1="24" y1="132" x2="696" y2="132"/>
+          <rect class="mask" x="196" y="122" width="328" height="20"/>
+          <text class="t-label t-acc" x="360" y="137" text-anchor="middle">SPF 只看信封網域，上面這條鏈不會被查</text>
+          <!-- bottom chain (actually consulted) -->
+          <text class="t-label" x="24" y="172">收件端實際檢查的路徑</text>
+          <line class="ln" x1="224" y1="212" x2="256" y2="212" marker-end="url(#ar)"/>
+          <line class="ln" x1="460" y1="212" x2="492" y2="212" marker-end="url(#ar)"/>
+          <rect class="n-node" x="24" y="184" width="200" height="56" rx="6"/>
+          <text class="t-label" x="124" y="206" text-anchor="middle">信封網域</text>
+          <text class="t-val" x="124" y="226" text-anchor="middle">ascrm.newermail.com</text>
+          <rect class="n-node" x="260" y="184" width="200" height="56" rx="6"/>
+          <text class="t-name" x="360" y="217" text-anchor="middle">查這個網域的 SPF 名單</text>
+          <rect class="n-focal" x="496" y="184" width="200" height="56" rx="6"/>
+          <text class="t-name" x="596" y="206" text-anchor="middle">IP 在名單上 → pass</text>
+          <text class="t-mono" x="596" y="226" text-anchor="middle">218.32.93.136</text>
+        </svg>
+      </div>
+      <figcaption>SPF 確實通過了，但通過的是代寄平台的網域。這張「通過證明」無法對齊 <code>twnic.tw</code>，所以在 DMARC 那一關派不上用場。</figcaption>
+    </figure>
+
+    <h3>那為什麼信還是進了收件匣？</h3>
+    <ol>
+      <li>TWNIC 的 DMARC 政策是 <code>p=none</code>，等於告訴收件端「失敗也不用處理」。</li>
+      <li>垃圾郵件過濾器判定內容正常（標頭中的 <code>SFV:NSPM</code>）。</li>
+    </ol>
+
+    <figure>
+      <div class="fig-head"><p class="eyebrow">Fig 09</p><span class="fig-title">兩套獨立的檢查，各自放行</span></div>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 720 240" role="img" aria-labelledby="f9t">
+          <title id="f9t">信件同時經過身分驗證與垃圾郵件過濾兩套獨立檢查：身分驗證失敗但政策為不處置，垃圾郵件過濾判定非垃圾，最後進入收件匣並顯示警示</title>
+          <rect class="bg" width="720" height="240"/>
+          <!-- connectors -->
+          <path class="ln" d="M136,120 H160 Q168,120 168,112 V68 Q168,60 176,60 H196" marker-end="url(#ar)"/>
+          <path class="ln" d="M160,120 Q168,120 168,128 V172 Q168,180 176,180 H196" marker-end="url(#ar)"/>
+          <path class="ln" d="M448,60 H480 Q488,60 488,68 V96 Q488,104 496,104 H524" marker-end="url(#ar)"/>
+          <path class="ln" d="M448,180 H480 Q488,180 488,172 V144 Q488,136 496,136 H524" marker-end="url(#ar)"/>
+          <!-- nodes -->
+          <rect class="n-ext" x="24" y="92" width="112" height="56" rx="6"/>
+          <text class="t-name" x="80" y="125" text-anchor="middle">這封信</text>
+          <rect class="n-node" x="200" y="24" width="248" height="72" rx="6"/>
+          <text class="t-name" x="216" y="46">身分驗證（DMARC）</text>
+          <text class="t-mono" x="216" y="64">dmarc=fail · p=none</text>
+          <text class="t-label" x="216" y="84">失敗，但政策是不處置</text>
+          <rect class="n-node" x="200" y="144" width="248" height="72" rx="6"/>
+          <text class="t-name" x="216" y="166">垃圾郵件過濾</text>
+          <text class="t-mono" x="216" y="184">SFV:NSPM</text>
+          <text class="t-label" x="216" y="204">判定為非垃圾郵件</text>
+          <rect class="n-focal" x="528" y="88" width="168" height="64" rx="6"/>
+          <text class="t-name" x="612" y="114" text-anchor="middle">收件匣 + 警示</text>
+          <text class="t-label" x="612" y="134" text-anchor="middle">無法替寄件者背書</text>
+        </svg>
+      </div>
+    </figure>
+
+    <p class="pull">身分驗證和垃圾郵件判定是兩套獨立的檢查。Outlook 的警示意思是「我無法替這個寄件者背書」，不是「這封信一定是詐騙」。</p>
+  </section>
+
+  <!-- ============ 六 ============ -->
+  <section id="s6">
+    <h2><span class="num">06</span>正確解法（寄件端該做的事）</h2>
+    <ol class="steps">
+      <li><div><strong>設定自訂 DKIM（最推薦）</strong><br>讓代寄平台以 <code>d=twnic.tw</code> 簽章，並在 DNS 加上對應的公鑰紀錄。效果穩定，轉寄也不受影響。</div></li>
+      <li><div><strong>設定自訂 MAIL FROM</strong><br>讓信封地址改用自己的子網域（如 <code>bounce.twnic.tw</code>），並<strong>替該子網域另外設定 SPF</strong>，因為 SPF 不會自動套用到子網域。前提是對齊模式為寬鬆。</div></li>
+      <li><div><strong>確認後逐步收緊政策</strong><br>測試信顯示 <code>dmarc=pass</code> 後，再把政策從 <code>none</code> → <code>quarantine</code> → <code>reject</code>，才能真正阻擋冒名信。</div></li>
+    </ol>
+
+    <figure>
+      <div class="fig-head"><p class="eyebrow">Fig 10</p><span class="fig-title">修正前後對照</span></div>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 720 312" role="img" aria-labelledby="f10t">
+          <title id="f10t">修正前後對照：DKIM 從沒有簽章改為 d=twnic.tw；信封網域從 ascrm.newermail.com 改為 bounce.twnic.tw；DMARC 結果從 fail 變成 pass；政策從 p=none 逐步收緊到 reject</title>
+          <rect class="bg" width="720" height="312"/>
+          <text class="t-label" x="200" y="32">現在</text>
+          <text class="t-label" x="476" y="32">修正後</text>
+          <line class="ln-rule" x1="24" y1="44" x2="696" y2="44"/>
+          <!-- row labels -->
+          <text class="t-name" x="24" y="85">DKIM 簽章</text>
+          <text class="t-name" x="24" y="149">信封網域</text>
+          <text class="t-name" x="24" y="213">DMARC 結果</text>
+          <text class="t-name" x="24" y="277">DMARC 政策</text>
+          <!-- arrows -->
+          <line class="ln-acc" x1="420" y1="80" x2="468" y2="80" marker-end="url(#ar-acc)"/>
+          <line class="ln" x1="420" y1="144" x2="468" y2="144" marker-end="url(#ar)"/>
+          <line class="ln" x1="420" y1="208" x2="468" y2="208" marker-end="url(#ar)"/>
+          <line class="ln" x1="420" y1="272" x2="468" y2="272" marker-end="url(#ar)"/>
+          <!-- before -->
+          <rect class="n-ext" x="200" y="56" width="220" height="48" rx="6"/>
+          <text class="t-val" x="216" y="85" style="fill:var(--soft)">none（沒有蓋章）</text>
+          <rect class="n-ext" x="200" y="120" width="220" height="48" rx="6"/>
+          <text class="t-val" x="216" y="149" style="fill:var(--soft)">ascrm.newermail.com</text>
+          <rect class="n-ext" x="200" y="184" width="220" height="48" rx="6"/>
+          <text class="t-val" x="216" y="213" style="fill:var(--soft)">fail</text>
+          <rect class="n-ext" x="200" y="248" width="220" height="48" rx="6"/>
+          <text class="t-val" x="216" y="277" style="fill:var(--soft)">p=none</text>
+          <!-- after -->
+          <rect class="n-focal" x="476" y="56" width="220" height="48" rx="6"/>
+          <text class="t-val" x="492" y="76">d=twnic.tw</text>
+          <text class="t-label t-acc" x="492" y="94">做法 1 · 最推薦</text>
+          <rect class="n-node" x="476" y="120" width="220" height="48" rx="6"/>
+          <text class="t-val" x="492" y="140">bounce.twnic.tw</text>
+          <text class="t-label" x="492" y="158">做法 2 · 子網域需另設 SPF</text>
+          <rect class="n-node" x="476" y="184" width="220" height="48" rx="6"/>
+          <text class="t-val" x="492" y="204">pass</text>
+          <text class="t-label" x="492" y="222">任一做法完成即可對齊</text>
+          <rect class="n-node" x="476" y="248" width="220" height="48" rx="6"/>
+          <text class="t-val" x="492" y="268">quarantine → reject</text>
+          <text class="t-label" x="492" y="286">確認 pass 後逐步收緊</text>
+        </svg>
+      </div>
+    </figure>
+
+    <div class="note"><span class="tag">常見錯誤</span><p>信封地址仍是代寄平台的網域時，怎麼修改自己的 SPF 都沒有用。</p></div>
+  </section>
+
+  <!-- ============ 七 ============ -->
+  <section id="s7">
+    <h2><span class="num">07</span>常見誤解</h2>
+
+    <h3>誤解 1：驗證通過就代表安全</h3>
+    <p>三道檢查只能證明「信確實來自它署名的網域」，不能證明那個網域是好人。</p>
+    <p>詐騙者可以註冊相似網域，例如 <code>twnlc.tw</code>（i 換成 l）或 <code>twnic-tw.com</code>，再替假網域設好全部驗證，信件就會顯示全部通過。</p>
+
+    <div class="lookalike" aria-label="相似網域對照">
+      <span class="d"><span>twnic.tw</span><small>真的</small></span>
+      <span class="d fake"><span>twn<mark>l</mark>c.tw</span><small>i 換成 l</small></span>
+      <span class="d fake"><span>twnic<mark>-tw.com</mark></span><small>多了連字號，結尾也不同</small></span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>情況</th><th>代表什麼</th></tr></thead>
+        <tbody>
+          <tr><td>驗證失敗</td><td>可能是冒名，也可能只是對方設定不完整</td></tr>
+          <tr><td>驗證通過</td><td>信確實來自該網域，但仍要確認網域名稱本身是否正確</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure>
+      <div class="fig-head"><p class="eyebrow">Fig 11</p><span class="fig-title">驗證結果 × 網域真假：四種情況</span></div>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 720 360" role="img" aria-labelledby="f11t">
+          <title id="f11t">四象限：網域正確且驗證通過是正常信件；網域正確但驗證失敗是設定不完整，本案屬於此格；相似假網域且驗證通過最危險；相似假網域且驗證失敗是粗糙的冒名信</title>
+          <rect class="bg" width="720" height="360"/>
+          <rect class="n-focal" x="400" y="24" width="280" height="140" rx="0"/>
+          <rect fill="none" class="ln-rule" x="120" y="24" width="560" height="280"/>
+          <line class="ln-rule" x1="400" y1="24" x2="400" y2="304"/>
+          <line class="ln-rule" x1="120" y1="164" x2="680" y2="164"/>
+          <!-- axis labels -->
+          <text class="t-label" x="108" y="98" text-anchor="end">驗證通過</text>
+          <text class="t-label" x="108" y="238" text-anchor="end">驗證失敗</text>
+          <text class="t-label" x="260" y="328" text-anchor="middle">網域正確</text>
+          <text class="t-label" x="540" y="328" text-anchor="middle">相似的假網域</text>
+          <text class="t-eye" x="400" y="352" text-anchor="middle">DOMAIN</text>
+          <!-- cells -->
+          <text class="t-name" x="260" y="90" text-anchor="middle">正常信件</text>
+          <text class="t-label" x="260" y="110" text-anchor="middle">可信度最高</text>
+          <text class="t-name t-acc" x="540" y="90" text-anchor="middle">最危險</text>
+          <text class="t-label" x="540" y="110" text-anchor="middle">相似網域詐騙，信箱不會警告</text>
+          <text class="t-name" x="260" y="230" text-anchor="middle">設定不完整</text>
+          <text class="t-label" x="260" y="250" text-anchor="middle">信箱會警示，但信可能是真的</text>
+          <circle class="dot-ink" cx="216" cy="276" r="4"/>
+          <text class="t-label" x="226" y="280" style="fill:var(--ink)">TWNIC 本案</text>
+          <text class="t-name" x="540" y="230" text-anchor="middle">粗糙的冒名信</text>
+          <text class="t-label" x="540" y="250" text-anchor="middle">通常會被警示或攔截</text>
+        </svg>
+      </div>
+      <figcaption>右上角最需要提防：所有驗證都通過、信箱也不警告，唯一的破綻是網域名稱本身。</figcaption>
+    </figure>
+
+    <div class="note key"><span class="tag">習慣</span><p><strong>點開寄件者，看完整的 Email 地址。</strong>顯示名稱可以隨便寫，<code>@</code> 後面的網域才是重點。</p></div>
+
+    <h3>誤解 2：驗證失敗就代表內容是假的</h3>
+    <p>寄件來源與內容真偽要分開判斷。本案中信件驗證失敗，但 PHP 漏洞是真的。</p>
+    <div class="note"><span class="tag">做法</span><p>要採取行動時，到官方網站確認，不要點信中的連結。</p></div>
+  </section>
+
+  <!-- ============ 八 ============ -->
+  <section id="s8">
+    <h2><span class="num">08</span>為什麼這件事越來越重要</h2>
+    <ul>
+      <li><strong>Google 和 Yahoo</strong> 自 2024 年起要求大量寄信者（每天寄給該信箱服務約 5,000 封以上）設定 SPF、DKIM 和 DMARC，否則信件可能被退回或歸入垃圾郵件。</li>
+      <li><strong>Microsoft（Outlook.com）</strong>於 2025 年跟進類似要求。</li>
+    </ul>
+
+    <figure>
+      <div class="fig-head"><p class="eyebrow">Fig 12</p><span class="fig-title">大型信箱服務收緊規則的時間線</span></div>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 720 176" role="img" aria-labelledby="f12t">
+          <title id="f12t">時間線：2024 年 Google 與 Yahoo 要求大量寄信者設定三項驗證；2025 年 Microsoft Outlook.com 跟進；2026 年 10 月 TWNIC 通知信被標示未驗證</title>
+          <rect class="bg" width="720" height="176"/>
+          <line class="ln-rule" x1="40" y1="72" x2="680" y2="72"/>
+          <text class="t-val" x="160" y="52" text-anchor="middle">2024</text>
+          <text class="t-val" x="400" y="52" text-anchor="middle">2025</text>
+          <text class="t-val t-acc" x="600" y="52" text-anchor="middle">2026.10</text>
+          <circle class="dot-ink" cx="160" cy="72" r="5"/>
+          <circle class="dot-ink" cx="400" cy="72" r="5"/>
+          <circle class="dot-acc" cx="600" cy="72" r="6"/>
+          <text class="t-name" x="160" y="104" text-anchor="middle">Google、Yahoo</text>
+          <text class="t-label" x="160" y="124" text-anchor="middle">大量寄信者須設定三項驗證</text>
+          <text class="t-name" x="400" y="104" text-anchor="middle">Microsoft</text>
+          <text class="t-label" x="400" y="124" text-anchor="middle">Outlook.com 跟進</text>
+          <text class="t-name" x="600" y="104" text-anchor="middle">本案</text>
+          <text class="t-label" x="600" y="124" text-anchor="middle">TWNIC 通知信</text>
+          <text class="t-label" x="600" y="142" text-anchor="middle">被標示無法驗證</text>
+        </svg>
+      </div>
+    </figure>
+
+    <p class="pull">今天只是出現警示，未來設定不完整的信件可能直接收不到。</p>
+  </section>
+
+  <!-- ============ 九 ============ -->
+  <section id="s9">
+    <h2><span class="num">09</span>動手練習：自己看驗證結果</h2>
+    <p><strong>Gmail 操作方式：</strong></p>
+    <ol>
+      <li>打開任一封信</li>
+      <li>點右上角「⋮」→「顯示原始郵件」</li>
+      <li>頁面上方的表格會列出 SPF、DKIM、DMARC 是 PASS 或 FAIL</li>
+    </ol>
+    <p><strong>建議找三種信比較：</strong>銀行或大型企業的正式通知、小商店的電子報、垃圾郵件匣裡的信。</p>
+    <p><strong>進階：在原始標頭中搜尋 <code>Authentication-Results</code></strong>，重點看：</p>
+    <ul>
+      <li><code>smtp.mailfrom=</code>：SPF 檢查的信封網域</li>
+      <li><code>header.d=</code>：DKIM 簽章的網域</li>
+      <li>兩者是否和署名的網域一致</li>
+    </ul>
+
+    <figure>
+      <div class="fig-head"><p class="eyebrow">Fig 13</p><span class="fig-title">在標頭裡找這三個值</span></div>
+<pre class="header-demo">Authentication-Results: spf=pass (sender IP is 218.32.93.136)
+  <span class="hl">smtp.mailfrom=ascrm.newermail.com</span><sup>①</sup>; dkim=none (message not signed)
+  <span class="hl">header.d=none</span><sup>②</sup>; dmarc=fail action=none
+  <span class="hl-acc">header.from=twnic.tw</span><sup>③</sup>; compauth=fail reason=001</pre>
+      <ul class="header-key">
+        <li><span class="k">①</span><span>SPF 檢查的信封網域</span></li>
+        <li><span class="k">②</span><span>DKIM 簽章的網域（本案沒有簽章）</span></li>
+        <li><span class="k">③</span><span>署名網域：拿 ① 和 ② 跟它比，只要有一個相同（且該項驗證通過），DMARC 就會通過</span></li>
+      </ul>
+      <figcaption>依原文的分析結果整理的簡化示意，實際標頭較長、欄位順序也可能不同。</figcaption>
+    </figure>
+
+    <p><strong>如果你有自己的網域或負責公司電子報：</strong><br>
+    寄一封信到自己的 Gmail 檢查。若 DKIM 的 <code>d=</code> 不是你的網域，到電子報平台後台找「網域驗證」或「Domain Authentication」設定，依指示新增 DNS 紀錄即可。</p>
+  </section>
+
+  <!-- ============ 十 ============ -->
+  <section id="s10">
+    <h2><span class="num">10</span>值得學的排查思路</h2>
+    <p>作者處理這封信的方式，適用於任何「看起來怪怪的」資訊：</p>
+    <ol class="steps">
+      <li><div><strong>不急著下結論</strong>：不直接認定是釣魚信或 SPF 壞了</div></li>
+      <li><div><strong>找第一手證據</strong>：看原始標頭，而不是只看畫面</div></li>
+      <li><div><strong>一層層追問</strong>：SPF 通過了 → 通過的是哪個網域？→ 為什麼是那個網域？</div></li>
+      <li><div><strong>把問題拆開</strong>：來源是否可信、內容是否為真，分開判斷</div></li>
+      <li><div><strong>用獨立管道查證</strong>：到官方網站確認，不依賴信中資訊</div></li>
+    </ol>
+  </section>
+
+  <!-- ============ 附錄 ============ -->
+  <section id="appendix">
+    <h2><span class="num">A</span>附錄 A：標頭用語速查</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>用語</th><th>意思</th></tr></thead>
+        <tbody>
+          <tr><td><code>pass</code> / <code>fail</code> / <code>none</code></td><td>通過／失敗／沒有該項資料</td></tr>
+          <tr><td><code>Authentication-Results</code></td><td>標頭中記錄驗證結果的欄位</td></tr>
+          <tr><td><code>compauth</code></td><td>微軟的綜合驗證判定</td></tr>
+          <tr><td><code>reason=001</code></td><td>compauth 失敗原因，大意是寄件網域的防護設定太弱</td></tr>
+          <tr><td><code>action=none</code></td><td>DMARC 失敗後未採取處置（因為政策是 <code>p=none</code>）</td></tr>
+          <tr><td><code>SFV:NSPM</code></td><td>微軟垃圾郵件過濾判定：非垃圾郵件</td></tr>
+          <tr><td>RFC</td><td>網路技術的官方規格文件，數字是編號（如 SPF 為 RFC 7208）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 style="margin-top:48px"><span class="num">B</span>附錄 B：通知信內容（PHP 漏洞）相關用語</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>用語</th><th>意思</th></tr></thead>
+        <tbody>
+          <tr><td>PHP</td><td>常用來架設網站的程式語言</td></tr>
+          <tr><td>漏洞</td><td>程式中可被攻擊者利用的安全缺陷</td></tr>
+          <tr><td>CVE</td><td>全球統一的漏洞編號</td></tr>
+          <tr><td>CVSS</td><td>漏洞嚴重度分數，滿分 10；本案 9.2 屬非常嚴重</td></tr>
+          <tr><td>遠端程式碼執行</td><td>攻擊者透過網路就能讓伺服器執行任意指令，屬最危險的類型</td></tr>
+          <tr><td>PHP-FPM、mod_php、php-cgi</td><td>網站伺服器執行 PHP 的不同方式</td></tr>
+          <tr><td>重啟</td><td>更新後重新啟動服務，新版本才會生效</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 style="margin-top:48px"><span class="num">C</span>附錄 C：縮寫對照表</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>縮寫</th><th>英文全稱</th><th>中文</th></tr></thead>
+        <tbody>
+          <tr><td>SPF</td><td>Sender Policy Framework</td><td>寄件者政策框架</td></tr>
+          <tr><td>DKIM</td><td>DomainKeys Identified Mail</td><td>網域金鑰識別郵件</td></tr>
+          <tr><td>DMARC</td><td>Domain-based Message Authentication, Reporting and Conformance</td><td>以網域為基礎的郵件驗證、回報與一致性</td></tr>
+          <tr><td>DNS</td><td>Domain Name System</td><td>網域名稱系統</td></tr>
+          <tr><td>IP</td><td>Internet Protocol</td><td>網際網路協定</td></tr>
+          <tr><td>SMTP</td><td>Simple Mail Transfer Protocol</td><td>簡單郵件傳輸協定</td></tr>
+          <tr><td>RFC</td><td>Request for Comments</td><td>徵求意見稿</td></tr>
+          <tr><td>CVE</td><td>Common Vulnerabilities and Exposures</td><td>通用漏洞披露</td></tr>
+          <tr><td>CVSS</td><td>Common Vulnerability Scoring System</td><td>通用漏洞評分系統</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ 總結 ============ -->
+  <section id="summary">
+    <h2><span class="num">✦</span>總結：知識架構</h2>
+
+    <figure>
+      <div class="fig-head"><p class="eyebrow">Fig 14</p><span class="fig-title">Email 寄件者驗證的知識地圖</span></div>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 720 344" role="img" aria-labelledby="f14t">
+          <title id="f14t">知識架構樹：Email 寄件者驗證包含兩個寄件人、SPF、DKIM、DMARC 及其政策，以及兩條判讀原則</title>
+          <rect class="bg" width="720" height="344"/>
+          <!-- trunk -->
+          <line class="ln" x1="176" y1="172" x2="208" y2="172"/>
+          <line class="ln" x1="208" y1="44" x2="208" y2="296"/>
+          <line class="ln" x1="208" y1="44" x2="244" y2="44" marker-end="url(#ar)"/>
+          <line class="ln" x1="208" y1="104" x2="244" y2="104" marker-end="url(#ar)"/>
+          <line class="ln" x1="208" y1="164" x2="244" y2="164" marker-end="url(#ar)"/>
+          <line class="ln" x1="208" y1="228" x2="244" y2="228" marker-end="url(#ar)"/>
+          <line class="ln" x1="208" y1="296" x2="244" y2="296" marker-end="url(#ar)"/>
+          <!-- root -->
+          <rect class="n-ext" x="24" y="144" width="152" height="56" rx="6"/>
+          <text class="t-name" x="100" y="168" text-anchor="middle">Email</text>
+          <text class="t-name" x="100" y="186" text-anchor="middle">寄件者驗證</text>
+          <!-- branches -->
+          <rect class="n-node" x="248" y="20" width="448" height="48" rx="6"/>
+          <text class="t-name" x="264" y="49">兩個寄件人</text>
+          <text class="t-label" x="368" y="49">信封（MAIL FROM）vs 署名（From）</text>
+          <rect class="n-node" x="248" y="80" width="448" height="48" rx="6"/>
+          <text class="t-name" x="264" y="109">SPF</text>
+          <text class="t-label" x="368" y="109">驗證寄信伺服器，看信封網域</text>
+          <rect class="n-node" x="248" y="140" width="448" height="48" rx="6"/>
+          <text class="t-name" x="264" y="169">DKIM</text>
+          <text class="t-label" x="368" y="169">驗證數位簽章，看 d= 網域</text>
+          <rect class="n-focal" x="248" y="200" width="448" height="56" rx="6"/>
+          <text class="t-name" x="264" y="233">DMARC</text>
+          <text class="t-label" x="368" y="222" style="fill:var(--ink)">要求其中一項與署名「對齊」</text>
+          <text class="t-mono" x="368" y="242">政策：none → quarantine → reject</text>
+          <rect class="n-node" x="248" y="268" width="448" height="56" rx="6"/>
+          <text class="t-name" x="264" y="301">判讀原則</text>
+          <text class="t-label" x="368" y="290">身分驗證 ≠ 垃圾郵件判定 ≠ 內容真假</text>
+          <text class="t-label" x="368" y="310">驗證通過 ≠ 安全，仍要看清網域名稱</text>
+        </svg>
+      </div>
+    </figure>
+
+    <p class="closing">一句話記住：SPF 和 DKIM 證明「是誰寄的」，DMARC 確認<em>「寄的人就是署名的人」</em>。</p>
+
+    <h3>延伸學習順序</h3>
+    <ol class="steps">
+      <li><div>實際檢查幾封信的驗證結果</div></li>
+      <li><div>了解網域與 DNS 的運作</div></li>
+      <li><div>延伸到網路釣魚手法、HTTPS 與網站憑證（概念與 DKIM 的公鑰、私鑰相近）</div></li>
+    </ol>
+  </section>
+
+  <footer>
+    依保哥〈從 TWNIC 資安通知信看 DMARC 網域對齊問題〉整理的學習筆記。圖解風格參考 diagram-design。
+  </footer>
+</main>
+<script>
+(() => {
+  'use strict';
+  const root = document.getElementById('guide-video');
+  if (!root) return;
+  const canvas = document.getElementById('vg-canvas');
+  const stage = document.getElementById('vg-stage');
+  const ctx = canvas.getContext('2d');
+  const mcanvas = document.createElement('canvas');
+  const mctx = mcanvas.getContext('2d');
+
+  /* ================= drawing kit ================= */
+  const W = 720, M = 48;
+  const FAM = {
+    sans: "Geist, 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif",
+    serif: "'Instrument Serif', 'Noto Serif TC', 'Songti TC', serif",
+    mono: "'Geist Mono', ui-monospace, Menlo, Consolas, monospace"
+  };
+  let g = ctx;
+  const C = {};
+  let measuring = null;
+  let debug = null; // array for overflow reports
+  let curScene = '';
+
+  function readColors() {
+    const s = getComputedStyle(document.documentElement);
+    ['paper', 'paper-2', 'node', 'ink', 'muted', 'soft', 'rule', 'rule-solid', 'accent', 'accent-tint', 'ext', 'ext-stroke', 'store', 'opt-stroke']
+      .forEach(k => { C[k] = s.getPropertyValue('--' + k).trim() || '#888'; });
+  }
+  const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+  const P = (t, a, b) => clamp((t - a) / (b - a));
+  const eo = x => 1 - Math.pow(1 - x, 3);
+  const eio = x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+  const eb = x => { const c1 = 1.70158, c3 = c1 + 1; return x <= 0 ? 0 : 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+  const lerp = (a, b, p) => a + (b - a) * p;
+  function flash(t, t0, n = 3, per = 0.26) {
+    if (t < t0) return 0;
+    const k = (t - t0) / per;
+    if (k >= n) return 0;
+    return (k % 1) < 0.55 ? 1 : 0;
+  }
+  const font = o => `${o.w || 500} ${o.size || 26}px ${FAM[o.f || 'sans']}`;
+
+  function tokens(str) { return str.match(/[A-Za-z0-9.=:\/_\-@,'+~…|]+|\s+|./gu) || []; }
+  function wrapLines(str, maxW) {
+    const out = [];
+    for (const para of str.split('\n')) {
+      let line = '';
+      for (const tk of tokens(para)) {
+        const test = line + tk;
+        if (line && g.measureText(test).width > maxW && !/^\s+$/.test(tk)) {
+          if (/^[，。、：；）」』！？]$/.test(tk)) { line = test; continue; }
+          out.push(line.trimEnd());
+          line = tk.trimStart();
+        } else line = test;
+      }
+      out.push(line.trimEnd());
+    }
+    return out;
+  }
+  function T(str, x, y, o = {}) {
+    const size = o.size || 26;
+    g.save();
+    g.font = font(o);
+    g.fillStyle = o.c || C.ink;
+    g.globalAlpha *= (o.alpha ?? 1);
+    g.textAlign = o.a || 'left';
+    g.textBaseline = 'alphabetic';
+    const lines = o.maxW ? wrapLines(str, o.maxW) : str.split('\n');
+    const lh = size * (o.lh || 1.45);
+    lines.forEach((l, i) => {
+      g.fillText(l, x, y + i * lh);
+      if (debug && !o.noCheck) {
+        const w = g.measureText(l).width;
+        const left = o.a === 'center' ? x - w / 2 : o.a === 'right' ? x - w : x;
+        const m = g.getTransform();
+        if (m.a > 0.999 && m.a < 1.001 && Math.abs(m.e) < 0.5 && (left < 20 || left + w > W - 20)) debug.push(`${curScene}: 「${l}」 x ${Math.round(left)}–${Math.round(left + w)}`);
+      }
+    });
+    g.restore();
+    if (measuring) { measuring.chars += str.replace(/\s/g, '').length; measuring.text[o.f || 'sans'] += str; }
+    return lines.length * lh;
+  }
+  function textW(str, o = {}) { g.save(); g.font = font(o); const w = g.measureText(str).width; g.restore(); return w; }
+  function rr(x, y, w, h, r) {
+    g.beginPath();
+    if (g.roundRect) g.roundRect(x, y, w, h, r);
+    else { g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+  }
+  function R(x, y, w, h, o = {}) {
+    if (w <= 0 || h <= 0) return;
+    g.save();
+    g.globalAlpha *= (o.alpha ?? 1);
+    rr(x, y, w, h, o.r ?? 8);
+    if (o.fill) { g.fillStyle = o.fill; g.fill(); }
+    if (o.stroke) { g.strokeStyle = o.stroke; g.lineWidth = o.lw || 2; if (o.dash) g.setLineDash(o.dash); g.stroke(); }
+    g.restore();
+  }
+  const KIND = {
+    node: () => ({ fill: C.node, stroke: C.ink, lw: 1.6 }),
+    ext: () => ({ fill: C.ext, stroke: C['ext-stroke'], lw: 1.4 }),
+    store: () => ({ fill: C.store, stroke: C.muted, lw: 1.4 }),
+    focal: () => ({ fill: C['accent-tint'], stroke: C.accent, lw: 2 }),
+    opt: () => ({ fill: C.ext, stroke: C['opt-stroke'], lw: 1.4, dash: [6, 5] }),
+    hot: () => ({ fill: C.accent, stroke: C.accent, lw: 2 })
+  };
+  function box(x, y, w, h, kind = 'node', o = {}) {
+    const k = KIND[kind]();
+    g.save();
+    g.globalAlpha *= (o.alpha ?? 1);
+    if (o.scale != null && o.scale !== 1) {
+      const cx = x + w / 2, cy = y + h / 2;
+      g.translate(cx, cy); g.scale(o.scale, o.scale); g.translate(-cx, -cy);
+    }
+    R(x, y, w, h, { ...k, r: o.r ?? 8 });
+    g.restore();
+  }
+  function polyLen(pts) { let L = 0; for (let i = 1; i < pts.length; i++) L += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); return L; }
+  function polyAt(pts, p) {
+    const L = polyLen(pts) * clamp(p);
+    let acc = 0;
+    for (let i = 1; i < pts.length; i++) {
+      const dx = pts[i][0] - pts[i - 1][0], dy = pts[i][1] - pts[i - 1][1];
+      const s = Math.hypot(dx, dy);
+      if (acc + s >= L && s > 0) { const k = (L - acc) / s; return [pts[i - 1][0] + dx * k, pts[i - 1][1] + dy * k, Math.atan2(dy, dx)]; }
+      acc += s;
+    }
+    const n = pts.length;
+    return [pts[n - 1][0], pts[n - 1][1], Math.atan2(pts[n - 1][1] - pts[n - 2][1], pts[n - 1][0] - pts[n - 2][0])];
+  }
+  function arrowHead(x, y, a, c) {
+    g.save(); g.translate(x, y); g.rotate(a); g.fillStyle = c;
+    g.beginPath(); g.moveTo(1, 0); g.lineTo(-11, -6); g.lineTo(-11, 6); g.closePath(); g.fill(); g.restore();
+  }
+  function line(pts, p = 1, o = {}) {
+    if (p <= 0) return;
+    const c = o.c || C.muted;
+    g.save();
+    g.globalAlpha *= (o.alpha ?? 1);
+    g.strokeStyle = c; g.lineWidth = o.lw || 2; g.lineJoin = 'round'; g.lineCap = 'round';
+    if (o.dash) g.setLineDash(o.dash);
+    const L = polyLen(pts) * clamp(p);
+    let acc = 0;
+    g.beginPath(); g.moveTo(pts[0][0], pts[0][1]);
+    for (let i = 1; i < pts.length; i++) {
+      const dx = pts[i][0] - pts[i - 1][0], dy = pts[i][1] - pts[i - 1][1];
+      const s = Math.hypot(dx, dy);
+      if (acc + s >= L) { const k = s ? (L - acc) / s : 0; g.lineTo(pts[i - 1][0] + dx * k, pts[i - 1][1] + dy * k); break; }
+      g.lineTo(pts[i][0], pts[i][1]); acc += s;
+    }
+    g.stroke();
+    g.setLineDash([]);
+    if (o.arrow && p >= 0.999) { const [x, y, a] = polyAt(pts, 1); arrowHead(x, y, a, c); }
+    g.restore();
+  }
+  function dot(pts, p, o = {}) {
+    if (p <= 0 || p >= 1) return;
+    const c = o.c || C.accent, r = o.r || 7;
+    for (let i = 7; i >= 1; i--) {
+      const [x, y] = polyAt(pts, clamp(p - i * 0.02));
+      g.save(); g.globalAlpha *= (1 - i / 8) * 0.5; g.fillStyle = c;
+      g.beginPath(); g.arc(x, y, r * (1 - i / 10), 0, Math.PI * 2); g.fill(); g.restore();
+    }
+    const [x, y] = polyAt(pts, p);
+    g.save(); g.globalAlpha *= 0.16; g.fillStyle = c; g.beginPath(); g.arc(x, y, r * 2.8, 0, Math.PI * 2); g.fill(); g.restore();
+    g.save(); g.fillStyle = c; g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill(); g.restore();
+  }
+  function circle(x, y, r, o = {}) {
+    g.save(); g.globalAlpha *= (o.alpha ?? 1);
+    g.beginPath(); g.arc(x, y, Math.max(0, r), 0, Math.PI * 2);
+    if (o.fill) { g.fillStyle = o.fill; g.fill(); }
+    if (o.stroke) { g.strokeStyle = o.stroke; g.lineWidth = o.lw || 2; g.stroke(); }
+    g.restore();
+  }
+  function check(x, y, s, p, c) { if (p > 0) line([[x - s * 0.5, y], [x - s * 0.15, y + s * 0.35], [x + s * 0.55, y - s * 0.42]], eo(p), { c: c || C.ink, lw: 4 }); }
+  function cross(x, y, s, p, c) {
+    if (p <= 0) return;
+    line([[x - s * 0.42, y - s * 0.42], [x + s * 0.42, y + s * 0.42]], P(p, 0, 0.5), { c: c || C.accent, lw: 4 });
+    line([[x + s * 0.42, y - s * 0.42], [x - s * 0.42, y + s * 0.42]], P(p, 0.5, 1), { c: c || C.accent, lw: 4 });
+  }
+  function ring(x, y, t, t0, o = {}) {
+    if (t < t0) return;
+    const k = ((t - t0) % (o.period || 1.4)) / (o.period || 1.4);
+    circle(x, y, (o.r0 || 10) + k * (o.grow || 40), { stroke: o.c || C.accent, lw: 2, alpha: (1 - k) * 0.7 });
+  }
+  function chip(str, x, y, o = {}) {
+    const size = o.size || 22, f = o.f || 'mono', wt = o.w || 500;
+    const tw = textW(str, { f, size, w: wt });
+    const w = o.width || tw + (o.pad || 16) * 2 + (o.extra || 0);
+    const h = o.h || 44;
+    const ax = o.a === 'center' ? x - w / 2 : o.a === 'right' ? x - w : x;
+    g.save();
+    g.globalAlpha *= (o.alpha ?? 1);
+    const sc = o.scale ?? 1;
+    if (sc !== 1) { g.translate(ax + w / 2, y + h / 2); g.scale(sc, sc); g.translate(-(ax + w / 2), -(y + h / 2)); }
+    if (o.rot) { g.translate(ax + w / 2, y + h / 2); g.rotate(o.rot); g.translate(-(ax + w / 2), -(y + h / 2)); }
+    R(ax, y, w, h, { fill: o.fill || C.node, stroke: o.stroke || C.ink, lw: o.lw || 1.6, r: o.r ?? 8, dash: o.dash });
+    T(str, ax + (o.extra ? (w - o.extra) / 2 : w / 2), y + h / 2 + size * 0.36, { f, size, w: wt, c: o.c || C.ink, a: 'center', noCheck: sc !== 1 || !!o.rot });
+    g.restore();
+    return { x: ax, w, h };
+  }
+  function clipReveal(x, y, w, h, p, fn) { if (p <= 0) return; g.save(); g.beginPath(); g.rect(x, y, w * p, h); g.clip(); fn(); g.restore(); }
+  function header(num, title, t) {
+    T(num, M, 72, { f: 'mono', size: 20, w: 600, c: C.accent, alpha: eo(P(t, 0, 0.4)) });
+    clipReveal(M - 6, 80, W - 2 * M + 12, 64, eo(P(t, 0.05, 0.8)), () => T(title, M, 124, { f: 'serif', size: 40, w: 400 }));
+    const p = eo(P(t, 0.2, 1.0));
+    line([[M, 146], [M + (W - 2 * M) * p, 146]], 1, { c: C['rule-solid'], lw: 1 });
+  }
+  function caption(str, t, t0, o = {}) {
+    const a = eo(P(t, t0, t0 + 0.6));
+    if (a <= 0) return;
+    const y = o.y || 620, size = o.size || 25;
+    g.save(); g.globalAlpha *= a; g.translate(0, (1 - a) * 12);
+    if (!measuring && !debug) { /* no-op */ }
+    const x = o.key ? M + 20 : M;
+    const h = T(str, x, y, { size, w: o.w || 500, c: o.c || C.ink, maxW: W - M - x, lh: 1.5, noCheck: false });
+    if (o.key) R(M, y - size * 1.05, 4, h - size * 0.25, { fill: C.accent, r: 2 });
+    g.restore();
+  }
+  function envelope(x, y, w, h, o = {}) {
+    g.save(); g.globalAlpha *= (o.alpha ?? 1);
+    R(x, y, w, h, { fill: C.node, stroke: o.c || C.ink, lw: o.lw || 2, r: 6 });
+    g.strokeStyle = o.c || C.ink; g.lineWidth = (o.lw || 2) * 0.8; g.lineJoin = 'round';
+    g.beginPath(); g.moveTo(x + 2, y + 2); g.lineTo(x + w / 2, y + h * 0.56); g.lineTo(x + w - 2, y + 2); g.stroke();
+    g.restore();
+  }
+  function letter(x, y, w, h, o = {}) {
+    g.save(); g.globalAlpha *= (o.alpha ?? 1);
+    R(x, y, w, h, { fill: C.node, stroke: C.ink, lw: 1.8, r: 4 });
+    const top = o.top ?? 34;
+    const ws = [0.86, 0.66, 0.8, 0.54, 0.74, 0.62];
+    for (let i = 0; i < (o.n ?? 4); i++) R(x + 16, y + top + i * 20, (w - 32) * ws[i % ws.length], 4, { fill: C['rule-solid'], r: 2 });
+    g.restore();
+  }
+  function numBadge(n, x, y, o = {}) {
+    circle(x, y, o.r || 13, { fill: o.fill || C.paper, stroke: o.c || C.accent, lw: 1.8, alpha: o.alpha });
+    T(String(n), x, y + 6, { f: 'mono', size: 17, w: 600, c: o.c || C.accent, a: 'center', alpha: o.alpha, noCheck: true });
+  }
+  function particles(x, y, t, t0, o = {}) {
+    const q = P(t, t0, t0 + 0.7);
+    if (q <= 0 || q >= 1) return;
+    for (let i = 0; i < 12; i++) {
+      const a = i * 0.523 + 0.2, d = (o.d || 70) * eo(q) * (0.6 + (i % 3) * 0.2);
+      circle(x + Math.cos(a) * d, y + Math.sin(a) * d, 3.5 * (1 - q), { fill: o.c || C.accent, alpha: 1 - q });
+    }
+  }
+  function backdrop(T0) {
+    g.fillStyle = C.paper; g.fillRect(0, 0, W, W);
+    const off = (T0 * 6) % 36;
+    g.save(); g.fillStyle = C.rule; g.globalAlpha = 0.9;
+    for (let x = -36 + off; x < W + 36; x += 36) for (let y = 18; y < W; y += 36) { g.beginPath(); g.arc(x, y, 1.3, 0, Math.PI * 2); g.fill(); }
+    g.restore();
+  }
+
+  /* ================= scenes ================= */
+  const S = [];
+
+  // 0 · intro
+  S.push({ ch: '導言', build: 4.6, cues: [[1.55, 'fail'], [2.6, 'pop']], draw(t) {
+    const p = eo(P(t, 0.15, 1.45));
+    const ex = lerp(-200, 270, p), ey = 170;
+    if (p > 0 && p < 1) for (let i = 0; i < 4; i++) line([[ex - 30 - i * 26, ey + 30 + i * 18], [ex - 30 - i * 26 - 60 * (1 - p), ey + 30 + i * 18]], 1, { c: C['rule-solid'], lw: 2, alpha: 1 - p });
+    envelope(ex, ey, 180, 112, { lw: 2.4 });
+    if (t > 1.55) {
+      const s = eb(P(t, 1.55, 1.95)), f = flash(t, 1.55, 4, 0.24);
+      chip('無法驗證寄件者', 360, 92, { f: 'sans', size: 24, w: 600, a: 'center', scale: s, fill: f ? C.accent : C['accent-tint'], stroke: C.accent, c: f ? C.paper : C.accent, h: 48 });
+      ring(360, 116, t, 2.5, { r0: 30, grow: 70, period: 1.8 });
+    }
+    clipReveal(40, 330, 640, 80, eo(P(t, 2.4, 3.3)), () => T('Email 寄件者驗證', 360, 390, { f: 'serif', size: 60, a: 'center' }));
+    T('從 Outlook 的一個警告，看懂 SPF、DKIM、DMARC', 360, 440, { size: 24, c: C.muted, a: 'center', maxW: 580, alpha: eo(P(t, 3.1, 3.7)) });
+    T('TWNIC 資安通知信 · 2026.10', 360, 516, { f: 'mono', size: 19, c: C.soft, a: 'center', alpha: eo(P(t, 3.5, 4.1)) });
+  } });
+
+  // 1 · 案例摘要
+  S.push({ ch: '01 案例摘要', build: 5.6, cues: [[1.5, 'pop'], [2.05, 'ok'], [2.85, 'ok'], [3.65, 'fail']], draw(t) {
+    header('01', '案例摘要', t);
+    const ta = eo(P(t, 0.2, 0.6));
+    line([[520, 186], [520, 266], [660, 266], [660, 186]], ta, { c: C.ink, lw: 2 });
+    T('收件匣', 590, 296, { size: 20, c: C.muted, a: 'center', alpha: ta });
+    const p = eio(P(t, 0.4, 1.4));
+    const ex = lerp(60, 540, p);
+    envelope(ex, 196, 100, 62, { alpha: eo(P(t, 0.3, 0.6)) });
+    T('TWNIC 資安提醒信', ex + 50, 186, { size: 19, c: C.muted, a: 'center', alpha: eo(P(t, 0.3, 0.6)) * (1 - P(t, 1.3, 1.6)) });
+    if (t > 1.5) { const s = eb(P(t, 1.5, 1.85)); circle(650, 196, 15 * s, { fill: C.accent }); T('!', 650, 203, { size: 20, w: 600, c: C.paper, a: 'center', alpha: P(t, 1.6, 1.8), noCheck: true }); }
+    const rows = [['信很可能是 TWNIC 委託寄出的', 'ok', 1.9], ['內容（PHP 漏洞）也是正確的', 'ok', 2.7], ['但寄件設定少了一步', 'fail', 3.5]];
+    rows.forEach(([s, k, t0], i) => {
+      const y = 370 + i * 66, a = eo(P(t, t0, t0 + 0.4));
+      if (a <= 0) return;
+      if (k === 'ok') check(76, y - 9, 26, P(t, t0 + 0.1, t0 + 0.5));
+      else cross(76, y - 9, 26, P(t, t0 + 0.1, t0 + 0.5));
+      const f = k === 'fail' && flash(t, t0 + 0.15, 3);
+      T(s, 112, y, { size: 28, w: 600, c: k === 'fail' ? C.accent : C.ink, alpha: a * (f ? 0.35 : 1) });
+    });
+    caption('「驗證失敗」不一定是詐騙，\n可能只是寄件端設定不完整。', t, 4.4, { key: true, y: 600, size: 27, w: 600 });
+  } });
+
+  // 2 · 基礎名詞
+  S.push({ ch: '02 基礎名詞', build: 6.2, cues: [[1.3, 'pop'], [2.0, 'pop'], [3.0, 'tick'], [3.35, 'tick'], [3.7, 'tick']], draw(t) {
+    header('02', '基礎名詞：網路世界的零件', t);
+    const a1 = eo(P(t, 0.2, 0.6));
+    chip('twnic.tw', M, 176, { width: 200, alpha: a1, size: 22, w: 600 });
+    T('網域：招牌名稱', 148, 254, { size: 20, c: C.muted, a: 'center', alpha: a1 });
+    const a2 = eo(P(t, 0.5, 0.9));
+    box(290, 176, 140, 44, 'store', { alpha: a2 });
+    T('DNS', 360, 206, { size: 22, w: 600, a: 'center', alpha: a2 });
+    T('電話簿 + 公告欄', 360, 254, { size: 20, c: C.muted, a: 'center', alpha: a2 });
+    const l1 = [[248, 198], [288, 198]], l2 = [[432, 198], [470, 198]];
+    line(l1, P(t, 0.8, 1.3), { arrow: true }); dot(l1, P(t, 0.8, 1.3));
+    line(l2, P(t, 1.5, 2.0), { arrow: true }); dot(l2, P(t, 1.5, 2.0));
+    if (t > 2.0) {
+      const ip = '218.32.93.136';
+      let s = '';
+      for (let i = 0; i < ip.length; i++) {
+        const settle = 2.0 + i * 0.05;
+        s += (/\d/.test(ip[i]) && t < settle + 0.25) ? String(Math.floor((t * 41 + i * 7) % 10)) : ip[i];
+      }
+      chip(s, 472, 176, { width: 200, size: 21, w: 600, scale: eb(P(t, 2.0, 2.35)) });
+      T('IP：門牌號碼', 572, 254, { size: 20, c: C.muted, a: 'center', alpha: eo(P(t, 2.2, 2.6)) });
+    }
+    const ab = eo(P(t, 2.5, 2.9));
+    box(96, 290, 528, 194, 'store', { alpha: ab });
+    T('twnic.tw 這一頁的公告', 116, 324, { size: 21, w: 600, alpha: ab });
+    [['SPF 授權名單', 'v=spf1 include:…'], ['DKIM 公鑰', 'selector._domainkey'], ['DMARC 規定', 'p=none']].forEach(([k, v], i) => {
+      const t0 = 2.9 + i * 0.35, q = P(t, t0, t0 + 0.4);
+      if (q <= 0) return;
+      const y = 340 + i * 46 - (1 - eb(q)) * 24;
+      g.save(); g.globalAlpha *= eo(q);
+      R(116, y, 488, 38, { fill: C.node, stroke: C['rule-solid'], lw: 1, r: 4 });
+      T(k, 132, y + 26, { size: 20, w: 600 });
+      T(v, 588, y + 26, { f: 'mono', size: 18, c: C.muted, a: 'right' });
+      g.restore();
+    });
+    const as = eo(P(t, 4.1, 4.5));
+    box(M, 516, 180, 50, 'node', { alpha: as }); T('郵件伺服器', 138, 548, { size: 20, w: 600, a: 'center', alpha: as });
+    box(492, 516, 180, 50, 'node', { alpha: as }); T('郵件伺服器', 582, 548, { size: 20, w: 600, a: 'center', alpha: as });
+    line([[232, 541], [488, 541]], P(t, 4.2, 4.6), { c: C['rule-solid'] });
+    T('SMTP：交接規則', 360, 528, { size: 19, c: C.muted, a: 'center', alpha: as });
+    if (t > 4.6) { const q = ((t - 4.6) % 2.2) / 2.2; const x = q < 0.5 ? lerp(236, 456, eio(q * 2)) : lerp(456, 236, eio((q - 0.5) * 2)); envelope(x, 547, 32, 20, { lw: 1.5 }); }
+    caption('只有網域主人能修改自己那一頁的公告。', t, 4.8, { y: 636, size: 24 });
+  } });
+
+  // 3 · 兩個寄件人
+  S.push({ ch: '03 兩個寄件人', build: 5.6, cues: [[1.1, 'whoosh'], [3.5, 'pop']], draw(t) {
+    header('03', '一封 Email 有兩個寄件人', t);
+    const lp = eio(P(t, 1.1, 2.0));
+    const lx = lerp(110, 412, lp), ly = lerp(200, 170, lp);
+    const drawLetter = () => {
+      g.save(); g.translate(lx + 130, ly + 150); g.rotate((1 - lp) * -0.06); g.translate(-(lx + 130), -(ly + 150));
+      letter(lx, ly, 260, 300, { top: 120, n: 5, alpha: P(t, 0.9, 1.1) });
+      if (lp >= 1) {
+        const a = eo(P(t, 2.7, 3.1));
+        T('信紙 From', lx + 20, ly + 44, { size: 21, c: C.muted, alpha: a });
+        T('twnic.tw', lx + 20, ly + 82, { f: 'mono', size: 25, w: 600, alpha: a });
+        T('你在信箱看到的', lx + 240, ly + 284, { size: 19, c: C.soft, a: 'right', alpha: a });
+      }
+      g.restore();
+    };
+    const drawEnv = () => clipReveal(M - 4, 180, 310, 210, eo(P(t, 0.15, 0.9)), () => envelope(M, 186, 300, 190, { lw: 2.4 }));
+    if (lp < 0.45) { drawLetter(); drawEnv(); } else { drawEnv(); drawLetter(); }
+    const ea = eo(P(t, 2.1, 2.5));
+    T('信封 MAIL FROM', 198, 326, { size: 21, c: C.muted, a: 'center', alpha: ea });
+    T('ascrm.newermail.com', 198, 356, { f: 'mono', size: 21, w: 600, a: 'center', alpha: ea });
+    T('伺服器看這個 · 退信寄回這裡', 198, 412, { size: 19, c: C.soft, a: 'center', alpha: ea });
+    if (t > 3.5) {
+      const s = eb(P(t, 3.5, 3.9)) * (1 + 0.05 * Math.sin((t - 3.5) * 5));
+      g.save(); g.translate(380, 290); g.scale(s, s);
+      T('≠', 0, 18, { f: 'serif', size: 60, c: C.accent, a: 'center', noCheck: true });
+      g.restore();
+    }
+    caption('兩者可以不同：委託代寄平台時，信封常是平台自己的網域。', t, 4.3, { y: 540, size: 25 });
+  } });
+
+  // 4 · SPF
+  S.push({ ch: '04 SPF', build: 6.4, cues: [[0.8, 'pop'], [2.0, 'pop'], [3.0, 'pop'], [4.3, 'ok']], draw(t) {
+    header('04 · 1', 'SPF：寄信伺服器有被授權嗎？', t);
+    const heads = [[M, '寄件伺服器', 'node'], [280, '收件伺服器', 'node'], [512, 'DNS', 'store']];
+    heads.forEach(([x, s, k], i) => { const a = eo(P(t, 0.2 + i * 0.15, 0.6 + i * 0.15)); box(x, 168, 160, 50, k, { alpha: a }); T(s, x + 80, 200, { size: 21, w: 600, a: 'center', alpha: a }); });
+    [128, 360, 592].forEach(x => line([[x, 220], [x, 404]], eo(P(t, 0.5, 1.1)), { c: C['rule-solid'], lw: 1.4, dash: [5, 5] }));
+    const m1 = [[132, 270], [354, 270]];
+    line(m1, P(t, 0.8, 1.5), { arrow: true }); dot(m1, P(t, 0.8, 1.5), { c: C.muted });
+    T('① 送信', 243, 258, { size: 20, c: C.muted, a: 'center', alpha: eo(P(t, 0.9, 1.3)) });
+    T('ascrm.newermail.com', 243, 298, { f: 'mono', size: 18, a: 'center', alpha: eo(P(t, 1.2, 1.6)) });
+    const m2 = [[366, 336], [586, 336]];
+    line(m2, P(t, 2.0, 2.7), { arrow: true, c: C.accent, lw: 2.6 }); dot(m2, P(t, 2.0, 2.7));
+    T('② 查「信封網域」的名單', 476, 322, { size: 20, w: 600, c: C.accent, a: 'center', alpha: eo(P(t, 2.0, 2.4)) });
+    const m3 = [[588, 390], [366, 390]];
+    line(m3, P(t, 3.0, 3.7), { arrow: true, dash: [6, 5] }); dot(m3, P(t, 3.0, 3.7), { c: C.muted });
+    T('③ 回傳授權 IP 名單', 478, 378, { size: 20, c: C.muted, a: 'center', alpha: eo(P(t, 3.0, 3.4)) });
+    if (t > 4.0) {
+      const s = eb(P(t, 4.0, 4.4));
+      box(210, 420, 300, 54, 'node', { scale: s });
+      T('④ IP 在名單上 → pass', 344, 455, { size: 21, w: 600, a: 'center', alpha: P(t, 4.1, 4.3) });
+      check(482, 446, 22, P(t, 4.3, 4.7));
+    }
+    caption('SPF 查的是「信封」上的網域，\n不是你在信箱看到的署名。', t, 5.0, { key: true, y: 560, size: 26, w: 600 });
+  } });
+
+  // 5 · DKIM
+  S.push({ ch: '04 DKIM', build: 6.2, cues: [[1.1, 'stamp'], [2.0, 'whoosh'], [4.4, 'ok']], draw(t) {
+    header('04 · 2', 'DKIM：信上有寄件者的印章嗎？', t);
+    const lp = eio(P(t, 2.0, 3.2));
+    const lx = lerp(M + 12, 476, lp), ly = 250;
+    letter(lx, ly, 180, 200, { top: 30, n: 4, alpha: eo(P(t, 0.2, 0.5)) });
+    if (t < 1.9) {
+      const d = P(t, 0.5, 1.1), up = P(t, 1.3, 1.8);
+      const sy = d < 1 ? lerp(160, 360, eo(d)) : lerp(360, 200, eo(up));
+      g.save(); g.globalAlpha *= eo(P(t, 0.4, 0.6)) * (1 - up);
+      R(lx + 82, sy - 50, 36, 50, { fill: C.ink, r: 4 });
+      R(lx + 64, sy, 72, 24, { fill: C.accent, r: 4 });
+      g.restore();
+    }
+    if (t > 1.1) {
+      const s = eb(P(t, 1.1, 1.4)), sx = lx + 100, sy2 = ly + 150;
+      const ok = P(t, 4.3, 4.7);
+      circle(sx, sy2, 28 * s, { fill: C['accent-tint'], stroke: C.accent, lw: 2.4 });
+      if (ok <= 0) T('d=', sx, sy2 + 7, { f: 'mono', size: 19, w: 600, c: C.accent, a: 'center', alpha: P(t, 1.2, 1.4), noCheck: true });
+      else check(sx, sy2 + 1, 22, ok, C.accent);
+    }
+    const ka = eo(P(t, 1.3, 1.7)) * (1 - P(t, 2.0, 2.4) * 0.5);
+    box(M, 500, 210, 52, 'ext', { alpha: ka });
+    T('私鑰：只在寄件端', M + 105, 533, { size: 20, w: 600, a: 'center', alpha: ka });
+    T('一路帶著印章，轉寄也不會掉', 300, 232, { size: 19, c: C.muted, a: 'center', alpha: eo(P(t, 2.3, 2.7)) * (1 - P(t, 3.4, 3.8)) });
+    const da = eo(P(t, 3.2, 3.6));
+    box(476, 168, 196, 52, 'store', { alpha: da });
+    T('DNS 上的公鑰', 574, 201, { size: 20, w: 600, a: 'center', alpha: da });
+    box(476, 482, 196, 52, 'node', { alpha: da });
+    T('收件端：驗章', 574, 515, { size: 20, w: 600, a: 'center', alpha: da });
+    const kp = [[574, 222], [574, 240], [656, 240], [656, 374]];
+    line(kp, P(t, 3.5, 4.2), { c: C.accent, dash: [5, 4] }); dot(kp, P(t, 3.5, 4.2));
+    caption('私鑰蓋章、公鑰驗章；印章上的 d= 寫著是哪個網域蓋的。', t, 5.0, { y: 610, size: 25 });
+  } });
+
+  // 6 · DMARC logic
+  S.push({ ch: '04 DMARC', build: 6.2, cues: [[1.9, 'tick'], [2.1, 'tick'], [2.5, 'tick'], [2.7, 'tick'], [3.4, 'ok']], draw(t) {
+    header('04 · 3', 'DMARC：要求「對齊」', t);
+    const L = eo(P(t, 0.3, 1.1));
+    line([[360, 218], [360, 236], [180, 236], [180, 254]], L);
+    line([[360, 236], [540, 236], [540, 254]], L);
+    line([[180, 306], [180, 334]], L); line([[540, 306], [540, 334]], L);
+    line([[180, 386], [180, 410], [360, 410], [360, 426]], L); line([[540, 386], [540, 410], [360, 410]], L);
+    line([[360, 478], [360, 498]], L);
+    const nodes = [[260, 168, '署名 From', 'ext', 0.2], [80, 254, 'SPF 通過？', 'node', 0.4], [440, 254, 'DKIM 通過？', 'node', 0.5], [80, 334, '信封網域 = 署名？', 'node', 0.6], [440, 334, 'd= 網域 = 署名？', 'node', 0.7], [260, 426, '任一條成立', 'ext', 0.8]];
+    nodes.forEach(([x, y, s, k, t0]) => { const a = eo(P(t, t0, t0 + 0.4)); box(x, y, 200, 52, k, { alpha: a }); T(s, x + 100, y + 33, { size: 21, w: 600, a: 'center', alpha: a }); });
+    T('SPF 路徑', 168, 230, { size: 19, c: C.muted, a: 'right', alpha: L });
+    T('DKIM 路徑', 552, 230, { size: 19, c: C.muted, alpha: L });
+    const sp = [[360, 220], [360, 236], [180, 236], [180, 410], [360, 410], [360, 498]];
+    const dp = [[360, 220], [360, 236], [540, 236], [540, 410], [360, 410], [360, 498]];
+    dot(sp, P(t, 1.3, 3.3)); dot(dp, P(t, 1.5, 3.3));
+    [[1.9, 304, 280], [2.5, 304, 360], [2.1, 664, 280], [2.7, 664, 360]].forEach(([t0, x, y]) => check(x, y, 16, P(t, t0, t0 + 0.3)));
+    const ra = t > 3.3;
+    box(260, 498, 200, 52, ra ? 'focal' : 'node', { alpha: eo(P(t, 0.9, 1.3)), scale: ra ? 1 + 0.08 * (1 - eo(P(t, 3.3, 3.7))) : 1 });
+    T('DMARC 通過', 360, 531, { size: 22, w: 600, a: 'center', c: ra ? C.accent : C.ink, alpha: eo(P(t, 0.9, 1.3)) });
+    if (ra) ring(360, 524, t, 3.3, { r0: 40, grow: 90, period: 1.6 });
+    caption('這個「一致」叫做對齊（Alignment）。\n寬鬆：子網域也算；嚴格：必須完全相同。', t, 4.0, { y: 604, size: 24 });
+  } });
+
+  // 7 · DMARC policy
+  S.push({ ch: '04 DMARC 政策', build: 5.4, cues: [[0.8, 'pop'], [1.2, 'pop'], [1.6, 'pop'], [2.4, 'pop']], draw(t) {
+    header('04 · 3', 'DMARC 政策：失敗時怎麼處理？', t);
+    const oa = eo(P(t, 0.2, 0.6));
+    box(M, 172, 180, 48, 'node', { alpha: oa });
+    T('網域主人', M + 90, 204, { size: 21, w: 600, a: 'center', alpha: oa });
+    line([[M, 560], [W - M, 560]], eo(P(t, 0.2, 0.8)), { c: C['rule-solid'], lw: 1.4 });
+    const bars = [[66, 110, 'p=none', '不處理，只回報', 'focal'], [270, 200, 'p=quarantine', '放進垃圾郵件匣', 'node'], [474, 290, 'p=reject', '直接拒收', 'node']];
+    bars.forEach(([x, h, k, d, kind], i) => {
+      const hh = h * eo(P(t, 0.4 + i * 0.4, 1.2 + i * 0.4));
+      if (hh < 1) return;
+      box(x, 560 - hh, 180, hh, kind, { r: 4 });
+      if (hh > 74) { T(k, x + 16, 560 - hh + 34, { f: 'mono', size: 21, w: 600 }); T(d, x + 16, 560 - hh + 64, { size: 19, c: C.muted }); }
+    });
+    T('越往右越嚴格 →', W - M, 240, { size: 19, c: C.soft, a: 'right', alpha: eo(P(t, 1.8, 2.2)) });
+    if (t > 2.4) {
+      const s = eb(P(t, 2.4, 2.8));
+      circle(100, 432, 8 * s, { fill: C.accent });
+      T('TWNIC 在這', 118, 439, { size: 19, w: 600, c: C.accent, alpha: P(t, 2.5, 2.8) });
+    }
+    if (t > 3.0) {
+      const path = [[100, 416], [100, 224]];
+      line(path, P(t, 3.0, 3.3), { c: C['rule-solid'], dash: [4, 5] });
+      for (let k = 0; k < 3; k++) {
+        const q = ((t - 3.0) / 1.8 + k / 3) % 1;
+        if (t - 3.0 < k * 0.6) continue;
+        const [x, y] = polyAt(path, q);
+        envelope(x - 13, y - 9, 26, 18, { lw: 1.4, c: C.muted, alpha: Math.sin(q * Math.PI) });
+      }
+      T('回報', 116, 330, { size: 19, c: C.muted, alpha: eo(P(t, 3.1, 3.5)) });
+    }
+    caption('p=none 不是沒用：失敗結果會回報給網域主人，方便在收緊前找出還沒設定好的信。', t, 4.2, { y: 610, size: 24 });
+  } });
+
+  // 8 · 案例分析
+  S.push({ ch: '05 案例分析', build: 6.4, cues: [[1.5, 'ok'], [2.0, 'fail'], [2.8, 'fail'], [3.5, 'boom']], draw(t) {
+    header('05', '案例分析：問題出在哪裡？', t);
+    const L = eo(P(t, 0.3, 1.0));
+    line([[360, 218], [360, 234], [180, 234], [180, 250]], L);
+    line([[360, 234], [540, 234], [540, 250]], L);
+    line([[180, 306], [180, 330]], L);
+    line([[540, 306], [540, 330]], L, { c: C['opt-stroke'], dash: [5, 5] });
+    line([[180, 402], [180, 420], [360, 420], [360, 434]], L);
+    line([[540, 402], [540, 420], [360, 420]], L, { c: C['opt-stroke'], dash: [5, 5] });
+    const ta = eo(P(t, 0.15, 0.5));
+    box(220, 166, 280, 52, 'ext', { alpha: ta }); T('署名 From：twnic.tw', 360, 199, { size: 21, w: 600, a: 'center', alpha: ta });
+    const a1 = eo(P(t, 0.4, 0.8));
+    box(60, 250, 240, 56, 'node', { alpha: a1 });
+    T('SPF：pass', 180, 274, { size: 21, w: 600, a: 'center', alpha: a1 });
+    T('有授權（代寄平台的）', 180, 297, { size: 17, c: C.muted, a: 'center', alpha: a1 });
+    check(276, 270, 16, P(t, 1.5, 1.8));
+    const f2 = flash(t, 2.0, 3), fail2 = t > 2.0;
+    box(60, 330, 240, 72, fail2 ? (f2 ? 'hot' : 'focal') : 'node', { alpha: eo(P(t, 0.5, 0.9)) });
+    const c2 = f2 ? C.paper : C.ink;
+    T('信封網域 ≠ 署名', 180, 356, { size: 21, w: 600, a: 'center', c: c2, alpha: eo(P(t, 0.5, 0.9)) });
+    T('ascrm.newermail.com', 180, 378, { f: 'mono', size: 16, a: 'center', c: f2 ? C.paper : (fail2 ? C.accent : C.muted), alpha: eo(P(t, 0.5, 0.9)) });
+    T('≠ twnic.tw', 180, 396, { f: 'mono', size: 16, a: 'center', c: f2 ? C.paper : (fail2 ? C.accent : C.muted), alpha: eo(P(t, 0.5, 0.9)) });
+    particles(180, 366, t, 2.0);
+    const f3 = flash(t, 2.8, 3), fail3 = t > 2.8;
+    box(420, 250, 240, 56, fail3 ? (f3 ? 'hot' : 'focal') : 'node', { alpha: eo(P(t, 0.5, 0.9)) });
+    T('DKIM：none', 540, 274, { size: 21, w: 600, a: 'center', c: f3 ? C.paper : C.ink, alpha: eo(P(t, 0.5, 0.9)) });
+    T('信上沒有任何簽章', 540, 297, { size: 17, a: 'center', c: f3 ? C.paper : (fail3 ? C.accent : C.muted), alpha: eo(P(t, 0.5, 0.9)) });
+    box(420, 330, 240, 72, 'opt', { alpha: eo(P(t, 0.6, 1.0)) });
+    T('無法比對', 540, 362, { size: 21, w: 600, a: 'center', c: C.soft, alpha: eo(P(t, 0.6, 1.0)) });
+    T('沒有簽章就沒有 d=', 540, 388, { size: 17, a: 'center', c: C.soft, alpha: eo(P(t, 0.6, 1.0)) });
+    const sp = [[360, 218], [360, 234], [180, 234], [180, 366]];
+    dot(sp, P(t, 1.0, 2.0));
+    const dp = [[360, 234], [540, 234], [540, 278]];
+    dot(dp, P(t, 2.3, 2.8));
+    if (t > 3.5) {
+      const s = lerp(1.35, 1, eo(P(t, 3.5, 3.85))), f = flash(t, 3.5, 4, 0.22);
+      box(220, 434, 280, 64, f ? 'hot' : 'node', { scale: s });
+      g.save(); g.translate(360, 466); g.scale(s, s); g.translate(-360, -466);
+      T('DMARC：fail', 360, 462, { size: 24, w: 600, a: 'center', c: f ? C.paper : C.accent, noCheck: s !== 1 });
+      T('compauth=fail · reason=001', 360, 486, { f: 'mono', size: 16, a: 'center', c: f ? C.paper : C.muted, noCheck: s !== 1 });
+      g.restore();
+    }
+    caption('兩條路都對不上：SPF 通過的是代寄平台的網域，又沒有 DKIM 印章，所以 DMARC 失敗。', t, 4.2, { y: 556, size: 24 });
+  } });
+
+  // 9 · 最反直覺
+  S.push({ ch: '05 最反直覺', build: 5.4, cues: [[1.8, 'pop'], [3.0, 'ok'], [3.4, 'stamp']], draw(t) {
+    header('05', '最反直覺：授權其實存在', t);
+    const dim = 1 - 0.55 * eo(P(t, 3.4, 3.8));
+    T('TWNIC 的 SPF 授權鏈', M, 186, { size: 19, w: 600, c: C.muted, alpha: eo(P(t, 0.2, 0.5)) });
+    ['twnic.tw', '_spfv42.twnic.tw', 'spf.neweredm.com', '218.32.93.0/24'].forEach((s, i) => {
+      const y = 200 + i * 64, a = eo(P(t, 0.3 + i * 0.3, 0.7 + i * 0.3)) * dim;
+      box(M, y, 280, 44, 'opt', { alpha: a });
+      T(s, M + 140, y + 29, { f: 'mono', size: 19, a: 'center', alpha: a });
+      if (i < 3) { line([[188, y + 44], [188, y + 64]], P(t, 0.6 + i * 0.3, 0.9 + i * 0.3), { c: C['opt-stroke'], alpha: dim }); T(i < 2 ? 'include' : 'covers', 200, y + 59, { f: 'mono', size: 15, c: C.soft, alpha: a }); }
+    });
+    T('收件端實際查的路徑', 392, 186, { size: 19, w: 600, c: C.muted, alpha: eo(P(t, 1.6, 1.9)) });
+    const rb = [[200, 64, 'n'], [292, 52, 'n'], [372, 64, 'f']];
+    const ra = [eo(P(t, 1.7, 2.0)), eo(P(t, 2.1, 2.4)), eo(P(t, 2.6, 2.9))];
+    box(392, 200, 280, 64, 'node', { alpha: ra[0] });
+    T('信封網域', 532, 224, { size: 17, c: C.muted, a: 'center', alpha: ra[0] });
+    T('ascrm.newermail.com', 532, 251, { f: 'mono', size: 19, w: 600, a: 'center', alpha: ra[0] });
+    box(392, 292, 280, 52, 'node', { alpha: ra[1] });
+    T('查它的 SPF 名單', 532, 325, { size: 20, w: 600, a: 'center', alpha: ra[1] });
+    box(392, 372, 280, 64, t > 3.0 ? 'focal' : 'node', { alpha: ra[2] });
+    T('IP 在名單上 → pass', 532, 398, { size: 20, w: 600, a: 'center', alpha: ra[2] });
+    T('218.32.93.136', 532, 424, { f: 'mono', size: 17, c: C.muted, a: 'center', alpha: ra[2] });
+    line([[532, 264], [532, 292]], P(t, 2.0, 2.2)); line([[532, 344], [532, 372]], P(t, 2.5, 2.7));
+    dot([[532, 210], [532, 420]], P(t, 2.0, 3.0));
+    if (t > 3.4) chip('收件端不會查這條', 188, 300, { f: 'sans', size: 23, w: 600, a: 'center', fill: C.paper, stroke: C.accent, c: C.accent, lw: 2.6, h: 50, rot: -0.07, scale: lerp(1.5, 1, eo(P(t, 3.4, 3.7))) });
+    caption('SPF 只看信封網域。信封寫的是代寄平台，TWNIC 名單上的授權就派不上用場。', t, 4.0, { y: 520, size: 25 });
+  } });
+
+  // 10 · 為何進收件匣
+  S.push({ ch: '05 為何仍進收件匣', build: 5.6, cues: [[1.5, 'fail'], [2.4, 'ok'], [3.6, 'pop']], draw(t) {
+    header('05', '為什麼信還是進了收件匣？', t);
+    envelope(M, 302, 96, 60, { alpha: eo(P(t, 0.2, 0.5)) });
+    const up = [[144, 332], [176, 332], [176, 250], [214, 250]], dn = [[176, 332], [176, 434], [214, 434]];
+    line(up, P(t, 0.4, 0.8), { arrow: true }); line(dn, P(t, 0.4, 0.8), { arrow: true });
+    dot(up, P(t, 0.6, 1.4)); dot(dn, P(t, 0.7, 1.5));
+    const ga = eo(P(t, 0.3, 0.7));
+    const f1 = flash(t, 1.5, 3);
+    box(216, 196, 284, 108, f1 ? 'hot' : 'node', { alpha: ga });
+    T('身分驗證 DMARC', 232, 228, { size: 21, w: 600, c: f1 ? C.paper : C.ink, alpha: ga });
+    T('dmarc=fail · p=none', 232, 258, { f: 'mono', size: 17, c: f1 ? C.paper : C.muted, alpha: ga });
+    if (t > 1.5) T(t < 2.3 ? 'fail' : '失敗，但政策是不處置', 232, 288, { size: 19, w: 600, c: f1 ? C.paper : C.accent, alpha: 1 });
+    box(216, 380, 284, 108, 'node', { alpha: ga });
+    T('垃圾郵件過濾', 232, 412, { size: 21, w: 600, alpha: ga });
+    T('SFV:NSPM', 232, 442, { f: 'mono', size: 17, c: C.muted, alpha: ga });
+    if (t > 2.3) { T('判定為非垃圾郵件', 232, 472, { size: 19, w: 600, alpha: eo(P(t, 2.3, 2.6)) }); check(470, 464, 18, P(t, 2.4, 2.7)); }
+    const o1 = [[500, 250], [528, 250], [528, 320], [550, 320]], o2 = [[500, 434], [528, 434], [528, 356], [550, 356]];
+    line(o1, P(t, 2.6, 3.0), { arrow: true }); line(o2, P(t, 2.6, 3.0), { arrow: true });
+    dot(o1, P(t, 2.7, 3.5)); dot(o2, P(t, 2.8, 3.5));
+    const ia = eo(P(t, 0.3, 0.7));
+    box(552, 296, 120, 84, t > 3.5 ? 'focal' : 'node', { alpha: ia });
+    T('收件匣', 612, 346, { size: 21, w: 600, a: 'center', alpha: ia });
+    if (t > 3.6) chip('警示', 612, 238, { f: 'sans', size: 20, w: 600, a: 'center', h: 40, fill: flash(t, 3.6, 3) ? C.accent : C['accent-tint'], stroke: C.accent, c: flash(t, 3.6, 3) ? C.paper : C.accent, scale: eb(P(t, 3.6, 3.9)) });
+    caption('身分驗證與垃圾郵件判定是兩套獨立檢查。警示代表「無法背書」，不等於一定是詐騙。', t, 4.1, { y: 560, size: 25 });
+  } });
+
+  // 11 · 正確解法
+  S.push({ ch: '06 正確解法', build: 6.4, cues: [[1.4, 'pop'], [2.6, 'pop'], [3.2, 'ok'], [4.0, 'tick'], [4.4, 'tick'], [4.8, 'pop']], draw(t) {
+    header('06', '正確解法：寄件端該做的事', t);
+    const row = (title, y, t0) => T(title, M, y, { size: 23, w: 600, alpha: eo(P(t, t0, t0 + 0.4)) });
+    const before = (s, x, y, t0, tStrike, f = 'mono') => {
+      const a = eo(P(t, t0, t0 + 0.4));
+      if (a <= 0) return null;
+      const c = chip(s, x, y, { f, size: 19, alpha: a * (t > tStrike ? 0.55 : 1), fill: C.ext, stroke: C['ext-stroke'], c: C.muted, h: 42 });
+      line([[c.x + 8, y + 21], [c.x + c.w - 8, y + 21]], P(t, tStrike, tStrike + 0.3), { c: C.accent, lw: 2.4 });
+      return c;
+    };
+    const after = (s, x, y, t0, focal) => {
+      if (t < t0) return;
+      chip(s, x, y, { size: 19, w: 600, h: 42, scale: eb(P(t, t0, t0 + 0.35)), fill: focal ? C['accent-tint'] : C.node, stroke: focal ? C.accent : C.ink, c: focal ? C.accent : C.ink });
+    };
+    row('① 自訂 DKIM（最推薦）', 194, 0.2);
+    const b1 = before('none：沒有印章', M, 210, 0.5, 1.0, 'sans');
+    if (b1) { line([[b1.x + b1.w + 10, 231], [b1.x + b1.w + 46, 231]], P(t, 1.1, 1.4), { arrow: true }); after('d=twnic.tw', b1.x + b1.w + 58, 210, 1.4, true); }
+    row('② 自訂 MAIL FROM', 304, 1.7);
+    const b2 = before('ascrm.newermail.com', M, 320, 2.0, 2.3);
+    if (b2) { line([[b2.x + b2.w + 10, 341], [b2.x + b2.w + 46, 341]], P(t, 2.3, 2.6), { arrow: true }); after('bounce.twnic.tw', b2.x + b2.w + 58, 320, 2.6); }
+    T('子網域要另外設定 SPF', M, 394, { size: 18, c: C.soft, alpha: eo(P(t, 2.7, 3.0)) });
+    const ba = eo(P(t, 0.3, 0.7));
+    box(552, 172, 120, 92, 'node', { alpha: ba });
+    T('DMARC', 612, 202, { f: 'mono', size: 17, c: C.muted, a: 'center', alpha: ba });
+    const fl = P(t, 3.0, 3.4), sy = Math.abs(Math.cos(fl * Math.PI));
+    g.save(); g.translate(612, 236); g.scale(1, Math.max(0.02, sy)); g.translate(-612, -236);
+    T(fl < 0.5 ? 'fail' : 'pass', 612, 246, { f: 'mono', size: 28, w: 600, c: fl < 0.5 ? C.accent : C.ink, a: 'center', alpha: ba, noCheck: true });
+    g.restore();
+    if (t > 3.2) ring(612, 218, t, 3.2, { r0: 40, grow: 40, period: 1.4, c: C.ink });
+    row('③ 確認後逐步收緊政策', 452, 3.6);
+    let x = M;
+    ['none', 'quarantine', 'reject'].forEach((s, i) => {
+      const t0 = 4.0 + i * 0.4;
+      if (t < 3.8) return;
+      const lit = t > t0, last = i === 2;
+      const c = chip(s, x, 470, { size: 19, w: 600, h: 42, alpha: eo(P(t, 3.8, 4.1)), fill: lit && last ? C['accent-tint'] : C.node, stroke: lit ? (last ? C.accent : C.ink) : C['rule-solid'], c: lit ? (last ? C.accent : C.ink) : C.soft });
+      if (i < 2) line([[c.x + c.w + 10, 491], [c.x + c.w + 42, 491]], P(t, t0, t0 + 0.3), { arrow: true });
+      x = c.x + c.w + 54;
+    });
+    caption('常見錯誤：信封還是代寄平台的網域時，怎麼改自己的 SPF 都沒用。', t, 5.4, { key: true, y: 584, size: 25, w: 600 });
+  } });
+
+  // 12 · 誤解 1
+  S.push({ ch: '07 常見誤解 1', build: 6.0, cues: [[1.2, 'whoosh'], [3.0, 'tick'], [3.3, 'tick'], [3.6, 'tick'], [4.2, 'fail']], draw(t) {
+    header('07', '誤解 1：驗證通過就代表安全？', t);
+    const s = 'twnic.tw', sz = 60;
+    const cw = textW('M', { f: 'mono', size: sz, w: 500 });
+    const x0 = 360 - cw * s.length / 2, a = eo(P(t, 0.2, 0.6));
+    for (let i = 0; i < s.length; i++) {
+      const cx = x0 + cw * (i + 0.5);
+      if (i === 3) {
+        const m = eio(P(t, 1.2, 1.6));
+        T('i', cx, 250 - m * 30, { f: 'mono', size: sz, a: 'center', alpha: a * (1 - m) });
+        T('l', cx, 250 + (1 - m) * 30, { f: 'mono', size: sz, w: 600, a: 'center', c: C.accent, alpha: m });
+        if (m > 0) R(cx - cw * 0.45, 262, cw * 0.9 * m, 5, { fill: C.accent, r: 2 });
+      } else T(s[i], cx, 250, { f: 'mono', size: sz, a: 'center', alpha: a });
+    }
+    T('i 換成 l：twnlc.tw', 360, 306, { size: 21, c: C.muted, a: 'center', alpha: eo(P(t, 1.6, 2.0)) });
+    const p2 = P(t, 2.1, 2.7), full = 'twnic-tw.com', n = Math.round(full.length * p2);
+    if (n > 0) {
+      const w1 = textW('twnic', { f: 'mono', size: 38 }), w2 = textW('-tw.com', { f: 'mono', size: 38 });
+      const xs = 360 - (w1 + w2) / 2;
+      T(full.slice(0, Math.min(5, n)), xs, 370, { f: 'mono', size: 38 });
+      if (n > 5) T(full.slice(5, n), xs + w1, 370, { f: 'mono', size: 38, w: 600, c: C.accent });
+    }
+    T('多了連字號，結尾也不同', 360, 408, { size: 20, c: C.muted, a: 'center', alpha: eo(P(t, 2.6, 3.0)) });
+    T('假網域也能把驗證全部設好：', 360, 456, { size: 20, w: 600, a: 'center', alpha: eo(P(t, 2.8, 3.1)) });
+    ['SPF', 'DKIM', 'DMARC'].forEach((k, i) => {
+      const t0 = 3.0 + i * 0.3, cx = 150 + i * 210;
+      if (t < t0) return;
+      const c = chip(k + ' pass', cx, 472, { size: 19, w: 600, a: 'center', h: 42, width: 184, extra: 26, scale: eb(P(t, t0, t0 + 0.3)) });
+      check(c.x + c.w - 26, 492, 15, P(t, t0 + 0.1, t0 + 0.4));
+    });
+    if (t > 4.2) { const f = flash(t, 4.2, 4); chip('最危險：信箱不會警告', 360, 538, { f: 'sans', size: 23, w: 600, a: 'center', h: 48, fill: f ? C.accent : C['accent-tint'], stroke: C.accent, c: f ? C.paper : C.accent, scale: eb(P(t, 4.2, 4.5)) }); }
+    caption('看完整地址：@ 後面的網域才是重點。', t, 4.9, { key: true, y: 638, size: 25, w: 600 });
+  } });
+
+  // 13 · 誤解 2
+  S.push({ ch: '07 常見誤解 2', build: 5.0, cues: [[0.8, 'fail'], [1.6, 'ok'], [2.8, 'pop'], [3.4, 'ok']], draw(t) {
+    header('07', '誤解 2：驗證失敗＝內容是假的？', t);
+    const a = eo(P(t, 0.2, 0.5));
+    box(M, 176, 288, 210, 'node', { alpha: a }); box(384, 176, 288, 210, 'node', { alpha: a });
+    T('寄件來源', 72, 214, { size: 20, w: 600, c: C.muted, alpha: a });
+    T('信件內容', 408, 214, { size: 20, w: 600, c: C.muted, alpha: a });
+    const fa = eo(P(t, 0.6, 0.9));
+    T('驗證失敗', 72, 296, { size: 38, w: 600, c: C.accent, alpha: fa });
+    cross(302, 206, 22, P(t, 0.8, 1.2));
+    T('設定少了一步', 72, 340, { size: 19, c: C.soft, alpha: fa });
+    const ca = eo(P(t, 1.4, 1.7));
+    T('PHP 漏洞屬實', 408, 296, { size: 34, w: 600, alpha: ca });
+    check(638, 206, 24, P(t, 1.6, 2.0));
+    T('已比對 PHP 官方公告', 408, 340, { size: 19, c: C.soft, alpha: ca });
+    if (t > 2.2) chip('兩件事分開判斷', 360, 406, { f: 'sans', size: 21, w: 600, a: 'center', h: 44, scale: eb(P(t, 2.2, 2.5)) });
+    if (t > 2.6) {
+      const c1 = chip('信中連結', M, 486, { f: 'sans', size: 21, h: 46, alpha: eo(P(t, 2.6, 2.9)), fill: C.ext, stroke: C['ext-stroke'], c: C.muted });
+      line([[c1.x + 8, 509], [c1.x + c1.w - 8, 509]], P(t, 2.8, 3.1), { c: C.accent, lw: 3 });
+      line([[c1.x + c1.w + 12, 509], [c1.x + c1.w + 64, 509]], P(t, 3.0, 3.3), { arrow: true });
+      if (t > 3.3) { const c2 = chip('官方網站', c1.x + c1.w + 76, 486, { f: 'sans', size: 21, w: 600, h: 46, extra: 30, scale: eb(P(t, 3.3, 3.6)) }); check(c2.x + c2.w - 26, 507, 16, P(t, 3.4, 3.7)); }
+    }
+    caption('要採取行動時，到官方網站確認，不要點信中的連結。', t, 4.0, { y: 610, size: 25 });
+  } });
+
+  // 14 · 越來越重要
+  S.push({ ch: '08 越來越重要', build: 5.6, cues: [[1.0, 'pop'], [2.4, 'pop'], [2.6, 'pop'], [3.4, 'fail']], draw(t) {
+    header('08', '為什麼越來越重要？', t);
+    const lp = eo(P(t, 0.3, 3.4));
+    line([[M, 300], [W - M, 300]], lp, { c: C['rule-solid'], lw: 2.4 });
+    if (lp > 0 && lp < 1) circle(M + (W - 2 * M) * lp, 300, 5, { fill: C.ink });
+    const ev = [[140, 1.0, '2024', 'Google · Yahoo', '大量寄信者須設定'], [370, 2.6, '2025', 'Microsoft', 'Outlook.com 跟進'], [590, 3.4, '2026.10', '本案', 'TWNIC 被標示警告']];
+    ev.forEach(([x, t0, y, n, d], i) => {
+      if (t < t0) return;
+      const acc = i === 2, s = eb(P(t, t0, t0 + 0.35));
+      circle(x, 300, (acc ? 9 : 7) * s, { fill: acc ? C.accent : C.ink });
+      if (acc) ring(x, 300, t, t0, { r0: 10, grow: 26, period: 1.3 });
+      const a = eo(P(t, t0, t0 + 0.4));
+      T(y, x, 268, { f: 'mono', size: 23, w: 600, a: 'center', c: acc ? C.accent : C.ink, alpha: a });
+      T(n, x, 340, { size: 21, w: 600, a: 'center', alpha: a });
+      T(d, x, 370, { size: 19, c: C.muted, a: 'center', alpha: a });
+    });
+    if (t > 1.3) {
+      const v = Math.round(5000 * eo(P(t, 1.3, 2.4)));
+      T(v.toLocaleString('en-US'), 360, 478, { f: 'mono', size: 64, w: 600, c: C.accent, a: 'center', alpha: eo(P(t, 1.3, 1.5)) });
+      R(160, 500, 400 * eo(P(t, 1.3, 2.4)), 6, { fill: C.accent, r: 3 });
+      T('每天約 5,000 封以上＝大量寄信者，須設定三項驗證', 360, 540, { size: 19, c: C.muted, a: 'center', alpha: eo(P(t, 2.2, 2.6)), maxW: 600 });
+    }
+    caption('今天只是警示，未來設定不完整的信可能直接收不到。', t, 4.2, { key: true, y: 618, size: 25, w: 600 });
+  } });
+
+  // 15 · 動手練習
+  S.push({ ch: '09 動手練習', build: 6.6, cues: [[0.6, 'tick'], [1.0, 'tick'], [1.6, 'tick'], [1.9, 'tick'], [2.2, 'tick'], [5.2, 'pop']], draw(t) {
+    header('09', '動手練習：自己看驗證結果', t);
+    let x = M;
+    ['打開信', '更多選單', '顯示原始郵件'].forEach((s, i) => {
+      const t0 = 0.2 + i * 0.4;
+      if (t < t0) return;
+      const c = chip(s, x, 168, { f: 'sans', size: 20, w: 600, h: 42, alpha: eo(P(t, t0, t0 + 0.3)), fill: i === 2 ? C['accent-tint'] : C.node, stroke: i === 2 ? C.accent : C.ink });
+      if (i < 2) line([[c.x + c.w + 10, 189], [c.x + c.w + 40, 189]], P(t, t0 + 0.2, t0 + 0.4), { arrow: true });
+      x = c.x + c.w + 52;
+    });
+    ['SPF', 'DKIM', 'DMARC'].forEach((k, i) => {
+      const cx = M + i * 208, a = eo(P(t, 1.2, 1.5));
+      R(cx, 232, 208, 76, { stroke: C['rule-solid'], lw: 1, r: 0, alpha: a, fill: C.node });
+      T(k, cx + 16, 262, { f: 'mono', size: 18, c: C.muted, alpha: a });
+      const t0 = 1.6 + i * 0.3;
+      if (t > t0) { T('PASS', cx + 16, 294, { f: 'mono', size: 24, w: 600, alpha: eo(P(t, t0, t0 + 0.2)) }); check(cx + 176, 284, 18, P(t, t0, t0 + 0.3)); }
+    });
+    const ha = eo(P(t, 2.5, 2.8));
+    box(M, 334, W - 2 * M, 184, 'node', { alpha: ha });
+    T('Authentication-Results（節錄）', M + 16, 362, { f: 'mono', size: 15, c: C.soft, alpha: ha });
+    const L3 = [['smtp.mailfrom=', 'ascrm.newermail.com', 1, false], ['header.d=', 'none', 2, false], ['header.from=', 'twnic.tw', 3, true]];
+    const total = L3.reduce((s, l) => s + l[0].length + l[1].length, 0);
+    let budget = Math.floor(total * P(t, 2.8, 4.6));
+    L3.forEach(([k, v, n, acc], i) => {
+      const y = 404 + i * 42, full = k + v;
+      const take = Math.min(full.length, budget); budget -= take;
+      if (take <= 0) return;
+      const shown = full.slice(0, take);
+      const kw = textW(k, { f: 'mono', size: 19 }), vw = textW(v, { f: 'mono', size: 19, w: 600 });
+      if (t > 4.8) R(M + 16 + kw - 4, y - 22, vw + 8, 30, { fill: acc ? C['accent-tint'] : C['paper-2'], r: 4, alpha: eo(P(t, 4.8, 5.1)) });
+      T(shown.slice(0, k.length), M + 16, y, { f: 'mono', size: 19, c: C.muted });
+      if (take > k.length) T(shown.slice(k.length), M + 16 + kw, y, { f: 'mono', size: 19, w: 600, c: acc ? C.accent : C.ink });
+      if (take === full.length) numBadge(n, M + 16 + kw + vw + 26, y - 7, { alpha: eo(P(t, 4.6, 4.9)) });
+    });
+    if (t > 5.2) {
+      const p = P(t, 5.2, 5.7);
+      line([[560, 397], [600, 397], [600, 481], [566, 481]], p, { c: C.accent, lw: 2, arrow: true });
+      line([[560, 439], [600, 439]], p, { c: C.accent, lw: 2 });
+      T('比對', 612, 446, { size: 19, w: 600, c: C.accent, alpha: eo(P(t, 5.4, 5.7)) });
+    }
+    caption('① 或 ② 有一個和 ③ 相同（且該項通過），DMARC 就會通過。', t, 5.6, { y: 572, size: 24 });
+  } });
+
+  // 16 · 排查思路
+  S.push({ ch: '10 排查思路', build: 5.6, cues: [[0.6, 'tick'], [1.5, 'tick'], [2.4, 'tick'], [3.3, 'tick'], [4.2, 'ok']], draw(t) {
+    header('10', '值得學的排查思路', t);
+    const items = [['不急著下結論', '不直接認定是釣魚信或 SPF 壞了'], ['找第一手證據', '看原始標頭，而不是只看畫面'], ['一層層追問', '通過了 → 是哪個網域？→ 為什麼？'], ['把問題拆開', '來源可不可信、內容是不是真的，分開判斷'], ['用獨立管道查證', '到官方網站確認，不依賴信中資訊']];
+    const y0 = 196, gap = 84;
+    line([[84, y0], [84, y0 + gap * 4]], 1, { c: C['rule-solid'], lw: 2, alpha: eo(P(t, 0.1, 0.4)) });
+    const pr = P(t, 0.6, 4.2);
+    line([[84, y0], [84, y0 + gap * 4]], pr, { c: C.accent, lw: 3 });
+    if (pr > 0 && pr < 1) circle(84, y0 + gap * 4 * pr, 8, { fill: C.accent });
+    items.forEach(([a, b], i) => {
+      const y = y0 + i * gap, t0 = 0.6 + i * 0.9, on = t >= t0;
+      circle(84, y, 22, { fill: on ? C.accent : C.paper, stroke: on ? C.accent : C['rule-solid'], lw: 2, alpha: eo(P(t, 0.1, 0.4)) });
+      T(String(i + 1), 84, y + 7, { f: 'mono', size: 19, w: 600, a: 'center', c: on ? C.paper : C.soft, alpha: eo(P(t, 0.1, 0.4)), noCheck: true });
+      const al = 0.3 + 0.7 * eo(P(t, t0, t0 + 0.4));
+      T(a, 128, y - 2, { size: 24, w: 600, alpha: al * eo(P(t, 0.1, 0.4)) });
+      T(b, 128, y + 28, { size: 19, c: C.muted, alpha: al * eo(P(t, 0.1, 0.4)) });
+    });
+    caption('適用於任何「看起來怪怪的」資訊。', t, 4.6, { y: 640, size: 25, w: 600 });
+  } });
+
+  // 17 · 附錄
+  S.push({ ch: '附錄', build: 5.8, cues: [[0.3, 'pop'], [1.2, 'pop'], [2.1, 'pop'], [4.8, 'pop']], draw(t) {
+    header('A–C', '附錄：縮寫與用語', t);
+    const rows = [['SPF', 'Sender Policy Framework', '寄件者政策框架', 196, 0.3], ['DKIM', 'DomainKeys Identified Mail', '網域金鑰識別郵件', 284, 1.2], ['DMARC', 'Domain-based Message Authentication, Reporting and Conformance', '以網域為基礎的郵件驗證、回報與一致性', 372, 2.1]];
+    rows.forEach(([ab, en, zh, y, t0]) => {
+      if (t < t0) return;
+      const s = eb(P(t, t0, t0 + 0.35));
+      g.save(); g.translate(M, y + 18); g.scale(s, s); g.translate(-M, -(y + 18));
+      T(ab, M, y + 30, { f: 'mono', size: 32, w: 600, c: C.accent, noCheck: s !== 1 });
+      g.restore();
+      const n = Math.round(en.length * P(t, t0 + 0.2, t0 + 0.9));
+      const h = T(en.slice(0, n), 200, y + 24, { size: 21, w: 500, maxW: 472, lh: 1.4 });
+      T(zh, 200, y + 24 + (en.length > 40 ? 2 : 1) * 29.4 + 2, { size: 19, c: C.muted, alpha: eo(P(t, t0 + 0.8, t0 + 1.1)) });
+    });
+    if (t > 3.6) {
+      const a = eo(P(t, 3.6, 3.9)), v = 9.2 * eo(P(t, 3.8, 4.8));
+      T('PHP 漏洞嚴重度（CVSS，滿分 10）', M, 524, { size: 20, w: 600, alpha: a });
+      R(M, 542, 500, 18, { fill: C.store, stroke: C['rule-solid'], lw: 1, r: 9, alpha: a });
+      R(M, 542, 500 * v / 10, 18, { fill: C.accent, r: 9 });
+      T(v.toFixed(1), W - M, 562, { f: 'mono', size: 36, w: 600, c: C.accent, a: 'right', alpha: a });
+    }
+    caption('完整用語速查表，在頁面最下方的附錄。', t, 5.0, { y: 640, size: 23, c: C.muted });
+  } });
+
+  // 18 · 總結
+  S.push({ ch: '總結', build: 5.6, cues: [[1.0, 'tick'], [1.35, 'tick'], [1.7, 'tick'], [2.05, 'pop'], [2.4, 'tick'], [3.4, 'ok']], draw(t) {
+    header('✦', '總結：知識架構', t);
+    const ra = eo(P(t, 0.2, 0.5));
+    box(M, 304, 140, 72, 'ext', { alpha: ra });
+    T('寄件者', M + 70, 334, { size: 21, w: 600, a: 'center', alpha: ra });
+    T('驗證', M + 70, 362, { size: 21, w: 600, a: 'center', alpha: ra });
+    line([[188, 340], [212, 340]], P(t, 0.4, 0.6));
+    line([[212, 340], [212, 190]], P(t, 0.5, 1.0)); line([[212, 340], [212, 490]], P(t, 0.5, 1.0));
+    const items = [['兩個寄件人', '信封 vs 署名'], ['SPF', '看信封網域'], ['DKIM', '看 d= 網域'], ['DMARC', '要求與署名對齊'], ['判讀原則', '驗證通過 ≠ 安全']];
+    items.forEach(([a, b], i) => {
+      const cy = 190 + i * 75, t0 = 1.0 + i * 0.35;
+      const br = [[212, cy], [238, cy]];
+      line(br, P(t, t0 - 0.15, t0), { arrow: true });
+      if (t < t0) return;
+      const foc = i === 3;
+      box(240, cy - 29, 432, 58, foc ? 'focal' : 'node', { scale: eb(P(t, t0, t0 + 0.3)) });
+      const al = eo(P(t, t0 + 0.1, t0 + 0.3));
+      T(a, 258, cy + 8, { size: 22, w: 600, c: foc ? C.accent : C.ink, alpha: al });
+      T(b, 410, cy + 8, { size: 21, c: C.muted, alpha: al });
+    });
+    clipReveal(40, 548, 640, 50, eo(P(t, 3.0, 3.8)), () => T('SPF 和 DKIM 證明「是誰寄的」，', 360, 584, { f: 'serif', size: 31, a: 'center' }));
+    clipReveal(40, 596, 640, 50, eo(P(t, 3.6, 4.4)), () => T('DMARC 確認「寄的人就是署名的人」。', 360, 632, { f: 'serif', size: 31, a: 'center', c: C.accent }));
+  } });
+
+  // 19 · outro
+  S.push({ ch: '結尾', build: 1.8, hold: 3.2, cues: [[0.2, 'chime']], draw(t) {
+    clipReveal(40, 250, 640, 80, eo(P(t, 0.1, 0.9)), () => T('大意就是這樣', 360, 310, { f: 'serif', size: 50, a: 'center' }));
+    T('往下閱讀完整筆記與 14 張圖解', 360, 366, { size: 24, c: C.muted, a: 'center', alpha: eo(P(t, 0.6, 1.1)) });
+    if (t > 1.0) {
+      const b = Math.sin((t - 1.0) * 4) * 8, a = eo(P(t, 1.0, 1.4));
+      line([[360, 420 + b], [360, 486 + b]], 1, { c: C.accent, lw: 3.4, arrow: true, alpha: a });
+    }
+  } });
+
+  /* ================= timeline ================= */
+  const TR = 0.8;
+  let total = 0;
+  const fontText = { sans: '', serif: '', mono: '' };
+  function computeTimeline() {
+    readColors();
+    let acc = 0;
+    S.forEach((s, i) => {
+      g = mctx; mctx.setTransform(1, 0, 0, 1, 0, 0);
+      measuring = { chars: 0, text: { sans: '', serif: '', mono: '' } };
+      s.draw(s.build + 0.01);
+      s.chars = measuring.chars;
+      for (const k in fontText) fontText[k] += measuring.text[k];
+      measuring = null;
+      s.hold = s.hold ?? (3 + clamp((s.chars - 30) / 45, 0, 2));
+      s.dur = s.build + s.hold + (i < S.length - 1 ? TR : 0);
+      s.start = acc;
+      acc += s.dur;
+    });
+    total = acc;
+    g = ctx;
+  }
+  function sceneAt(T0) {
+    for (let i = 0; i < S.length; i++) if (T0 < S[i].start + S[i].dur) return i;
+    return S.length - 1;
+  }
+  let cssW = 0, dpr = 1;
+  function resize() {
+    cssW = stage.clientWidth || 600;
+    dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+    const px = Math.round(cssW * dpr);
+    if (canvas.width !== px) { canvas.width = px; canvas.height = px; }
+  }
+  function render(T0) {
+    readColors();
+    g = ctx;
+    const k = canvas.width / W;
+    g.setTransform(k, 0, 0, k, 0, 0);
+    backdrop(T0);
+    const i = sceneAt(T0), s = S[i];
+    curScene = s.ch;
+    const local = clamp(T0 - s.start, 0, s.dur);
+    const out = local - (s.dur - TR);
+    if (i < S.length - 1 && out > 0) {
+      const p = eio(out / TR);
+      g.save(); g.globalAlpha = 1 - p; g.translate(-70 * p, 0); s.draw(local); g.restore();
+      const x = lerp(-60, W + 60, p);
+      for (let j = 0; j < 6; j++) R(x - j * 22, 0, 4, W, { fill: C.accent, r: 0, alpha: (1 - j / 6) * 0.55 * Math.sin(p * Math.PI) });
+    } else s.draw(local);
+    // corner index
+    T(`${String(i).padStart(2, '0')} / ${S.length - 1}`, W - 24, W - 22, { f: 'mono', size: 15, c: C.soft, a: 'right', noCheck: true });
+  }
+
+  /* ================= audio ================= */
+  const SR = 24000;
+  async function buildMusic() {
+    const sr = SR, N = Math.ceil((total + 1.2) * sr);
+    const mus = new Float32Array(N), fx = new Float32Array(N);
+    let seed = 987654321;
+    const rnd = () => { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x3fffffff - 1; };
+    const TAU = Math.PI * 2;
+    const mtof = m => 440 * Math.pow(2, (m - 69) / 12);
+    const wave = (type, ph) => type === 'sine' ? Math.sin(TAU * ph) : type === 'saw' ? 2 * ph - 1 : type === 'square' ? (ph < 0.5 ? 0.8 : -0.8) : 1 - 4 * Math.abs(ph - 0.5);
+    function tone(buf, t, o) {
+      const s0 = Math.floor(t * sr); if (s0 >= N) return;
+      const att = o.att ?? 0.004, dec = o.dec, n = Math.min(N - s0, Math.floor((att + dec + 0.02) * sr));
+      const k = o.lp ? 1 - Math.exp(-TAU * o.lp / sr) : 1;
+      let ph = 0, y = 0, y2 = 0;
+      for (let i = 0; i < n; i++) {
+        const tt = i / sr;
+        const f = o.f1 ? o.f0 * Math.pow(o.f1 / o.f0, Math.min(1, tt / (o.glide || 0.1))) : o.f0;
+        ph += f / sr; ph -= Math.floor(ph);
+        const v = wave(o.type || 'sine', ph);
+        const e = tt < att ? tt / att : Math.exp(-5 * (tt - att) / dec);
+        y += k * (v - y); y2 += k * (y - y2);
+        buf[s0 + i] += (o.lp ? y2 : v) * o.amp * e;
+      }
+    }
+    function pad(t, dur, f, amp) {
+      const s0 = Math.floor(t * sr), n = Math.min(N - s0, Math.floor((dur + 0.2) * sr));
+      let p1 = Math.random(), p2 = Math.random(), y = 0, y2 = 0;
+      const f1 = f * Math.pow(2, 8 / 1200), f2 = f * Math.pow(2, -8 / 1200);
+      for (let i = 0; i < n; i++) {
+        const tt = i / sr, q = tt / dur;
+        const cut = q < 0.5 ? 700 + 600 * (q * 2) : 1300 - 500 * ((q - 0.5) * 2);
+        const k = 1 - Math.exp(-TAU * cut / sr);
+        p1 += f1 / sr; p1 -= Math.floor(p1); p2 += f2 / sr; p2 -= Math.floor(p2);
+        const v = (2 * p1 - 1) + (2 * p2 - 1);
+        y += k * (v - y); y2 += k * (y - y2);
+        const e = tt < 0.35 ? tt / 0.35 : tt > dur - 0.2 ? Math.max(0, 1 - (tt - (dur - 0.2)) / 0.4) : 1;
+        mus[s0 + i] += y2 * amp * e;
+      }
+    }
+    function biquadBP(freq, Q) { const w = TAU * freq / sr, al = Math.sin(w) / (2 * Q), a0 = 1 + al; return [al / a0, 0, -al / a0, -2 * Math.cos(w) / a0, (1 - al) / a0]; }
+    function noise(buf, t, o) {
+      const s0 = Math.floor(t * sr); if (s0 >= N) return;
+      const n = Math.min(N - s0, Math.floor((o.dec + 0.03) * sr));
+      let c = o.mode === 'bp' ? biquadBP(o.freq, o.q || 1) : null;
+      let x1 = 0, x2 = 0, y1 = 0, y2 = 0, lp = 0;
+      const k = o.mode === 'hp' || o.mode === 'lp' ? 1 - Math.exp(-TAU * o.freq / sr) : 0;
+      for (let i = 0; i < n; i++) {
+        const tt = i / sr, x = rnd();
+        if (o.sweep && i % 64 === 0) { const q = Math.min(1, tt / (o.dec * 0.8)); c = biquadBP(o.sweep[0] * Math.pow(o.sweep[1] / o.sweep[0], q), o.q || 1.4); }
+        let v;
+        if (c) { v = c[0] * x + c[1] * x1 + c[2] * x2 - c[3] * y1 - c[4] * y2; x2 = x1; x1 = x; y2 = y1; y1 = v; }
+        else { lp += k * (x - lp); v = o.mode === 'hp' ? x - lp : lp; }
+        const e = o.swell ? Math.sin(Math.PI * Math.min(1, tt / o.dec)) ** 2 : (tt < 0.002 ? tt / 0.002 : Math.exp(-5 * tt / o.dec));
+        buf[s0 + i] += v * o.amp * e;
+      }
+    }
+    const yieldUI = () => new Promise(r => setTimeout(r, 0));
+    const bpm = 100, beat = 60 / bpm, bar = beat * 4;
+    const chords = [[57, 60, 64], [53, 57, 60], [48, 52, 55], [55, 59, 62]];
+    const roots = [45, 41, 36, 43];
+    const nBars = Math.ceil((total + 0.5) / bar);
+    for (let b = 0; b < nBars; b++) {
+      const t0 = b * bar, ci = b % 4, ch = chords[ci];
+      const intro = b < 2, outro = t0 > total - bar * 1.2;
+      ch.forEach(m => pad(t0, bar, mtof(m), 0.028));
+      const arp = [0, 1, 2, 1, 0, 2, 1, 2];
+      for (let k = 0; k < 8; k++) {
+        const tt = t0 + k * beat / 2; if (tt > total) break;
+        tone(mus, tt, { type: 'square', f0: mtof(ch[arp[k]] + 12 + (k === 5 && b % 2 ? 12 : 0)), amp: intro ? 0.05 : 0.075, dec: 0.22, lp: 2600 });
+      }
+      if (!intro && !outro) {
+        [0, 2].forEach(k => tone(mus, t0 + k * beat, { f0: 150, f1: 44, glide: 0.12, amp: 0.9, att: 0.002, dec: 0.3 }));
+        if (b % 2 === 1) tone(mus, t0 + 3.5 * beat, { f0: 150, f1: 44, glide: 0.12, amp: 0.7, att: 0.002, dec: 0.25 });
+        [1, 3].forEach(k => { noise(mus, t0 + k * beat, { mode: 'bp', freq: 1900, q: 0.8, amp: 0.55, dec: 0.17 }); tone(mus, t0 + k * beat, { type: 'tri', f0: 200, amp: 0.18, att: 0.002, dec: 0.08 }); });
+        for (let k = 0; k < 8; k++) noise(mus, t0 + k * beat / 2, { mode: 'hp', freq: 6500, amp: k % 2 ? 0.22 : 0.11, dec: 0.045 });
+        [[0, 0.7], [1.5, 0.4], [2, 0.7], [3, 0.3], [3.5, 0.4]].forEach(([k, d], j) => tone(mus, t0 + k * beat, { type: 'saw', f0: mtof(roots[ci] + (j === 4 ? 7 : 0)), amp: 0.32, att: 0.006, dec: d * beat, lp: 380 }));
+      }
+      if (b % 6 === 5) await yieldUI();
+    }
+    const chime = t => { tone(fx, t, { f0: 1318.5, amp: 0.16, dec: 0.7 }); tone(fx, t + 0.07, { f0: 1975.5, amp: 0.1, dec: 0.6 }); };
+    const whoosh = (t, d) => noise(fx, t, { mode: 'bp', sweep: [260, 4200], q: 1.4, amp: 1.1, dec: d, swell: true });
+    const cue = {
+      fail: t => [0, 0.16].forEach(o => { tone(fx, t + o, { type: 'saw', f0: 98, amp: 0.3, dec: 0.13, lp: 1100 }); tone(fx, t + o, { type: 'saw', f0: 104, amp: 0.26, dec: 0.13, lp: 1100 }); }),
+      boom: t => { tone(fx, t, { f0: 120, f1: 38, glide: 0.3, amp: 0.9, att: 0.003, dec: 0.5 }); cue.fail(t + 0.05); },
+      ok: t => { tone(fx, t, { f0: 880, amp: 0.18, dec: 0.28 }); tone(fx, t + 0.09, { f0: 1318.5, amp: 0.18, dec: 0.4 }); },
+      pop: t => tone(fx, t, { f0: 620, f1: 1040, glide: 0.06, amp: 0.2, att: 0.003, dec: 0.09 }),
+      tick: t => tone(fx, t, { type: 'tri', f0: 1500, amp: 0.16, att: 0.002, dec: 0.05 }),
+      stamp: t => { tone(fx, t, { f0: 110, f1: 42, glide: 0.18, amp: 0.85, att: 0.002, dec: 0.25 }); noise(fx, t, { mode: 'lp', freq: 900, amp: 0.6, dec: 0.08 }); },
+      whoosh: t => whoosh(t, 0.6),
+      chime
+    };
+    S.forEach((s, i) => {
+      if (i > 0) chime(s.start + 0.05);
+      if (i < S.length - 1) whoosh(s.start + s.dur - TR - 0.05, TR + 0.15);
+      (s.cues || []).forEach(([ct, type]) => cue[type] && cue[type](s.start + ct));
+    });
+    await yieldUI();
+    const out = new Float32Array(N);
+    const fadeA = Math.floor(Math.max(0, total - 3) * sr), fadeB = Math.floor((total + 0.6) * sr);
+    let peak = 0;
+    for (let i = 0; i < N; i++) {
+      const fm = i < fadeA ? 1 : i > fadeB ? 0 : 1 - (i - fadeA) / (fadeB - fadeA);
+      const v = Math.tanh((mus[i] * 0.8 * fm + fx[i]) * 1.3);
+      out[i] = v; const a = Math.abs(v); if (a > peak) peak = a;
+    }
+    if (peak > 0) { const k = 0.95 / peak; for (let i = 0; i < N; i++) out[i] *= k; }
+    return out;
+  }
+  function wavBlob(samples, sr) {
+    const n = samples.length, ab = new ArrayBuffer(44 + n * 2), v = new DataView(ab);
+    const ws = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+    ws(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); ws(8, 'WAVE'); ws(12, 'fmt ');
+    v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, sr, true); v.setUint32(28, sr * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+    ws(36, 'data'); v.setUint32(40, n * 2, true);
+    for (let i = 0; i < n; i++) { const s = Math.max(-1, Math.min(1, samples[i])); v.setInt16(44 + i * 2, s < 0 ? s * 0x8000 : s * 0x7fff, true); }
+    return new Blob([ab], { type: 'audio/wav' });
+  }
+  function silentWavURL() {
+    const n = 800, sr = 8000, bytes = new Uint8Array(44 + n * 2), v = new DataView(bytes.buffer);
+    const ws = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+    ws(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); ws(8, 'WAVE'); ws(12, 'fmt ');
+    v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, sr, true); v.setUint32(28, sr * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+    ws(36, 'data'); v.setUint32(40, n * 2, true);
+    let bin = ''; for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return 'data:audio/wav;base64,' + btoa(bin);
+  }
+
+  /* ================= player ================= */
+  const $ = id => document.getElementById(id);
+  const big = $('vg-big'), bigT = $('vg-big-t'), bigS = $('vg-big-s'), playBtn = $('vg-play'), muteBtn = $('vg-mute');
+  const seekEl = $('vg-seek'), timeEl = $('vg-time'), chapEl = $('vg-chapter'), statusEl = $('vg-status'), ticks = $('vg-ticks');
+  const audio = new Audio();
+  audio.preload = 'auto';
+  audio.setAttribute('playsinline', '');
+  audio.setAttribute('webkit-playsinline', '');
+  const st = { playing: false, t: 0, mode: null, muted: false, url: null, buffer: null, elFailed: false, unlocked: false, started: false };
+  let actx = null, gainNode = null, src = null, waStart = 0, waOffset = 0, clockStart = 0, musicPromise = null;
+
+  const fmt = s => { s = Math.max(0, Math.floor(s)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
+  function now() {
+    if (st.mode === 'el') return audio.currentTime;
+    if (st.mode === 'wa' && actx) return waOffset + (actx.currentTime - waStart);
+    if (st.mode === 'clock') return waOffset + (performance.now() - clockStart) / 1000;
+    return st.t;
+  }
+  let lastChap = '';
+  function ui(T0) {
+    root.classList.toggle('is-playing', st.playing);
+    root.classList.toggle('is-muted', st.muted);
+    playBtn.setAttribute('aria-label', st.playing ? '暫停' : '播放');
+    muteBtn.setAttribute('aria-label', st.muted ? '開啟聲音' : '靜音');
+    const p = total ? T0 / total : 0;
+    if (!seeking) seekEl.value = Math.round(p * 1000);
+    seekEl.style.setProperty('--fill', (p * 100).toFixed(2) + '%');
+    timeEl.textContent = `${fmt(T0)} / ${fmt(total)}`;
+    const ch = S[sceneAt(Math.min(T0, total - 0.01))].ch;
+    if (ch !== lastChap) { chapEl.textContent = ch; lastChap = ch; }
+  }
+  function frame() {
+    if (!st.playing) return;
+    let T0 = now();
+    if (T0 >= total) { finish(); return; }
+    st.t = T0;
+    render(T0); ui(T0);
+    requestAnimationFrame(frame);
+  }
+  function finish() {
+    stopAudio();
+    st.playing = false; st.t = total;
+    render(total - 0.001); ui(total);
+    big.hidden = false; bigT.textContent = '重新播放'; bigS.textContent = '從頭再看一次';
+  }
+  function stopAudio() {
+    if (st.mode === 'el') audio.pause();
+    if (st.mode === 'wa' && src) { try { src.onended = null; src.stop(); } catch (e) {} src = null; }
+    st.mode = null;
+  }
+  function unlock() {
+    if (st.unlocked) return;
+    st.unlocked = true;
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (AC) {
+        actx = new AC();
+        gainNode = actx.createGain(); gainNode.connect(actx.destination);
+        const b = actx.createBuffer(1, 1, 22050), s = actx.createBufferSource();
+        s.buffer = b; s.connect(gainNode); s.start(0);
+        if (actx.resume) actx.resume();
+      }
+    } catch (e) { actx = null; }
+    if (!st.url) {
+      try { audio.src = silentWavURL(); const p = audio.play(); if (p && p.catch) p.catch(() => {}); } catch (e) {}
+    }
+  }
+  function startClock() { st.mode = 'clock'; waOffset = st.t; clockStart = performance.now(); }
+  function startWA() {
+    if (actx && !st.buffer && st.samples) {
+      try { st.buffer = actx.createBuffer(1, st.samples.length, SR); st.buffer.getChannelData(0).set(st.samples); } catch (e) { st.buffer = null; }
+    }
+    if (!actx || !st.buffer) { startClock(); return; }
+    try {
+      if (actx.resume) actx.resume();
+      src = actx.createBufferSource(); src.buffer = st.buffer; src.connect(gainNode);
+      gainNode.gain.value = st.muted ? 0 : 1;
+      waStart = actx.currentTime + 0.02; waOffset = st.t;
+      src.start(waStart, Math.min(st.t, st.buffer.duration - 0.01));
+      st.mode = 'wa';
+    } catch (e) { startClock(); }
+  }
+  async function play() {
+    unlock();
+    if (st.t >= total - 0.05) st.t = 0;
+    st.playing = true; st.started = true; big.hidden = true;
+    ui(st.t);
+    if (!st.url && !st.samples) statusEl.textContent = '音樂準備中…';
+    await musicPromise;
+    statusEl.textContent = '';
+    if (!st.playing) return;
+    if (!st.samples) { startClock(); requestAnimationFrame(frame); return; }
+    if (!st.elFailed && st.url) {
+      try {
+        if (audio.src !== st.url) audio.src = st.url;
+        audio.muted = st.muted;
+        try { audio.currentTime = st.t; } catch (e) {}
+        await audio.play();
+        if (Math.abs(audio.currentTime - st.t) > 0.4) { try { audio.currentTime = st.t; } catch (e) {} }
+        st.mode = 'el';
+        const t0 = audio.currentTime;
+        setTimeout(() => {
+          if (st.playing && st.mode === 'el' && audio.currentTime - t0 < 0.05) { st.t = Math.max(st.t, audio.currentTime); audio.pause(); st.elFailed = true; startWA(); }
+        }, 1500);
+      } catch (e) {
+        st.elFailed = true;
+        startWA();
+      }
+    } else startWA();
+    requestAnimationFrame(frame);
+  }
+  function pause() {
+    st.t = now();
+    st.playing = false;
+    stopAudio();
+    render(st.t); ui(st.t);
+  }
+  function seekTo(T0) {
+    T0 = clamp(T0, 0, total - 0.01);
+    st.t = T0;
+    if (st.playing) {
+      if (st.mode === 'el') { try { audio.currentTime = T0; } catch (e) {} }
+      else if (st.mode === 'wa') { try { src.onended = null; src.stop(); } catch (e) {} startWA(); }
+      else if (st.mode === 'clock') { waOffset = T0; clockStart = performance.now(); }
+    } else { render(T0); ui(T0); }
+  }
+  let seeking = false;
+  seekEl.addEventListener('input', () => { seeking = true; seekTo(seekEl.value / 1000 * total); seekEl.style.setProperty('--fill', (seekEl.value / 10) + '%'); });
+  seekEl.addEventListener('change', () => { seeking = false; });
+  seekEl.addEventListener('pointerup', () => { seeking = false; });
+  playBtn.addEventListener('click', () => (st.playing ? pause() : play()));
+  big.addEventListener('click', e => { e.stopPropagation(); play(); });
+  stage.addEventListener('click', e => { if (e.target === canvas) (st.playing ? pause() : play()); });
+  muteBtn.addEventListener('click', () => {
+    st.muted = !st.muted;
+    audio.muted = st.muted;
+    if (gainNode) gainNode.gain.value = st.muted ? 0 : 1;
+    ui(now());
+  });
+  audio.addEventListener('ended', () => { if (st.playing && st.mode === 'el') finish(); });
+  audio.addEventListener('error', () => {
+    if (!st.url || audio.src !== st.url) return;
+    st.elFailed = true;
+    if (st.playing && st.mode === 'el') { st.t = Math.max(st.t, audio.currentTime || st.t); st.mode = null; startWA(); }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.target && (e.target === seekEl)) {
+      if (e.key === ' ') { e.preventDefault(); st.playing ? pause() : play(); }
+    }
+  });
+
+  /* ================= init ================= */
+  computeTimeline();
+  S.forEach(s => {
+    const i = document.createElement('i');
+    i.style.left = (s.start / total * 100).toFixed(3) + '%';
+    ticks.appendChild(i);
+  });
+  bigS.textContent = `約 ${Math.round(total / 60)} 分鐘 · 有配樂`;
+  const posterT = S[0].build + 0.4;
+  resize(); render(posterT); ui(0);
+  if ('ResizeObserver' in window) new ResizeObserver(() => { resize(); render(st.started ? st.t : posterT); }).observe(stage);
+  const mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  if (mq && mq.addEventListener) mq.addEventListener('change', () => { if (!st.playing) render(st.started ? st.t : posterT); });
+  new MutationObserver(() => { if (!st.playing) render(st.started ? st.t : posterT); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  if (document.fonts && document.fonts.load) {
+    const loads = [
+      document.fonts.load(`500 24px ${FAM.sans}`, fontText.sans.slice(0, 4000) || 'a'),
+      document.fonts.load(`600 24px ${FAM.sans}`, fontText.sans.slice(0, 4000) || 'a'),
+      document.fonts.load(`400 40px ${FAM.serif}`, fontText.serif || 'a'),
+      document.fonts.load(`500 20px ${FAM.mono}`, fontText.mono || 'a'),
+      document.fonts.load(`600 20px ${FAM.mono}`, fontText.mono || 'a')
+    ];
+    Promise.allSettled(loads).then(() => { if (!st.playing) render(st.started ? st.t : posterT); });
+  }
+  let musicDone;
+  musicPromise = new Promise(r => { musicDone = r; });
+  const kick = () => {
+    buildMusic().then(samples => {
+      if (!samples) return;
+      st.samples = samples;
+      try { st.url = URL.createObjectURL(wavBlob(samples, SR)); } catch (e) { st.url = null; }
+    }).catch(() => {}).then(() => musicDone());
+  };
+  if ('requestIdleCallback' in window) requestIdleCallback(kick, { timeout: 1500 }); else setTimeout(kick, 300);
+
+  window.__guideVideo = {
+    scenes: S, get total() { return total; },
+    renderAt(T0) { resize(); render(T0); ui(T0); },
+    check() { debug = []; const k = canvas.width / W; S.forEach(s => { curScene = s.ch; g = ctx; g.setTransform(1, 0, 0, 1, 0, 0); backdrop(0); s.draw(s.build + 0.5); }); const r = debug; debug = null; render(posterT); return r; },
+    music: () => musicPromise,
+    audioStats() { const d = st.samples; if (!d) return null; const out = []; const w = SR * 10; for (let i = 0; i < d.length; i += w) { let s = 0, pk = 0; for (let j = i; j < Math.min(d.length, i + w); j++) { s += d[j] * d[j]; pk = Math.max(pk, Math.abs(d[j])); } out.push([+(Math.sqrt(s / w)).toFixed(3), +pk.toFixed(2)]); } return { sec: d.length / SR, out, url: !!st.url }; },
+    mode: () => st.mode
+  };
+})();
+
+</script>
+
+</body>
+</html>
