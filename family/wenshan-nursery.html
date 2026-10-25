@@ -147,14 +147,18 @@ footer{margin-top:24px;padding-top:16px;border-top:1px solid var(--rule)}
   <div class="card bars" id="bars"></div>
   <p class="small" id="class-note"></p>
 
-  <h2><span class="no">03</span>備案：附近的社區公共托育家園</h2>
-  <p>每個孩子可以同時登記 1 家公辦民營托嬰中心和 1 家社區公共托育家園。以下是離住家最近、查不到負面報導的三家，資料和文山托嬰中心同一天查詢。</p>
+  <h2><span class="no">03</span>備案</h2>
+  <h3>第二個公托登記：興隆社區公共托育家園</h3>
+  <p>每個孩子可以同時登記 1 家公辦民營托嬰中心和 1 家社區公共托育家園。興隆家園離住家最近、114 年評鑑優等，二寶出生後和文山托嬰中心同一天登記，每月一起追蹤。</p>
   <div class="tbl"><table id="homes"></table></div>
+  <p class="small">家園共 12 席，各班席次只是參考，例如中寶班可以收 7 人、超過核定的 4 席，只要總數不超過 12 席。</p>
+  <h3>公托都排不到時：準公共托嬰中心</h3>
+  <p>私立托嬰中心和政府簽約後成為準公共托嬰，收費有上限，也能領托育補助。以下是離住家最近的三家，請直接打電話問 1 月中旬能不能收 2 個月大的嬰兒。</p>
+  <div class="tbl"><table id="private"></table></div>
   <ul class="plain small">
-    <li>距離是住家到家園的直線距離，用 OpenStreetMap 估算。</li>
-    <li>評鑑等第來自臺北市政府開放資料，列出最近一次的結果。</li>
-    <li>「無負評」指的是搜尋新聞，查不到虐童、違規或裁罰的報導。網路上幾乎沒有家長評價，不代表品質有保證，登記前最好去現場看一次。</li>
-    <li>家園各班的席次是參考值，實際在托人數可以超過，例如中寶班 7 人、核定 4 席，總數不超過 12 席即可。</li>
+    <li>距離是住家到機構的直線距離，用 OpenStreetMap 估算。核定和實際收托人數來自臺北市準公共托嬰中心名冊，評鑑等第來自臺北市托育機構評鑑開放資料。</li>
+    <li>「無負評」指的是搜尋新聞，查不到虐童、違規或裁罰的報導。網路上幾乎沒有家長評價，不代表品質有保證，送托前最好去現場看一次。</li>
+    <li>育德興隆和樂娃兒最近一次評鑑是乙等。如果更在意評鑑，1.9 km 外的芳馨園木柵托嬰中心 114 年是甲等，也查不到負面報導。</li>
   </ul>
 
   <h2><span class="no">04</span>登記與排序規則</h2>
@@ -192,7 +196,7 @@ footer{margin-top:24px;padding-top:16px;border-top:1px solid var(--rule)}
   <div class="tbl"><table id="table"></table></div>
 
   <footer class="small">
-    <p>資料來源：<a href="https://welfare.gov.taipei/Nursery/M7_001_006" target="_blank" rel="noopener">臺北市托嬰機構收托現況查詢及候補清冊</a>、<a href="https://dosw.gov.taipei/cp.aspx?n=91E27EEB185E61A5" target="_blank" rel="noopener">社會局公托登記報名及抽籤</a>（含招生計畫 113.7 修正版），2026/10/25 查閱。本頁只記錄候補序號、班別、序位等匿名資料，不保存任何幼兒的姓名、身分證字號或生日；規則以官方最新公告為準。</p>
+    <p>資料來源：<a href="https://welfare.gov.taipei/Nursery/M7_001_006" target="_blank" rel="noopener">臺北市托嬰機構收托現況查詢及候補清冊</a>、<a href="https://dosw.gov.taipei/cp.aspx?n=91E27EEB185E61A5" target="_blank" rel="noopener">社會局公托登記報名及抽籤</a>（含招生計畫 113.7 修正版）、臺北市準公共托嬰中心名冊、托育機構評鑑開放資料，2026/10/25 查閱。本頁只記錄候補序號、班別、序位等匿名資料，不保存任何幼兒的姓名、身分證字號或生日；規則以官方最新公告為準。</p>
   </footer>
 </div>
 
@@ -307,12 +311,14 @@ function render(data) {
       if (!c) return `<tr class="dim"><td>${esc(t.name)}</td><td colspan="6">本期沒有資料</td></tr>`;
       return `<tr><td>${esc(t.name.replace('社區公共托育家園', ''))}<br><span class="small">${esc(t.address)}・${esc(t.phone)}</span></td><td class="r">${t.distance_km} km</td><td>${esc(t.rating)}</td><td class="r">${total(c.enrolled)} / ${total(c.seats)}</td><td class="r">${c.enrolled.baby} / ${c.seats.baby}</td><td class="r">${c.A}</td><td class="r">${rivals(c).length}</td></tr>`;
     }).join('') + '</tbody>';
+  $('private').innerHTML = `<thead><tr><th>托嬰中心</th><th class="r">距離</th><th>評鑑</th><th class="r">實際 / 核定</th></tr></thead><tbody>` +
+    data.private_options.map(o => `<tr><td>${esc(o.name)}<br><span class="small">${esc(o.address)}・${esc(o.phone)}</span></td><td class="r">${o.distance_km} km</td><td>${esc(o.rating)}</td><td class="r">${o.enrolled} / ${o.capacity}</td></tr>`).join('') + '</tbody>';
 
   // 時程
   const birth = child.actual_birth || child.assumed_birth;
   const ev = [
     [birth, child.actual_birth ? '二寶出生' : `二寶預估出生（${child.birth_basis}）`],
-    [child.registered_on || iso(new Date(parse(birth).getTime() + 3 * 864e5)), child.registered_on ? '完成候補登記' : '取得身分證字號，當天登記文山托嬰中心和一家家園（預估）'],
+    [child.registered_on || iso(new Date(parse(birth).getTime() + 3 * 864e5)), child.registered_on ? '完成候補登記' : '取得身分證字號，當天登記文山托嬰中心和興隆家園（預估）'],
     [iso(yellowFrom), '黃燈：開始聯絡備援托育'],
     [iso(redFrom), '紅燈：確保備援托育'],
     [child.deadline, '滿 2 足月：最早可入托，也是最晚送托日'],
