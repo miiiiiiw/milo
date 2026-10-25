@@ -152,6 +152,8 @@ footer{margin-top:24px;padding-top:16px;border-top:1px solid var(--rule)}
   <p>每個孩子可以同時登記 1 家公辦民營托嬰中心和 1 家社區公共托育家園。興隆家園離住家最近、114 年評鑑優等，二寶出生後和文山托嬰中心同一天登記，每月一起追蹤。</p>
   <div class="tbl"><table id="homes"></table></div>
   <p class="small">家園共 12 席，各班席次只是參考，例如中寶班可以收 7 人、超過核定的 4 席，只要總數不超過 12 席。</p>
+  <p>興隆家園和文山托嬰中心用同一套官方清冊，每月一起查詢，計算方式也相同。家園規模小，小寶班只有約 3 席，第四序位保障 3 席，一個人進出就會讓數字明顯跳動，要看幾個月的趨勢，不要只看單月。</p>
+  <div class="tbl"><table id="flow-home"></table></div>
   <h3>公托都排不到時：準公共托嬰中心</h3>
   <p>私立托嬰中心和政府簽約後成為準公共托嬰，收費有上限，也能領托育補助。以下是離住家最近的三家，請直接打電話問 1 月中旬能不能收 2 個月大的嬰兒。</p>
   <div class="tbl"><table id="private"></table></div>
@@ -293,8 +295,11 @@ function render(data) {
     ? `<b>已確認：</b>${esc(oq.answer)}`
     : `<b>待確認：</b>${esc(oq.q)}<br>${esc(oq.assumed)}`;
 
-  $('flow').innerHTML = `<thead><tr><th>日期</th><th class="r">同齡候補</th><th class="r">其中第四序位</th><th class="r">離開清冊</th><th class="r">小寶班在托</th><th class="r">全中心在托</th></tr></thead><tbody>` +
-    flowRows.map(r => { const x = rivals(r.c), l = left(r); return `<tr><td>${fmt(r.s.date)}</td><td class="r">${x.length}</td><td class="r">${x.filter(v => v[2] === 4).length}</td><td class="r">${l ?? '—'}</td><td class="r">${r.c.enrolled.baby} / ${r.c.seats.baby}</td><td class="r">${total(r.c.enrolled)} / ${total(r.c.seats)}</td></tr>`; }).join('') + '</tbody>';
+  const flowTable = key => `<thead><tr><th>日期</th><th class="r">同齡候補</th><th class="r">其中第四序位</th><th class="r">離開清冊</th><th class="r">小寶班在托</th><th class="r">全部在托</th></tr></thead><tbody>` +
+    withPrev(snaps, key).filter(r => r.s.status === 'ok' && r.c).map(r => { const x = rivals(r.c), l = left(r); return `<tr><td>${fmt(r.s.date)}</td><td class="r">${x.length}</td><td class="r">${x.filter(v => v[2] === 4).length}</td><td class="r">${l ?? '—'}</td><td class="r">${r.c.enrolled.baby} / ${r.c.seats.baby}</td><td class="r">${total(r.c.enrolled)} / ${total(r.c.seats)}</td></tr>`; }).join('') + '</tbody>';
+  $('flow').innerHTML = flowTable('wenshan');
+  const chosen = data.targets.find(t => t.chosen);
+  if (chosen) $('flow-home').innerHTML = flowTable(chosen.key);
 
   // 各班在托
   $('class-meta').textContent = `${fmt(last.date)} 文山托嬰中心在托人數（直線為核定席次）`;
