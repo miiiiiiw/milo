@@ -1,129 +1,253 @@
 {
-  "_說明": "文山托嬰中心候補追蹤資料。只放彙總數字，不放任何幼兒個資。每月在 snapshots 末端新增一筆，不覆寫歷史。",
-  "updated": "2026-10-25",
-  "center": {
-    "name": "臺北市文山托嬰中心",
-    "agency_code": "05",
-    "class_code": "1C",
-    "source_page": "https://welfare.gov.taipei/Nursery/M7_001_006",
-    "rules_page": "https://dosw.gov.taipei/cp.aspx?n=91E27EEB185E61A5"
+ "_說明": "文山托嬰候補追蹤資料。每月執行 node family/wenshan-nursery-update.mjs --write 新增一筆快照，不覆寫歷史。名單只存 [候補序號, 班別, 序位, 最晚送托日時是否小寶班年齡]，不存任何個資。",
+ "updated": "2026-10-25",
+ "school_year": 115,
+ "child": {
+  "phase": "出生前",
+  "birth_basis": "以 38 週出生估算",
+  "assumed_birth": "2026-11-13",
+  "actual_birth": null,
+  "registered_on": null,
+  "waitlist_no": null,
+  "priority": 4,
+  "deadline": "2027-01-13",
+  "deadline_note": "滿 2 足月就送托，最早可入托日也是最晚送托日"
+ },
+ "targets": [
+  {
+   "key": "wenshan",
+   "role": "main",
+   "name": "文山托嬰中心",
+   "class": "1C",
+   "agency": "05"
   },
-  "child": {
-    "phase": "出生前",
-    "birth_basis": "以 38 週出生估算",
-    "assumed_birth": "2026-11-13",
-    "actual_birth": null,
-    "registered_on": null,
-    "waitlist_no": null,
-    "priority": null,
-    "eligible_date": "2027-01-13",
-    "deadline": "2027-01-13",
-    "deadline_note": "滿 2 足月即送托，最早可入托日等於最晚送托日"
+  {
+   "key": "hsinglung",
+   "role": "backup",
+   "name": "興隆社區公共托育家園",
+   "class": "1D",
+   "agency": "34",
+   "address": "福興路 2 號 2 樓（興隆國小）",
+   "phone": "(02)8931-5966",
+   "distance_km": 0.1,
+   "rating": "114 年優等"
   },
-  "snapshots": [
-    {
-      "date": "2026-08-14",
-      "status": "ok",
-      "source": "原 Baseline 報告（截圖已遺失）",
-      "school_year": 115,
-      "A": 78,
-      "M": 82,
-      "G": 25,
-      "capacity": 48,
-      "seats": {
-        "older": 16,
-        "middle": 16,
-        "baby": 16
-      },
-      "action": "建立 Baseline",
-      "notes": "日期沿用原報告標示；原始截圖遺失，數字無法再複核"
-    },
-    {
-      "date": "2026-09",
-      "status": "missing",
-      "source": "截圖遺失",
-      "school_year": 115,
-      "A": null,
-      "M": null,
-      "G": null,
-      "action": "—",
-      "notes": "資料遺失，不補推估值"
-    },
-    {
-      "date": "2026-10-25",
-      "status": "ok",
-      "source": "官網查詢 API（GetWaitingList / GetDetails / GetClassData / GetGraduateCount）",
-      "school_year": 115,
-      "A": 29,
-      "M": 115,
-      "G": 27,
-      "min_no": 51,
-      "capacity": 48,
-      "seats": {
-        "older": 16,
-        "middle": 16,
-        "baby": 16
-      },
-      "enrolled": {
-        "older": 20,
-        "middle": 16,
-        "baby": 12
-      },
-      "age_ranges": {
-        "older": "1歲2月～2歲0月",
-        "middle": "0歲8月～1歲2月",
-        "baby": "0歲2月～0歲8月"
-      },
-      "enrolled_by_priority": {
-        "1": 1,
-        "2": 2,
-        "3": 0,
-        "4": 43,
-        "5": 2
-      },
-      "waitlist_by_class": {
-        "大寶班": 13,
-        "中寶班": 8,
-        "小寶班": 4,
-        "未滿2個月": 4
-      },
-      "waitlist_by_priority": {
-        "第二序位": 2,
-        "第四序位": 22,
-        "第五序位": 5
-      },
-      "waitlist_class_priority": {
-        "大寶班": {
-          "第二序位": 1,
-          "第四序位": 8,
-          "第五序位": 4
-        },
-        "中寶班": {
-          "第四序位": 8
-        },
-        "小寶班": {
-          "第二序位": 1,
-          "第四序位": 2,
-          "第五序位": 1
-        },
-        "未滿2個月": {
-          "第四序位": 4
-        }
-      },
-      "retained": {
-        "from_prev_listed": 15,
-        "new_issued": 33,
-        "new_listed": 14
-      },
-      "gap_months": 2,
-      "action": "黃燈：開始聯絡備援托育",
-      "notes": "與上一筆相隔約 2 個月，ΔM 和退出代理值是 2 個月合計；API 另回傳 type B=46，意義待確認",
-      "caveat": "另外，115 學年度名冊 2026/9/1 才生效，8/14 那一筆是在生效前記錄的，這次的大幅減少可能有一部分來自換學年度，要看 11 月的數字才能確認。",
-      "rivals": {
-        "at": "2027-01-13",
-        "now": 6,
-        "still_baby_at_deadline": 5
-      }
+  {
+   "key": "hsinhai",
+   "role": "backup",
+   "name": "辛亥社區公共托育家園",
+   "class": "1D",
+   "agency": "46",
+   "address": "辛亥路四段 103 號 2 樓（辛亥國小）",
+   "phone": "(02)8663-1134",
+   "distance_km": 0.8,
+   "rating": "112 年甲等"
+  },
+  {
+   "key": "wukung",
+   "role": "backup",
+   "name": "武功社區公共托育家園",
+   "class": "1D",
+   "agency": "09",
+   "address": "興隆路一段 68 號 1 樓（武功國小）",
+   "phone": "(02)2930-0388",
+   "distance_km": 1.4,
+   "rating": "114 年優等"
+  }
+ ],
+ "actions": ["聯絡準公共或私立托嬰，問 2027 年 1 月中能不能入托、要怎麼排候補。", "選定一家社區公共托育家園，二寶出生後和文山托嬰中心同一天登記。", "連假後打 1999 轉 4274，問第四序位超過 30% 時，出缺怎麼通知。"],
+ "open_questions": [
+  {
+   "q": "第四序位已超過 30% 時，出缺是照候補序號通知，還是優先通知名額還沒用完的序位（例如第五序位）？",
+   "assumed": "暫時假設照候補序號通知、不分第四或第五序位，所以競爭人數把同年齡的所有候補者都算進去。",
+   "answer": null
+  }
+ ],
+ "snapshots": [
+  {
+   "date": "2026-08-14",
+   "status": "reference",
+   "school_year": 115,
+   "source": "原 Baseline 報告（截圖已遺失）",
+   "centers": {
+    "wenshan": {
+     "A": 78,
+     "M": 82,
+     "G": 25
     }
-  ]
+   },
+   "notes": "115 學年度名冊 9/1 才生效，這筆在生效前記錄，只當參考，不和之後的月份計算差額"
+  },
+  {
+   "date": "2026-09",
+   "status": "missing",
+   "school_year": 115,
+   "source": "截圖遺失",
+   "centers": {},
+   "notes": "資料遺失，不補推估值"
+  },
+  {
+   "date": "2026-10-25",
+   "status": "ok",
+   "school_year": 115,
+   "source": "官網查詢 API",
+   "centers": {
+    "wenshan": {
+     "seats": {
+      "older": 16,
+      "middle": 16,
+      "baby": 16
+     },
+     "enrolled": {
+      "older": 20,
+      "middle": 16,
+      "baby": 12
+     },
+     "quota": [9, 4, 4, 14, 14],
+     "enrolled_by_priority": [1, 2, 0, 43, 2],
+     "A": 29,
+     "M": 115,
+     "G": 27,
+     "list": [
+      [51, "older", 2, 0],
+      [55, "older", 5, 0],
+      [58, "older", 5, 0],
+      [61, "middle", 4, 0],
+      [64, "older", 5, 0],
+      [65, "middle", 4, 0],
+      [66, "older", 4, 0],
+      [68, "older", 4, 0],
+      [72, "older", 4, 0],
+      [74, "older", 4, 0],
+      [75, "middle", 4, 0],
+      [76, "middle", 4, 0],
+      [77, "middle", 4, 0],
+      [78, "older", 4, 0],
+      [81, "middle", 4, 0],
+      [90, "older", 4, 0],
+      [93, "baby", 4, 1],
+      [94, "middle", 4, 0],
+      [95, "middle", 4, 0],
+      [98, "older", 4, 0],
+      [99, "under2m", 4, 1],
+      [101, "under2m", 4, 1],
+      [103, "under2m", 4, 1],
+      [107, "baby", 5, 1],
+      [110, "baby", 4, 0],
+      [111, "under2m", 4, 1],
+      [112, "older", 5, 0],
+      [113, "baby", 2, 1],
+      [115, "older", 4, 0]
+     ]
+    },
+    "hsinglung": {
+     "seats": {
+      "older": 5,
+      "middle": 4,
+      "baby": 3
+     },
+     "enrolled": {
+      "older": 0,
+      "middle": 7,
+      "baby": 4
+     },
+     "quota": [2, 2, 2, 3, 1],
+     "enrolled_by_priority": [0, 2, 1, 7, 1],
+     "A": 8,
+     "M": 69,
+     "G": 8,
+     "list": [
+      [46, "older", 4, 0],
+      [49, "older", 4, 0],
+      [51, "older", 4, 0],
+      [54, "older", 4, 0],
+      [63, "under2m", 4, 1],
+      [65, "under2m", 4, 1],
+      [67, "under2m", 4, 1],
+      [69, "older", 4, 0]
+     ]
+    },
+    "hsinhai": {
+     "seats": {
+      "older": 5,
+      "middle": 4,
+      "baby": 3
+     },
+     "enrolled": {
+      "older": 1,
+      "middle": 7,
+      "baby": 4
+     },
+     "quota": [2, 2, 2, 3, 1],
+     "enrolled_by_priority": [1, 2, 0, 7, 2],
+     "A": 15,
+     "M": 29,
+     "G": 8,
+     "list": [
+      [1, "older", 4, 0],
+      [5, "older", 5, 0],
+      [15, "middle", 4, 0],
+      [16, "older", 4, 0],
+      [17, "middle", 4, 0],
+      [18, "baby", 4, 1],
+      [21, "older", 4, 0],
+      [22, "older", 2, 0],
+      [23, "baby", 4, 0],
+      [24, "baby", 5, 0],
+      [25, "older", 4, 0],
+      [26, "older", 2, 0],
+      [27, "older", 2, 0],
+      [28, "middle", 4, 0],
+      [29, "middle", 4, 0]
+     ]
+    },
+    "wukung": {
+     "seats": {
+      "older": 4,
+      "middle": 4,
+      "baby": 4
+     },
+     "enrolled": {
+      "older": 2,
+      "middle": 7,
+      "baby": 3
+     },
+     "quota": [2, 2, 2, 3, 1],
+     "enrolled_by_priority": [1, 1, 1, 8, 1],
+     "A": 27,
+     "M": 42,
+     "G": 8,
+     "list": [
+      [1, "older", 4, 0],
+      [2, "older", 5, 0],
+      [4, "older", 4, 0],
+      [7, "older", 4, 0],
+      [8, "older", 4, 0],
+      [9, "older", 4, 0],
+      [10, "older", 4, 0],
+      [12, "older", 4, 0],
+      [13, "older", 4, 0],
+      [14, "older", 4, 0],
+      [15, "older", 4, 0],
+      [17, "older", 4, 0],
+      [18, "older", 4, 0],
+      [20, "baby", 4, 1],
+      [21, "older", 4, 0],
+      [23, "older", 5, 0],
+      [24, "older", 5, 0],
+      [25, "older", 4, 0],
+      [28, "older", 4, 0],
+      [34, "older", 4, 0],
+      [35, "older", 4, 0],
+      [37, "baby", 4, 1],
+      [38, "middle", 4, 0],
+      [39, "baby", 4, 1],
+      [40, "older", 4, 0],
+      [41, "baby", 5, 1],
+      [42, "middle", 4, 0]
+     ]
+    }
+   }
+  }
+ ]
 }

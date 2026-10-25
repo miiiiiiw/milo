@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="二寶公托候補的每月追蹤：候補人數、最高序號、退出流量與送托倒數">
+<meta name="description" content="二寶公托候補的每月追蹤：同齡競爭人數、小寶班流動、備案家園與送托倒數">
 <meta name="keywords" content="家庭, 托嬰, 公托, 候補, 文山">
 <meta name="date" content="2026-10-25">
 <title>文山托嬰候補追蹤</title>
@@ -48,14 +48,15 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);f
 h1{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,5vw,2.75rem);line-height:1.15;margin:0;text-wrap:balance}
 h2{font-family:var(--serif);font-weight:400;font-size:1.65rem;line-height:1.25;margin:28px 0 0;display:flex;gap:12px;align-items:baseline}
 h2 .no{font-family:var(--mono);font-size:.75rem;color:var(--accent);letter-spacing:.1em}
+h3{font-size:1rem;font-weight:600;margin:8px 0 0}
 p{margin:0;max-width:65ch;overflow-wrap:anywhere}
 .lede{color:var(--muted)}
 .small{font-size:.85rem;color:var(--muted)}
 a{color:var(--link);text-underline-offset:3px}
 .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
 
-/* 狀態列 */
-.status{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:12px}
+.grid.tight{grid-template-columns:repeat(auto-fit,minmax(min(150px,100%),1fr))}
 .card{background:var(--node);border:1px solid var(--rule);border-radius:10px;padding:16px}
 .card .k{font-size:.8rem;color:var(--muted)}
 .card .v{font-family:var(--mono);font-size:1.9rem;line-height:1.2;font-variant-numeric:tabular-nums}
@@ -65,14 +66,12 @@ a{color:var(--link);text-underline-offset:3px}
 .light.green{color:var(--good-ink)} .light.green .dot{background:var(--good)}
 .light.yellow{color:var(--warn-ink)} .light.yellow .dot{background:var(--warn)}
 .light.red{color:var(--crit-ink)} .light.red .dot{background:var(--crit)}
-
-/* 指標 */
-.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(140px,100%),1fr));gap:12px}
 .tag{display:inline-block;font-size:.7rem;padding:0 6px;border-radius:4px;border:1px solid var(--rule-solid);color:var(--muted);margin-left:4px;vertical-align:2px;line-height:1.6}
 .callout{border-left:2px solid var(--accent);padding:4px 0 4px 16px}
 .callout strong{color:var(--accent)}
+.todo{border:1px dashed var(--rule-solid);border-radius:10px;padding:12px 16px;font-size:.9rem}
+.todo b{color:var(--warn-ink)}
 
-/* 圖表 */
 .chart{background:var(--node);border:1px solid var(--rule);border-radius:10px;padding:12px 12px 4px;position:relative}
 .chart svg{display:block;width:100%;height:auto;overflow:visible}
 .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.85rem;color:var(--muted);padding:0 4px 8px}
@@ -80,23 +79,20 @@ a{color:var(--link);text-underline-offset:3px}
 .tip{position:absolute;pointer-events:none;background:var(--paper);border:1px solid var(--rule-solid);border-radius:8px;padding:8px 10px;font-size:.8rem;line-height:1.5;box-shadow:0 4px 12px rgba(0,0,0,.12);opacity:0;transition:opacity .1s;min-width:140px}
 .tip.on{opacity:1}
 
-/* 表格 */
 .tbl{overflow-x:auto;background:var(--node);border:1px solid var(--rule);border-radius:10px}
 table{border-collapse:collapse;width:100%;font-size:.85rem}
 th,td{padding:8px 10px;border-bottom:1px solid var(--rule);text-align:left;white-space:nowrap}
 th{font-weight:500;color:var(--muted);background:var(--paper-2)}
 td.r,th.r{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
-tr.missing td{color:var(--soft);font-style:italic}
+tr.dim td{color:var(--soft);font-style:italic}
 tr:last-child td{border-bottom:0}
 
-/* 班別 */
 .bars{display:flex;flex-direction:column;gap:10px}
 .bar-row{display:grid;grid-template-columns:5.5em 1fr 4.5em;gap:10px;align-items:center;font-size:.85rem}
 .bar-track{height:12px;background:var(--paper-2);border-radius:4px;position:relative}
 .bar-fill{height:100%;background:var(--s1);border-radius:4px}
 .bar-cap{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink)}
 
-/* 時程 */
 .tl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
 .tl li{display:grid;grid-template-columns:7.5em 1fr;gap:12px;padding:10px 0;border-bottom:1px solid var(--rule)}
 .tl li:last-child{border-bottom:0}
@@ -114,9 +110,9 @@ footer{margin-top:24px;padding-top:16px;border-top:1px solid var(--rule)}
 <div class="wrap">
   <p class="eyebrow">家庭 · 公托候補追蹤</p>
   <h1>文山托嬰中心候補追蹤</h1>
-  <p class="lede">每月記錄一次官方候補清冊的彙總數字，判斷二寶能不能在需要送托時入托，以及什麼時候該啟動備援托育。資料更新於 <span id="updated" class="num">—</span>。</p>
+  <p class="lede">每月查一次官方候補清冊，看二寶能不能在需要送托時排進文山托嬰中心，以及什麼時候該啟動備援托育。資料更新於 <span id="updated" class="num">—</span>。</p>
 
-  <section class="status" aria-label="目前狀態">
+  <section class="grid" aria-label="目前狀態">
     <div class="card">
       <div class="k">目前燈號</div>
       <div id="light" class="light"><span class="dot" aria-hidden="true"></span><span>—</span></div>
@@ -136,58 +132,67 @@ footer{margin-top:24px;padding-top:16px;border-top:1px solid var(--rule)}
 
   <p class="callout" id="verdict"></p>
 
-  <h2><span class="no">01</span>本期數字</h2>
-  <p class="small" id="latest-meta"></p>
-  <div class="metrics" id="metrics"></div>
-  <p class="small"><span class="tag">事實</span> 直接從官方清冊讀到；<span class="tag">推估</span> 由兩期資料計算，只代表趨勢。退出代理值＝新增序號數 − 候補人數變化，包含入托、取消、失去資格等原因，<strong>不等於入托人數</strong>。</p>
+  <h2><span class="no">01</span>本月要做的事</h2>
+  <ol class="plain" id="actions"></ol>
 
-  <h2><span class="no">02</span>候補趨勢</h2>
-  <p>兩線的差距是已經離開清冊的序號數。差距擴大得越快，隊伍流動越快。</p>
-  <div class="chart">
-    <div class="legend"><span><i style="background:var(--s1)"></i>候補人數 A</span><span><i style="background:var(--s2)"></i>最高序號 M</span><span><i style="background:none;border-top:2px dashed var(--soft);height:0"></i>中間有月份缺資料</span></div>
-    <svg id="chart" viewBox="0 0 700 280" role="img" aria-label="候補人數與最高序號的逐月折線圖，數字見下方追蹤表"></svg>
-    <div class="tip" id="tip"></div>
-  </div>
-
-  <h2><span class="no">03</span>月度追蹤表</h2>
-  <div class="tbl"><table id="table"></table></div>
-  <p class="small">缺資料的月份不補數字，下一期改和最近一筆有資料的月份比較。換學年度後序號會重排，不跨學年度計算 ΔM 和退出代理值。</p>
-
-  <h2><span class="no">04</span>班別與候補結構</h2>
+  <h2><span class="no">02</span>二寶的競爭隊伍</h2>
+  <p>二寶入托時是小寶班年齡，所以真正的對手是<strong>到 <span class="deadline">—</span> 時也還在小寶班年齡（滿 2 足月、未滿 8 足月）的候補者</strong>。他們都比二寶早登記，序號一定排在前面。</p>
+  <div class="grid tight" id="rival-cards"></div>
+  <div class="todo" id="assumption"></div>
+  <h3>逐月變化</h3>
+  <div class="tbl"><table id="flow"></table></div>
+  <p class="small">「離開清冊」是和上一筆資料比對，消失的同齡候補序號數。離開的原因可能是入托、取消或失去資格，清冊上看不出來。累積兩、三個月後，才看得出每個月大約前進幾人。</p>
+  <h3>各班在托人數</h3>
   <p class="small" id="class-meta"></p>
   <div class="card bars" id="bars"></div>
-  <div class="tbl"><table id="waitlist"></table></div>
   <p class="small" id="class-note"></p>
 
-  <h2><span class="no">05</span>什麼時候登記</h2>
-  <p class="callout"><strong>文山托嬰中心不抽籤，先登記先給號。</strong>二寶取得身分證字號的當天，就到<a href="https://welfare.gov.taipei/Nursery/" target="_blank" rel="noopener">公托登記線上申辦系統</a>送出申請，不用等滿 2 個月。送得越晚，號碼越後面。</p>
-  <ul class="plain">
-    <li><strong>開放時間：</strong>115 學年度候補從 2026/8/10 17:00 起持續開放登記，依送出時間先後給號。</li>
-    <li><strong>登記資格：</strong>二寶設籍臺北市即可登記；父母雙方在登記日和入托日，都要往前連續設籍臺北市滿 6 個月。二寶設籍文山區，才符合第四序位。</li>
-    <li><strong>可以再登記一家：</strong>每位幼兒最多登記 1 家公辦民營托嬰中心和 1 家社區公共托育家園。文山區有 10 家社區公共托育家園，可以同時登記其中一家當作第二條路。</li>
-    <li><strong>什麼時候會抽籤：</strong>只有新開辦的機構招生時才抽籤（例如 2026/10 內湖的麗湖托嬰中心）。另外，社會局每年在新學年度開始前，會直播重新排序候補號碼。二寶的 115 學年度號碼有效到 2027/8/31，之後會換成 116 學年度的新號碼。</li>
+  <h2><span class="no">03</span>備案：附近的社區公共托育家園</h2>
+  <p>每個孩子可以同時登記 1 家公辦民營托嬰中心和 1 家社區公共托育家園。以下是離住家最近、查不到負面報導的三家，資料和文山托嬰中心同一天查詢。</p>
+  <div class="tbl"><table id="homes"></table></div>
+  <ul class="plain small">
+    <li>距離是住家到家園的直線距離，用 OpenStreetMap 估算。</li>
+    <li>評鑑等第來自臺北市政府開放資料，列出最近一次的結果。</li>
+    <li>「無負評」指的是搜尋新聞，查不到虐童、違規或裁罰的報導。網路上幾乎沒有家長評價，不代表品質有保證，登記前最好去現場看一次。</li>
+    <li>家園各班的席次是參考值，實際在托人數可以超過，例如中寶班 7 人、核定 4 席，總數不超過 12 席即可。</li>
   </ul>
 
-  <h2><span class="no">06</span>二寶時程</h2>
-  <ol class="tl" id="timeline"></ol>
-
-  <h2><span class="no">07</span>登記之後</h2>
-  <ol class="plain">
-    <li>記下案件編號、審核結果、核定序位和候補序號，更新到本頁。</li>
-    <li>打電話問中心：還沒滿 2 個月就輪到時怎麼處理？能不能延後報到？以中心的正式回覆為準，不要假設會保留床位。</li>
-    <li>收到入托通知後，要在<strong>通知報到日起 5 日內（不含例假日）</strong>完成報到並繳第一個月月費，逾期視為放棄。</li>
-  </ol>
-
-  <h2><span class="no">08</span>判讀規則</h2>
+  <h2><span class="no">04</span>登記與排序規則</h2>
+  <p class="callout"><strong>二寶拿到身分證字號的當天就登記。</strong>學年中途登記不抽籤，依送出時間先後給號，送得越晚號碼越後面。到<a href="https://welfare.gov.taipei/Nursery/" target="_blank" rel="noopener">公托登記線上申辦系統</a>送出申請，不用等滿 2 個月。</p>
+  <h3>二寶的序位</h3>
   <ul class="plain">
-    <li>中心共 48 席，大寶、中寶、小寶班各 16 席。序位比例：第一序位 20%、第二 10%、第三 10%、第四 30%，其餘給第五序位（一般家庭）；前四個序位沒用完的名額，由一般家庭遞補。</li>
-    <li>有空位時，中心依<strong>出缺班別和身分序位</strong>，再照候補序號通知。因此候補總人數不等於二寶前面的人數，也不能用「候補人數 ÷ 畢業人數」推算等待時間。</li>
-    <li>預估畢業人數是整個學年度會離托的人數，不是現在就有的小寶班空位。</li>
+    <li>你們設籍文山區，二寶屬於<strong>第四序位</strong>，保障名額是核定人數的 30%（文山托嬰中心 14 席、家園 3 席）。</li>
+    <li>第四序位的家庭也算一般家庭，除了自己的保障名額，也能遞補一般家庭名額，以及第一到第三序位沒用完的名額。沒設籍文山區的家庭只能排一般家庭名額。</li>
+    <li>但文山托嬰中心在托的 48 人裡有 43 人是第四序位，對手幾乎都和二寶同一序位，最後還是看候補序號先後。</li>
+    <li><strong>大寶念過這裡不加分。</strong>招生計畫的五個序位裡沒有「兄姊曾就讀」，和手足有關的只有手足是中度以上身心障礙者（第一序位），以及家中有 3 名以上子女（第二序位）。</li>
+  </ul>
+  <h3>什麼時候會抽籤</h3>
+  <ul class="plain">
+    <li>機構招生公告期間，某一序位的申請人數超過名額時抽籤，例如新開辦的機構。</li>
+    <li>社會局每年在新學年度開始前，會重新審核資格並直播重新排序候補名冊。二寶的 115 學年度號碼有效到 2027/8/31，之後依新排序的號碼候補。</li>
+  </ul>
+  <h3>其他規定</h3>
+  <ul class="plain">
+    <li>登記資格：二寶設籍臺北市；父母雙方在登記日和入托日，都要往前連續設籍臺北市滿 6 個月。</li>
+    <li>收到入托通知後，要在<strong>通知報到日起 5 日內（不含例假日）</strong>報到並繳第一個月月費，逾期視為放棄。</li>
+    <li>候補總人數不等於二寶前面的人數，也不能用「候補人數 ÷ 畢業人數」推算等待時間。中心出缺時是看出缺的年齡和身分別，再依序號通知。</li>
     <li>燈號從最晚送托日往前推：3 個月以上是綠燈，1～3 個月是黃燈，1 個月內是紅燈。這是家裡決定何時啟動備援的門檻，不是入托機率。</li>
   </ul>
 
+  <h2><span class="no">05</span>二寶時程</h2>
+  <ol class="tl" id="timeline"></ol>
+
+  <h2><span class="no">06</span>整體候補（參考）</h2>
+  <p>文山托嬰中心所有年齡的候補人數和最高序號。兩線的差距是已經離開清冊的序號數，可以看出整體熱度，但不能直接用來判斷二寶的機會。</p>
+  <div class="chart">
+    <div class="legend"><span><i style="background:var(--s1)"></i>候補人數</span><span><i style="background:var(--s2)"></i>最高序號</span><span><i style="background:none;border-top:2px dashed var(--soft);height:0"></i>參考值或中間缺資料</span></div>
+    <svg id="chart" viewBox="0 0 700 260" role="img" aria-label="文山托嬰中心候補人數與最高序號的逐月折線圖，數字見下表"></svg>
+    <div class="tip" id="tip"></div>
+  </div>
+  <div class="tbl"><table id="table"></table></div>
+
   <footer class="small">
-    <p>資料來源：<a href="https://welfare.gov.taipei/Nursery/M7_001_006" target="_blank" rel="noopener">臺北市托嬰機構收托現況查詢及候補清冊</a>、<a href="https://dosw.gov.taipei/cp.aspx?n=91E27EEB185E61A5" target="_blank" rel="noopener">社會局公托登記報名及抽籤</a>（2026/10/25 查閱）。本頁只記錄彙總數字，不保存任何幼兒的個人資料；規則以官方最新公告為準。</p>
+    <p>資料來源：<a href="https://welfare.gov.taipei/Nursery/M7_001_006" target="_blank" rel="noopener">臺北市托嬰機構收托現況查詢及候補清冊</a>、<a href="https://dosw.gov.taipei/cp.aspx?n=91E27EEB185E61A5" target="_blank" rel="noopener">社會局公托登記報名及抽籤</a>（含招生計畫 113.7 修正版），2026/10/25 查閱。本頁只記錄候補序號、班別、序位等匿名資料，不保存任何幼兒的姓名、身分證字號或生日；規則以官方最新公告為準。</p>
   </footer>
 </div>
 
@@ -199,26 +204,35 @@ const addMonths = (d, n) => { const r = new Date(d); r.setMonth(r.getMonth() + n
 const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 const sign = n => n == null ? '—' : (n > 0 ? '+' + n : String(n));
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const PRI = ['', '第一序位', '第二序位', '第三序位', '第四序位', '第五序位'];
+const CLS = { older: '大寶班', middle: '中寶班', baby: '小寶班', under2m: '未滿 2 個月' };
 
 fetch('wenshan-nursery.json', { cache: 'no-cache' })
   .then(r => r.json())
   .then(render)
   .catch(() => { $('verdict').textContent = '讀不到 wenshan-nursery.json。請透過網站開啟本頁，不要直接開本機檔案。'; });
 
-// 每筆有資料的快照，和前一筆有資料、同學年度的快照比較
-function derive(snaps) {
+// 同齡候補：最晚送托日時仍在小寶班年齡者（名單第 4 欄為 1）
+const rivals = c => (c.list || []).filter(x => x[3] === 1);
+const total = o => o.older + o.middle + o.baby;
+
+// 和前一筆完整資料比對：同學年度才算差額
+function withPrev(snaps, key) {
   let prev = null;
   return snaps.map(s => {
-    const r = { ...s, dA: null, dM: null, exit: null, gap: null };
-    if (s.status !== 'ok') return r;
-    if (prev && prev.school_year === s.school_year) {
-      r.dA = s.A - prev.A; r.dM = s.M - prev.M; r.exit = r.dM - r.dA;
-      r.gap = Math.round((parse(s.date) - parse(prev.date)) / 2629746000);
-      r.prevDate = prev.date;
+    const c = s.centers[key];
+    const r = { s, c, prev: null };
+    if (s.status === 'ok' && c) {
+      if (prev && prev.s.school_year === s.school_year) r.prev = prev;
+      prev = r;
     }
-    prev = s;
     return r;
   });
+}
+function left(r) {
+  if (!r.prev) return null;
+  const now = new Set(r.c.list.map(x => x[0]));
+  return rivals(r.prev.c).filter(x => !now.has(x[0])).length;
 }
 
 function render(data) {
@@ -226,12 +240,15 @@ function render(data) {
   const child = data.child;
   const deadline = parse(child.deadline);
   const yellowFrom = addMonths(deadline, -3), redFrom = addMonths(deadline, -1);
-  const days = Math.round((deadline - today) / 864e5);
-  const snaps = derive(data.snapshots);
+  const snaps = data.snapshots;
   const ok = snaps.filter(s => s.status === 'ok');
   const last = ok[ok.length - 1];
+  const W = last.centers.wenshan;
+  const rv = rivals(W);
+  const rv4 = rv.filter(x => x[2] === 4).length;
 
   $('updated').textContent = fmt(data.updated);
+  document.querySelectorAll('.deadline').forEach(e => e.textContent = fmt(child.deadline));
 
   // 燈號
   let light = 'green', label = '綠燈：仍有彈性', desc = `${fmt(iso(yellowFrom))} 起轉黃燈`;
@@ -240,119 +257,125 @@ function render(data) {
   $('light').className = 'light ' + light;
   $('light').lastElementChild.textContent = label;
   $('light-d').textContent = desc;
-  $('days').textContent = days;
+  $('days').textContent = Math.round((deadline - today) / 864e5);
   $('deadline-d').textContent = `${fmt(child.deadline)}（${child.deadline_note}）`;
   $('phase').textContent = child.phase;
   $('phase-d').textContent = child.actual_birth
-    ? `${fmt(child.actual_birth)} 出生${child.waitlist_no ? `，候補序號 ${child.waitlist_no}（${child.priority || '序位待確認'}）` : '，尚未取得候補序號'}`
+    ? `${fmt(child.actual_birth)} 出生${child.waitlist_no ? `，候補序號 ${child.waitlist_no}（${PRI[child.priority]}）` : '，尚未取得候補序號'}`
     : `${child.birth_basis}：${fmt(child.assumed_birth)} 前後`;
 
   // 結論
-  if (last.dA != null) {
-    $('verdict').innerHTML = `<strong>${last.exit > last.dM ? '離開的比新增的多，隊伍在變短。' : '新增的比離開的多，隊伍在變長。'}</strong>從 ${fmt(last.prevDate)} 到 ${fmt(last.date)}（約 ${last.gap} 個月），新增約 ${last.dM} 個候補序號，候補人數從 ${last.A - last.dA} 人變成 ${last.A} 人，估計約 ${last.exit} 個序號離開清冊。清冊看不出離開的原因，所以這只說明隊伍在動，不代表二寶的入托機率。${last.caveat ? '<br>' + esc(last.caveat) : ''}`;
-  }
+  const vacancy = W.seats ? total(W.seats) - total(W.enrolled) : null;
+  const flowRows = withPrev(snaps, 'wenshan').filter(r => r.s.status === 'ok');
+  const lastFlow = flowRows[flowRows.length - 1];
+  const lf = left(lastFlow);
+  $('verdict').innerHTML = `<strong>二寶前面目前有 ${rv.length} 位同齡候補，文山托嬰中心${vacancy > 0 ? `有 ${vacancy} 個空位` : '沒有空位'}。</strong>` +
+    (lf == null
+      ? `這是第一筆完整資料，下個月起才算得出每月有幾位同齡候補離開清冊。在那之前，先把備援托育和家園登記準備好。`
+      : `和 ${fmt(lastFlow.prev.s.date)} 相比，有 ${lf} 位同齡候補離開清冊。`);
 
-  // 本期數字
-  $('latest-meta').textContent = `${fmt(last.date)}｜${last.school_year} 學年度｜來源：${last.source}`;
-  const m = [
-    ['候補人數 A', last.A, '事實', last.dA != null ? `較 ${fmt(last.prevDate)} ${sign(last.dA)}` : ''],
-    ['最高序號 M', last.M, '事實', last.dM != null ? `新增約 ${last.dM} 號` : ''],
-    ['退出代理值', last.exit ?? '—', '推估', last.gap ? `${last.gap} 個月合計` : ''],
-    ['預估畢業 G', last.G, '事實', '學年度結束（8/31）前'],
-  ];
-  if (last.retained) m.push(['上期名單留下', last.retained.from_prev_listed, '事實', `上期 ${last.A - last.dA} 人中仍在清冊`]);
-  $('metrics').innerHTML = m.map(([k, v, t, d]) =>
-    `<div class="card"><div class="k">${k}<span class="tag">${t}</span></div><div class="v">${v}</div><div class="d">${d}</div></div>`).join('');
+  $('actions').innerHTML = data.actions.map(a => `<li>${esc(a)}</li>`).join('');
 
-  // 追蹤表
-  $('table').innerHTML = `<thead><tr><th>截圖日</th><th class="r">學年度</th><th class="r">A</th><th class="r">M</th><th class="r">ΔA</th><th class="r">ΔM</th><th class="r">退出代理</th><th class="r">G</th><th>二寶</th><th>行動</th><th>備註</th></tr></thead><tbody>` +
-    snaps.map(s => s.status !== 'ok'
-      ? `<tr class="missing"><td>${fmt(s.date)}</td><td class="r">${s.school_year}</td><td colspan="6">${esc(s.source)}</td><td>—</td><td>${esc(s.action)}</td><td>${esc(s.notes)}</td></tr>`
-      : `<tr><td>${fmt(s.date)}</td><td class="r">${s.school_year}</td><td class="r">${s.A}</td><td class="r">${s.M}</td><td class="r">${sign(s.dA)}</td><td class="r">${sign(s.dM)}</td><td class="r">${s.exit ?? '—'}</td><td class="r">${s.G}</td><td>${s.child_no ?? '尚未出生'}</td><td>${esc(s.action)}</td><td>${esc(s.notes)}</td></tr>`
-    ).join('') + '</tbody>';
+  // 競爭隊伍
+  $('rival-cards').innerHTML = [
+    ['同齡候補', rv.length, '事實', `第四序位 ${rv4} 人，其他序位 ${rv.length - rv4} 人`],
+    ['小寶班在托', `${W.enrolled.baby}<span style="font-size:1rem"> / ${W.seats.baby}</span>`, '事實', '在托人數 / 核定席次'],
+    ['全中心空位', vacancy, '事實', `在托 ${total(W.enrolled)} 人，核定 ${total(W.seats)} 席`],
+    ['候補總人數', W.A, '事實', '所有年齡，僅供參考'],
+  ].map(([k, v, t, d]) => `<div class="card"><div class="k">${k}<span class="tag">${t}</span></div><div class="v">${v}</div><div class="d">${d}</div></div>`).join('');
 
-  // 班別
-  const withClass = [...ok].reverse().find(s => s.enrolled);
-  if (withClass) {
-    const e = withClass.enrolled, seat = withClass.seats, ar = withClass.age_ranges;
-    $('class-meta').textContent = `${fmt(withClass.date)} 的在托人數（直線為核定席次）`;
-    const max = 24;
-    $('bars').innerHTML = [['大寶班', 'older'], ['中寶班', 'middle'], ['小寶班', 'baby']].map(([n, k]) =>
-      `<div class="bar-row"><span>${n}<br><span class="small">${ar[k]}</span></span><div class="bar-track" role="img" aria-label="${n}在托 ${e[k]} 人，核定 ${seat[k]} 席"><div class="bar-fill" style="width:${e[k] / max * 100}%"></div><div class="bar-cap" style="left:${seat[k] / max * 100}%"></div></div><span class="num">${e[k]} / ${seat[k]}</span></div>`).join('');
-    const cp = withClass.waitlist_class_priority, pri = ['第二序位', '第四序位', '第五序位'];
-    $('waitlist').innerHTML = `<thead><tr><th>候補班別</th>${pri.map(p => `<th class="r">${p}</th>`).join('')}<th class="r">合計</th></tr></thead><tbody>` +
-      Object.entries(cp).map(([c, v]) => `<tr><td>${c}</td>${pri.map(p => `<td class="r">${v[p] || 0}</td>`).join('')}<td class="r">${withClass.waitlist_by_class[c]}</td></tr>`).join('') + '</tbody>';
-    const rv = withClass.rivals;
-    $('class-note').innerHTML = `在托 ${e.older + e.middle + e.baby} 人，核定 ${withClass.capacity} 席已滿，目前沒有空位。大寶班比核定多 ${e.older - seat.older} 人、小寶班少 ${seat.baby - e.baby} 人，表示各班人數會隨孩子的實際年齡調整，不是固定 16 席。` +
-      (rv ? `<br><span class="tag">推估</span> 和二寶搶同一類缺額的，主要是小寶班和未滿 2 個月的第四序位候補，目前 ${rv.now} 人，其中 ${rv.still_baby_at_deadline} 人到 ${fmt(rv.at)} 仍在小寶班年齡（未滿 8 個月）。他們的序號都比二寶前面，要等他們入托或離開清冊，才輪得到二寶。` : '');
-  }
+  const oq = data.open_questions[0];
+  $('assumption').innerHTML = oq.answer
+    ? `<b>已確認：</b>${esc(oq.answer)}`
+    : `<b>待確認：</b>${esc(oq.q)}<br>${esc(oq.assumed)}`;
+
+  $('flow').innerHTML = `<thead><tr><th>日期</th><th class="r">同齡候補</th><th class="r">其中第四序位</th><th class="r">離開清冊</th><th class="r">小寶班在托</th><th class="r">全中心在托</th></tr></thead><tbody>` +
+    flowRows.map(r => { const x = rivals(r.c), l = left(r); return `<tr><td>${fmt(r.s.date)}</td><td class="r">${x.length}</td><td class="r">${x.filter(v => v[2] === 4).length}</td><td class="r">${l ?? '—'}</td><td class="r">${r.c.enrolled.baby} / ${r.c.seats.baby}</td><td class="r">${total(r.c.enrolled)} / ${total(r.c.seats)}</td></tr>`; }).join('') + '</tbody>';
+
+  // 各班在托
+  $('class-meta').textContent = `${fmt(last.date)} 文山托嬰中心在托人數（直線為核定席次）`;
+  const max = 24;
+  $('bars').innerHTML = [['大寶班', 'older', '1 歲 2 月～2 歲'], ['中寶班', 'middle', '8 個月～1 歲 2 月'], ['小寶班', 'baby', '2～8 個月']].map(([n, k, a]) =>
+    `<div class="bar-row"><span>${n}<br><span class="small">${a}</span></span><div class="bar-track" role="img" aria-label="${n}在托 ${W.enrolled[k]} 人，核定 ${W.seats[k]} 席"><div class="bar-fill" style="width:${W.enrolled[k] / max * 100}%"></div><div class="bar-cap" style="left:${W.seats[k] / max * 100}%"></div></div><span class="num">${W.enrolled[k]} / ${W.seats[k]}</span></div>`).join('');
+  $('class-note').innerHTML = `大寶班比核定多 ${W.enrolled.older - W.seats.older} 人、小寶班少 ${W.seats.baby - W.enrolled.baby} 人，表示各班人數會隨孩子的實際年齡調整，總數不超過 ${total(W.seats)} 席。<span class="tag">推估</span> 小寶班有空床但全中心已滿，要等大寶班孩子滿 2 歲離開，才會空出名額。本學年度到 2027/8/31 預計畢業 ${W.G} 人。`;
+
+  // 備案家園
+  const homes = data.targets.filter(t => t.role === 'backup');
+  $('homes').innerHTML = `<thead><tr><th>家園</th><th class="r">距離</th><th>評鑑</th><th class="r">在托 / 核定</th><th class="r">小寶班</th><th class="r">候補</th><th class="r">同齡候補</th></tr></thead><tbody>` +
+    homes.map(t => {
+      const c = last.centers[t.key];
+      if (!c) return `<tr class="dim"><td>${esc(t.name)}</td><td colspan="6">本期沒有資料</td></tr>`;
+      return `<tr><td>${esc(t.name.replace('社區公共托育家園', ''))}<br><span class="small">${esc(t.address)}・${esc(t.phone)}</span></td><td class="r">${t.distance_km} km</td><td>${esc(t.rating)}</td><td class="r">${total(c.enrolled)} / ${total(c.seats)}</td><td class="r">${c.enrolled.baby} / ${c.seats.baby}</td><td class="r">${c.A}</td><td class="r">${rivals(c).length}</td></tr>`;
+    }).join('') + '</tbody>';
 
   // 時程
+  const birth = child.actual_birth || child.assumed_birth;
   const ev = [
-    [ok[0].date, '建立 Baseline'],
-    [child.actual_birth || child.assumed_birth, child.actual_birth ? '二寶出生' : `二寶預估出生（${child.birth_basis}）`],
-    [child.registered_on || iso(new Date(parse(child.actual_birth || child.assumed_birth).getTime() + 3 * 864e5)), child.registered_on ? '完成候補登記' : '取得身分證字號，當天登記候補（預估）'],
+    [birth, child.actual_birth ? '二寶出生' : `二寶預估出生（${child.birth_basis}）`],
+    [child.registered_on || iso(new Date(parse(birth).getTime() + 3 * 864e5)), child.registered_on ? '完成候補登記' : '取得身分證字號，當天登記文山托嬰中心和一家家園（預估）'],
     [iso(yellowFrom), '黃燈：開始聯絡備援托育'],
     [iso(redFrom), '紅燈：確保備援托育'],
-    [child.eligible_date, '滿 2 足月：最早可入托，也是最晚送托日'],
-    ['2027-08-31', '115 學年度候補名冊失效，之後依 116 學年度重新排序的號碼候補'],
+    [child.deadline, '滿 2 足月：最早可入托，也是最晚送托日'],
+    ['2027-08-31', '115 學年度候補名冊失效，之後依重新排序的號碼候補'],
   ].sort((a, b) => a[0].localeCompare(b[0]));
   const ti = iso(today);
-  let nowShown = false;
+  let shown = false;
+  const nowLi = `<li class="now"><span class="when">${fmt(ti)}</span><span class="what">今天</span></li>`;
   $('timeline').innerHTML = ev.map(([d, w]) => {
-    let pre = '';
-    if (!nowShown && d > ti) { nowShown = true; pre = `<li class="now"><span class="when">${fmt(ti)}</span><span class="what">今天</span></li>`; }
+    const pre = !shown && d > ti ? (shown = true, nowLi) : '';
     return pre + `<li class="${d <= ti ? 'done' : ''}"><span class="when">${fmt(d)}</span><span class="what">${w}</span></li>`;
-  }).join('') + (nowShown ? '' : `<li class="now"><span class="when">${fmt(ti)}</span><span class="what">今天</span></li>`);
+  }).join('') + (shown ? '' : nowLi);
+
+  // 整體候補表
+  const rows = withPrev(snaps, 'wenshan');
+  $('table').innerHTML = `<thead><tr><th>日期</th><th class="r">候補人數</th><th class="r">最高序號</th><th class="r">候補人數變化</th><th class="r">新增序號</th><th class="r">預估畢業</th><th>備註</th></tr></thead><tbody>` +
+    rows.map(({ s, c, prev }) => !c || c.A == null
+      ? `<tr class="dim"><td>${fmt(s.date)}</td><td colspan="5">${esc(s.source)}</td><td>${esc(s.notes)}</td></tr>`
+      : `<tr class="${s.status === 'ok' ? '' : 'dim'}"><td>${fmt(s.date)}</td><td class="r">${c.A}</td><td class="r">${c.M}</td><td class="r">${prev ? sign(c.A - prev.c.A) : '—'}</td><td class="r">${prev ? c.M - prev.c.M : '—'}</td><td class="r">${c.G}</td><td>${esc(s.notes || '')}</td></tr>`
+    ).join('') + '</tbody>';
 
   drawChart(snaps);
 }
 
 function drawChart(snaps) {
   const svg = $('chart'), tip = $('tip');
-  const W = 700, H = 280, L = 40, R = 16, T = 16, B = 32;
-  const t0 = parse('2026-08-01'), t1 = parse('2027-03-01');
+  const W = 700, H = 260, L = 40, R = 16, T = 16, B = 32;
+  const pts = snaps.filter(s => s.centers.wenshan && s.centers.wenshan.A != null);
+  const t0 = parse('2026-08-01');
   const lastT = parse(snaps[snaps.length - 1].date);
-  const tEnd = lastT > t1 ? addMonths(lastT, 1) : t1;
-  const ok = snaps.filter(s => s.status === 'ok');
-  const vmax = Math.ceil(Math.max(...ok.flatMap(s => [s.A, s.M])) / 40) * 40;
+  const tEnd = lastT > parse('2027-03-01') ? addMonths(lastT, 1) : parse('2027-03-01');
+  const vmax = Math.ceil(Math.max(...pts.flatMap(s => [s.centers.wenshan.A, s.centers.wenshan.M])) / 40) * 40;
   const x = d => L + (parse(d) - t0) / (tEnd - t0) * (W - L - R);
   const y = v => T + (1 - v / vmax) * (H - T - B);
   const css = getComputedStyle(document.documentElement);
   const c = n => css.getPropertyValue(n).trim();
   let g = '';
   for (let v = 0; v <= vmax; v += 40) g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="${c('--rule')}"/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="${c('--muted')}" style="font-family:var(--mono)">${v}</text>`;
-  for (let d = new Date(t0); d <= tEnd; d = addMonths(d, 1)) {
-    const k = iso(d).slice(0, 7);
-    g += `<text x="${x(k + '-01')}" y="${H - 10}" text-anchor="middle" font-size="11" fill="${c('--muted')}">${d.getMonth() === 0 ? d.getFullYear() + '/1' : (d.getMonth() + 1) + '月'}</text>`;
-  }
-  snaps.filter(s => s.status !== 'ok').forEach(s => {
-    g += `<text x="${x(s.date)}" y="${T + 12}" text-anchor="middle" font-size="11" fill="${c('--soft')}">缺資料</text>`;
-  });
-  // 線段：相鄰兩筆之間有缺資料就畫虛線
+  for (let d = new Date(t0); d <= tEnd; d = addMonths(d, 1))
+    g += `<text x="${x(iso(d))}" y="${H - 10}" text-anchor="middle" font-size="11" fill="${c('--muted')}">${d.getMonth() === 0 ? d.getFullYear() + '/1' : (d.getMonth() + 1) + '月'}</text>`;
+  snaps.filter(s => s.status === 'missing').forEach(s => g += `<text x="${x(s.date)}" y="${T + 12}" text-anchor="middle" font-size="11" fill="${c('--soft')}">缺資料</text>`);
   const seg = (key, col) => {
     let out = '';
-    for (let i = 1; i < ok.length; i++) {
-      const a = ok[i - 1], b = ok[i];
-      const gap = snaps.indexOf(b) - snaps.indexOf(a) > 1;
-      out += `<line x1="${x(a.date)}" y1="${y(a[key])}" x2="${x(b.date)}" y2="${y(b[key])}" stroke="${col}" stroke-width="2" stroke-linecap="round" ${gap ? 'stroke-dasharray="5 5"' : ''}/>`;
+    for (let i = 1; i < pts.length; i++) {
+      const a = pts[i - 1], b = pts[i];
+      const dashed = a.status !== 'ok' || snaps.indexOf(b) - snaps.indexOf(a) > 1;
+      out += `<line x1="${x(a.date)}" y1="${y(a.centers.wenshan[key])}" x2="${x(b.date)}" y2="${y(b.centers.wenshan[key])}" stroke="${col}" stroke-width="2" stroke-linecap="round" ${dashed ? 'stroke-dasharray="5 5"' : ''}/>`;
     }
-    ok.forEach(s => out += `<circle cx="${x(s.date)}" cy="${y(s[key])}" r="4.5" fill="${col}" stroke="${c('--node')}" stroke-width="2"/>`);
-    const e = ok[ok.length - 1];
-    out += `<text x="${x(e.date) + 9}" y="${y(e[key]) + 4}" font-size="12" fill="${c('--ink')}" style="font-family:var(--mono)">${e[key]}</text>`;
+    pts.forEach(s => out += `<circle cx="${x(s.date)}" cy="${y(s.centers.wenshan[key])}" r="4.5" fill="${s.status === 'ok' ? col : c('--node')}" stroke="${s.status === 'ok' ? c('--node') : col}" stroke-width="2"/>`);
+    const e = pts[pts.length - 1];
+    out += `<text x="${x(e.date) + 9}" y="${y(e.centers.wenshan[key]) + 4}" font-size="12" fill="${c('--ink')}" style="font-family:var(--mono)">${e.centers.wenshan[key]}</text>`;
     return out;
   };
   g += seg('M', c('--s2')) + seg('A', c('--s1'));
-  g += ok.map(s => `<rect data-d="${s.date}" x="${x(s.date) - 24}" y="${T}" width="48" height="${H - T - B}" fill="transparent"/>`).join('');
+  g += pts.map(s => `<rect data-d="${s.date}" x="${x(s.date) - 24}" y="${T}" width="48" height="${H - T - B}" fill="transparent"/>`).join('');
   svg.innerHTML = g;
 
   svg.querySelectorAll('rect[data-d]').forEach(r => {
-    const s = snaps.find(v => v.date === r.dataset.d);
+    const s = pts.find(v => v.date === r.dataset.d), w = s.centers.wenshan;
     const show = () => {
-      tip.innerHTML = `<strong>${fmt(s.date)}</strong><br>候補人數 A：<span class="num">${s.A}</span><br>最高序號 M：<span class="num">${s.M}</span>` + (s.exit != null ? `<br>退出代理值：<span class="num">${s.exit}</span>（${s.gap} 個月）` : '');
+      tip.innerHTML = `<strong>${fmt(s.date)}${s.status === 'ok' ? '' : '（參考值）'}</strong><br>候補人數：<span class="num">${w.A}</span><br>最高序號：<span class="num">${w.M}</span>`;
       const box = svg.getBoundingClientRect(), k = box.width / W;
-      const px = x(s.date) * k + 12;
-      tip.style.left = Math.min(px + 12, box.width - 160) + 'px';
+      tip.style.left = Math.min(x(s.date) * k + 24, box.width - 160) + 'px';
       tip.style.top = '40px';
       tip.classList.add('on');
     };
