@@ -1,10 +1,24 @@
 {
-  "generated": "2026-10-24T14:20:39.756Z",
+  "generated": "2026-10-25T08:01:58.603Z",
   "folders": {
     "tech": "技術筆記",
-    "product": "產品"
+    "product": "產品",
+    "family": "家庭"
   },
   "files": [
+    {
+      "path": "family/wenshan-nursery.html",
+      "title": "文山托嬰候補追蹤",
+      "description": "二寶公托候補的每月追蹤：候補人數、最高序號、退出流量與送托倒數",
+      "tags": [
+        "家庭",
+        "托嬰",
+        "公托",
+        "候補",
+        "文山"
+      ],
+      "date": "2026-10-25"
+    },
     {
       "path": "tech/email-auth.html",
       "title": "Email 寄件者驗證",
