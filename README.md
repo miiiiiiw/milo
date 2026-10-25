@@ -80,6 +80,7 @@ push 任何 `.html` 後，GitHub Action「Build manifest」會執行 `scripts/bu
 1. 到 [Actions](https://github.com/miiiiiiw/milo/actions) 確認「Build manifest」和「pages build and deployment」都是綠色勾勾。
 2. 打開網站並強制重新整理（`Cmd/Ctrl + Shift + R`），確認頁面出現在正確的資料夾。
 3. 點進頁面，確認圖片、樣式、互動都正常。
+4. 分別用桌機寬度和手機寬度看一次：導覽頁的預覽區要填滿整個視窗高度，頁面本身不能出現橫向捲動。
 
 ## 問題排除
 
@@ -120,6 +121,7 @@ push 任何 `.html` 後，GitHub Action「Build manifest」會執行 `scripts/bu
 - 使用繁體中文（台灣用語）。
 - 補齊上述四個 meta 標籤，並檢查資源是否使用相對路徑。
 - 在本機產生 manifest，確認新頁面有被掃描到。push 之後，再確認網站上已經出現。
+- push 前在本機打開導覽頁，用桌機和手機兩種寬度截圖檢查版面（見「新增後確認」第 4 點）。
 - commit 訊息以「新增：」「更新：」「刪除：」「維護：」開頭。
 - 檔名與資料夾名使用簡短英文。新增資料夾時，在 `folders.json` 加上中文名稱。
 - push 後回報分享用的短網址。
@@ -133,3 +135,4 @@ push 任何 `.html` 後，GitHub Action「Build manifest」會執行 `scripts/bu
 
 - 2026-10-20：建立導覽頁與 manifest 自動更新機制，GitHub Pages 上線。
 - 2026-10-21：檔名改用簡短英文，新增 `folders.json` 設定資料夾的中文名稱；「複製連結」改為產生不含 `.html` 的短網址。
+- 2026-10-25：導覽頁高度改為直接綁定視窗高度（`100dvh`），修正部分瀏覽器在桌機版只撐到內容高度、預覽區下方留白的問題。
