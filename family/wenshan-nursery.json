@@ -1,0 +1,76 @@
+{
+  "_說明": "文山托嬰中心候補追蹤資料。只放彙總數字，不放任何幼兒個資。每月在 snapshots 末端新增一筆，不覆寫歷史。",
+  "updated": "2026-10-25",
+  "center": {
+    "name": "臺北市文山托嬰中心",
+    "agency_code": "05",
+    "class_code": "1C",
+    "source_page": "https://welfare.gov.taipei/Nursery/M7_001_006",
+    "rules_page": "https://dosw.gov.taipei/cp.aspx?n=91E27EEB185E61A5"
+  },
+  "child": {
+    "phase": "出生前",
+    "birth_basis": "以 38 週出生估算",
+    "assumed_birth": "2026-11-13",
+    "actual_birth": null,
+    "registered_on": null,
+    "waitlist_no": null,
+    "priority": null,
+    "eligible_date": "2027-01-13",
+    "deadline": "2027-01-13",
+    "deadline_note": "滿 2 足月即送托，最早可入托日等於最晚送托日"
+  },
+  "snapshots": [
+    {
+      "date": "2026-08-14",
+      "status": "ok",
+      "source": "原 Baseline 報告（截圖已遺失）",
+      "school_year": 115,
+      "A": 78,
+      "M": 82,
+      "G": 25,
+      "capacity": 48,
+      "seats": { "older": 16, "middle": 16, "baby": 16 },
+      "action": "建立 Baseline",
+      "notes": "日期沿用原報告標示；原始截圖遺失，數字無法再複核"
+    },
+    {
+      "date": "2026-09",
+      "status": "missing",
+      "source": "截圖遺失",
+      "school_year": 115,
+      "A": null,
+      "M": null,
+      "G": null,
+      "action": "—",
+      "notes": "資料遺失，不補推估值"
+    },
+    {
+      "date": "2026-10-25",
+      "status": "ok",
+      "source": "官網查詢 API（GetWaitingList / GetDetails / GetClassData / GetGraduateCount）",
+      "school_year": 115,
+      "A": 29,
+      "M": 115,
+      "G": 27,
+      "min_no": 51,
+      "capacity": 48,
+      "seats": { "older": 16, "middle": 16, "baby": 16 },
+      "enrolled": { "older": 20, "middle": 16, "baby": 12 },
+      "age_ranges": { "older": "1歲2月～2歲0月", "middle": "0歲8月～1歲2月", "baby": "0歲2月～0歲8月" },
+      "enrolled_by_priority": { "1": 1, "2": 2, "3": 0, "4": 43, "5": 2 },
+      "waitlist_by_class": { "大寶班": 13, "中寶班": 8, "小寶班": 4, "未滿2個月": 4 },
+      "waitlist_by_priority": { "第二序位": 2, "第四序位": 22, "第五序位": 5 },
+      "waitlist_class_priority": {
+        "大寶班": { "第二序位": 1, "第四序位": 8, "第五序位": 4 },
+        "中寶班": { "第四序位": 8 },
+        "小寶班": { "第二序位": 1, "第四序位": 2, "第五序位": 1 },
+        "未滿2個月": { "第四序位": 4 }
+      },
+      "retained": { "from_prev_listed": 15, "new_issued": 33, "new_listed": 14 },
+      "gap_months": 2,
+      "action": "黃燈：開始聯絡備援托育",
+      "notes": "與上一筆相隔約兩個月，ΔM 與退出代理值是兩個月合計；API 另回傳 type B=46，意義待確認"
+    }
+  ]
+}

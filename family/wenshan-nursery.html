@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="二寶公托候補的每月追蹤：候補人數、最高序號、退出流量與送托倒數">
+<meta name="keywords" content="家庭, 托嬰, 公托, 候補, 文山">
+<meta name="date" content="2026-10-25">
+<title>文山托嬰候補追蹤</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@400;600&display=swap">
+<style>
+/* 版面：單欄閱讀；資料全部來自同資料夾的 wenshan-nursery.json，本頁只負責呈現。 */
+:root{
+  --paper:#f5f5f5; --paper-2:#ececec; --node:#ffffff;
+  --ink:#2d3142; --muted:#4f5d75; --soft:#5a6580;
+  --rule:rgba(45,49,66,.12); --rule-solid:#bfc0c0;
+  --accent:#bf4520; --link:#2e5aa8;
+  --s1:#2a78d6; --s2:#eb6834;
+  --good:#0ca30c; --warn:#fab219; --crit:#d03b3b;
+  --good-ink:#006300; --warn-ink:#8a5a00; --crit-ink:#a82424;
+  --serif:'Instrument Serif','Noto Serif TC',serif;
+  --sans:'Geist','Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;
+  --mono:'Geist Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#2d3142; --paper-2:#393e53; --node:#393e53;
+  --ink:#f5f5f5; --muted:#bfc0c0; --soft:#949eb2;
+  --rule:rgba(245,245,245,.12); --rule-solid:rgba(191,192,192,.25);
+  --accent:#f08a59; --link:#739fdf;
+  --s1:#3987e5; --s2:#d95926;
+  --good-ink:#5fd35f; --warn-ink:#fab219; --crit-ink:#f08080;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#2d3142; --paper-2:#393e53; --node:#393e53;
+  --ink:#f5f5f5; --muted:#bfc0c0; --soft:#949eb2;
+  --rule:rgba(245,245,245,.12); --rule-solid:rgba(191,192,192,.25);
+  --accent:#f08a59; --link:#739fdf;
+  --s1:#3987e5; --s2:#d95926;
+  --good-ink:#5fd35f; --warn-ink:#fab219; --crit-ink:#f08080;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.75;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 64px}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.eyebrow{font-family:var(--mono);font-size:.7rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,5vw,2.75rem);line-height:1.15;margin:0;text-wrap:balance}
+h2{font-family:var(--serif);font-weight:400;font-size:1.65rem;line-height:1.25;margin:28px 0 0;display:flex;gap:12px;align-items:baseline}
+h2 .no{font-family:var(--mono);font-size:.75rem;color:var(--accent);letter-spacing:.1em}
+p{margin:0;max-width:65ch;overflow-wrap:anywhere}
+.lede{color:var(--muted)}
+.small{font-size:.85rem;color:var(--muted)}
+a{color:var(--link);text-underline-offset:3px}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* 狀態列 */
+.status{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:12px}
+.card{background:var(--node);border:1px solid var(--rule);border-radius:10px;padding:16px}
+.card .k{font-size:.8rem;color:var(--muted)}
+.card .v{font-family:var(--mono);font-size:1.9rem;line-height:1.2;font-variant-numeric:tabular-nums}
+.card .d{font-size:.85rem;color:var(--muted);margin-top:4px}
+.light{display:flex;align-items:center;gap:8px;font-weight:600;font-size:1.25rem}
+.light .dot{width:14px;height:14px;border-radius:50%;flex:none}
+.light.green{color:var(--good-ink)} .light.green .dot{background:var(--good)}
+.light.yellow{color:var(--warn-ink)} .light.yellow .dot{background:var(--warn)}
+.light.red{color:var(--crit-ink)} .light.red .dot{background:var(--crit)}
+
+/* 指標 */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(140px,100%),1fr));gap:12px}
+.tag{display:inline-block;font-size:.7rem;padding:0 6px;border-radius:4px;border:1px solid var(--rule-solid);color:var(--muted);margin-left:4px;vertical-align:2px;line-height:1.6}
+.callout{border-left:2px solid var(--accent);padding:4px 0 4px 16px}
+.callout strong{color:var(--accent)}
+
+/* 圖表 */
+.chart{background:var(--node);border:1px solid var(--rule);border-radius:10px;padding:12px 12px 4px;position:relative}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.85rem;color:var(--muted);padding:0 4px 8px}
+.legend i{display:inline-block;width:14px;height:2px;vertical-align:middle;margin-right:6px;border-radius:2px}
+.tip{position:absolute;pointer-events:none;background:var(--paper);border:1px solid var(--rule-solid);border-radius:8px;padding:8px 10px;font-size:.8rem;line-height:1.5;box-shadow:0 4px 12px rgba(0,0,0,.12);opacity:0;transition:opacity .1s;min-width:140px}
+.tip.on{opacity:1}
+
+/* 表格 */
+.tbl{overflow-x:auto;background:var(--node);border:1px solid var(--rule);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:.85rem}
+th,td{padding:8px 10px;border-bottom:1px solid var(--rule);text-align:left;white-space:nowrap}
+th{font-weight:500;color:var(--muted);background:var(--paper-2)}
+td.r,th.r{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+tr.missing td{color:var(--soft);font-style:italic}
+tr:last-child td{border-bottom:0}
+
+/* 班別 */
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar-row{display:grid;grid-template-columns:5.5em 1fr 4.5em;gap:10px;align-items:center;font-size:.85rem}
+.bar-track{height:12px;background:var(--paper-2);border-radius:4px;position:relative}
+.bar-fill{height:100%;background:var(--s1);border-radius:4px}
+.bar-cap{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink)}
+
+/* 時程 */
+.tl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.tl li{display:grid;grid-template-columns:7.5em 1fr;gap:12px;padding:10px 0;border-bottom:1px solid var(--rule)}
+.tl li:last-child{border-bottom:0}
+.tl .when{font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+.tl li.done .what{color:var(--muted)}
+.tl li.now{background:linear-gradient(90deg,rgba(191,69,32,.08),transparent)}
+.tl li.now .when{color:var(--accent);font-weight:500}
+
+ul.plain,ol.plain{margin:0;padding-left:1.3em}
+ul.plain li,ol.plain li{margin:4px 0}
+footer{margin-top:24px;padding-top:16px;border-top:1px solid var(--rule)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">家庭 · 公托候補追蹤</p>
+  <h1>文山托嬰中心候補追蹤</h1>
+  <p class="lede">每月記錄一次官方候補清冊的彙總數字，判斷二寶能不能在需要送托時入托，以及什麼時候該啟動備援托育。資料更新於 <span id="updated" class="num">—</span>。</p>
+
+  <section class="status" aria-label="目前狀態">
+    <div class="card">
+      <div class="k">目前燈號</div>
+      <div id="light" class="light"><span class="dot" aria-hidden="true"></span><span>—</span></div>
+      <div id="light-d" class="d"></div>
+    </div>
+    <div class="card">
+      <div class="k">距最晚送托日</div>
+      <div class="v"><span id="days">—</span><span style="font-size:1rem"> 天</span></div>
+      <div id="deadline-d" class="d"></div>
+    </div>
+    <div class="card">
+      <div class="k">二寶狀態</div>
+      <div id="phase" class="v" style="font-family:var(--sans);font-size:1.4rem">—</div>
+      <div id="phase-d" class="d"></div>
+    </div>
+  </section>
+
+  <p class="callout" id="verdict"></p>
+
+  <h2><span class="no">01</span>本期數字</h2>
+  <p class="small" id="latest-meta"></p>
+  <div class="metrics" id="metrics"></div>
+  <p class="small">標籤說明：<span class="tag">事實</span> 直接從官方清冊讀到；<span class="tag">推估</span> 由兩期資料計算，只代表趨勢。退出代理值包含入托、取消、失去資格等所有原因，<strong>不等於成功入托人數</strong>。</p>
+
+  <h2><span class="no">02</span>候補趨勢</h2>
+  <p>兩條線之間的差距越大，代表越多候補序號已經從清冊消失，也就是隊伍有在流動。</p>
+  <div class="chart">
+    <div class="legend"><span><i style="background:var(--s1)"></i>候補人數 A</span><span><i style="background:var(--s2)"></i>最高序號 M</span><span><i style="background:none;border-top:2px dashed var(--soft);height:0"></i>中間有月份缺資料</span></div>
+    <svg id="chart" viewBox="0 0 700 280" role="img" aria-label="候補人數與最高序號的逐月折線圖，數字見下方追蹤表"></svg>
+    <div class="tip" id="tip"></div>
+  </div>
+
+  <h2><span class="no">03</span>月度追蹤表</h2>
+  <div class="tbl"><table id="table"></table></div>
+  <p class="small">跨學年度不計算 ΔM 與退出代理值，改開新期。缺資料的月份不補推估值，下一期會和最近一筆有資料的月份比較，並註明相隔幾個月。</p>
+
+  <h2><span class="no">04</span>班別與候補結構</h2>
+  <p class="small" id="class-meta"></p>
+  <div class="card bars" id="bars"></div>
+  <div class="tbl"><table id="waitlist"></table></div>
+  <p class="small" id="class-note"></p>
+
+  <h2><span class="no">05</span>二寶時程</h2>
+  <ol class="tl" id="timeline"></ol>
+
+  <h2><span class="no">06</span>出生後要做的事</h2>
+  <ol class="plain">
+    <li>完成出生登記、取得身分證字號，<strong>當天就申請文山托嬰中心候補</strong>，不用等滿 2 個月。</li>
+    <li>確認二寶設籍文山區（符合第四序位），並確認父母雙方設籍臺北市已滿 6 個月。</li>
+    <li>保存送件日期、審核結果、核定序位和候補序號，並更新到這一頁。</li>
+    <li>打電話問中心：小寶班出缺時怎麼通知？未滿 2 個月就輪到時怎麼處理？可以延後報到嗎？以中心正式回覆為準，不假設會保留床位。</li>
+    <li>收到入托通知後，須在<strong>通知報到日起 5 日內（不含例假日）</strong>完成報到和繳費，逾期可能視為放棄。</li>
+  </ol>
+
+  <h2><span class="no">07</span>判讀規則</h2>
+  <ul class="plain">
+    <li>中心共 48 席，大寶、中寶、小寶班各 16 席。序位配置：第一序位 20%、第二 10%、第三 10%、第四 30%（設籍文山區），剩下給第五序位（一般家庭），前面序位沒用完的名額也會轉給一般家庭。</li>
+    <li>出缺時會先看<strong>出缺班別和身分序位</strong>，再照候補順序通知，所以候補總人數不等於二寶前面排了幾個人。</li>
+    <li>預估畢業人數代表整個學年度的離托人數，不是馬上會空出來的小寶班位子。</li>
+    <li>不用「候補人數 ÷ 畢業人數」算等待時間，也不用「第 X 號等於幾成機率」換算。</li>
+    <li>燈號以最晚送托日往前推：3 個月以上為綠燈，1～3 個月為黃燈，1 個月內為紅燈。這是家庭風險管理的門檻，不是官方的入托機率。</li>
+  </ul>
+
+  <footer class="small">
+    <p>資料來源：<a href="https://welfare.gov.taipei/Nursery/M7_001_006" target="_blank" rel="noopener">臺北市托嬰機構收托現況查詢及候補清冊</a>、<a href="https://dosw.gov.taipei/cp.aspx?n=91E27EEB185E61A5" target="_blank" rel="noopener">社會局公托登記說明</a>。本頁只記錄彙總數字，不保存任何幼兒的個人資料。規則以官方最新公告為準。</p>
+  </footer>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const fmt = d => d.replace(/-/g, '/');
+const parse = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d || 15); };
+const addMonths = (d, n) => { const r = new Date(d); r.setMonth(r.getMonth() + n); return r; };
+const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const sign = n => n == null ? '—' : (n > 0 ? '+' + n : String(n));
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+fetch('wenshan-nursery.json', { cache: 'no-cache' })
+  .then(r => r.json())
+  .then(render)
+  .catch(() => { $('verdict').textContent = '讀不到 wenshan-nursery.json。請透過網站開啟本頁，不要直接開本機檔案。'; });
+
+// 每筆有資料的快照，和前一筆有資料、同學年度的快照比較
+function derive(snaps) {
+  let prev = null;
+  return snaps.map(s => {
+    const r = { ...s, dA: null, dM: null, exit: null, gap: null };
+    if (s.status !== 'ok') return r;
+    if (prev && prev.school_year === s.school_year) {
+      r.dA = s.A - prev.A; r.dM = s.M - prev.M; r.exit = r.dM - r.dA;
+      r.gap = Math.round((parse(s.date) - parse(prev.date)) / 2629746000);
+      r.prevDate = prev.date;
+    }
+    prev = s;
+    return r;
+  });
+}
+
+function render(data) {
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const child = data.child;
+  const deadline = parse(child.deadline);
+  const yellowFrom = addMonths(deadline, -3), redFrom = addMonths(deadline, -1);
+  const days = Math.round((deadline - today) / 864e5);
+  const snaps = derive(data.snapshots);
+  const ok = snaps.filter(s => s.status === 'ok');
+  const last = ok[ok.length - 1];
+
+  $('updated').textContent = fmt(data.updated);
+
+  // 燈號
+  let light = 'green', label = '綠燈：仍有彈性', desc = `${fmt(iso(yellowFrom))} 起轉黃燈`;
+  if (today >= redFrom) { light = 'red'; label = '紅燈：不能再等'; desc = '優先確保合格的備援托育，公托繼續候補'; }
+  else if (today >= yellowFrom) { light = 'yellow'; label = '黃燈：時程接近'; desc = `主動問中心缺額，同時聯絡備援；${fmt(iso(redFrom))} 起轉紅燈`; }
+  $('light').className = 'light ' + light;
+  $('light').lastElementChild.textContent = label;
+  $('light-d').textContent = desc;
+  $('days').textContent = days;
+  $('deadline-d').textContent = `${fmt(child.deadline)}（${child.deadline_note}）`;
+  $('phase').textContent = child.phase;
+  $('phase-d').textContent = child.actual_birth
+    ? `${fmt(child.actual_birth)} 出生${child.waitlist_no ? `，候補序號 ${child.waitlist_no}（${child.priority || '序位待確認'}）` : '，尚未取得候補序號'}`
+    : `${child.birth_basis}：${fmt(child.assumed_birth)} 前後`;
+
+  // 結論
+  if (last.dA != null) {
+    $('verdict').innerHTML = `<strong>${last.exit > last.dM ? '離開的比新增的多，隊伍在變短。' : '新增的比離開的多，隊伍在變長。'}</strong>從 ${fmt(last.prevDate)} 到 ${fmt(last.date)}（約 ${last.gap} 個月），新增約 ${last.dM} 個候補序號，但候補人數從 ${last.A - last.dA} 人降到 ${last.A} 人，估計約 ${last.exit} 個序號離開清冊。這只代表隊伍有在動，不代表二寶入托的機率，原因要等下一期再確認。`;
+  }
+
+  // 本期數字
+  $('latest-meta').textContent = `${fmt(last.date)}｜${last.school_year} 學年度｜來源：${last.source}`;
+  const m = [
+    ['候補人數 A', last.A, '事實', last.dA != null ? `較 ${fmt(last.prevDate)} ${sign(last.dA)}` : ''],
+    ['最高序號 M', last.M, '事實', last.dM != null ? `新增約 ${last.dM} 號` : ''],
+    ['退出代理值', last.exit ?? '—', '推估', last.gap ? `${last.gap} 個月合計` : ''],
+    ['預估畢業 G', last.G, '事實', '學年度結束（8/31）前'],
+  ];
+  if (last.retained) m.push(['上期名單留下', last.retained.from_prev_listed, '事實', `上期 ${last.A - last.dA} 人中仍在清冊`]);
+  $('metrics').innerHTML = m.map(([k, v, t, d]) =>
+    `<div class="card"><div class="k">${k}<span class="tag">${t}</span></div><div class="v">${v}</div><div class="d">${d}</div></div>`).join('');
+
+  // 追蹤表
+  $('table').innerHTML = `<thead><tr><th>截圖日</th><th class="r">學年度</th><th class="r">A</th><th class="r">M</th><th class="r">ΔA</th><th class="r">ΔM</th><th class="r">退出代理</th><th class="r">G</th><th>二寶</th><th>行動</th><th>備註</th></tr></thead><tbody>` +
+    snaps.map(s => s.status !== 'ok'
+      ? `<tr class="missing"><td>${fmt(s.date)}</td><td class="r">${s.school_year}</td><td colspan="6">${esc(s.source)}</td><td>—</td><td>${esc(s.action)}</td><td>${esc(s.notes)}</td></tr>`
+      : `<tr><td>${fmt(s.date)}</td><td class="r">${s.school_year}</td><td class="r">${s.A}</td><td class="r">${s.M}</td><td class="r">${sign(s.dA)}</td><td class="r">${sign(s.dM)}</td><td class="r">${s.exit ?? '—'}</td><td class="r">${s.G}</td><td>${s.child_no ?? '尚未出生'}</td><td>${esc(s.action)}</td><td>${esc(s.notes)}</td></tr>`
+    ).join('') + '</tbody>';
+
+  // 班別
+  const withClass = [...ok].reverse().find(s => s.enrolled);
+  if (withClass) {
+    const e = withClass.enrolled, seat = withClass.seats, ar = withClass.age_ranges;
+    $('class-meta').textContent = `${fmt(withClass.date)} 的在托人數（直線為核定席次）`;
+    const max = 24;
+    $('bars').innerHTML = [['大寶班', 'older'], ['中寶班', 'middle'], ['小寶班', 'baby']].map(([n, k]) =>
+      `<div class="bar-row"><span>${n}<br><span class="small">${ar[k]}</span></span><div class="bar-track" role="img" aria-label="${n}在托 ${e[k]} 人，核定 ${seat[k]} 席"><div class="bar-fill" style="width:${e[k] / max * 100}%"></div><div class="bar-cap" style="left:${seat[k] / max * 100}%"></div></div><span class="num">${e[k]} / ${seat[k]}</span></div>`).join('');
+    const cp = withClass.waitlist_class_priority, pri = ['第二序位', '第四序位', '第五序位'];
+    $('waitlist').innerHTML = `<thead><tr><th>候補班別</th>${pri.map(p => `<th class="r">${p}</th>`).join('')}<th class="r">合計</th></tr></thead><tbody>` +
+      Object.entries(cp).map(([c, v]) => `<tr><td>${c}</td>${pri.map(p => `<td class="r">${v[p] || 0}</td>`).join('')}<td class="r">${withClass.waitlist_by_class[c]}</td></tr>`).join('') + '</tbody>';
+    $('class-note').innerHTML = `總在托 ${e.older + e.middle + e.baby} 人，等於核定 ${withClass.capacity} 席，目前沒有空位。大寶班超收 ${e.older - seat.older} 人、小寶班少 ${seat.baby - e.baby} 人，這是因為孩子會長大換班，席次是整體計算的。<span class="tag">推估</span> 大寶班的孩子陸續畢業後，空出的名額才會流到年紀小的候補者。二寶出生後，主要的競爭對象是「小寶班＋未滿 2 個月」的第四序位候補，目前共 ${(cp['小寶班']?.['第四序位'] || 0) + (cp['未滿2個月']?.['第四序位'] || 0)} 人；不過到 1 月時，這些孩子大多已經長大，進入中寶班的年齡。`;
+  }
+
+  // 時程
+  const ev = [
+    [ok[0].date, '建立 Baseline'],
+    [child.actual_birth || child.assumed_birth, child.actual_birth ? '二寶出生' : `二寶預估出生（${child.birth_basis}）`],
+    [child.registered_on || iso(new Date(parse(child.actual_birth || child.assumed_birth).getTime() + 3 * 864e5)), child.registered_on ? '完成候補登記' : '出生登記後立即申請候補（預估）'],
+    [iso(yellowFrom), '黃燈：開始聯絡備援托育'],
+    [iso(redFrom), '紅燈：確保備援托育'],
+    [child.eligible_date, '滿 2 足月，最早可入托，也是最晚送托日'],
+  ].sort((a, b) => a[0].localeCompare(b[0]));
+  const ti = iso(today);
+  let nowShown = false;
+  $('timeline').innerHTML = ev.map(([d, w]) => {
+    let pre = '';
+    if (!nowShown && d > ti) { nowShown = true; pre = `<li class="now"><span class="when">${fmt(ti)}</span><span class="what">今天</span></li>`; }
+    return pre + `<li class="${d <= ti ? 'done' : ''}"><span class="when">${fmt(d)}</span><span class="what">${w}</span></li>`;
+  }).join('') + (nowShown ? '' : `<li class="now"><span class="when">${fmt(ti)}</span><span class="what">今天</span></li>`);
+
+  drawChart(snaps);
+}
+
+function drawChart(snaps) {
+  const svg = $('chart'), tip = $('tip');
+  const W = 700, H = 280, L = 40, R = 16, T = 16, B = 32;
+  const t0 = parse('2026-08-01'), t1 = parse('2027-03-01');
+  const lastT = parse(snaps[snaps.length - 1].date);
+  const tEnd = lastT > t1 ? addMonths(lastT, 1) : t1;
+  const ok = snaps.filter(s => s.status === 'ok');
+  const vmax = Math.ceil(Math.max(...ok.flatMap(s => [s.A, s.M])) / 40) * 40;
+  const x = d => L + (parse(d) - t0) / (tEnd - t0) * (W - L - R);
+  const y = v => T + (1 - v / vmax) * (H - T - B);
+  const css = getComputedStyle(document.documentElement);
+  const c = n => css.getPropertyValue(n).trim();
+  let g = '';
+  for (let v = 0; v <= vmax; v += 40) g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="${c('--rule')}"/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="${c('--muted')}" style="font-family:var(--mono)">${v}</text>`;
+  for (let d = new Date(t0); d <= tEnd; d = addMonths(d, 1)) {
+    const k = iso(d).slice(0, 7);
+    g += `<text x="${x(k + '-01')}" y="${H - 10}" text-anchor="middle" font-size="11" fill="${c('--muted')}">${d.getMonth() === 0 ? d.getFullYear() + '/1' : (d.getMonth() + 1) + '月'}</text>`;
+  }
+  snaps.filter(s => s.status !== 'ok').forEach(s => {
+    g += `<text x="${x(s.date)}" y="${T + 12}" text-anchor="middle" font-size="11" fill="${c('--soft')}">缺資料</text>`;
+  });
+  // 線段：相鄰兩筆之間有缺資料就畫虛線
+  const seg = (key, col) => {
+    let out = '';
+    for (let i = 1; i < ok.length; i++) {
+      const a = ok[i - 1], b = ok[i];
+      const gap = snaps.indexOf(b) - snaps.indexOf(a) > 1;
+      out += `<line x1="${x(a.date)}" y1="${y(a[key])}" x2="${x(b.date)}" y2="${y(b[key])}" stroke="${col}" stroke-width="2" stroke-linecap="round" ${gap ? 'stroke-dasharray="5 5"' : ''}/>`;
+    }
+    ok.forEach(s => out += `<circle cx="${x(s.date)}" cy="${y(s[key])}" r="4.5" fill="${col}" stroke="${c('--node')}" stroke-width="2"/>`);
+    const e = ok[ok.length - 1];
+    out += `<text x="${x(e.date) + 9}" y="${y(e[key]) + 4}" font-size="12" fill="${c('--ink')}" style="font-family:var(--mono)">${e[key]}</text>`;
+    return out;
+  };
+  g += seg('M', c('--s2')) + seg('A', c('--s1'));
+  g += ok.map(s => `<rect data-d="${s.date}" x="${x(s.date) - 24}" y="${T}" width="48" height="${H - T - B}" fill="transparent"/>`).join('');
+  svg.innerHTML = g;
+
+  svg.querySelectorAll('rect[data-d]').forEach(r => {
+    const s = snaps.find(v => v.date === r.dataset.d);
+    const show = () => {
+      tip.innerHTML = `<strong>${fmt(s.date)}</strong><br>候補人數 A：<span class="num">${s.A}</span><br>最高序號 M：<span class="num">${s.M}</span>` + (s.exit != null ? `<br>退出代理值：<span class="num">${s.exit}</span>（${s.gap} 個月）` : '');
+      const box = svg.getBoundingClientRect(), k = box.width / W;
+      const px = x(s.date) * k + 12;
+      tip.style.left = Math.min(px + 12, box.width - 160) + 'px';
+      tip.style.top = '40px';
+      tip.classList.add('on');
+    };
+    r.addEventListener('mouseenter', show);
+    r.addEventListener('click', show);
+    r.addEventListener('mouseleave', () => tip.classList.remove('on'));
+  });
+}
+</script>
+</body>
+</html>
