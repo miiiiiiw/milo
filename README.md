@@ -1,6 +1,6 @@
 # milo
 
-放想法、infographic 與 HTML 實驗的地方。網站：https://miiiiiiw.github.io/milo/
+工作與生活裡的筆記：做過、想過的事。網站：https://miiiiiiw.github.io/milo/
 
 首頁 `index.html` 是導覽頁，會把 repo 裡所有 HTML 依資料夾列成樹狀目錄，點選即可在右側預覽。
 
@@ -42,6 +42,23 @@ push 任何 `.html` 後，GitHub Action「Build manifest」會執行 `scripts/bu
 - **description**：首頁卡片上的一句話簡介。
 - **keywords**：標籤，以逗號分隔，可以被搜尋。
 - **date**：用於排序與時間軸，格式為 `YYYY-MM-DD`。省略時依序改用檔名開頭的日期、git 首次加入的日期。14 天內的頁面會顯示橘色圓點。
+
+## 頁首小標
+
+每頁最上方、標題上面那一行小字，所有頁面都依同一個規則：
+
+- **文字**：`分類 · 主題`。分類是頁面所在資料夾在 `folders.json` 裡的中文名稱（如「技術筆記」「產品」「家庭」），主題是幾個字的關鍵詞，中英文都可以。例如 `技術筆記 · Email Authentication`、`家庭 · 公托候補追蹤`。
+- **位置**：頁面的第一個元素，緊接在 `<h1>` 之前。距離視窗頂端：桌機 56px，手機（寬度 ≤ 560px）32px。和 `<h1>` 的間距 12px。
+- **寫法**：使用 `<p class="eyebrow page-kicker">…</p>`，並把下面這段 CSS 貼在頁面主要 `<style>` 的最後面。顏色沿用頁面自己的次要文字色，不另外指定。
+
+  ```css
+  /* ── milo 頁首小標規範（見 README「頁首小標」），請勿個別調整 ── */
+  .page-kicker{font-family:var(--mono);font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
+  ```
+
+  頁面沒有定義 `--mono` 變數時，把 `var(--mono)` 換成 `ui-monospace, monospace`。
+
+- **距頂位置要逐頁調整**：每頁的外層結構不同，56px／32px 需要透過該頁最外層容器的 `padding-top` 達成。如果外層是 flex 並設了 `gap`，再用負的 `margin-bottom` 把間距補回 12px。完成後在桌機和手機寬度實際量一次。
 
 ## 命名規則
 
@@ -103,7 +120,7 @@ push 任何 `.html` 後，GitHub Action「Build manifest」會執行 `scripts/bu
 - 配色：`:root` 區塊（暗色模式另有兩處同名變數，需要一起修改）
 - 隱藏規則：`CONFIG.ignore` 必須和 `scripts/build-manifest.mjs` 的 `SKIP_DIRS` 保持一致
 
-導覽頁快捷鍵：`/` 搜尋、`F` 專注模式、`Esc` 離開。
+導覽頁操作：點左上角 Cabinet 回首頁；手機從螢幕左緣往右滑開啟目錄、在目錄上往左滑關閉。快捷鍵：`/` 搜尋、`F` 專注模式、`Esc` 離開。
 
 ## Repo 設定（已完成）
 
@@ -120,6 +137,7 @@ push 任何 `.html` 後，GitHub Action「Build manifest」會執行 `scripts/bu
 **Claude 每次會做：**
 - 使用繁體中文（台灣用語）。
 - 補齊上述四個 meta 標籤，並檢查資源是否使用相對路徑。
+- 依「頁首小標」設定小標，並量測距頂位置和間距。
 - 在本機產生 manifest，確認新頁面有被掃描到。push 之後，再確認網站上已經出現。
 - push 前在本機打開導覽頁，用桌機和手機兩種寬度截圖檢查版面（見「新增後確認」第 4 點）。
 - commit 訊息以「新增：」「更新：」「刪除：」「維護：」開頭。
@@ -136,3 +154,4 @@ push 任何 `.html` 後，GitHub Action「Build manifest」會執行 `scripts/bu
 - 2026-10-20：建立導覽頁與 manifest 自動更新機制，GitHub Pages 上線。
 - 2026-10-21：檔名改用簡短英文，新增 `folders.json` 設定資料夾的中文名稱；「複製連結」改為產生不含 `.html` 的短網址。
 - 2026-10-25：導覽頁高度改為直接綁定視窗高度（`100dvh`），修正部分瀏覽器在桌機版只撐到內容高度、預覽區下方留白的問題。
+- 2026-10-26：文案改為以筆記為主；點 Cabinet 回首頁；手機可從左緣右滑開啟目錄；切換頁面時不再閃白；訂定「頁首小標」規範並套用到既有頁面。

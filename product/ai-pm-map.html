@@ -296,6 +296,13 @@ footer{margin-top:64px; padding-top:20px; border-top:1px solid var(--rule); disp
 }
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+
+/* ── milo 頁首小標規範（見 README「頁首小標」），請勿個別調整 ── */
+.page-kicker{font-family:var(--mono);font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
+/* 頁首位置：桌機距頂 56px、手機（≤560px）32px */
+@media (max-width:560px){.wrap{padding-top:32px}}
+
+
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -308,7 +315,7 @@ html{scroll-behavior:smooth}
 <div class="wrap">
 
 <header>
-  <p class="eyebrow">AI Product Manager · 知識筆記</p>
+  <p class="eyebrow page-kicker">產品 · AI Product Manager</p>
   <h1>AI 產品經理的五大能力：一份知識地圖</h1>
   <p class="lede">AI 產品經理的角色，是貫穿產品全生命週期，<strong>懂產品、懂 AI、會用 AI，並且創造業務價值</strong>。這份筆記既可以用來檢視自己，也可以用來帶新人。</p>
 </header>

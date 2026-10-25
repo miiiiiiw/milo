@@ -431,6 +431,13 @@ footer { margin-top: 72px; padding-top: 20px; border-top: 1px solid var(--rule);
 
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
 html { scroll-behavior: smooth; }
+
+/* ── milo 頁首小標規範（見 README「頁首小標」），請勿個別調整 ── */
+.page-kicker{font-family:var(--mono);font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
+/* 頁首位置：桌機距頂 56px、手機（≤560px）32px */
+@media (max-width:560px){.page{padding-top:32px}}
+
+
 </style>
 
 <style>[hidden]{display:none!important}</style>
@@ -446,7 +453,7 @@ html { scroll-behavior: smooth; }
 <main class="page">
 
   <header>
-    <p class="eyebrow">學習筆記 · Email Authentication</p>
+    <p class="eyebrow page-kicker">技術筆記 · Email Authentication</p>
     <h1>Email 寄件者驗證</h1>
     <p class="subtitle">從「Outlook 無法驗證寄件者」看 SPF、DKIM、DMARC</p>
     <p class="source">來源案例：保哥〈從 TWNIC 資安通知信看 DMARC 網域對齊問題〉<br>

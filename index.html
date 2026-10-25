@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cabinet · 資訊分享</title>
+<title>Cabinet · 筆記</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
@@ -46,6 +46,7 @@ aside{display:flex;flex-direction:column;border-right:1px solid var(--rule);min-
 .mast .kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);display:flex;justify-content:space-between}
 .mast h1{font-family:var(--serif);font-weight:600;font-size:34px;line-height:1;letter-spacing:-.02em;margin:10px 0 6px}
 .mast h1 em{font-style:normal;color:var(--accent)}
+.mast h1 a{color:inherit;text-decoration:none}
 .mast p{color:var(--ink-2);font-size:13px}
 .stats{display:flex;gap:18px;margin-top:14px;font-family:var(--mono);font-size:11px;color:var(--ink-2)}
 .stats b{display:block;font-family:var(--serif);font-weight:600;font-size:20px;color:var(--ink);line-height:1.1}
@@ -105,9 +106,10 @@ main{display:flex;flex-direction:column;min-width:0;min-height:0;background:var(
 .btn svg{width:14px;height:14px}
 .menu-btn{display:none}
 .frame-wrap{flex:1;position:relative;padding:14px;min-height:0}
-iframe{width:100%;height:100%;border:1px solid var(--rule);border-radius:10px;background:#fff;box-shadow:0 1px 0 var(--rule),0 18px 40px -24px rgba(0,0,0,.35)}
+iframe{width:100%;height:100%;border:1px solid var(--rule);border-radius:10px;background:var(--paper);transition:opacity .2s;box-shadow:0 1px 0 var(--rule),0 18px 40px -24px rgba(0,0,0,.35)}
 body.full .frame-wrap{padding:0}
 body.full iframe{border-radius:0;border:0}
+iframe.loading{opacity:0;transition:none}
 body.full aside{display:none}
 body.full{grid-template-columns:1fr}
 
@@ -128,10 +130,13 @@ body.full{grid-template-columns:1fr}
 .section-h + .grid{margin-top:16px}
 
 .scrim{display:none}
+.edge{display:none}
 @media (max-width: 820px){
   body{grid-template-columns:1fr}
   aside{position:fixed;inset:0 auto 0 0;width:min(88vw,360px);z-index:20;transform:translateX(-100%);transition:transform .22s;box-shadow:0 0 60px rgba(0,0,0,.25)}
   body.drawer aside{transform:none}
+  body.dragging aside{transition:none}
+  .edge{display:block;position:fixed;left:0;top:0;bottom:0;width:20px;z-index:5;touch-action:pan-y}
   body.drawer .scrim{display:block;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:10}
   .menu-btn{display:inline-flex}
   .hide-sm{display:none}
@@ -144,9 +149,9 @@ body.full{grid-template-columns:1fr}
 
 <aside id="side">
   <div class="mast">
-    <div class="kicker"><span id="site-kicker">Things Worth Sharing</span><button id="theme" title="切換明暗" aria-label="切換明暗">◐</button></div>
-    <h1 id="site-title">Cabinet<em>.</em></h1>
-    <p id="site-sub">圖表、筆記與小實驗，整理好了就分享。</p>
+    <div class="kicker"><span id="site-kicker">Working Notes</span><button id="theme" title="切換明暗" aria-label="切換明暗">◐</button></div>
+    <h1><a id="site-title" href="./" title="回首頁">Cabinet<em>.</em></a></h1>
+    <p id="site-sub">工作與生活裡，做過、想過的事。</p>
     <div class="stats">
       <div><b id="s-files">–</b>頁面</div>
       <div><b id="s-dirs">–</b>主題</div>
@@ -171,6 +176,7 @@ body.full{grid-template-columns:1fr}
   <nav class="list" id="list"></nav>
 </aside>
 <div class="scrim" id="scrim"></div>
+<div class="edge" id="edge" aria-hidden="true"></div>
 
 <main>
   <div class="bar">
@@ -203,8 +209,8 @@ body.full{grid-template-columns:1fr}
    ================================================================ */
 const CONFIG = {
   title: "Cabinet",              // 左上大標題
-  kicker: "Things Worth Sharing", // 標題上方小字
-  subtitle: "圖表、筆記與小實驗，整理好了就分享。",
+  kicker: "Working Notes",        // 標題上方小字
+  subtitle: "工作與生活裡，做過、想過的事。",
   manifest: "manifest.json",     // 由 scripts/build-manifest.mjs 產生
   newDays: 14,                   // 幾天內算「新」，會顯示小紅點
   // 沒有 manifest.json 時，在 *.github.io 上會自動用 GitHub API 抓檔案清單。
@@ -361,7 +367,7 @@ function render(){
   $("#tree-ctl").style.display = VIEW==="tree" ? "" : "none";
   let html = VIEW==="tree" ? renderTree(pruneTree(buildTree(FILES))) : renderTimeline();
   if(!html) html = FILES.length ? `<div class="empty">找不到「${esc(QUERY)}」</div>`
-                                : `<div class="empty">還沒有內容。<br>第一頁正在路上。</div>`;
+                                : `<div class="empty">還沒有筆記。</div>`;
   el.innerHTML = html;
 }
 
@@ -377,11 +383,11 @@ function renderCover(){
       ${f.tags.length?`<div class="tags">${f.tags.slice(0,3).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>`:""}
     </button>`;
   $("#cover").innerHTML = `
-    <div class="k">Shared · ${FILES.length} pages</div>
-    <h2>把弄懂的事，<i>分享</i>給你。</h2>
-    <p class="lede">每一頁是一個主題。可以從左側依資料夾瀏覽，或從最近的開始看。</p>
-    ${recent.length?`<div class="section-h">最近分享</div><div class="grid">${recent.map(tile).join("")}</div>`:""}
-    ${topics.length?`<div class="section-h">依主題瀏覽</div><div class="grid">${topics.map(d=>`
+    <div class="k">Notes · ${FILES.length} pages</div>
+    <h2>把經驗，<i>寫下來</i>。</h2>
+    <p class="lede">每一頁是一篇筆記，記下當時的做法與想法。如果剛好對你有用，歡迎取用。</p>
+    ${recent.length?`<div class="section-h">最近的筆記</div><div class="grid">${recent.map(tile).join("")}</div>`:""}
+    ${topics.length?`<div class="section-h">依主題</div><div class="grid">${topics.map(d=>`
       <button class="tile" data-reveal="${esc(d.path)}">
         <div class="n"><span>${ICON.folder.replace('class="ic"','width="14" height="14"')}</span><span>${count(d)} 頁</span></div>
         <div class="t">${esc(label(d.path))}</div>
@@ -397,7 +403,12 @@ function show(path, push=true){
   path = CURRENT = f.path;
   const url = encodeURI(path);
   const frame = $("#frame");
-  if(frame.getAttribute("src")!==url) frame.src = url;
+  if(frame.getAttribute("src")!==url){
+    // 新頁面載入完成前先隱藏 iframe，避免空白頁閃白
+    frame.classList.add("loading");
+    clearTimeout(frame._t); frame._t = setTimeout(()=>frame.classList.remove("loading"), 4000);
+    frame.src = url;
+  }
   frame.hidden = false; $("#cover").hidden = true;
   $("#open").href = url; ["open","copy","full"].forEach(id=>$("#"+id).hidden=false);
   const segs = path.split("/");
@@ -415,7 +426,7 @@ function home(push=true){
   $("#frame").hidden = true; $("#frame").removeAttribute("src"); $("#cover").hidden = false;
   ["open","copy","full"].forEach(id=>$("#"+id).hidden=true);
   $("#crumb").innerHTML = "<b>首頁</b>";
-  document.title = `${CONFIG.title} · 資訊分享`;
+  document.title = `${CONFIG.title} · 筆記`;
   document.body.classList.remove("full");
   if(push) history.pushState(null,"",location.pathname);
   render();
@@ -441,8 +452,47 @@ $("#q").addEventListener("input", e=>{ QUERY=e.target.value.trim().toLowerCase()
 $("#expand").onclick = ()=>{ const walk=n=>n.dirs.forEach(d=>{OPEN.add(d.path);walk(d);}); walk(buildTree(FILES)); store.set("open",[...OPEN]); render(); };
 $("#collapse").onclick = ()=>{ OPEN.clear(); store.set("open",[]); render(); };
 $("#home").onclick = ()=>home();
+$("#frame").addEventListener("load", e=>{ clearTimeout(e.target._t); e.target.classList.remove("loading"); });
+$("#site-title").onclick = e=>{ e.preventDefault(); home(); document.body.classList.remove("drawer"); };
 $("#menu").onclick = ()=>document.body.classList.toggle("drawer");
 $("#scrim").onclick = ()=>document.body.classList.remove("drawer");
+
+/* 手機手勢：從左緣右滑開啟目錄、在目錄上左滑關閉 */
+(()=>{
+  const side = $("#side"), mq = matchMedia("(max-width: 820px)");
+  let x0, y0, dx, mode = null;  // mode: null | "maybe" | "drag"
+  const isOpen = ()=>document.body.classList.contains("drawer");
+  document.addEventListener("touchstart", e=>{
+    if(!mq.matches || e.touches.length!==1) return;
+    const t = e.touches[0];
+    if(isOpen() ? !e.target.closest("#side, #scrim") : t.clientX > 28) return;
+    x0 = t.clientX; y0 = t.clientY; dx = 0; mode = "maybe";
+  }, {passive:true});
+  document.addEventListener("touchmove", e=>{
+    if(!mode) return;
+    const t = e.touches[0], mx = t.clientX - x0, my = t.clientY - y0;
+    if(mode==="maybe"){
+      if(Math.abs(mx) < 8 && Math.abs(my) < 8) return;
+      // 垂直捲動或方向不對就放棄
+      if(Math.abs(my) > Math.abs(mx) || (isOpen() ? mx > 0 : mx < 0)){ mode = null; return; }
+      mode = "drag"; document.body.classList.add("dragging");
+    }
+    const w = side.offsetWidth;
+    dx = isOpen() ? Math.min(0, mx) : Math.max(0, Math.min(w, mx));
+    side.style.transform = `translateX(${isOpen() ? dx : dx - w}px)`;
+  }, {passive:true});
+  const end = ()=>{
+    if(mode==="drag"){
+      const w = side.offsetWidth, open = isOpen();
+      document.body.classList.remove("dragging"); side.style.transform = "";
+      if(!open && dx > w*0.3) document.body.classList.add("drawer");
+      if(open && dx < -w*0.3) document.body.classList.remove("drawer");
+    }
+    mode = null;
+  };
+  document.addEventListener("touchend", end);
+  document.addEventListener("touchcancel", end);
+})();
 $("#full").onclick = ()=>document.body.classList.toggle("full");
 $("#copy").onclick = async ()=>{
   try{ await navigator.clipboard.writeText(shareURL(CURRENT)); const s=$("#copy span"); const o=s.textContent; s.textContent="已複製 ✓"; setTimeout(()=>s.textContent=o,1400);}catch{}
