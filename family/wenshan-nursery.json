@@ -8,7 +8,10 @@
   "assumed_birth": "2026-11-13",
   "actual_birth": null,
   "registered_on": null,
-  "waitlist_no": null,
+  "waitlist_no": {
+   "wenshan": null,
+   "hsinglung": null
+  },
   "priority": 4,
   "deadline": "2027-01-13",
   "deadline_note": "滿 2 足月就送托，最早可入托日也是最晚送托日"

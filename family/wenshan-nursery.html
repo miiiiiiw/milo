@@ -218,8 +218,9 @@ fetch('wenshan-nursery.json', { cache: 'no-cache' })
   .then(render)
   .catch(() => { $('verdict').textContent = '讀不到 wenshan-nursery.json。請透過網站開啟本頁，不要直接開本機檔案。'; });
 
-// 同齡候補：最晚送托日時仍在小寶班年齡者（名單第 4 欄為 1）
-const rivals = c => (c.list || []).filter(x => x[3] === 1);
+// 同齡候補：最晚送托日時仍在小寶班年齡者（名單第 4 欄為 1）；二寶登記後，只算序號比二寶前面的
+let MY = {};
+const rivals = c => (c.list || []).filter(x => x[3] === 1 && !(MY[c._key] && x[0] >= MY[c._key]));
 const total = o => o.older + o.middle + o.baby;
 
 // 和前一筆完整資料比對：同學年度才算差額
@@ -244,6 +245,8 @@ function left(r) {
 function render(data) {
   const today = new Date(); today.setHours(0, 0, 0, 0);
   const child = data.child;
+  MY = child.waitlist_no || {};
+  data.snapshots.forEach(s => Object.entries(s.centers).forEach(([k, c]) => c._key = k));
   const deadline = parse(child.deadline);
   const yellowFrom = addMonths(deadline, -3), redFrom = addMonths(deadline, -1);
   const snaps = data.snapshots;
@@ -267,7 +270,7 @@ function render(data) {
   $('deadline-d').textContent = `${fmt(child.deadline)}（${child.deadline_note}）`;
   $('phase').textContent = child.phase;
   $('phase-d').textContent = child.actual_birth
-    ? `${fmt(child.actual_birth)} 出生${child.waitlist_no ? `，候補序號 ${child.waitlist_no}（${PRI[child.priority]}）` : '，尚未取得候補序號'}`
+    ? `${fmt(child.actual_birth)} 出生${MY.wenshan ? `，文山 ${MY.wenshan} 號${MY.hsinglung ? `、興隆 ${MY.hsinglung} 號` : ''}（${PRI[child.priority]}）` : '，尚未取得候補序號'}`
     : `${child.birth_basis}：${fmt(child.assumed_birth)} 前後`;
 
   // 結論
@@ -317,7 +320,7 @@ function render(data) {
       return `<tr><td>${esc(t.name.replace('社區公共托育家園', ''))}<br><span class="small">${esc(t.address)}・${esc(t.phone)}</span></td><td class="r">${t.distance_km} km</td><td>${esc(t.rating)}</td><td class="r">${total(c.enrolled)} / ${total(c.seats)}</td><td class="r">${c.enrolled.baby} / ${c.seats.baby}</td><td class="r">${c.A}</td><td class="r">${rivals(c).length}</td></tr>`;
     }).join('') + '</tbody>';
   $('private').innerHTML = `<thead><tr><th>托嬰中心</th><th class="r">距離</th><th>評鑑</th><th class="r">實際 / 核定</th></tr></thead><tbody>` +
-    data.private_options.map(o => `<tr><td>${esc(o.name)}<br><span class="small">${esc(o.address)}・${esc(o.phone)}</span></td><td class="r">${o.distance_km} km</td><td>${esc(o.rating)}</td><td class="r">${o.enrolled} / ${o.capacity}</td></tr>`).join('') + '</tbody>';
+    data.private_options.map(o => `<tr><td>${esc(o.name)}<br><span class="small">${esc(o.address)}・${esc(o.phone)}</span>${o.reply ? `<br><span class="small"><strong>回覆（${fmt(o.reply_date || '')}）：</strong>${esc(o.reply)}</span>` : ''}</td><td class="r">${o.distance_km} km</td><td>${esc(o.rating)}</td><td class="r">${o.enrolled} / ${o.capacity}</td></tr>`).join('') + '</tbody>';
 
   // 時程
   const birth = child.actual_birth || child.assumed_birth;
