@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-25T08:08:41.089Z",
+  "generated": "2026-10-25T08:39:13.221Z",
   "folders": {
     "tech": "技術筆記",
     "product": "產品",
@@ -9,7 +9,7 @@
     {
       "path": "family/wenshan-nursery.html",
       "title": "文山托嬰候補追蹤",
-      "description": "二寶公托候補的每月追蹤：候補人數、最高序號、退出流量與送托倒數",
+      "description": "二寶公托候補的每月追蹤：同齡競爭人數、小寶班流動、備案家園與送托倒數",
       "tags": [
         "家庭",
         "托嬰",
