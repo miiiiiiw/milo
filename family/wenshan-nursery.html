@@ -139,10 +139,10 @@ footer{margin-top:24px;padding-top:16px;border-top:1px solid var(--rule)}
   <h2><span class="no">01</span>本期數字</h2>
   <p class="small" id="latest-meta"></p>
   <div class="metrics" id="metrics"></div>
-  <p class="small">標籤說明：<span class="tag">事實</span> 直接從官方清冊讀到；<span class="tag">推估</span> 由兩期資料計算，只代表趨勢。退出代理值包含入托、取消、失去資格等所有原因，<strong>不等於成功入托人數</strong>。</p>
+  <p class="small"><span class="tag">事實</span> 直接從官方清冊讀到；<span class="tag">推估</span> 由兩期資料計算，只代表趨勢。退出代理值＝新增序號數 − 候補人數變化，包含入托、取消、失去資格等原因，<strong>不等於入托人數</strong>。</p>
 
   <h2><span class="no">02</span>候補趨勢</h2>
-  <p>兩條線之間的差距越大，代表越多候補序號已經從清冊消失，也就是隊伍有在流動。</p>
+  <p>兩線的差距是已經離開清冊的序號數。差距擴大得越快，隊伍流動越快。</p>
   <div class="chart">
     <div class="legend"><span><i style="background:var(--s1)"></i>候補人數 A</span><span><i style="background:var(--s2)"></i>最高序號 M</span><span><i style="background:none;border-top:2px dashed var(--soft);height:0"></i>中間有月份缺資料</span></div>
     <svg id="chart" viewBox="0 0 700 280" role="img" aria-label="候補人數與最高序號的逐月折線圖，數字見下方追蹤表"></svg>
@@ -151,7 +151,7 @@ footer{margin-top:24px;padding-top:16px;border-top:1px solid var(--rule)}
 
   <h2><span class="no">03</span>月度追蹤表</h2>
   <div class="tbl"><table id="table"></table></div>
-  <p class="small">跨學年度不計算 ΔM 與退出代理值，改開新期。缺資料的月份不補推估值，下一期會和最近一筆有資料的月份比較，並註明相隔幾個月。</p>
+  <p class="small">缺資料的月份不補數字，下一期改和最近一筆有資料的月份比較。換學年度後序號會重排，不跨學年度計算 ΔM 和退出代理值。</p>
 
   <h2><span class="no">04</span>班別與候補結構</h2>
   <p class="small" id="class-meta"></p>
@@ -159,29 +159,35 @@ footer{margin-top:24px;padding-top:16px;border-top:1px solid var(--rule)}
   <div class="tbl"><table id="waitlist"></table></div>
   <p class="small" id="class-note"></p>
 
-  <h2><span class="no">05</span>二寶時程</h2>
+  <h2><span class="no">05</span>什麼時候登記</h2>
+  <p class="callout"><strong>文山托嬰中心不抽籤，先登記先給號。</strong>二寶取得身分證字號的當天，就到<a href="https://welfare.gov.taipei/Nursery/" target="_blank" rel="noopener">公托登記線上申辦系統</a>送出申請，不用等滿 2 個月。送得越晚，號碼越後面。</p>
+  <ul class="plain">
+    <li><strong>開放時間：</strong>115 學年度候補從 2026/8/10 17:00 起持續開放登記，依送出時間先後給號。</li>
+    <li><strong>登記資格：</strong>二寶設籍臺北市即可登記；父母雙方在登記日和入托日，都要往前連續設籍臺北市滿 6 個月。二寶設籍文山區，才符合第四序位。</li>
+    <li><strong>可以再登記一家：</strong>每位幼兒最多登記 1 家公辦民營托嬰中心和 1 家社區公共托育家園。文山區有 10 家社區公共托育家園，可以同時登記其中一家當作第二條路。</li>
+    <li><strong>什麼時候會抽籤：</strong>只有新開辦的機構招生時才抽籤（例如 2026/10 內湖的麗湖托嬰中心）。另外，社會局每年在新學年度開始前，會直播重新排序候補號碼。二寶的 115 學年度號碼有效到 2027/8/31，之後會換成 116 學年度的新號碼。</li>
+  </ul>
+
+  <h2><span class="no">06</span>二寶時程</h2>
   <ol class="tl" id="timeline"></ol>
 
-  <h2><span class="no">06</span>出生後要做的事</h2>
+  <h2><span class="no">07</span>登記之後</h2>
   <ol class="plain">
-    <li>完成出生登記、取得身分證字號，<strong>當天就申請文山托嬰中心候補</strong>，不用等滿 2 個月。</li>
-    <li>確認二寶設籍文山區（符合第四序位），並確認父母雙方設籍臺北市已滿 6 個月。</li>
-    <li>保存送件日期、審核結果、核定序位和候補序號，並更新到這一頁。</li>
-    <li>打電話問中心：小寶班出缺時怎麼通知？未滿 2 個月就輪到時怎麼處理？可以延後報到嗎？以中心正式回覆為準，不假設會保留床位。</li>
-    <li>收到入托通知後，須在<strong>通知報到日起 5 日內（不含例假日）</strong>完成報到和繳費，逾期可能視為放棄。</li>
+    <li>記下案件編號、審核結果、核定序位和候補序號，更新到本頁。</li>
+    <li>打電話問中心：還沒滿 2 個月就輪到時怎麼處理？能不能延後報到？以中心的正式回覆為準，不要假設會保留床位。</li>
+    <li>收到入托通知後，要在<strong>通知報到日起 5 日內（不含例假日）</strong>完成報到並繳第一個月月費，逾期視為放棄。</li>
   </ol>
 
-  <h2><span class="no">07</span>判讀規則</h2>
+  <h2><span class="no">08</span>判讀規則</h2>
   <ul class="plain">
-    <li>中心共 48 席，大寶、中寶、小寶班各 16 席。序位配置：第一序位 20%、第二 10%、第三 10%、第四 30%（設籍文山區），剩下給第五序位（一般家庭），前面序位沒用完的名額也會轉給一般家庭。</li>
-    <li>出缺時會先看<strong>出缺班別和身分序位</strong>，再照候補順序通知，所以候補總人數不等於二寶前面排了幾個人。</li>
-    <li>預估畢業人數代表整個學年度的離托人數，不是馬上會空出來的小寶班位子。</li>
-    <li>不用「候補人數 ÷ 畢業人數」算等待時間，也不用「第 X 號等於幾成機率」換算。</li>
-    <li>燈號以最晚送托日往前推：3 個月以上為綠燈，1～3 個月為黃燈，1 個月內為紅燈。這是家庭風險管理的門檻，不是官方的入托機率。</li>
+    <li>中心共 48 席，大寶、中寶、小寶班各 16 席。序位比例：第一序位 20%、第二 10%、第三 10%、第四 30%，其餘給第五序位（一般家庭）；前四個序位沒用完的名額，由一般家庭遞補。</li>
+    <li>有空位時，中心依<strong>出缺班別和身分序位</strong>，再照候補序號通知。因此候補總人數不等於二寶前面的人數，也不能用「候補人數 ÷ 畢業人數」推算等待時間。</li>
+    <li>預估畢業人數是整個學年度會離托的人數，不是現在就有的小寶班空位。</li>
+    <li>燈號從最晚送托日往前推：3 個月以上是綠燈，1～3 個月是黃燈，1 個月內是紅燈。這是家裡決定何時啟動備援的門檻，不是入托機率。</li>
   </ul>
 
   <footer class="small">
-    <p>資料來源：<a href="https://welfare.gov.taipei/Nursery/M7_001_006" target="_blank" rel="noopener">臺北市托嬰機構收托現況查詢及候補清冊</a>、<a href="https://dosw.gov.taipei/cp.aspx?n=91E27EEB185E61A5" target="_blank" rel="noopener">社會局公托登記說明</a>。本頁只記錄彙總數字，不保存任何幼兒的個人資料。規則以官方最新公告為準。</p>
+    <p>資料來源：<a href="https://welfare.gov.taipei/Nursery/M7_001_006" target="_blank" rel="noopener">臺北市托嬰機構收托現況查詢及候補清冊</a>、<a href="https://dosw.gov.taipei/cp.aspx?n=91E27EEB185E61A5" target="_blank" rel="noopener">社會局公托登記報名及抽籤</a>（2026/10/25 查閱）。本頁只記錄彙總數字，不保存任何幼兒的個人資料；規則以官方最新公告為準。</p>
   </footer>
 </div>
 
@@ -243,7 +249,7 @@ function render(data) {
 
   // 結論
   if (last.dA != null) {
-    $('verdict').innerHTML = `<strong>${last.exit > last.dM ? '離開的比新增的多，隊伍在變短。' : '新增的比離開的多，隊伍在變長。'}</strong>從 ${fmt(last.prevDate)} 到 ${fmt(last.date)}（約 ${last.gap} 個月），新增約 ${last.dM} 個候補序號，但候補人數從 ${last.A - last.dA} 人降到 ${last.A} 人，估計約 ${last.exit} 個序號離開清冊。這只代表隊伍有在動，不代表二寶入托的機率，原因要等下一期再確認。`;
+    $('verdict').innerHTML = `<strong>${last.exit > last.dM ? '離開的比新增的多，隊伍在變短。' : '新增的比離開的多，隊伍在變長。'}</strong>從 ${fmt(last.prevDate)} 到 ${fmt(last.date)}（約 ${last.gap} 個月），新增約 ${last.dM} 個候補序號，候補人數從 ${last.A - last.dA} 人變成 ${last.A} 人，估計約 ${last.exit} 個序號離開清冊。清冊看不出離開的原因，所以這只說明隊伍在動，不代表二寶的入托機率。${last.caveat ? '<br>' + esc(last.caveat) : ''}`;
   }
 
   // 本期數字
@@ -276,17 +282,20 @@ function render(data) {
     const cp = withClass.waitlist_class_priority, pri = ['第二序位', '第四序位', '第五序位'];
     $('waitlist').innerHTML = `<thead><tr><th>候補班別</th>${pri.map(p => `<th class="r">${p}</th>`).join('')}<th class="r">合計</th></tr></thead><tbody>` +
       Object.entries(cp).map(([c, v]) => `<tr><td>${c}</td>${pri.map(p => `<td class="r">${v[p] || 0}</td>`).join('')}<td class="r">${withClass.waitlist_by_class[c]}</td></tr>`).join('') + '</tbody>';
-    $('class-note').innerHTML = `總在托 ${e.older + e.middle + e.baby} 人，等於核定 ${withClass.capacity} 席，目前沒有空位。大寶班超收 ${e.older - seat.older} 人、小寶班少 ${seat.baby - e.baby} 人，這是因為孩子會長大換班，席次是整體計算的。<span class="tag">推估</span> 大寶班的孩子陸續畢業後，空出的名額才會流到年紀小的候補者。二寶出生後，主要的競爭對象是「小寶班＋未滿 2 個月」的第四序位候補，目前共 ${(cp['小寶班']?.['第四序位'] || 0) + (cp['未滿2個月']?.['第四序位'] || 0)} 人；不過到 1 月時，這些孩子大多已經長大，進入中寶班的年齡。`;
+    const rv = withClass.rivals;
+    $('class-note').innerHTML = `在托 ${e.older + e.middle + e.baby} 人，核定 ${withClass.capacity} 席已滿，目前沒有空位。大寶班比核定多 ${e.older - seat.older} 人、小寶班少 ${seat.baby - e.baby} 人，表示各班人數會隨孩子的實際年齡調整，不是固定 16 席。` +
+      (rv ? `<br><span class="tag">推估</span> 和二寶搶同一類缺額的，主要是小寶班和未滿 2 個月的第四序位候補，目前 ${rv.now} 人，其中 ${rv.still_baby_at_deadline} 人到 ${fmt(rv.at)} 仍在小寶班年齡（未滿 8 個月）。他們的序號都比二寶前面，要等他們入托或離開清冊，才輪得到二寶。` : '');
   }
 
   // 時程
   const ev = [
     [ok[0].date, '建立 Baseline'],
     [child.actual_birth || child.assumed_birth, child.actual_birth ? '二寶出生' : `二寶預估出生（${child.birth_basis}）`],
-    [child.registered_on || iso(new Date(parse(child.actual_birth || child.assumed_birth).getTime() + 3 * 864e5)), child.registered_on ? '完成候補登記' : '出生登記後立即申請候補（預估）'],
+    [child.registered_on || iso(new Date(parse(child.actual_birth || child.assumed_birth).getTime() + 3 * 864e5)), child.registered_on ? '完成候補登記' : '取得身分證字號，當天登記候補（預估）'],
     [iso(yellowFrom), '黃燈：開始聯絡備援托育'],
     [iso(redFrom), '紅燈：確保備援托育'],
-    [child.eligible_date, '滿 2 足月，最早可入托，也是最晚送托日'],
+    [child.eligible_date, '滿 2 足月：最早可入托，也是最晚送托日'],
+    ['2027-08-31', '115 學年度候補名冊失效，之後依 116 學年度重新排序的號碼候補'],
   ].sort((a, b) => a[0].localeCompare(b[0]));
   const ti = iso(today);
   let nowShown = false;

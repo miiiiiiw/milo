@@ -30,7 +30,11 @@
       "M": 82,
       "G": 25,
       "capacity": 48,
-      "seats": { "older": 16, "middle": 16, "baby": 16 },
+      "seats": {
+        "older": 16,
+        "middle": 16,
+        "baby": 16
+      },
       "action": "建立 Baseline",
       "notes": "日期沿用原報告標示；原始截圖遺失，數字無法再複核"
     },
@@ -55,22 +59,71 @@
       "G": 27,
       "min_no": 51,
       "capacity": 48,
-      "seats": { "older": 16, "middle": 16, "baby": 16 },
-      "enrolled": { "older": 20, "middle": 16, "baby": 12 },
-      "age_ranges": { "older": "1歲2月～2歲0月", "middle": "0歲8月～1歲2月", "baby": "0歲2月～0歲8月" },
-      "enrolled_by_priority": { "1": 1, "2": 2, "3": 0, "4": 43, "5": 2 },
-      "waitlist_by_class": { "大寶班": 13, "中寶班": 8, "小寶班": 4, "未滿2個月": 4 },
-      "waitlist_by_priority": { "第二序位": 2, "第四序位": 22, "第五序位": 5 },
-      "waitlist_class_priority": {
-        "大寶班": { "第二序位": 1, "第四序位": 8, "第五序位": 4 },
-        "中寶班": { "第四序位": 8 },
-        "小寶班": { "第二序位": 1, "第四序位": 2, "第五序位": 1 },
-        "未滿2個月": { "第四序位": 4 }
+      "seats": {
+        "older": 16,
+        "middle": 16,
+        "baby": 16
       },
-      "retained": { "from_prev_listed": 15, "new_issued": 33, "new_listed": 14 },
+      "enrolled": {
+        "older": 20,
+        "middle": 16,
+        "baby": 12
+      },
+      "age_ranges": {
+        "older": "1歲2月～2歲0月",
+        "middle": "0歲8月～1歲2月",
+        "baby": "0歲2月～0歲8月"
+      },
+      "enrolled_by_priority": {
+        "1": 1,
+        "2": 2,
+        "3": 0,
+        "4": 43,
+        "5": 2
+      },
+      "waitlist_by_class": {
+        "大寶班": 13,
+        "中寶班": 8,
+        "小寶班": 4,
+        "未滿2個月": 4
+      },
+      "waitlist_by_priority": {
+        "第二序位": 2,
+        "第四序位": 22,
+        "第五序位": 5
+      },
+      "waitlist_class_priority": {
+        "大寶班": {
+          "第二序位": 1,
+          "第四序位": 8,
+          "第五序位": 4
+        },
+        "中寶班": {
+          "第四序位": 8
+        },
+        "小寶班": {
+          "第二序位": 1,
+          "第四序位": 2,
+          "第五序位": 1
+        },
+        "未滿2個月": {
+          "第四序位": 4
+        }
+      },
+      "retained": {
+        "from_prev_listed": 15,
+        "new_issued": 33,
+        "new_listed": 14
+      },
       "gap_months": 2,
       "action": "黃燈：開始聯絡備援托育",
-      "notes": "與上一筆相隔約兩個月，ΔM 與退出代理值是兩個月合計；API 另回傳 type B=46，意義待確認"
+      "notes": "與上一筆相隔約 2 個月，ΔM 和退出代理值是 2 個月合計；API 另回傳 type B=46，意義待確認",
+      "caveat": "另外，115 學年度名冊 2026/9/1 才生效，8/14 那一筆是在生效前記錄的，這次的大幅減少可能有一部分來自換學年度，要看 11 月的數字才能確認。",
+      "rivals": {
+        "at": "2027-01-13",
+        "now": 6,
+        "still_baby_at_deadline": 5
+      }
     }
   ]
 }
