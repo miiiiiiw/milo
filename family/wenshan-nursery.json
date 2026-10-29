@@ -1,6 +1,6 @@
 {
  "_說明": "文山托嬰候補追蹤資料。每月執行 node family/wenshan-nursery-update.mjs --write 新增一筆快照，不覆寫歷史。名單只存 [候補序號, 班別, 序位, 最晚送托日時是否小寶班年齡]，不存任何個資。",
- "updated": "2026-10-25",
+ "updated": "2026-10-29",
  "school_year": 115,
  "child": {
   "phase": "出生前",
@@ -227,6 +227,89 @@
       [40, "older", 4, 0],
       [41, "baby", 5, 1],
       [42, "middle", 4, 0]
+     ]
+    }
+   }
+  },
+  {
+   "date": "2026-10-29",
+   "status": "ok",
+   "school_year": 115,
+   "source": "官網查詢 API",
+   "notes": "距上次查詢 4 天。文山名單沒有變化；興隆離開清冊 1 人（46 號，大寶班），同期大寶班在托多 1 人，推估是入托，非事實。",
+   "centers": {
+    "wenshan": {
+     "seats": {
+      "older": 16,
+      "middle": 16,
+      "baby": 16
+     },
+     "enrolled": {
+      "older": 20,
+      "middle": 16,
+      "baby": 12
+     },
+     "quota": [9, 4, 4, 14, 14],
+     "enrolled_by_priority": [1, 2, 0, 43, 2],
+     "A": 29,
+     "M": 115,
+     "G": 27,
+     "list": [
+      [51, "older", 2, 0],
+      [55, "older", 5, 0],
+      [58, "older", 5, 0],
+      [61, "middle", 4, 0],
+      [64, "older", 5, 0],
+      [65, "middle", 4, 0],
+      [66, "older", 4, 0],
+      [68, "older", 4, 0],
+      [72, "older", 4, 0],
+      [74, "older", 4, 0],
+      [75, "middle", 4, 0],
+      [76, "middle", 4, 0],
+      [77, "middle", 4, 0],
+      [78, "older", 4, 0],
+      [81, "middle", 4, 0],
+      [90, "older", 4, 0],
+      [93, "baby", 4, 1],
+      [94, "middle", 4, 0],
+      [95, "middle", 4, 0],
+      [98, "older", 4, 0],
+      [99, "under2m", 4, 1],
+      [101, "under2m", 4, 1],
+      [103, "under2m", 4, 1],
+      [107, "baby", 5, 1],
+      [110, "baby", 4, 0],
+      [111, "under2m", 4, 1],
+      [112, "older", 5, 0],
+      [113, "baby", 2, 1],
+      [115, "older", 4, 0]
+     ]
+    },
+    "hsinglung": {
+     "seats": {
+      "older": 5,
+      "middle": 4,
+      "baby": 3
+     },
+     "enrolled": {
+      "older": 1,
+      "middle": 7,
+      "baby": 4
+     },
+     "quota": [2, 2, 2, 3, 1],
+     "enrolled_by_priority": [0, 2, 1, 8, 1],
+     "A": 7,
+     "M": 69,
+     "G": 8,
+     "list": [
+      [49, "older", 4, 0],
+      [51, "older", 4, 0],
+      [54, "older", 4, 0],
+      [63, "under2m", 4, 1],
+      [65, "under2m", 4, 1],
+      [67, "under2m", 4, 1],
+      [69, "older", 4, 0]
      ]
     }
    }
