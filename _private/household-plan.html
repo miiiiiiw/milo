@@ -66,6 +66,13 @@ sup.ref a:hover { text-decoration:underline }
 .refs li { margin-bottom:10px; scroll-margin-top:16px }
 .refs li:target { background:var(--accent-tint) }
 .refs a { color:var(--accent); text-underline-offset:3px; overflow-wrap:anywhere }
+.guide { margin:32px 0 0 }
+.guide-h { font-weight:600; font-size:16px; margin:0 0 10px }
+.gv { display:block; width:100%; height:auto; border:1px solid var(--rule-solid); border-radius:8px; background:#f5f5f5 }
+.gv-n { display:none }
+.guide-note { font-size:14px; line-height:1.7; color:var(--muted); margin:12px 0 0; max-width:44em }
+@media (max-width:640px) { .gv-w { display:none } .gv-n { display:block } }
+@media print { .guide { display:none } }
 .fig { margin:32px 0 36px; padding:0 }
 .scroll { overflow-x:auto }
 .fig svg { display:block; height:auto }
@@ -155,6 +162,13 @@ td:last-child, th:last-child { padding-right:0 }
 <p><strong>法律上：</strong>戶長是「戶」的代表，不是房屋的代表（<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=D0030006">戶籍法第 3 條</a>）。弟弟遷出後若無人設籍，就沒有戶，也就沒有戶長。法條未明文寫出這點，這是依該條的推論。</p>
 <p><strong>稅率上：</strong>自住房屋稅率與自用地價稅率都以無出租、屋主本人、配偶或直系親屬設籍為條件，房屋稅另要求實際居住，都沒有戶長這一項（<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0340135">住家用房屋供自住及公益出租人出租使用認定標準第 2 條</a>、<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0340096">土地稅法第 9 條</a>）。北市一（三段）出租中，本來就不適用這兩種稅率，有沒有戶長都不影響；它走的是社宅出租優惠。</p>
 </div>
+<section class="guide" aria-label="導覽影片">
+<p class="guide-h">先看導覽影片</p>
+<video class="gv gv-w" controls playsinline webkit-playsinline preload="none" width="1280" height="720" poster="household-plan-guide-wide.jpg" aria-label="導覽影片，依序介紹導言與第一至第七節的重點"><source src="household-plan-guide-wide.mp4" type="video/mp4"></video>
+<video class="gv gv-n" controls playsinline webkit-playsinline preload="none" width="720" height="1040" poster="household-plan-guide-phone.jpg" aria-label="導覽影片，依序介紹導言與第一至第七節的重點"><source src="household-plan-guide-phone.mp4" type="video/mp4"></video>
+<p class="guide-note">約 3 分鐘，有配樂，播放時請打開音量。影片只是全文的重點導覽，細節以下方全文為準。</p>
+<script>(function(){var m=window.matchMedia('(max-width:640px)');function f(){if(document.fullscreenElement)return;document.querySelectorAll('.gv').forEach(function(v){if(!v.offsetParent&&!v.webkitDisplayingFullscreen)v.pause()})}if(m.addEventListener)m.addEventListener('change',f)})();</script>
+</section>
 </header>
 
 <h2 id="s1">一、三間房的安排</h2>
