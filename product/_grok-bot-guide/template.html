@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>{{title}}</title>
+<meta name="description" content="八個學習主題、132 篇 X 長文的收藏榜與作者排行，依學習路線由淺入深">
+<meta name="keywords" content="Grok Bot, AI, 學習導航, 收藏榜">
+<meta name="date" content="2026-11-08">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F6F2EA; --paper-2:#EAE3D4; --hover:#EFE9DC; --ink:#1F1D1A; --ink-2:#4A453E;
+  --muted:#6B655C; --faint:#9A9182; --rule:#DDD6C8; --rule-2:#E7E1D5; --chip:#C9C0B0;
+  --accent:#A8332A; --accent-dark:#7E241D; --on-ink:#F6F2EA;
+  --serif:'Noto Serif TC','Songti TC','PMingLiU',serif;
+  --sans:'Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--paper:#1A1917;--paper-2:#2A2824;--hover:#24221F;--ink:#ECE6DA;--ink-2:#C9C2B5;--muted:#A39B8D;--faint:#7D766B;--rule:#3A3731;--rule-2:#2F2C28;--chip:#4A463F;--accent:#E07A6E;--accent-dark:#F09A8F;--on-ink:#1A1917}
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}a:hover{color:var(--accent-dark)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.num{font-variant-numeric:tabular-nums}
+
+.wrap{max-width:1200px;margin:0 auto;padding:56px clamp(16px,4vw,32px) 96px}
+.eyebrow{color:var(--muted)}
+
+/* 頁首 */
+.masthead{display:flex;align-items:center;gap:20px;padding:0 0 28px;border-bottom:1px solid var(--ink)}
+.seal{width:56px;height:56px;flex:none;border:1.5px solid var(--accent);color:var(--accent);border-radius:3px;display:grid;place-items:center;font-family:var(--serif);font-size:28px;font-weight:700}
+.masthead h1{margin:0;font-family:var(--serif);font-weight:600;font-size:clamp(24px,4vw,36px);letter-spacing:.08em;line-height:1.3}
+.masthead p{margin:4px 0 0;font-size:14px;color:var(--muted);letter-spacing:.24em}
+
+/* 序 */
+.preface{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,5vw,64px);padding:36px 0 24px;align-items:start}
+.preface .lead{margin:0;font-family:var(--serif);font-size:clamp(16px,1.8vw,18px);line-height:2;color:var(--ink-2);letter-spacing:.04em}
+.preface .fine{margin:14px 0 0;font-size:13px;line-height:1.9;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--rule)}
+.stats div{padding:16px 4px 14px;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:2px}
+.stats div:nth-child(odd){padding-right:16px;border-right:1px solid var(--rule)}
+.stats div:nth-child(even){padding-left:16px}
+.stats b{font-family:var(--serif);font-size:32px;font-weight:600;line-height:1.2}
+.stats span{font-size:13px;color:var(--muted);letter-spacing:.12em}
+
+/* 頁籤 */
+[hidden]{display:none!important}
+.tabs{display:flex;gap:clamp(24px,5vw,48px);border-bottom:1px solid var(--rule);margin-top:16px}
+.tab{background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:16px 0 14px;min-height:48px;cursor:pointer;display:flex;align-items:baseline;gap:10px;color:var(--muted);transition:color .2s,border-color .2s}
+.tab b{font-family:var(--serif);font-size:19px;font-weight:600;letter-spacing:.24em}
+.tab small{font-size:12px;letter-spacing:.08em}
+.tab:hover{color:var(--ink-2)}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+
+/* 作者排行 */
+.lead-s{margin:0;font-size:14px;line-height:1.95;color:var(--ink-2)}
+.handle{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--ink);text-decoration:none;letter-spacing:.02em;line-height:1.5;overflow-wrap:anywhere}
+.handle:hover{color:var(--accent)}
+.handle svg{display:inline-block;vertical-align:-1px;margin-left:6px;opacity:.5}
+.abar{height:3px;background:var(--rule-2);max-width:420px;position:relative;border-radius:2px;overflow:hidden}
+.abar i{position:absolute;inset:0 auto 0 0;background:var(--accent);opacity:.75}
+.nums dd.key{color:var(--ink);font-weight:600}
+.nums div:first-child dd{font-weight:inherit}
+.rep{display:flex;gap:10px;align-items:baseline;font-size:14px;line-height:1.7}
+.rep>span{flex:none;font-size:12px;color:var(--muted);letter-spacing:.2em}
+.rep a{color:var(--ink-2);text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:4px;overflow-wrap:anywhere}
+.rep a:hover{color:var(--accent);text-decoration-color:currentColor}
+.node.overview .ring .pg{stroke:var(--ink-2)}
+.node.overview[aria-current="true"] .ring .pg{stroke:var(--accent)}
+#authorResults .item:first-child{border-top:0;padding-top:8px}
+
+/* 版面 */
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:56px;padding-top:40px;align-items:start}
+
+/* 卷目 */
+.toc{position:sticky;top:20px;display:flex;flex-direction:column;gap:16px;max-height:calc(100vh - 40px);overflow:auto}
+.toc-head{display:flex;align-items:baseline;justify-content:space-between}
+.toc-head h2{margin:0;font-family:var(--serif);font-size:15px;font-weight:600;letter-spacing:.4em}
+.toc-head span{font-size:12px;color:var(--muted)}
+.toc nav{display:flex;flex-direction:column;gap:2px}
+.topic{display:flex;align-items:center;gap:12px;width:100%;min-height:50px;padding:8px 12px;border:0;border-radius:3px;background:transparent;color:var(--ink-2);cursor:pointer;text-align:left;transition:background .2s}
+.topic:hover{background:var(--hover)}
+.topic[aria-current="true"]{background:var(--paper-2);color:var(--ink)}
+.topic .n{font-family:var(--serif);font-size:15px;width:20px;flex:none;color:var(--faint)}
+.topic[aria-current="true"] .n{color:var(--accent)}
+.topic .name{flex:1;font-family:var(--serif);font-size:16px;font-weight:500;letter-spacing:.04em;line-height:1.4}
+.topic .p{font-size:12px;color:var(--muted);white-space:nowrap}
+.toc-all{min-height:44px;border:1px solid var(--chip);background:transparent;border-radius:3px;cursor:pointer;font-size:14px;letter-spacing:.16em;color:var(--ink-2)}
+.toc-all:hover{border-color:var(--ink)}
+.toc-all[aria-pressed="true"]{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.toc-note{margin:0;border-top:1px solid var(--rule);padding-top:16px;font-family:var(--serif);font-size:13px;color:var(--muted);line-height:1.9}
+
+/* 階梯路線 */
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;position:relative}
+.steps::before{content:'';position:absolute;left:30px;top:56px;bottom:28px;width:1px;background:var(--rule)}
+.stage{position:relative}
+.stage-label{display:flex;align-items:baseline;gap:8px;height:28px;padding:4px 0 0 60px}
+.stage-label .k{font-size:11px;color:var(--accent);letter-spacing:.24em}
+.stage-label .nm{font-family:var(--serif);font-size:15px;font-weight:600;letter-spacing:.24em}
+.stage-label .sub{font-size:11px;color:var(--muted);letter-spacing:.1em}
+.nodes{list-style:none;margin:0;padding:0;position:relative}
+.node{position:relative;display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:6px 8px 6px 12px;border:0;border-radius:3px;background:transparent;color:var(--ink-2);cursor:pointer;text-align:left;transition:background .2s}
+.node:hover{background:var(--hover)}
+.node[aria-current="true"]{background:var(--paper-2);color:var(--ink)}
+.ring{position:relative;width:36px;height:36px;flex:none;display:grid;place-items:center;border-radius:50%;background:var(--paper)}
+.node[aria-current="true"] .ring,.node:hover .ring{background:transparent}
+.ring svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.ring .bg{stroke:var(--rule)}
+.ring .pg{stroke:var(--accent);transition:stroke-dasharray .4s ease}
+.ring .rn{position:relative;font-family:var(--serif);font-size:14px;color:var(--faint)}
+.node[aria-current="true"] .ring .bg{stroke:var(--ink-2)}
+.node[aria-current="true"] .rn{color:var(--accent);font-weight:600}
+.node.done .ring{background:var(--accent)}
+.node.done .ring .bg,.node.done .ring .pg{stroke:var(--accent)}
+.node.done .rn{color:var(--on-ink)}
+.node .txt{display:flex;flex-direction:column;min-width:0}
+.node .name{font-family:var(--serif);font-size:15px;font-weight:500;letter-spacing:.04em;line-height:1.45}
+.node[aria-current="true"] .name{font-weight:600}
+.node .p{font-size:11px;color:var(--muted)}
+
+/* 下一卷引導 */
+.pager{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:16px;margin-top:8px}
+.pager button{border:1px solid var(--rule);background:transparent;border-radius:3px;cursor:pointer;text-align:left;padding:18px 20px;display:flex;flex-direction:column;gap:4px;transition:border-color .2s,background .2s}
+.pager button:hover{border-color:var(--ink);background:var(--hover)}
+.pager .k{font-size:12px;color:var(--muted);letter-spacing:.2em}
+.pager .nm{font-family:var(--serif);font-size:18px;font-weight:600;letter-spacing:.06em}
+.pager .g{font-size:13px;color:var(--muted);line-height:1.7}
+.pager .next{border-color:var(--ink)}
+.pager .next .k{color:var(--accent)}
+.pager .next .nm::after{content:' →';color:var(--accent)}
+.pager .solo{grid-column:1 / -1}
+
+/* 主欄 */
+main{min-width:0;display:flex;flex-direction:column;gap:32px}
+.controls{display:flex;flex-direction:column;gap:14px;padding-bottom:24px;border-bottom:1px solid var(--rule)}
+.search{display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--chip);padding:8px 2px}
+.search:focus-within{border-color:var(--accent)}
+.search input{border:0;background:transparent;outline:none;font:inherit;font-size:16px;color:var(--ink);flex:1;min-width:0;padding:4px 0}
+.search input::placeholder{color:var(--faint)}
+.search input::-webkit-search-cancel-button{display:none}
+.filters{display:flex;flex-wrap:wrap;align-items:center;gap:10px 24px}
+.fgroup{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fgroup>span{font-size:12px;color:var(--muted);letter-spacing:.2em;margin-right:2px}
+.chip{min-height:40px;padding:0 16px;border-radius:20px;cursor:pointer;font-size:14px;letter-spacing:.08em;background:transparent;color:var(--ink-2);border:1px solid var(--chip);transition:background .2s,color .2s}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.chip .c{font-size:12px;margin-left:6px;opacity:.65;font-variant-numeric:tabular-nums}
+.chip:disabled{opacity:.38;cursor:not-allowed;border-style:dashed}
+.chip:disabled:hover{border-color:var(--chip)}
+.path-cap{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin:28px 0 10px;font-size:12px;color:var(--muted);letter-spacing:.12em}
+.path-cap b{font-family:var(--serif);font-size:14px;color:var(--ink);font-weight:600;letter-spacing:.24em;margin-right:8px}
+.path button:disabled{cursor:not-allowed;opacity:.45}
+.path button:disabled:hover{background:transparent}
+.path button[aria-pressed="true"]{box-shadow:inset 0 -2px 0 var(--accent)}
+.reset{margin-left:auto;min-height:40px;border:0;background:transparent;color:var(--accent);cursor:pointer;font-size:14px;letter-spacing:.1em;padding:0 4px;text-decoration:underline;text-underline-offset:4px}
+.status{margin:0;font-size:13px;color:var(--ink-2)}
+.sortnote{margin:0;font-size:12px;color:var(--muted);line-height:1.8}
+
+.vol-head{display:flex;flex-direction:column;gap:14px}
+.vol-line{display:flex;align-items:baseline;gap:16px}
+.vol-line .vol{font-family:var(--serif);font-size:15px;color:var(--accent);letter-spacing:.3em;white-space:nowrap}
+.vol-line .rule{height:1px;flex:1;background:var(--rule)}
+.vol-line .stat{font-size:13px;color:var(--muted);white-space:nowrap}
+.vol-head h2{margin:0;font-family:var(--serif);font-size:clamp(30px,4.6vw,42px);font-weight:600;letter-spacing:.06em;line-height:1.3}
+.goal{margin:0;font-family:var(--serif);font-size:clamp(15px,1.8vw,17px);color:var(--ink-2);letter-spacing:.06em;line-height:1.9}
+.caveat{margin:0;font-size:13px;color:var(--muted)}
+.caveat::before{content:'※ ';color:var(--accent)}
+.bar{height:2px;background:var(--rule-2);position:relative}
+.bar i{position:absolute;inset:0 auto 0 0;background:var(--accent);transition:width .4s ease}
+
+.path{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.path button{padding:18px 16px;display:flex;flex-direction:column;gap:4px;border:0;background:transparent;cursor:pointer;text-align:left;transition:background .2s}
+.path button+button{border-left:1px solid var(--rule)}
+.path button:hover{background:var(--hover)}
+.path button[aria-pressed="true"]{background:var(--paper-2)}
+.path .s{font-size:12px;color:var(--muted);letter-spacing:.2em}
+.path .l{font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:.1em}
+.path button[aria-pressed="true"] .l{color:var(--accent)}
+.path .c{font-size:13px;color:var(--muted)}
+.path-note{margin:-20px 0 0;font-size:12px;color:var(--muted)}
+
+/* 清單 */
+.group-head{display:flex;flex-direction:column;gap:6px;padding:8px 0 16px}
+.group-head h3{margin:0;font-family:var(--serif);font-size:24px;font-weight:600;letter-spacing:.08em}
+.group-head h3 em{font-style:normal;color:var(--accent);font-size:15px;letter-spacing:.3em;margin-right:12px}
+.group-head .cnt{font-size:13px;color:var(--muted)}
+.list{list-style:none;margin:0;padding:0}
+.item{display:flex;gap:20px;align-items:flex-start;padding:24px 0;border-top:1px solid var(--rule-2);transition:opacity .3s}
+.item.is-read .title-row a{color:var(--muted)}
+.item.is-read .rank{color:var(--rule)}
+.rank{font-family:var(--serif);font-size:26px;line-height:1.25;color:var(--faint);width:40px;flex:none}
+.item.top .rank{color:var(--accent)}
+.body{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
+.title-row{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.title-row a{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--ink);text-decoration:none;letter-spacing:.02em;line-height:1.6;overflow-wrap:anywhere}
+.title-row a:hover{color:var(--accent)}
+.title-row a svg{display:inline-block;vertical-align:-1px;margin-left:6px;opacity:.5}
+.badge{font-size:11px;color:var(--accent);border:1px solid var(--accent);padding:1px 6px;letter-spacing:.2em;border-radius:2px;white-space:nowrap;margin-top:6px}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font-size:13px;color:var(--muted)}
+.author{font-family:var(--serif);letter-spacing:.04em;color:var(--ink-2);text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:4px;padding:6px 0;margin:-6px 0}
+.author:hover{color:var(--accent);text-decoration-color:currentColor}
+.sep{width:1px;height:12px;background:var(--rule)}
+.pill{font-size:12px;padding:1px 8px;border:1px solid var(--rule);border-radius:2px;letter-spacing:.1em}
+.nums{display:flex;flex-wrap:wrap;gap:4px 20px;margin:0;font-size:13px;color:var(--muted)}
+.nums div{display:flex;gap:6px;align-items:baseline}
+.nums dt{letter-spacing:.1em}
+.nums dd{margin:0;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.item .nums div:first-child dd{color:var(--ink);font-weight:500}
+.cross{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;font-size:13px;color:var(--muted)}
+.cross>span{letter-spacing:.1em;margin-right:4px}
+.xlink{border:0;background:transparent;padding:4px 6px;min-height:32px;margin:-4px 0;font-size:13px;color:var(--accent);cursor:pointer;border-radius:2px;text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--accent) 35%,transparent);text-underline-offset:4px}
+.xlink:hover{background:var(--hover)}
+.check{flex:none;width:44px;height:44px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;border-radius:22px}
+.check:hover{background:var(--hover)}
+.check .ring{stroke:var(--faint)}
+.check .fill,.check .tick{opacity:0;transition:opacity .2s}
+.check[aria-pressed="true"] .fill,.check[aria-pressed="true"] .tick{opacity:1}
+.check .fill{fill:var(--accent)}
+.check .tick{stroke:var(--on-ink)}
+.mark{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;margin-top:2px;border:1px solid var(--chip);border-radius:20px;background:transparent;color:var(--muted);font-size:13px;letter-spacing:.08em;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s,border-color .2s}
+.mark:hover{border-color:var(--ink);color:var(--ink)}
+.mark svg{flex:none}
+.mark[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-ink)}
+.mark[aria-pressed="true"]:hover{background:var(--accent-dark);border-color:var(--accent-dark);color:var(--on-ink)}
+.mark.inline{display:none}
+.statrow{display:flex;align-items:center;gap:8px}
+.statrow .nums{flex:1;min-width:0}
+.more{display:flex;flex-direction:column;align-items:center;gap:2px;width:100%;min-height:56px;margin-top:4px;padding:12px;border:1px dashed var(--chip);border-radius:3px;background:transparent;color:var(--ink-2);font-size:14px;letter-spacing:.12em;cursor:pointer}
+.more small{font-size:12px;color:var(--muted);letter-spacing:.04em}
+.more:hover{border-color:var(--ink);background:var(--hover)}
+.readnote{margin:0;font-size:12px;color:var(--muted);line-height:1.8;display:flex;gap:8px;align-items:baseline}
+.readnote b{flex:none;font-weight:500;color:var(--accent);letter-spacing:.1em}
+.empty{margin:0;padding:48px 0;text-align:center;font-family:var(--serif);color:var(--muted);letter-spacing:.1em}
+
+/* 附記 */
+.colophon{margin-top:56px;border-top:1px solid var(--ink);padding-top:28px;display:flex;flex-direction:column;gap:16px}
+.colophon h2{margin:0 0 4px;font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:.3em}
+.colophon ol{margin:0;padding:0;list-style:none;counter-reset:c;display:flex;flex-direction:column;gap:14px}
+.colophon li{counter-increment:c;display:flex;gap:14px;font-size:14px;line-height:1.95;color:var(--ink-2)}
+.colophon li::before{content:counter(c,cjk-ideographic);font-family:var(--serif);color:var(--accent);flex:none;width:20px}
+.colophon .fine{font-size:12px;color:var(--muted);margin:8px 0 0}
+
+/* 平板 */
+@media (max-width:960px){
+  .preface{grid-template-columns:minmax(0,1fr)}
+  .layout{grid-template-columns:minmax(0,1fr);gap:28px;padding-top:24px}
+  .toc{position:static;max-height:none;overflow:visible;gap:12px}
+  .toc nav{scroll-padding-inline:clamp(16px,4vw,32px);overflow-x:auto;margin:0 calc(-1*clamp(16px,4vw,32px));padding:0 clamp(16px,4vw,32px) 6px;scroll-snap-type:x proximity;scrollbar-width:none}
+  .toc nav::-webkit-scrollbar{display:none}
+  .steps{flex-direction:row;gap:0;width:max-content}
+  .steps::before{left:60px;right:60px;top:52px;bottom:auto;width:auto;height:1px}
+  .stage{scroll-snap-align:start}
+  .stage-label{padding:4px 0 0 8px}
+  .stage-label .sub{display:none}
+  .nodes{display:flex}
+  .node{flex-direction:column;width:120px;gap:6px;padding:6px 4px 8px;text-align:center}
+  .node .name{white-space:nowrap}
+  .node .txt{align-items:center}
+  .node .name{font-size:13px;line-height:1.4}
+  .toc-note{display:none}
+  .pager{grid-template-columns:minmax(0,1fr)}
+  .pager .prev{order:2}
+  .toc-all{align-self:flex-start;padding:0 20px}
+}
+/* 手機 */
+@media (max-width:560px){
+  .wrap{padding-top:32px}
+  .masthead{gap:14px}
+  .seal{width:46px;height:46px;font-size:23px}
+  .stats b{font-size:26px}
+  .filters{gap:10px}
+  .reset{margin-left:0}
+  .path button{padding:14px 10px}
+  .path .s{letter-spacing:.1em}
+  .path .l{font-size:17px}
+  .path .c{font-size:12px}
+  .mark.side{display:none}
+  .mark.inline{display:inline-flex;position:relative;margin:0;min-height:26px;padding:0 10px;gap:4px;font-size:12px;letter-spacing:.04em}
+  .mark.inline svg{width:12px;height:12px}
+  .mark.inline::before{content:'';position:absolute;inset:-9px -4px}
+  .mark.inline[aria-pressed="true"]{background:transparent;color:var(--accent);border-color:var(--accent)}
+  .rank{font-size:20px;width:28px}
+  .title-row a{font-size:16px}
+  .nums{gap:2px 14px}
+  .chip{padding:0 13px}
+  .tab b{font-size:17px}
+  .handle{font-size:17px}
+}
+@media (max-width:380px){
+  .item .nums{gap:2px 10px;font-size:12px}
+  .mark.inline{padding:0 8px}
+}
+@media print{
+  .controls,.toc,.check,.mark,.path,.reset{display:none!important}
+  .layout{grid-template-columns:1fr}
+  .item{break-inside:avoid;opacity:1!important}
+  a{color:inherit}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* ── milo 頁首小標規範（見 README「頁首小標」），請勿個別調整 ── */
+.page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow page-kicker">產品 · GrokBot</p>
+  <header class="masthead">
+    <div class="seal" aria-hidden="true">導</div>
+    <div>
+      <h1>{{title}}</h1>
+      <p>{{subtitle}}</p>
+    </div>
+  </header>
+
+  <section class="preface" aria-label="說明">
+    <div>
+      <p class="lead">{{intro}}</p>
+      <p class="fine">{{dedupe_note}}</p>
+    </div>
+    <div class="stats">
+      <div><b class="num" id="stTopics">{{st_topics}}</b><span>學習主題</span></div>
+      <div><b class="num" id="stPer">{{st_per}}</b><span>每主題篇數</span></div>
+      <div><b class="num" id="stUnique">{{st_unique}}</b><span>篇不同文章</span></div>
+      <div><b class="num" id="stPlaces">{{st_places}}</b><span>個主題收錄位置</span></div>
+    </div>
+  </section>
+
+  <div class="tabs" role="tablist" aria-label="學習導航檢視">
+    <button id="article-tab" class="tab" type="button" role="tab" aria-selected="true" aria-controls="article-panel" tabindex="0" data-tab="article"><b>篇目</b><small>依主題收藏榜</small></button>
+    <button id="author-tab" class="tab" type="button" role="tab" aria-selected="false" aria-controls="author-panel" tabindex="-1" data-tab="author"><b>作者</b><small>本選集排行</small></button>
+  </div>
+
+  <div class="layout" id="article-panel" role="tabpanel" aria-labelledby="article-tab">
+    <aside class="toc">
+      <div class="toc-head">
+        <h2>學習路線</h2>
+        <span id="totalRead" class="num"></span>
+      </div>
+      <nav id="topics" aria-label="主題"></nav>
+      <p class="toc-note">從「總覽」一覽全部，再依{{stage_names}}由淺入深。節點外圈是閱讀進度，讀完即轉為實心；同一篇跨主題收錄時，各卷同步顯示已讀。</p>
+    </aside>
+
+    <main>
+      <div class="controls">
+        <label class="search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" style="color:var(--muted)"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <span class="sr-only">搜尋本主題標題或作者</span>
+          <input id="query" type="search" placeholder="搜尋本主題標題或作者" autocomplete="off">
+        </label>
+        <div class="filters">
+          <div class="fgroup" role="group" aria-label="原文語言"><span>原文</span><span id="langChips" style="display:contents"></span></div>
+          <div class="fgroup" role="group" aria-label="閱讀進度"><span>進度</span><span id="rdChips" style="display:contents"></span></div>
+          <button id="reset" class="reset" type="button">清除篩選</button>
+        </div>
+        <p id="status" class="status" aria-live="polite"></p>
+        <p class="readnote"><b>已讀</b><span>點標題開啟原文會自動記為已讀，也可以按右側「標為已讀」手動標記。已讀進度顯示在左側學習路線，並可用「進度」篩出未讀篇目；記錄只存在這個瀏覽器。</span></p>
+        <p class="sortnote">{{sort_note}}</p>
+      </div>
+
+      <div id="head"></div>
+      <div id="results"></div>
+      <noscript><p class="empty">此互動清單需要啟用 JavaScript。所有文章資料已完整內嵌於本檔案。</p></noscript>
+
+    </main>
+  </div>
+
+  <div class="layout" id="author-panel" role="tabpanel" aria-labelledby="author-tab" hidden>
+    <aside class="toc">
+      <div class="toc-head">
+        <h2>範圍</h2>
+        <span id="aTocCount" class="num"></span>
+      </div>
+      <nav id="scopes" aria-label="作者榜範圍"></nav>
+      <p class="toc-note">路線與篇目頁相同。外圈為該卷作者數佔全選集的比例，會隨語言篩選變動；範圍、語言與排序獨立於篇目頁。</p>
+    </aside>
+
+    <main>
+      <section class="vol-head">
+        <div class="vol-line"><span class="vol" id="aScope"></span><span class="rule"></span><span class="stat num" id="aCount"></span></div>
+        <h2>作者排行</h2>
+        <p class="lead-s">{{author_note}}</p>
+      </section>
+
+      <div class="controls">
+        <div class="filters">
+          <div class="fgroup" role="group" aria-label="作者榜文章語言"><span>原文</span><span id="aLangChips" style="display:contents"></span></div>
+          <div class="fgroup" role="group" aria-label="作者排序"><span>排序</span><span id="aSortChips" style="display:contents"></span></div>
+        </div>
+        <p id="authorStatus" class="status" aria-live="polite"></p>
+      </div>
+
+      <ol id="authorResults" class="list"></ol>
+
+      <p class="sortnote">預設按總收藏降序，同分依篇數、單篇最高收藏及作者帳號排序；平均＝目前篩選範圍總收藏÷篇數。代表作取範圍內單篇收藏最高文章，同收藏以轉推、讚決定。「本選集多篇」只表示本選集至少三篇，不推定固定更新；總收藏、平均與篇數均不是內容正確性或品質保證，單篇高分作者也可能有很高平均。</p>
+    </main>
+  </div>
+
+  <section class="colophon" aria-labelledby="src">
+    <h2 id="src">資料來源、驗證與限制</h2>
+    <ol>
+{{sources}}
+    </ol>
+    <p class="fine">資料整理於 {{updated}}（台北時間）。篩選在本機執行；已讀記錄只存在你的瀏覽器中。開啟文章連結才會連到 X。</p>
+  </section>
+</div>
+
+<script id="content-data" type="application/json">{{content_json}}</script>
+<script>
+'use strict';
+(function(){
+  var CONTENT = JSON.parse(document.getElementById('content-data').textContent);
+  var DS = CONTENT.dataset, N = DS.display_per_topic;
+  var tIndex = {};
+  CONTENT.topics.forEach(function(t,i){ tIndex[t.id] = i; });
+  var groups = CONTENT.topics.map(function(t){ return t.name; });
+  var goals = CONTENT.topics.map(function(t){ return t.goal; });
+  var CAVEAT = {};
+  CONTENT.topics.forEach(function(t,i){ if (t.caveat) CAVEAT[i] = t.caveat; });
+  var NUM = ['壹','貳','參','肆','伍','陸','柒','捌','玖','拾','拾壹','拾貳','拾參','拾肆','拾伍','拾陸'];
+  var LEVELS = ['入門','中階','進階'];
+  var LANGS = ['全部','中文','英文','日文'];
+  var LANGMAP = { zh:'中文', en:'英文', ja:'日文' };
+  var STAGES = CONTENT.stages.map(function(st){ return { k:st.label, name:st.name, sub:st.sub, t:st.topics.map(function(id){ return tIndex[id]; }) }; });
+  var stageOf = function(i){ for (var k=0;k<STAGES.length;k++) if (STAGES[k].t.indexOf(i) > -1) return STAGES[k]; };
+  // d = [序, 標題, 帳號, post_id, 收藏, 轉推, 讚, 語言, 主題索引, 難度]
+  var active = CONTENT.articles.filter(function(a){ return a.status === 'active'; }).map(function(a,k){
+    return [k, a.title, a.author.handle, a.post_id, a.metrics.bookmarks, a.metrics.retweets, a.metrics.likes, LANGMAP[a.lang], a.topics.map(function(id){ return tIndex[id]; }), a.level];
+  });
+  var levelOf = function(d){ return d[9]; };
+  var cmp = function(a,b){ return b[4]-a[4] || b[5]-a[5] || b[6]-a[6] || a[3].localeCompare(b[3]); };
+  var lists = groups.map(function(_,i){
+    return active.filter(function(d){ return d[8].indexOf(i) > -1; }).sort(cmp).map(function(d,k){ return { d:d, rank:k+1, level:levelOf(d) }; });
+  });
+  // 選集＝各卷前 N 篇的聯集；作者排行與總覽進度都以選集計算
+  var top = function(i){ return lists[i].slice(0, N); };
+  var shownIds = {};
+  lists.forEach(function(_,i){ top(i).forEach(function(x){ shownIds[x.d[3]] = 1; }); });
+  var data = active.filter(function(d){ return shownIds[d[3]]; });
+
+  var state = { t:0, all:true, lang:'全部', lv:'全部', rd:'全部', q:'', more:{} };
+  var read = {};
+  try { read = JSON.parse(localStorage.getItem('grokbot-nav-read')) || {}; } catch(e){}
+  function save(){ try { localStorage.setItem('grokbot-nav-read', JSON.stringify(read)); } catch(e){} }
+
+  var $ = function(id){ return document.getElementById(id); };
+  var fmt = function(n){ return n.toLocaleString('en-US'); };
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  var isRead = function(d){ return !!read[d[3]]; };
+
+  function filtered(i, o){
+    o = o || {};
+    var lang = o.lang || state.lang, lv = o.lv || state.lv, rd = o.rd || state.rd;
+    var q = state.q.trim().toLowerCase();
+    var base = state.more[i] ? lists[i] : top(i);
+    return base.filter(function(x){
+      var d = x.d;
+      return (lang === '全部' || d[7] === lang) &&
+             (lv === '全部' || x.level === lv) &&
+             (rd === '全部' || (rd === '已讀') === isRead(d)) &&
+             (!q || (d[1] + ' ' + d[2]).toLowerCase().indexOf(q) > -1);
+    });
+  }
+  var scopeIdx = function(){ return state.all ? groups.map(function(_,k){ return k; }) : [state.t]; };
+  var countIn = function(idx, o){ return idx.reduce(function(s,i){ return s + filtered(i, o).length; }, 0); };
+
+  function markBtn(d, r, where){
+    return '<button class="mark ' + where + '" type="button" data-id="' + d[3] + '" aria-pressed="' + r + '" title="' + (r ? '點擊取消已讀' : '記錄這篇已經讀過') + '" aria-label="' + (r ? '已讀：' : '標為已讀：') + esc(d[1]) + '">' +
+      (r ? '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.3l2.6 2.6L11 4.5"/></svg>已讀'
+         : where === 'inline' ? '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><circle cx="6" cy="6" r="4.4"/></svg>未讀'
+         : '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M1.5 3.5c2-.8 3.8-.6 5.5.6 1.7-1.2 3.5-1.4 5.5-.6v7.5c-2-.8-3.8-.6-5.5.6-1.7-1.2-3.5-1.4-5.5-.6z"/><path d="M7 4.1v7.5"/></svg>標為已讀') +
+      '</button>';
+  }
+  function itemHTML(x, i){
+    var d = x.d, r = isRead(d);
+    var others = d[8].filter(function(g){ return g !== i; });
+    return '<li class="item' + (r ? ' is-read' : '') + (x.rank === 1 ? ' top' : '') + '">' +
+      '<span class="rank num">' + String(x.rank).padStart(2,'0') + '</span>' +
+      '<div class="body">' +
+        '<div class="title-row"><a data-open="' + d[3] + '" href="https://x.com/' + encodeURIComponent(d[2]) + '/status/' + d[3] + '" target="_blank" rel="noopener noreferrer">' + esc(d[1]) +
+          '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4.5 2.5h5v5M9.5 2.5l-7 7"/></svg><span class="sr-only">（在 X 開啟）</span></a>' +
+          (x.rank === 1 ? '<span class="badge">本卷首選</span>' : '') + '</div>' +
+        '<div class="meta"><a class="author" href="https://x.com/' + encodeURIComponent(d[2]) + '" target="_blank" rel="noopener noreferrer" aria-label="在 X 開啟 @' + esc(d[2]) + ' 的個人頁">@' + esc(d[2]) + '</a><span class="sep" aria-hidden="true"></span><span class="pill">' + d[7] + '</span><span class="pill">' + x.level + '</span></div>' +
+        '<div class="statrow"><dl class="nums"><div><dt>收藏</dt><dd>' + fmt(d[4]) + '</dd></div><div><dt>轉推</dt><dd>' + fmt(d[5]) + '</dd></div><div><dt>讚</dt><dd>' + fmt(d[6]) + '</dd></div></dl>' + markBtn(d, r, 'inline') + '</div>' +
+        (others.length ? '<div class="cross"><span>跨主題・亦收於</span>' + others.map(function(g){ return '<button class="xlink" type="button" data-go="' + g + '">' + NUM[g] + '・' + esc(groups[g]) + '</button>'; }).join('') + '</div>' : '') +
+      '</div>' +
+      markBtn(d, r, 'side') + '</li>';
+  }
+
+  function moreBtn(i){
+    var extra = lists[i].length - N;
+    if (extra <= 0) return '';
+    return '<button class="more" type="button" data-more="' + i + '" aria-expanded="' + !!state.more[i] + '">' +
+      (state.more[i] ? '收合，只看前 ' + N + ' 篇' : '展開其餘 ' + extra + ' 篇<small>第 ' + (N+1) + ' 名以後，不列入作者排行</small>') + '</button>';
+  }
+  function render(){
+    // 卷目
+    var C = 2*Math.PI*16;
+    var uniqRead = data.filter(isRead).length;
+    var allPct = uniqRead / data.length;
+    $('topics').innerHTML = '<ol class="steps">' +
+      '<li class="stage"><div class="stage-label"><span class="k">總覽</span><span class="nm">全選集</span><span class="sub">各卷依序展開</span></div><ol class="nodes"><li>' +
+        '<button class="node overview' + (uniqRead === data.length ? ' done' : '') + '" type="button" data-all="1" aria-current="' + state.all + '" aria-label="全部主題，已讀 ' + uniqRead + ' / ' + data.length + ' 篇">' +
+        '<span class="ring" aria-hidden="true"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle class="bg" cx="18" cy="18" r="16" stroke-width="1.2"/><circle class="pg" cx="18" cy="18" r="16" stroke-width="2" stroke-dasharray="' + (C*allPct).toFixed(2) + ' ' + C.toFixed(2) + '"/></svg><span class="rn">全</span></span>' +
+        '<span class="txt" aria-hidden="true"><span class="name">全部主題</span><span class="p num">' + uniqRead + ' / ' + data.length + ' 篇・不重複</span></span></button></li></ol></li>' +
+      STAGES.map(function(st,k){
+      return '<li class="stage" style="--k:' + k + '"><div class="stage-label"><span class="k">' + st.k + '</span><span class="nm">' + st.name + '</span><span class="sub">' + st.sub + '</span></div><ol class="nodes">' +
+        st.t.map(function(i){
+          var n = top(i).length, r = top(i).filter(function(x){ return isRead(x.d); }).length;
+          var cur = !state.all && i === state.t;
+          return '<li><button class="node' + (r === n ? ' done' : '') + '" type="button" data-t="' + i + '" aria-current="' + cur + '" aria-label="卷' + NUM[i] + ' ' + esc(groups[i]) + '，已讀 ' + r + ' / ' + n + '">' +
+            '<span class="ring" aria-hidden="true"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle class="bg" cx="18" cy="18" r="16" stroke-width="1.2"/><circle class="pg" cx="18" cy="18" r="16" stroke-width="2" stroke-dasharray="' + (C*r/n).toFixed(2) + ' ' + C.toFixed(2) + '"/></svg><span class="rn">' + NUM[i] + '</span></span>' +
+            '<span class="txt" aria-hidden="true"><span class="name">' + esc(groups[i]) + '</span><span class="p num">' + r + ' / ' + n + ' 篇</span></span></button></li>';
+        }).join('') + '</ol></li>';
+    }).join('') + '</ol>';
+    $('totalRead').textContent = '已讀 ' + uniqRead + ' / ' + data.length + ' 篇';
+
+    var idx = scopeIdx();
+
+    // 語言鈕：顯示目前條件下的篇數，0 篇停用
+    $('langChips').innerHTML = LANGS.map(function(l){
+      var n = countIn(idx, { lang:l }), on = state.lang === l, off = !n && !on;
+      return '<button class="chip" type="button" data-lang="' + l + '" aria-pressed="' + on + '"' + (off ? ' disabled' : '') + '>' + l + '<span class="c">' + n + '</span></button>';
+    }).join('');
+
+    $('rdChips').innerHTML = ['全部','未讀','已讀'].map(function(l){
+      var n = countIn(idx, { rd:l }), on = state.rd === l, off = !n && !on;
+      return '<button class="chip" type="button" data-rd="' + l + '" aria-pressed="' + on + '"' + (off ? ' disabled' : '') + '>' + l + '<span class="c">' + n + '</span></button>';
+    }).join('');
+
+    // 卷首
+    var head = '';
+    if (!state.all){
+      var i = state.t, full = top(i);
+      var r = full.filter(function(x){ return isRead(x.d); }).length;
+      var pct = Math.round(r / full.length * 100);
+      head = '<section class="vol-head">' +
+        '<div class="vol-line"><span class="vol">' + stageOf(i).k + '・' + stageOf(i).name + '　卷' + NUM[i] + '</span><span class="rule"></span><span class="stat num">本卷已讀 ' + r + ' / ' + full.length + '</span></div>' +
+        '<h2>' + esc(groups[i]) + '</h2>' +
+        '<p class="goal">' + esc(goals[i]) + '</p>' +
+        (CAVEAT[i] ? '<p class="caveat">' + CAVEAT[i] + '</p>' : '') +
+        '<div class="bar" role="img" aria-label="本卷已讀 ' + pct + '%"><i style="width:' + pct + '%"></i></div></section>';
+    } else {
+      head = '<section class="vol-head"><div class="vol-line"><span class="vol">總覽</span><span class="rule"></span><span class="stat num">已讀 ' + uniqRead + ' / ' + data.length + ' 篇</span></div>' +
+        '<h2>全部主題</h2><p class="goal">各卷依學習路線列出，卷內按收藏排序；跨主題文章會在多卷重複出現。</p></section>';
+    }
+    // 難度層次：唯一的難度篩選，計數已套用語言與搜尋
+    head += '<div class="path-cap"><span><b>難度</b>暫定編輯評估</span><span>' + (state.lv === '全部' ? '點選層次可篩選' : '再點一次取消篩選') + '</span></div>' +
+      '<div class="path" role="group" aria-label="依難度篩選">' +
+      LEVELS.map(function(l,k){
+        var inScope = idx.reduce(function(s,j){ return s + (state.more[j] ? lists[j] : top(j)).filter(function(x){ return x.level === l; }).length; }, 0);
+        var hits = [], seen = {};
+        idx.forEach(function(j){ filtered(j, { lv:l }).forEach(function(x){ hits.push(x); }); });
+        var n = hits.length, dn = hits.filter(function(x){ return isRead(x.d); }).length;
+        var on = state.lv === l, off = !n && !on;
+        var note = !inScope ? (state.all ? '無此難度' : '本卷無此難度') : (!n ? '目前條件下無篇目' : '已讀 ' + dn + ' / ' + n + ' 篇');
+        return '<button type="button" data-lv="' + l + '" aria-pressed="' + on + '"' + (off ? ' disabled' : '') + '><span class="s">第' + ['一','二','三'][k] + '層</span><span class="l">' + l + '</span><span class="c num">' + note + '</span></button>';
+      }).join('') + '</div>';
+    $('head').innerHTML = head;
+
+    // 清單
+    var shown = 0, html = '';
+    idx.forEach(function(i){
+      var v = filtered(i); shown += v.length;
+      if (!v.length) return;
+      html += '<section>' +
+        (state.all ? '<div class="group-head"><h3><em>卷' + NUM[i] + '</em>' + esc(groups[i]) + '</h3><span class="cnt num">' + v.length + ' / ' + top(i).length + ' 篇・' + esc(goals[i]) + (CAVEAT[i] ? ' ' + CAVEAT[i] : '') + '</span></div>' : '') +
+        '<ol class="list">' + v.map(function(x){ return itemHTML(x, i); }).join('') + '</ol>' + moreBtn(i) + '</section>';
+    });
+    if (!html) html = idx.map(moreBtn).join('');
+    if (!html) html = '<p class="empty">' + (state.rd === '未讀' && !countIn(idx, { rd:'未讀', lang:'全部', lv:'全部' }) ? '這個範圍的篇目都讀過了。' : '沒有符合條件的篇目。') + '</p>';
+    if (!state.all){
+      var t = state.t, pv = t - 1, nx = t + 1, pg = '';
+      var card = function(j, cls, label){
+        return '<button class="' + cls + '" type="button" data-t="' + j + '"><span class="k">' + label + '</span><span class="nm">卷' + NUM[j] + '・' + esc(groups[j]) + '</span><span class="g">' + esc(goals[j]) + '</span></button>';
+      };
+      if (pv >= 0) pg += card(pv, 'prev' + (nx < groups.length ? '' : ' solo'), '← 上一卷');
+      if (nx < groups.length) pg += card(nx, 'next' + (pv >= 0 ? '' : ' solo'), '下一步・' + stageOf(nx).k + ' ' + stageOf(nx).name);
+      html += '<nav class="pager" aria-label="上下卷">' + pg + '</nav>';
+    }
+    $('results').innerHTML = html;
+    var total = idx.reduce(function(s,i){ return s + (state.more[i] ? lists[i] : top(i)).length; }, 0);
+    $('status').textContent = (state.notice ? state.notice + ' ' : '') + (state.all ? '全部主題' : groups[state.t]) + '：顯示 ' + shown + ' / ' + total + ' 個收錄位置。' + (shown < total ? '取消語言、進度、難度與搜尋條件可看到完整文章。' : '');
+    state.notice = '';
+  }
+
+  function settle(){
+    var idx = scopeIdx(), msg = [];
+    if (state.lv !== '全部' && !countIn(idx, {})) { var lv0 = state.lv; state.lv = '全部'; if (countIn(idx, {})) msg.push('此範圍沒有「' + lv0 + '」篇目'); else state.lv = lv0; }
+    if (state.rd === '已讀' && !countIn(idx, {})) { state.rd = '全部'; }
+    if (state.lang !== '全部' && !countIn(idx, {})) { var lg0 = state.lang; state.lang = '全部'; if (countIn(idx, {})) msg.push('沒有' + lg0 + '篇目'); else state.lang = lg0; }
+    if (state.lv !== '全部' && !countIn(idx, {})) { state.lv = '全部'; }
+    if (msg.length) state.notice = msg.join('、') + '，已改為顯示全部。';
+  }
+  function goTopic(i){
+    state.t = i; state.all = false; settle(); render();
+    var b = document.querySelector('.node[data-t="' + i + '"]');
+    if (b && window.innerWidth <= 960) b.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+    var h = $('head'); if (h.getBoundingClientRect().top < 0) h.scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[data-open]');
+    if (a) { if (!read[a.dataset.open]) { read[a.dataset.open] = 1; save(); setTimeout(render, 0); } return; }
+    var t = e.target.closest('button'); if (!t) return;
+    if (t.dataset.rd) { state.rd = t.dataset.rd; return render(); }
+    if (t.dataset.more !== undefined) { var mi = +t.dataset.more; state.more[mi] = !state.more[mi]; return render(); }
+    if (t.dataset.t !== undefined) return goTopic(+t.dataset.t);
+    if (t.dataset.go !== undefined) return goTopic(+t.dataset.go);
+    if (t.dataset.lang) { state.lang = t.dataset.lang; return render(); }
+    if (t.dataset.lv) { state.lv = (state.lv === t.dataset.lv && t.closest('.path')) ? '全部' : t.dataset.lv; return render(); }
+    if (t.dataset.id) { var id = t.dataset.id; if (read[id]) delete read[id]; else read[id] = 1; save(); return render(); }
+    if (t.dataset.all) { state.all = true; settle(); render(); if (window.innerWidth <= 960) t.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' }); var h = $('head'); if (h.getBoundingClientRect().top < 0) h.scrollIntoView({ behavior:'smooth', block:'start' }); return; }
+    if (t.id === 'reset') { state.lang = '全部'; state.lv = '全部'; state.rd = '全部'; state.q = ''; $('query').value = ''; return render(); }
+  });
+  $('query').addEventListener('input', function(e){ state.q = e.target.value; render(); });
+
+  // ===== 作者排行 =====
+  var astate = { scope:'全部', lang:'全部', sort:'總收藏' };
+  var SORTS = ['總收藏','平均收藏','篇數'];
+  function rankAuthors(scope, language, sort){
+    var seen = {}, authors = {}, order = [];
+    var pool = scope === '全部' ? data : top(Number(scope)).map(function(x){ return x.d; });
+    pool.forEach(function(d){
+      if (seen[d[3]] || (language !== '全部' && d[7] !== language)) return;
+      seen[d[3]] = 1;
+      var key = d[2].toLowerCase(), a = authors[key];
+      if (a){ a.total += d[4]; a.count += 1; if (cmp(d, a.rep) < 0){ a.rep = d; a.max = d[4]; } }
+      else { authors[key] = { handle:d[2], total:d[4], count:1, max:d[4], rep:d }; order.push(key); }
+    });
+    return order.map(function(k){ return authors[k]; }).sort(function(a,b){
+      var primary = sort === '平均收藏' ? b.total/b.count - a.total/a.count : sort === '篇數' ? b.count - a.count : b.total - a.total;
+      return primary || b.total - a.total || b.count - a.count || b.max - a.max || a.handle.localeCompare(b.handle);
+    });
+  }
+  var avg = function(a){ return (a.total / a.count).toLocaleString('en-US', { maximumFractionDigits:2 }); };
+  var EXT = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4.5 2.5h5v5M9.5 2.5l-7 7"/></svg>';
+
+  function renderAuthors(){
+    var scopes = ['全部'].concat(groups.map(function(_,i){ return String(i); }));
+    var C2 = 2*Math.PI*16;
+    var allN = rankAuthors('全部', astate.lang, astate.sort).length;
+    var snode = function(sc, label, name){
+      var n = sc === '全部' ? allN : rankAuthors(sc, astate.lang, astate.sort).length;
+      var share = allN ? n / allN : 0;
+      return '<li><button class="node' + (sc === '全部' ? ' overview' : '') + '" type="button" data-scope="' + sc + '" aria-current="' + (astate.scope === sc) + '" aria-label="' + esc(name) + '，' + n + ' 位作者">' +
+        '<span class="ring" aria-hidden="true"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle class="bg" cx="18" cy="18" r="16" stroke-width="1.2"/><circle class="pg" cx="18" cy="18" r="16" stroke-width="2" stroke-dasharray="' + (C2*share).toFixed(2) + ' ' + C2.toFixed(2) + '"/></svg><span class="rn">' + label + '</span></span>' +
+        '<span class="txt" aria-hidden="true"><span class="name">' + esc(name) + '</span><span class="p num">' + n + ' 位作者' + (sc === '全部' ? '' : '・佔 ' + Math.round(share*100) + '%') + '</span></span></button></li>';
+    };
+    $('scopes').innerHTML = '<ol class="steps">' +
+      '<li class="stage"><div class="stage-label"><span class="k">總覽</span><span class="nm">全選集</span><span class="sub">跨主題只計一次</span></div><ol class="nodes">' + snode('全部', '全', '本選集全部主題') + '</ol></li>' +
+      STAGES.map(function(st){
+        return '<li class="stage"><div class="stage-label"><span class="k">' + st.k + '</span><span class="nm">' + st.name + '</span><span class="sub">' + st.sub + '</span></div><ol class="nodes">' +
+          st.t.map(function(i){ return snode(String(i), NUM[i], groups[i]); }).join('') + '</ol></li>';
+      }).join('') + '</ol>';
+    $('aLangChips').innerHTML = LANGS.map(function(l){
+      var n = rankAuthors(astate.scope, l, astate.sort).length, on = astate.lang === l, off = !n && !on;
+      return '<button class="chip" type="button" data-alang="' + l + '" aria-pressed="' + on + '"' + (off ? ' disabled' : '') + '>' + l + '<span class="c">' + n + '</span></button>';
+    }).join('');
+    $('aSortChips').innerHTML = SORTS.map(function(l){ return '<button class="chip" type="button" data-asort="' + l + '" aria-pressed="' + (astate.sort === l) + '">' + l + '</button>'; }).join('');
+
+    var ranks = rankAuthors(astate.scope, astate.lang, astate.sort);
+    var sumN = ranks.reduce(function(s,a){ return s + a.count; }, 0), sumT = ranks.reduce(function(s,a){ return s + a.total; }, 0);
+    $('aScope').textContent = astate.scope === '全部' ? '全部主題' : '卷' + NUM[+astate.scope] + '・' + groups[+astate.scope];
+    $('aCount').textContent = ranks.length + ' 位作者';
+    $('aTocCount').textContent = '全選集 ' + allN + ' 位';
+    $('authorStatus').textContent = '目前 ' + ranks.length + ' 位作者、' + sumN + ' 篇文章，合計快照收藏 ' + fmt(sumT) + '。語言篩選依文章標籤，不代表作者國籍。';
+
+    var metric = function(a){ return astate.sort === '平均收藏' ? a.total/a.count : astate.sort === '篇數' ? a.count : a.total; };
+    var top = ranks.length ? Math.max.apply(null, ranks.map(metric)) : 0;
+    $('authorResults').innerHTML = ranks.length ? ranks.map(function(a, k){
+      var w = top ? Math.max(1.5, metric(a) / top * 100) : 0, r = a.rep;
+      var key = function(name){ return astate.sort === name ? ' class="key"' : ''; };
+      return '<li class="item' + (k === 0 ? ' top' : '') + '"><span class="rank num">' + String(k+1).padStart(2,'0') + '</span>' +
+        '<div class="body">' +
+          '<div class="title-row"><a class="handle" href="https://x.com/' + encodeURIComponent(a.handle) + '" target="_blank" rel="noopener noreferrer">@' + esc(a.handle) + EXT + '<span class="sr-only">（在 X 開啟個人頁）</span></a>' +
+            (a.count >= 3 ? '<span class="badge">本選集多篇</span>' : '') + '</div>' +
+          '<div class="abar" aria-hidden="true"><i style="width:' + w.toFixed(1) + '%"></i></div>' +
+          '<dl class="nums"><div><dt>總收藏</dt><dd' + key('總收藏') + '>' + fmt(a.total) + '</dd></div><div><dt>篇數</dt><dd' + key('篇數') + '>' + a.count + '</dd></div><div><dt>平均</dt><dd' + key('平均收藏') + '>' + avg(a) + '</dd></div><div><dt>單篇最高</dt><dd>' + fmt(a.max) + '</dd></div></dl>' +
+          '<div class="rep"><span>代表作</span><a href="https://x.com/' + encodeURIComponent(r[2]) + '/status/' + r[3] + '" target="_blank" rel="noopener noreferrer">' + esc(r[1]) + '</a></div>' +
+        '</div></li>';
+    }).join('') : '<p class="empty">此範圍沒有符合條件的作者。</p>';
+  }
+
+  document.addEventListener('click', function(e){
+    var t = e.target.closest('button'); if (!t) return;
+    if (t.dataset.scope) { astate.scope = t.dataset.scope; if (astate.lang !== '全部' && !rankAuthors(astate.scope, astate.lang, astate.sort).length) astate.lang = '全部'; renderAuthors(); if (window.innerWidth <= 960) t.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' }); return; }
+    if (t.dataset.alang) { astate.lang = t.dataset.alang; return renderAuthors(); }
+    if (t.dataset.asort) { astate.sort = t.dataset.asort; return renderAuthors(); }
+    if (t.dataset.tab) { switchTab(t.dataset.tab); }
+  });
+
+  function switchTab(name, focus){
+    var art = name === 'article';
+    $('article-panel').hidden = !art; $('author-panel').hidden = art;
+    $('article-tab').setAttribute('aria-selected', String(art)); $('author-tab').setAttribute('aria-selected', String(!art));
+    $('article-tab').tabIndex = art ? 0 : -1; $('author-tab').tabIndex = art ? -1 : 0;
+    if (focus) $(name + '-tab').focus();
+  }
+  ['article','author'].forEach(function(name){
+    $(name + '-tab').addEventListener('keydown', function(e){
+      if (['ArrowLeft','ArrowRight','Home','End'].indexOf(e.key) < 0) return;
+      e.preventDefault();
+      var next = e.key === 'Home' ? 'article' : e.key === 'End' ? 'author' : (name === 'article' ? 'author' : 'article');
+      switchTab(next, true);
+    });
+  });
+  renderAuthors();
+
+  render();
+})();
+</script>
+</body>
+</html>
