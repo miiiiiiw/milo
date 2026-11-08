@@ -4,8 +4,9 @@
     "title": "GrokBot 學習導航",
     "subtitle": "每主題收藏榜",
     "updated_at": "2026-11-08T16:00:00+08:00",
+    "migrated_at": "2026-11-08",
     "display_per_topic": 20,
-    "intro": "八個學習主題各 20 篇；每主題按收藏由多至少排列，同收藏再比轉推與讚。中英日文章混合分類，不再按編輯閱讀順序排列。",
+    "intro": "{topics_zh}個學習主題各 {per_topic} 篇；每主題按收藏由多至少排列，同收藏再比轉推與讚。中英日文章混合分類，不再按編輯閱讀順序排列。",
     "dedupe_note": "依貼文 ID 去重；同篇只有在實質涵蓋多個主題時才交叉收錄，並逐篇標示「跨主題」。不同主題加總不等於不同文章總數。",
     "sort_note": "排序：收藏 ↓ → 轉推 ↓ → 讚 ↓；數字為不同時間的快照，不是即時排行榜，也不是全網或全部候選的主題 Top 20。這是已選入文章的主題內排序。",
     "author_note": "範圍限定本頁已分類且確認 Article 的文章；不是全部候選或全 X 的作者榜。先按貼文 ID 去重，再彙總作者；跨主題文章在全選集榜只算一次。",
@@ -17,9 +18,9 @@
     },
     "sources": [
       "全部收錄均有原始 Article 欄位，不把一般長貼文、轉推或額外翻譯算成新文章。分類依實際標題、保存的預覽／摘要，以及可讀取正文的相關段落核對；未逐篇完整通讀，分類與難度仍為暫定。",
-      "來源為既有 ranked_v4 中文 335 篇與 foreign_v1 英文 708、日文 136 篇。這次對 75 篇缺少本地原始 Article 證據的中文文章，以貼文 ID 定向回查，75 篇均回傳 Article；沒有另做廣泛搜尋。部分多主題文章核對了正文相關段落，例如知識庫入庫與觸發器、內容團隊交接、技能同步及例程空轉。",
+      "來源為既有 ranked_v4 中文 {pool_zh} 篇與 foreign_v1 英文 {pool_en}、日文 {pool_ja} 篇。這次對 75 篇缺少本地原始 Article 證據的中文文章，以貼文 ID 定向回查，75 篇均回傳 Article；沒有另做廣泛搜尋。部分多主題文章核對了正文相關段落，例如知識庫入庫與觸發器、內容團隊交接、技能同步及例程空轉。",
       "本次定向回查的指標更新於 2026-11-08 約 16:00（台北時間）；其餘沿用保存快照。外文主要快照是 2026-11-08 01:40–01:49（台北時間），部分更早；未回查中文項目沿用 ranked_v4，精確抓取時刻未確認。不同批次的數字不完全同時，收藏可能下降，排序只代表本頁採用的快照。",
-      "依需求先完成每類 20 篇，並非 1179 篇中英日候選的全量分類。部分文章跨領域，收藏為零的文章也照實保留；沒有以交易收益或節費倍率作推薦依據。產品政策、費用、權限、登入方式、使用額度及成效敘述須另核對當前官方說明，作者標題不代表已驗證事實；交易相關文章不是投資建議。"
+      "依需求先完成每類 {per_topic} 篇，並非 {pool_total} 篇中英日候選的全量分類。部分文章跨領域，收藏為零的文章也照實保留；沒有以交易收益或節費倍率作推薦依據。產品政策、費用、權限、登入方式、使用額度及成效敘述須另核對當前官方說明，作者標題不代表已驗證事實；交易相關文章不是投資建議。"
     ]
   },
   "stages": [
@@ -132,7 +133,7 @@
         "likes": 5021,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -154,7 +155,7 @@
         "likes": 2319,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -177,7 +178,7 @@
         "likes": 2355,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -199,7 +200,7 @@
         "likes": 1510,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -221,7 +222,7 @@
         "likes": 804,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -243,7 +244,7 @@
         "likes": 903,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -265,7 +266,7 @@
         "likes": 586,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -287,7 +288,7 @@
         "likes": 505,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -309,7 +310,7 @@
         "likes": 531,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -332,7 +333,7 @@
         "likes": 382,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -354,7 +355,7 @@
         "likes": 304,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -376,7 +377,7 @@
         "likes": 341,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -398,7 +399,7 @@
         "likes": 209,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -420,7 +421,7 @@
         "likes": 347,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -442,7 +443,7 @@
         "likes": 306,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -464,7 +465,7 @@
         "likes": 217,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -486,7 +487,7 @@
         "likes": 296,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -509,7 +510,7 @@
         "likes": 229,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -532,7 +533,7 @@
         "likes": 231,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -554,7 +555,7 @@
         "likes": 229,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -576,7 +577,7 @@
         "likes": 281,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -598,7 +599,7 @@
         "likes": 218,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -620,7 +621,7 @@
         "likes": 226,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -643,7 +644,7 @@
         "likes": 253,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -665,7 +666,7 @@
         "likes": 256,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -690,7 +691,7 @@
         "likes": 166,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -712,7 +713,7 @@
         "likes": 200,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -735,7 +736,7 @@
         "likes": 180,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -757,7 +758,7 @@
         "likes": 176,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -780,7 +781,7 @@
         "likes": 158,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -802,7 +803,7 @@
         "likes": 155,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -824,7 +825,7 @@
         "likes": 177,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -847,7 +848,7 @@
         "likes": 173,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -870,7 +871,7 @@
         "likes": 116,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -892,7 +893,7 @@
         "likes": 100,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -915,7 +916,7 @@
         "likes": 99,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -937,7 +938,7 @@
         "likes": 119,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -959,7 +960,7 @@
         "likes": 142,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -981,7 +982,7 @@
         "likes": 107,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1004,7 +1005,7 @@
         "likes": 96,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1026,7 +1027,7 @@
         "likes": 98,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1049,7 +1050,7 @@
         "likes": 70,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1071,7 +1072,7 @@
         "likes": 84,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1093,7 +1094,7 @@
         "likes": 175,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1116,7 +1117,7 @@
         "likes": 108,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1138,7 +1139,7 @@
         "likes": 71,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1161,7 +1162,7 @@
         "likes": 93,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1184,7 +1185,7 @@
         "likes": 98,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1206,7 +1207,7 @@
         "likes": 84,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1228,7 +1229,7 @@
         "likes": 39,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1250,7 +1251,7 @@
         "likes": 73,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1272,7 +1273,7 @@
         "likes": 58,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1295,7 +1296,7 @@
         "likes": 51,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1317,7 +1318,7 @@
         "likes": 55,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1339,7 +1340,7 @@
         "likes": 37,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1362,7 +1363,7 @@
         "likes": 43,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1384,7 +1385,7 @@
         "likes": 70,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1407,7 +1408,7 @@
         "likes": 45,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1429,7 +1430,7 @@
         "likes": 47,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1451,7 +1452,7 @@
         "likes": 46,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1474,7 +1475,7 @@
         "likes": 59,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1497,7 +1498,7 @@
         "likes": 60,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1519,7 +1520,7 @@
         "likes": 41,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1541,7 +1542,7 @@
         "likes": 40,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1563,7 +1564,7 @@
         "likes": 30,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1585,7 +1586,7 @@
         "likes": 41,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1607,7 +1608,7 @@
         "likes": 30,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1630,7 +1631,7 @@
         "likes": 26,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1653,7 +1654,7 @@
         "likes": 31,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1675,7 +1676,7 @@
         "likes": 14,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1697,7 +1698,7 @@
         "likes": 65,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1719,7 +1720,7 @@
         "likes": 12,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1742,7 +1743,7 @@
         "likes": 31,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1765,7 +1766,7 @@
         "likes": 6,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1787,7 +1788,7 @@
         "likes": 12,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1809,7 +1810,7 @@
         "likes": 15,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1831,7 +1832,7 @@
         "likes": 71,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1853,7 +1854,7 @@
         "likes": 6,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1875,7 +1876,7 @@
         "likes": 8,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1897,7 +1898,7 @@
         "likes": 6,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1919,7 +1920,7 @@
         "likes": 5,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1941,7 +1942,7 @@
         "likes": 0,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1963,7 +1964,7 @@
         "likes": 2,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -1985,7 +1986,7 @@
         "likes": 1,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -2007,7 +2008,7 @@
         "likes": 1,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -2029,7 +2030,7 @@
         "likes": 0,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -2051,7 +2052,7 @@
         "likes": 0,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -2073,7 +2074,7 @@
         "likes": 0,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "ranked_v4",
       "note": null
@@ -2096,7 +2097,7 @@
         "likes": 4530,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2118,7 +2119,7 @@
         "likes": 4761,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2140,7 +2141,7 @@
         "likes": 1083,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2162,7 +2163,7 @@
         "likes": 1101,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2184,7 +2185,7 @@
         "likes": 2449,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2206,7 +2207,7 @@
         "likes": 869,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2228,7 +2229,7 @@
         "likes": 883,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2250,7 +2251,7 @@
         "likes": 849,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2272,7 +2273,7 @@
         "likes": 709,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2294,7 +2295,7 @@
         "likes": 627,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2316,7 +2317,7 @@
         "likes": 655,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2338,7 +2339,7 @@
         "likes": 654,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2360,7 +2361,7 @@
         "likes": 806,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2382,7 +2383,7 @@
         "likes": 380,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2404,7 +2405,7 @@
         "likes": 509,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2426,7 +2427,7 @@
         "likes": 330,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2448,7 +2449,7 @@
         "likes": 465,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2470,7 +2471,7 @@
         "likes": 279,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2492,7 +2493,7 @@
         "likes": 231,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2514,7 +2515,7 @@
         "likes": 181,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2536,7 +2537,7 @@
         "likes": 191,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2558,7 +2559,7 @@
         "likes": 253,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2580,7 +2581,7 @@
         "likes": 145,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2602,7 +2603,7 @@
         "likes": 80,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2624,7 +2625,7 @@
         "likes": 107,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2646,7 +2647,7 @@
         "likes": 98,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2668,7 +2669,7 @@
         "likes": 72,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2690,7 +2691,7 @@
         "likes": 101,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2712,7 +2713,7 @@
         "likes": 63,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2734,7 +2735,7 @@
         "likes": 35,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2756,7 +2757,7 @@
         "likes": 36,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2778,7 +2779,7 @@
         "likes": 22,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2800,7 +2801,7 @@
         "likes": 25,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2822,7 +2823,7 @@
         "likes": 17,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2844,7 +2845,7 @@
         "likes": 8,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2866,7 +2867,7 @@
         "likes": 1,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2888,7 +2889,7 @@
         "likes": 3,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2910,7 +2911,7 @@
         "likes": 6,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2932,7 +2933,7 @@
         "likes": 2,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2954,7 +2955,7 @@
         "likes": 8,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2976,7 +2977,7 @@
         "likes": 3,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -2998,7 +2999,7 @@
         "likes": 2,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -3020,7 +3021,7 @@
         "likes": 2,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null
@@ -3042,7 +3043,7 @@
         "likes": 2,
         "captured_at": null
       },
-      "added_at": "2026-11-08",
+      "added_at": null,
       "status": "active",
       "source_batch": "foreign_v1",
       "note": null

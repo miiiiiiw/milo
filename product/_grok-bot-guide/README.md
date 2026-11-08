@@ -25,6 +25,8 @@
 - 學習路線固定四段（立基、接通、自動、成事），由 `stages` 定義。
 - 讀者的已讀記錄存在瀏覽器 localStorage（`grokbot-nav-read`），以 `post_id` 對應，所以 `post_id` 永不更改。
 - 頁面的 `<meta name="date">` 會跟著 `dataset.updated_at` 更新。
+- `added_at` 是「首次收錄日」，不確定就是 `null`；遷移日另記在 `dataset.migrated_at`。已知的 `added_at` 不可修改，`null` 可以補上。
+- 文案中會變動的數字用自動數字（如 `{per_topic}`、`{topics_zh}`），由 build 依資料填入，不寫死。
 
 ## 更新流程（Claude 執行）
 

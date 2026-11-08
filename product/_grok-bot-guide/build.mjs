@@ -3,7 +3,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { validate } from "./validate.mjs";
+import { validate, TOKENS, TEXT_FIELDS } from "./validate.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const outArg = process.argv.indexOf("--out");
@@ -22,6 +22,28 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&l
 const ds = content.dataset;
 const tz = new Date(ds.updated_at);
 const updated = new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Taipei", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }).format(tz);
+
+// 文案中的自動數字
+const zh = (n) => {
+  const d = "〇一二三四五六七八九";
+  if (n < 10) return d[n];
+  if (n < 20) return "十" + (n % 10 ? d[n % 10] : "");
+  if (n < 100) return d[Math.floor(n / 10)] + "十" + (n % 10 ? d[n % 10] : "");
+  return String(n);
+};
+const pool = ds.candidate_pool || {};
+const tokens = {
+  topics: content.topics.length, topics_zh: zh(content.topics.length), per_topic: ds.display_per_topic,
+  unique: summary.selection_unique, placements: summary.selection_placements, authors: summary.selection_authors,
+  pool_total: pool.total, pool_zh: pool.zh, pool_en: pool.en, pool_ja: pool.ja,
+};
+const fill = (t) => t.replace(/\{(\w+)\}/g, (m, k) => {
+  if (!TOKENS.includes(k)) return m;
+  if (tokens[k] === undefined || tokens[k] === null) throw new Error(`文案用了 {${k}}，但 candidate_pool 沒有對應的數字`);
+  return String(tokens[k]);
+});
+for (const k of TEXT_FIELDS) ds[k] = fill(ds[k]);
+ds.sources = ds.sources.map(fill);
 
 const values = {
   title: esc(ds.title),

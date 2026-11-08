@@ -11,6 +11,9 @@ const isInt = (n) => Number.isInteger(n) && n >= 0;
 const isISO = (s) => typeof s === "string" && !Number.isNaN(Date.parse(s)) && /T\d{2}:\d{2}/.test(s);
 const isDate = (s) => typeof s === "string" && /^\d{4}-\d{2}-\d{2}$/.test(s);
 const nonEmpty = (s) => typeof s === "string" && s.trim().length > 0;
+// 文案中可用的自動數字（由 build 依資料計算後填入）
+export const TOKENS = ["topics", "topics_zh", "per_topic", "unique", "placements", "authors", "pool_total", "pool_zh", "pool_en", "pool_ja"];
+export const TEXT_FIELDS = ["intro", "dedupe_note", "sort_note", "author_note"];
 
 export function validate(c, prev) {
   const errors = [], warnings = [], summary = {};
@@ -23,7 +26,14 @@ export function validate(c, prev) {
   if (!isISO(ds.updated_at)) err("dataset.updated_at 需為含時間與時區的 ISO 8601");
   if (!Number.isInteger(ds.display_per_topic) || ds.display_per_topic < 1) err("dataset.display_per_topic 需為正整數");
   if (!Array.isArray(ds.sources) || !ds.sources.length || !ds.sources.every(nonEmpty)) err("dataset.sources 需為非空字串陣列");
-  if (ds.author_note && /\d+\s*位作者|\d+\s*篇不同/.test(ds.author_note)) warn("dataset.author_note 似乎寫死了作者數或篇數，網頁會自己計算");
+  if (!(ds.migrated_at === undefined || isDate(ds.migrated_at))) err("dataset.migrated_at 需為 YYYY-MM-DD");
+  const texts = [...TEXT_FIELDS.map((k) => [k, ds[k]]), ...(ds.sources || []).map((t, i) => [`sources[${i}]`, t])];
+  for (const [k, t] of texts) {
+    if (typeof t !== "string") continue;
+    for (const m of t.matchAll(/\{(\w+)\}/g)) if (!TOKENS.includes(m[1])) err(`dataset.${k} 有未定義的自動數字 {${m[1]}}，可用：${TOKENS.join("、")}`);
+    if (/各\s*\d+\s*篇|\d+\s*位作者|\d+\s*篇不同文章|\d+\s*個(主題)?收錄位置/.test(t)) warn(`dataset.${k} 似乎寫死了會變動的數字，建議改用 {per_topic}、{unique}、{authors} 等自動數字`);
+  }
+  for (const k of ["total", "zh", "en", "ja"]) if (ds.candidate_pool && ds.candidate_pool[k] !== undefined && !isInt(ds.candidate_pool[k])) err(`dataset.candidate_pool.${k} 需為非負整數`);
 
   // 主題與學習路線
   const topics = Array.isArray(c.topics) ? c.topics : (err("topics 需為陣列"), []);
@@ -70,7 +80,7 @@ export function validate(c, prev) {
     const m = a.metrics || {};
     for (const k of ["bookmarks", "retweets", "likes"]) if (!isInt(m[k])) err(`${at} metrics.${k} 需為非負整數`);
     if (!(m.captured_at === null || isISO(m.captured_at))) err(`${at} metrics.captured_at 需為 ISO 8601 或 null`);
-    if (!isDate(a.added_at)) err(`${at} added_at 需為 YYYY-MM-DD`);
+    if (!(a.added_at === null || isDate(a.added_at))) err(`${at} added_at 需為 YYYY-MM-DD 或 null（不確定）`);
     if (!STATUSES.includes(a.status)) err(`${at} status 需為 ${STATUSES.join("／")}`);
     if (a.status === "excluded" && !nonEmpty(a.note)) warn(`${at} 被 excluded 但 note 沒寫原因`);
   });
@@ -108,11 +118,12 @@ export function validate(c, prev) {
     const now = new Map(arts.map((a) => [a.post_id, a]));
     const missing = [...before.keys()].filter((id) => !now.has(id));
     if (missing.length) err(`上一版有、這版消失的文章（只能改 status，不能刪除）：${missing.join(", ")}`);
-    const diff = { added: [], status: [], topics: [], level: [], title: [], handle: [] };
+    const diff = { added: [], status: [], topics: [], level: [], title: [], handle: [], added_at_backfilled: [] };
     for (const [id, a] of now) {
       const p = before.get(id);
-      if (!p) { diff.added.push(id); continue; }
-      if (p.added_at !== a.added_at) err(`${id} 的 added_at 被改動（${p.added_at} → ${a.added_at}）`);
+      if (!p) { diff.added.push(id); if (!a.added_at) warn(`新文章 ${id} 沒有 added_at，新收錄的文章應填當天日期`); continue; }
+      if (p.added_at !== null && p.added_at !== undefined && p.added_at !== a.added_at) err(`${id} 的 added_at 被改動（${p.added_at} → ${a.added_at}）；已知的收錄日期不可修改`);
+      if ((p.added_at === null || p.added_at === undefined) && a.added_at) diff.added_at_backfilled.push(`${id}: ${a.added_at}`);
       if (p.status !== a.status) diff.status.push(`${id}: ${p.status} → ${a.status}`);
       if ((p.topics || []).join() !== (a.topics || []).join()) diff.topics.push(`${id}: ${p.topics} → ${a.topics}`);
       if (p.level !== a.level) diff.level.push(`${id}: ${p.level} → ${a.level}`);
