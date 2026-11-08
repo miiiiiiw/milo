@@ -414,7 +414,7 @@ main{min-width:0;display:flex;flex-direction:column;gap:32px}
     return data.filter(function(d){ return d[8].indexOf(i) > -1; }).sort(cmp).map(function(d,k){ return { d:d, rank:k+1, level:levelOf(d) }; });
   });
 
-  var state = { t:0, all:false, lang:'全部', lv:'全部', q:'' };
+  var state = { t:0, all:true, lang:'全部', lv:'全部', q:'' };
   var read = {};
   try { read = JSON.parse(localStorage.getItem('grokbot-nav-read')) || {}; } catch(e){}
   function save(){ try { localStorage.setItem('grokbot-nav-read', JSON.stringify(read)); } catch(e){} }
