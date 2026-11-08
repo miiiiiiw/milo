@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-08T09:47:59.191Z",
+  "generated": "2026-11-08T09:50:20.561Z",
   "folders": {
     "tech": "技術筆記",
     "product": "產品",
@@ -8,7 +8,7 @@
   "files": [
     {
       "path": "product/grok-bot-guide.html",
-      "title": "Grok Bot 學習導航｜每主題收藏榜",
+      "title": "GrokBot 學習導航",
       "description": "八個學習主題、132 篇 X 長文的收藏榜與作者排行，依學習路線由淺入深",
       "tags": [
         "Grok Bot",
