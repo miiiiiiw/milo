@@ -194,7 +194,8 @@ main{min-width:0;display:flex;flex-direction:column;gap:32px}
 .group-head .cnt{font-size:13px;color:var(--muted)}
 .list{list-style:none;margin:0;padding:0}
 .item{display:flex;gap:20px;align-items:flex-start;padding:24px 0;border-top:1px solid var(--rule-2);transition:opacity .3s}
-.item.is-read{opacity:.5}
+.item.is-read .title-row a{color:var(--muted)}
+.item.is-read .rank{color:var(--rule)}
 .rank{font-family:var(--serif);font-size:26px;line-height:1.25;color:var(--faint);width:40px;flex:none}
 .item.top .rank{color:var(--accent)}
 .body{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
@@ -224,6 +225,13 @@ main{min-width:0;display:flex;flex-direction:column;gap:32px}
 .check[aria-pressed="true"] .fill,.check[aria-pressed="true"] .tick{opacity:1}
 .check .fill{fill:var(--accent)}
 .check .tick{stroke:var(--on-ink)}
+.mark{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;margin-top:2px;border:1px solid var(--chip);border-radius:20px;background:transparent;color:var(--muted);font-size:13px;letter-spacing:.08em;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s,border-color .2s}
+.mark:hover{border-color:var(--ink);color:var(--ink)}
+.mark svg{flex:none}
+.mark[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-ink)}
+.mark[aria-pressed="true"]:hover{background:var(--accent-dark);border-color:var(--accent-dark);color:var(--on-ink)}
+.readnote{margin:0;font-size:12px;color:var(--muted);line-height:1.8;display:flex;gap:8px;align-items:baseline}
+.readnote b{flex:none;font-weight:500;color:var(--accent);letter-spacing:.1em}
 .empty{margin:0;padding:48px 0;text-align:center;font-family:var(--serif);color:var(--muted);letter-spacing:.1em}
 
 /* 附記 */
@@ -268,7 +276,9 @@ main{min-width:0;display:flex;flex-direction:column;gap:32px}
   .path .s{letter-spacing:.1em}
   .path .l{font-size:17px}
   .path .c{font-size:12px}
-  .item{gap:12px}
+  .item{gap:12px;flex-wrap:wrap}
+  .item .body{flex-basis:calc(100% - 40px)}
+  .item .mark{margin-left:40px;margin-top:-4px}
   .rank{font-size:20px;width:28px}
   .title-row a{font-size:16px}
   .nums{gap:2px 14px}
@@ -277,7 +287,7 @@ main{min-width:0;display:flex;flex-direction:column;gap:32px}
   .handle{font-size:17px}
 }
 @media print{
-  .controls,.toc,.check,.path,.reset{display:none!important}
+  .controls,.toc,.check,.mark,.path,.reset{display:none!important}
   .layout{grid-template-columns:1fr}
   .item{break-inside:avoid;opacity:1!important}
   a{color:inherit}
@@ -335,9 +345,11 @@ main{min-width:0;display:flex;flex-direction:column;gap:32px}
         </label>
         <div class="filters">
           <div class="fgroup" role="group" aria-label="原文語言"><span>原文</span><span id="langChips" style="display:contents"></span></div>
+          <div class="fgroup" role="group" aria-label="閱讀進度"><span>進度</span><span id="rdChips" style="display:contents"></span></div>
           <button id="reset" class="reset" type="button">清除篩選</button>
         </div>
         <p id="status" class="status" aria-live="polite"></p>
+        <p class="readnote"><b>已讀</b><span>點標題開啟原文會自動記為已讀，也可以按右側「標為已讀」手動標記。已讀進度顯示在左側學習路線，並可用「進度」篩出未讀篇目；記錄只存在這個瀏覽器。</span></p>
         <p class="sortnote">排序：收藏 ↓ → 轉推 ↓ → 讚 ↓；數字為不同時間的快照，不是即時排行榜，也不是全網或全部候選的主題 Top 20。這是已選入文章的主題內排序。</p>
       </div>
 
@@ -414,7 +426,7 @@ main{min-width:0;display:flex;flex-direction:column;gap:32px}
     return data.filter(function(d){ return d[8].indexOf(i) > -1; }).sort(cmp).map(function(d,k){ return { d:d, rank:k+1, level:levelOf(d) }; });
   });
 
-  var state = { t:0, all:true, lang:'全部', lv:'全部', q:'' };
+  var state = { t:0, all:true, lang:'全部', lv:'全部', rd:'全部', q:'' };
   var read = {};
   try { read = JSON.parse(localStorage.getItem('grokbot-nav-read')) || {}; } catch(e){}
   function save(){ try { localStorage.setItem('grokbot-nav-read', JSON.stringify(read)); } catch(e){} }
@@ -426,12 +438,13 @@ main{min-width:0;display:flex;flex-direction:column;gap:32px}
 
   function filtered(i, o){
     o = o || {};
-    var lang = o.lang || state.lang, lv = o.lv || state.lv;
+    var lang = o.lang || state.lang, lv = o.lv || state.lv, rd = o.rd || state.rd;
     var q = state.q.trim().toLowerCase();
     return lists[i].filter(function(x){
       var d = x.d;
       return (lang === '全部' || d[7] === lang) &&
              (lv === '全部' || x.level === lv) &&
+             (rd === '全部' || (rd === '已讀') === isRead(d)) &&
              (!q || (d[1] + ' ' + d[2]).toLowerCase().indexOf(q) > -1);
     });
   }
@@ -444,15 +457,16 @@ main{min-width:0;display:flex;flex-direction:column;gap:32px}
     return '<li class="item' + (r ? ' is-read' : '') + (x.rank === 1 ? ' top' : '') + '">' +
       '<span class="rank num">' + String(x.rank).padStart(2,'0') + '</span>' +
       '<div class="body">' +
-        '<div class="title-row"><a href="https://x.com/' + encodeURIComponent(d[2]) + '/status/' + d[3] + '" target="_blank" rel="noopener noreferrer">' + esc(d[1]) +
+        '<div class="title-row"><a data-open="' + d[3] + '" href="https://x.com/' + encodeURIComponent(d[2]) + '/status/' + d[3] + '" target="_blank" rel="noopener noreferrer">' + esc(d[1]) +
           '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4.5 2.5h5v5M9.5 2.5l-7 7"/></svg><span class="sr-only">（在 X 開啟）</span></a>' +
           (x.rank === 1 ? '<span class="badge">本卷首選</span>' : '') + '</div>' +
         '<div class="meta"><a class="author" href="https://x.com/' + encodeURIComponent(d[2]) + '" target="_blank" rel="noopener noreferrer" aria-label="在 X 開啟 @' + esc(d[2]) + ' 的個人頁">@' + esc(d[2]) + '</a><span class="sep" aria-hidden="true"></span><span class="pill">' + d[7] + '</span><span class="pill">' + x.level + '</span></div>' +
         '<dl class="nums"><div><dt>收藏</dt><dd>' + fmt(d[4]) + '</dd></div><div><dt>轉推</dt><dd>' + fmt(d[5]) + '</dd></div><div><dt>讚</dt><dd>' + fmt(d[6]) + '</dd></div></dl>' +
         (others.length ? '<div class="cross"><span>跨主題・亦收於</span>' + others.map(function(g){ return '<button class="xlink" type="button" data-go="' + g + '">' + NUM[g] + '・' + esc(groups[g]) + '</button>'; }).join('') + '</div>' : '') +
       '</div>' +
-      '<button class="check" type="button" data-id="' + d[3] + '" aria-pressed="' + r + '" aria-label="' + (r ? '取消已讀：' : '標記為已讀：') + esc(d[1]) + '">' +
-        '<svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true"><circle class="ring" cx="13" cy="13" r="11.5" stroke-width="1.2"/><circle class="fill" cx="13" cy="13" r="12.1"/><path class="tick" d="M8 13.5l3.2 3.2L18 9.8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+      '<button class="mark" type="button" data-id="' + d[3] + '" aria-pressed="' + r + '" title="' + (r ? '點擊取消已讀' : '記錄這篇已經讀過') + '" aria-label="' + (r ? '已讀：' : '標為已讀：') + esc(d[1]) + '">' +
+        (r ? '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.3l2.6 2.6L11 4.5"/></svg>已讀'
+           : '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M1.5 3.5c2-.8 3.8-.6 5.5.6 1.7-1.2 3.5-1.4 5.5-.6v7.5c-2-.8-3.8-.6-5.5.6-1.7-1.2-3.5-1.4-5.5-.6z"/><path d="M7 4.1v7.5"/></svg>標為已讀') +
       '</button></li>';
   }
 
@@ -484,6 +498,11 @@ main{min-width:0;display:flex;flex-direction:column;gap:32px}
     $('langChips').innerHTML = LANGS.map(function(l){
       var n = countIn(idx, { lang:l }), on = state.lang === l, off = !n && !on;
       return '<button class="chip" type="button" data-lang="' + l + '" aria-pressed="' + on + '"' + (off ? ' disabled' : '') + '>' + l + '<span class="c">' + n + '</span></button>';
+    }).join('');
+
+    $('rdChips').innerHTML = ['全部','未讀','已讀'].map(function(l){
+      var n = countIn(idx, { rd:l }), on = state.rd === l, off = !n && !on;
+      return '<button class="chip" type="button" data-rd="' + l + '" aria-pressed="' + on + '"' + (off ? ' disabled' : '') + '>' + l + '<span class="c">' + n + '</span></button>';
     }).join('');
 
     // 卷首
@@ -525,7 +544,7 @@ main{min-width:0;display:flex;flex-direction:column;gap:32px}
         (state.all ? '<div class="group-head"><h3><em>卷' + NUM[i] + '</em>' + esc(groups[i]) + '</h3><span class="cnt num">' + v.length + ' / ' + lists[i].length + ' 篇・' + esc(goals[i]) + (CAVEAT[i] ? ' ' + CAVEAT[i] : '') + '</span></div>' : '') +
         '<ol class="list">' + v.map(function(x){ return itemHTML(x, i); }).join('') + '</ol></section>';
     });
-    if (!html) html = '<p class="empty">沒有符合條件的篇目。</p>';
+    if (!html) html = '<p class="empty">' + (state.rd === '未讀' && !countIn(idx, { rd:'未讀', lang:'全部', lv:'全部' }) ? '這個範圍的篇目都讀過了。' : '沒有符合條件的篇目。') + '</p>';
     if (!state.all){
       var t = state.t, pv = t - 1, nx = t + 1, pg = '';
       var card = function(j, cls, label){
@@ -537,13 +556,14 @@ main{min-width:0;display:flex;flex-direction:column;gap:32px}
     }
     $('results').innerHTML = html;
     var total = idx.reduce(function(s,i){ return s + lists[i].length; }, 0);
-    $('status').textContent = (state.notice ? state.notice + ' ' : '') + (state.all ? '全部主題' : groups[state.t]) + '：顯示 ' + shown + ' / ' + total + ' 個收錄位置。' + (shown < total ? '取消語言、難度與搜尋條件可看到完整文章。' : '');
+    $('status').textContent = (state.notice ? state.notice + ' ' : '') + (state.all ? '全部主題' : groups[state.t]) + '：顯示 ' + shown + ' / ' + total + ' 個收錄位置。' + (shown < total ? '取消語言、進度、難度與搜尋條件可看到完整文章。' : '');
     state.notice = '';
   }
 
   function settle(){
     var idx = scopeIdx(), msg = [];
     if (state.lv !== '全部' && !countIn(idx, {})) { var lv0 = state.lv; state.lv = '全部'; if (countIn(idx, {})) msg.push('此範圍沒有「' + lv0 + '」篇目'); else state.lv = lv0; }
+    if (state.rd === '已讀' && !countIn(idx, {})) { state.rd = '全部'; }
     if (state.lang !== '全部' && !countIn(idx, {})) { var lg0 = state.lang; state.lang = '全部'; if (countIn(idx, {})) msg.push('沒有' + lg0 + '篇目'); else state.lang = lg0; }
     if (state.lv !== '全部' && !countIn(idx, {})) { state.lv = '全部'; }
     if (msg.length) state.notice = msg.join('、') + '，已改為顯示全部。';
@@ -556,14 +576,17 @@ main{min-width:0;display:flex;flex-direction:column;gap:32px}
   }
 
   document.addEventListener('click', function(e){
+    var a = e.target.closest('a[data-open]');
+    if (a) { if (!read[a.dataset.open]) { read[a.dataset.open] = 1; save(); setTimeout(render, 0); } return; }
     var t = e.target.closest('button'); if (!t) return;
+    if (t.dataset.rd) { state.rd = t.dataset.rd; return render(); }
     if (t.dataset.t !== undefined) return goTopic(+t.dataset.t);
     if (t.dataset.go !== undefined) return goTopic(+t.dataset.go);
     if (t.dataset.lang) { state.lang = t.dataset.lang; return render(); }
     if (t.dataset.lv) { state.lv = (state.lv === t.dataset.lv && t.closest('.path')) ? '全部' : t.dataset.lv; return render(); }
     if (t.dataset.id) { var id = t.dataset.id; if (read[id]) delete read[id]; else read[id] = 1; save(); return render(); }
     if (t.dataset.all) { state.all = true; settle(); render(); if (window.innerWidth <= 960) t.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' }); var h = $('head'); if (h.getBoundingClientRect().top < 0) h.scrollIntoView({ behavior:'smooth', block:'start' }); return; }
-    if (t.id === 'reset') { state.lang = '全部'; state.lv = '全部'; state.q = ''; $('query').value = ''; return render(); }
+    if (t.id === 'reset') { state.lang = '全部'; state.lv = '全部'; state.rd = '全部'; state.q = ''; $('query').value = ''; return render(); }
   });
   $('query').addEventListener('input', function(e){ state.q = e.target.value; render(); });
 
