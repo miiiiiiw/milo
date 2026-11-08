@@ -1,11 +1,23 @@
 {
-  "generated": "2026-11-02T23:31:47.379Z",
+  "generated": "2026-11-08T09:41:06.641Z",
   "folders": {
     "tech": "技術筆記",
     "product": "產品",
     "family": "家庭"
   },
   "files": [
+    {
+      "path": "product/grok-bot-guide.html",
+      "title": "Grok Bot 學習導航｜每主題收藏榜",
+      "description": "八個學習主題、132 篇 X 長文的收藏榜與作者排行，依學習路線由淺入深",
+      "tags": [
+        "Grok Bot",
+        "AI",
+        "學習導航",
+        "收藏榜"
+      ],
+      "date": "2026-11-08"
+    },
     {
       "path": "family/wenshan-nursery.html",
       "title": "文山托嬰候補追蹤",
