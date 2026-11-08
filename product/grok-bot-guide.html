@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Grok Bot 學習導航｜每主題收藏榜</title>
+<meta name="description" content="八個學習主題、132 篇 X 長文的收藏榜與作者排行，依學習路線由淺入深">
+<meta name="keywords" content="Grok Bot, AI, 學習導航, 收藏榜">
+<meta name="date" content="2026-11-08">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F6F2EA; --paper-2:#EAE3D4; --hover:#EFE9DC; --ink:#1F1D1A; --ink-2:#4A453E;
+  --muted:#6B655C; --faint:#9A9182; --rule:#DDD6C8; --rule-2:#E7E1D5; --chip:#C9C0B0;
+  --accent:#A8332A; --accent-dark:#7E241D; --on-ink:#F6F2EA;
+  --serif:'Noto Serif TC','Songti TC','PMingLiU',serif;
+  --sans:'Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--paper:#1A1917;--paper-2:#2A2824;--hover:#24221F;--ink:#ECE6DA;--ink-2:#C9C2B5;--muted:#A39B8D;--faint:#7D766B;--rule:#3A3731;--rule-2:#2F2C28;--chip:#4A463F;--accent:#E07A6E;--accent-dark:#F09A8F;--on-ink:#1A1917}
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}a:hover{color:var(--accent-dark)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.num{font-variant-numeric:tabular-nums}
+
+.wrap{max-width:1200px;margin:0 auto;padding:56px clamp(16px,4vw,32px) 96px}
+.eyebrow{color:var(--muted)}
+
+/* 頁首 */
+.masthead{display:flex;align-items:center;gap:20px;padding:0 0 28px;border-bottom:1px solid var(--ink)}
+.seal{width:56px;height:56px;flex:none;border:1.5px solid var(--accent);color:var(--accent);border-radius:3px;display:grid;place-items:center;font-family:var(--serif);font-size:28px;font-weight:700}
+.masthead h1{margin:0;font-family:var(--serif);font-weight:600;font-size:clamp(24px,4vw,36px);letter-spacing:.08em;line-height:1.3}
+.masthead p{margin:4px 0 0;font-size:14px;color:var(--muted);letter-spacing:.24em}
+
+/* 序 */
+.preface{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,5vw,64px);padding:36px 0 24px;align-items:start}
+.preface .lead{margin:0;font-family:var(--serif);font-size:clamp(16px,1.8vw,18px);line-height:2;color:var(--ink-2);letter-spacing:.04em}
+.preface .fine{margin:14px 0 0;font-size:13px;line-height:1.9;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--rule)}
+.stats div{padding:16px 4px 14px;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:2px}
+.stats div:nth-child(odd){padding-right:16px;border-right:1px solid var(--rule)}
+.stats div:nth-child(even){padding-left:16px}
+.stats b{font-family:var(--serif);font-size:32px;font-weight:600;line-height:1.2}
+.stats span{font-size:13px;color:var(--muted);letter-spacing:.12em}
+
+/* 頁籤 */
+[hidden]{display:none!important}
+.tabs{display:flex;gap:clamp(24px,5vw,48px);border-bottom:1px solid var(--rule);margin-top:16px}
+.tab{background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:16px 0 14px;min-height:48px;cursor:pointer;display:flex;align-items:baseline;gap:10px;color:var(--muted);transition:color .2s,border-color .2s}
+.tab b{font-family:var(--serif);font-size:19px;font-weight:600;letter-spacing:.24em}
+.tab small{font-size:12px;letter-spacing:.08em}
+.tab:hover{color:var(--ink-2)}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+
+/* 作者排行 */
+.lead-s{margin:0;font-size:14px;line-height:1.95;color:var(--ink-2)}
+.handle{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--ink);text-decoration:none;letter-spacing:.02em;line-height:1.5;overflow-wrap:anywhere}
+.handle:hover{color:var(--accent)}
+.handle svg{display:inline-block;vertical-align:-1px;margin-left:6px;opacity:.5}
+.abar{height:3px;background:var(--rule-2);max-width:420px;position:relative;border-radius:2px;overflow:hidden}
+.abar i{position:absolute;inset:0 auto 0 0;background:var(--accent);opacity:.75}
+.nums dd.key{color:var(--ink);font-weight:600}
+.nums div:first-child dd{font-weight:inherit}
+.rep{display:flex;gap:10px;align-items:baseline;font-size:14px;line-height:1.7}
+.rep>span{flex:none;font-size:12px;color:var(--muted);letter-spacing:.2em}
+.rep a{color:var(--ink-2);text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:4px;overflow-wrap:anywhere}
+.rep a:hover{color:var(--accent);text-decoration-color:currentColor}
+.node.overview .ring .pg{stroke:var(--ink-2)}
+.node.overview[aria-current="true"] .ring .pg{stroke:var(--accent)}
+#authorResults .item:first-child{border-top:0;padding-top:8px}
+
+/* 版面 */
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:56px;padding-top:40px;align-items:start}
+
+/* 卷目 */
+.toc{position:sticky;top:20px;display:flex;flex-direction:column;gap:16px;max-height:calc(100vh - 40px);overflow:auto}
+.toc-head{display:flex;align-items:baseline;justify-content:space-between}
+.toc-head h2{margin:0;font-family:var(--serif);font-size:15px;font-weight:600;letter-spacing:.4em}
+.toc-head span{font-size:12px;color:var(--muted)}
+.toc nav{display:flex;flex-direction:column;gap:2px}
+.topic{display:flex;align-items:center;gap:12px;width:100%;min-height:50px;padding:8px 12px;border:0;border-radius:3px;background:transparent;color:var(--ink-2);cursor:pointer;text-align:left;transition:background .2s}
+.topic:hover{background:var(--hover)}
+.topic[aria-current="true"]{background:var(--paper-2);color:var(--ink)}
+.topic .n{font-family:var(--serif);font-size:15px;width:20px;flex:none;color:var(--faint)}
+.topic[aria-current="true"] .n{color:var(--accent)}
+.topic .name{flex:1;font-family:var(--serif);font-size:16px;font-weight:500;letter-spacing:.04em;line-height:1.4}
+.topic .p{font-size:12px;color:var(--muted);white-space:nowrap}
+.toc-all{min-height:44px;border:1px solid var(--chip);background:transparent;border-radius:3px;cursor:pointer;font-size:14px;letter-spacing:.16em;color:var(--ink-2)}
+.toc-all:hover{border-color:var(--ink)}
+.toc-all[aria-pressed="true"]{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.toc-note{margin:0;border-top:1px solid var(--rule);padding-top:16px;font-family:var(--serif);font-size:13px;color:var(--muted);line-height:1.9}
+
+/* 階梯路線 */
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;position:relative}
+.steps::before{content:'';position:absolute;left:30px;top:56px;bottom:28px;width:1px;background:var(--rule)}
+.stage{position:relative}
+.stage-label{display:flex;align-items:baseline;gap:8px;height:28px;padding:4px 0 0 60px}
+.stage-label .k{font-size:11px;color:var(--accent);letter-spacing:.24em}
+.stage-label .nm{font-family:var(--serif);font-size:15px;font-weight:600;letter-spacing:.24em}
+.stage-label .sub{font-size:11px;color:var(--muted);letter-spacing:.1em}
+.nodes{list-style:none;margin:0;padding:0;position:relative}
+.node{position:relative;display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:6px 8px 6px 12px;border:0;border-radius:3px;background:transparent;color:var(--ink-2);cursor:pointer;text-align:left;transition:background .2s}
+.node:hover{background:var(--hover)}
+.node[aria-current="true"]{background:var(--paper-2);color:var(--ink)}
+.ring{position:relative;width:36px;height:36px;flex:none;display:grid;place-items:center;border-radius:50%;background:var(--paper)}
+.node[aria-current="true"] .ring,.node:hover .ring{background:transparent}
+.ring svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.ring .bg{stroke:var(--rule)}
+.ring .pg{stroke:var(--accent);transition:stroke-dasharray .4s ease}
+.ring .rn{position:relative;font-family:var(--serif);font-size:14px;color:var(--faint)}
+.node[aria-current="true"] .ring .bg{stroke:var(--ink-2)}
+.node[aria-current="true"] .rn{color:var(--accent);font-weight:600}
+.node.done .ring{background:var(--accent)}
+.node.done .ring .bg,.node.done .ring .pg{stroke:var(--accent)}
+.node.done .rn{color:var(--on-ink)}
+.node .txt{display:flex;flex-direction:column;min-width:0}
+.node .name{font-family:var(--serif);font-size:15px;font-weight:500;letter-spacing:.04em;line-height:1.45}
+.node[aria-current="true"] .name{font-weight:600}
+.node .p{font-size:11px;color:var(--muted)}
+
+/* 下一卷引導 */
+.pager{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:16px;margin-top:8px}
+.pager button{border:1px solid var(--rule);background:transparent;border-radius:3px;cursor:pointer;text-align:left;padding:18px 20px;display:flex;flex-direction:column;gap:4px;transition:border-color .2s,background .2s}
+.pager button:hover{border-color:var(--ink);background:var(--hover)}
+.pager .k{font-size:12px;color:var(--muted);letter-spacing:.2em}
+.pager .nm{font-family:var(--serif);font-size:18px;font-weight:600;letter-spacing:.06em}
+.pager .g{font-size:13px;color:var(--muted);line-height:1.7}
+.pager .next{border-color:var(--ink)}
+.pager .next .k{color:var(--accent)}
+.pager .next .nm::after{content:' →';color:var(--accent)}
+.pager .solo{grid-column:1 / -1}
+
+/* 主欄 */
+main{min-width:0;display:flex;flex-direction:column;gap:32px}
+.controls{display:flex;flex-direction:column;gap:14px;padding-bottom:24px;border-bottom:1px solid var(--rule)}
+.search{display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--chip);padding:8px 2px}
+.search:focus-within{border-color:var(--accent)}
+.search input{border:0;background:transparent;outline:none;font:inherit;font-size:16px;color:var(--ink);flex:1;min-width:0;padding:4px 0}
+.search input::placeholder{color:var(--faint)}
+.search input::-webkit-search-cancel-button{display:none}
+.filters{display:flex;flex-wrap:wrap;align-items:center;gap:10px 24px}
+.fgroup{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fgroup>span{font-size:12px;color:var(--muted);letter-spacing:.2em;margin-right:2px}
+.chip{min-height:40px;padding:0 16px;border-radius:20px;cursor:pointer;font-size:14px;letter-spacing:.08em;background:transparent;color:var(--ink-2);border:1px solid var(--chip);transition:background .2s,color .2s}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.chip .c{font-size:12px;margin-left:6px;opacity:.65;font-variant-numeric:tabular-nums}
+.chip:disabled{opacity:.38;cursor:not-allowed;border-style:dashed}
+.chip:disabled:hover{border-color:var(--chip)}
+.path-cap{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin:28px 0 10px;font-size:12px;color:var(--muted);letter-spacing:.12em}
+.path-cap b{font-family:var(--serif);font-size:14px;color:var(--ink);font-weight:600;letter-spacing:.24em;margin-right:8px}
+.path button:disabled{cursor:not-allowed;opacity:.45}
+.path button:disabled:hover{background:transparent}
+.path button[aria-pressed="true"]{box-shadow:inset 0 -2px 0 var(--accent)}
+.reset{margin-left:auto;min-height:40px;border:0;background:transparent;color:var(--accent);cursor:pointer;font-size:14px;letter-spacing:.1em;padding:0 4px;text-decoration:underline;text-underline-offset:4px}
+.status{margin:0;font-size:13px;color:var(--ink-2)}
+.sortnote{margin:0;font-size:12px;color:var(--muted);line-height:1.8}
+
+.vol-head{display:flex;flex-direction:column;gap:14px}
+.vol-line{display:flex;align-items:baseline;gap:16px}
+.vol-line .vol{font-family:var(--serif);font-size:15px;color:var(--accent);letter-spacing:.3em;white-space:nowrap}
+.vol-line .rule{height:1px;flex:1;background:var(--rule)}
+.vol-line .stat{font-size:13px;color:var(--muted);white-space:nowrap}
+.vol-head h2{margin:0;font-family:var(--serif);font-size:clamp(30px,4.6vw,42px);font-weight:600;letter-spacing:.06em;line-height:1.3}
+.goal{margin:0;font-family:var(--serif);font-size:clamp(15px,1.8vw,17px);color:var(--ink-2);letter-spacing:.06em;line-height:1.9}
+.caveat{margin:0;font-size:13px;color:var(--muted)}
+.caveat::before{content:'※ ';color:var(--accent)}
+.bar{height:2px;background:var(--rule-2);position:relative}
+.bar i{position:absolute;inset:0 auto 0 0;background:var(--accent);transition:width .4s ease}
+
+.path{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.path button{padding:18px 16px;display:flex;flex-direction:column;gap:4px;border:0;background:transparent;cursor:pointer;text-align:left;transition:background .2s}
+.path button+button{border-left:1px solid var(--rule)}
+.path button:hover{background:var(--hover)}
+.path button[aria-pressed="true"]{background:var(--paper-2)}
+.path .s{font-size:12px;color:var(--muted);letter-spacing:.2em}
+.path .l{font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:.1em}
+.path button[aria-pressed="true"] .l{color:var(--accent)}
+.path .c{font-size:13px;color:var(--muted)}
+.path-note{margin:-20px 0 0;font-size:12px;color:var(--muted)}
+
+/* 清單 */
+.group-head{display:flex;flex-direction:column;gap:6px;padding:8px 0 16px}
+.group-head h3{margin:0;font-family:var(--serif);font-size:24px;font-weight:600;letter-spacing:.08em}
+.group-head h3 em{font-style:normal;color:var(--accent);font-size:15px;letter-spacing:.3em;margin-right:12px}
+.group-head .cnt{font-size:13px;color:var(--muted)}
+.list{list-style:none;margin:0;padding:0}
+.item{display:flex;gap:20px;align-items:flex-start;padding:24px 0;border-top:1px solid var(--rule-2);transition:opacity .3s}
+.item.is-read{opacity:.5}
+.rank{font-family:var(--serif);font-size:26px;line-height:1.25;color:var(--faint);width:40px;flex:none}
+.item.top .rank{color:var(--accent)}
+.body{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
+.title-row{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.title-row a{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--ink);text-decoration:none;letter-spacing:.02em;line-height:1.6;overflow-wrap:anywhere}
+.title-row a:hover{color:var(--accent)}
+.title-row a svg{display:inline-block;vertical-align:-1px;margin-left:6px;opacity:.5}
+.badge{font-size:11px;color:var(--accent);border:1px solid var(--accent);padding:1px 6px;letter-spacing:.2em;border-radius:2px;white-space:nowrap;margin-top:6px}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font-size:13px;color:var(--muted)}
+.author{font-family:var(--serif);letter-spacing:.04em;color:var(--ink-2);text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:4px;padding:6px 0;margin:-6px 0}
+.author:hover{color:var(--accent);text-decoration-color:currentColor}
+.sep{width:1px;height:12px;background:var(--rule)}
+.pill{font-size:12px;padding:1px 8px;border:1px solid var(--rule);border-radius:2px;letter-spacing:.1em}
+.nums{display:flex;flex-wrap:wrap;gap:4px 20px;margin:0;font-size:13px;color:var(--muted)}
+.nums div{display:flex;gap:6px;align-items:baseline}
+.nums dt{letter-spacing:.1em}
+.nums dd{margin:0;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.item .nums div:first-child dd{color:var(--ink);font-weight:500}
+.cross{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;font-size:13px;color:var(--muted)}
+.cross>span{letter-spacing:.1em;margin-right:4px}
+.xlink{border:0;background:transparent;padding:4px 6px;min-height:32px;margin:-4px 0;font-size:13px;color:var(--accent);cursor:pointer;border-radius:2px;text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--accent) 35%,transparent);text-underline-offset:4px}
+.xlink:hover{background:var(--hover)}
+.check{flex:none;width:44px;height:44px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;border-radius:22px}
+.check:hover{background:var(--hover)}
+.check .ring{stroke:var(--faint)}
+.check .fill,.check .tick{opacity:0;transition:opacity .2s}
+.check[aria-pressed="true"] .fill,.check[aria-pressed="true"] .tick{opacity:1}
+.check .fill{fill:var(--accent)}
+.check .tick{stroke:var(--on-ink)}
+.empty{margin:0;padding:48px 0;text-align:center;font-family:var(--serif);color:var(--muted);letter-spacing:.1em}
+
+/* 附記 */
+.colophon{margin-top:56px;border-top:1px solid var(--ink);padding-top:28px;display:flex;flex-direction:column;gap:16px}
+.colophon h2{margin:0 0 4px;font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:.3em}
+.colophon ol{margin:0;padding:0;list-style:none;counter-reset:c;display:flex;flex-direction:column;gap:14px}
+.colophon li{counter-increment:c;display:flex;gap:14px;font-size:14px;line-height:1.95;color:var(--ink-2)}
+.colophon li::before{content:counter(c,cjk-ideographic);font-family:var(--serif);color:var(--accent);flex:none;width:20px}
+.colophon .fine{font-size:12px;color:var(--muted);margin:8px 0 0}
+
+/* 平板 */
+@media (max-width:960px){
+  .preface{grid-template-columns:minmax(0,1fr)}
+  .layout{grid-template-columns:minmax(0,1fr);gap:28px;padding-top:24px}
+  .toc{position:static;max-height:none;overflow:visible;gap:12px}
+  .toc nav{scroll-padding-inline:clamp(16px,4vw,32px);overflow-x:auto;margin:0 calc(-1*clamp(16px,4vw,32px));padding:0 clamp(16px,4vw,32px) 6px;scroll-snap-type:x proximity;scrollbar-width:none}
+  .toc nav::-webkit-scrollbar{display:none}
+  .steps{flex-direction:row;gap:0;width:max-content}
+  .steps::before{left:60px;right:60px;top:52px;bottom:auto;width:auto;height:1px}
+  .stage{scroll-snap-align:start}
+  .stage-label{padding:4px 0 0 8px}
+  .stage-label .sub{display:none}
+  .nodes{display:flex}
+  .node{flex-direction:column;width:120px;gap:6px;padding:6px 4px 8px;text-align:center}
+  .node .name{white-space:nowrap}
+  .node .txt{align-items:center}
+  .node .name{font-size:13px;line-height:1.4}
+  .toc-note{display:none}
+  .pager{grid-template-columns:minmax(0,1fr)}
+  .pager .prev{order:2}
+  .toc-all{align-self:flex-start;padding:0 20px}
+}
+/* 手機 */
+@media (max-width:560px){
+  .wrap{padding-top:32px}
+  .masthead{gap:14px}
+  .seal{width:46px;height:46px;font-size:23px}
+  .stats b{font-size:26px}
+  .filters{gap:10px}
+  .reset{margin-left:0}
+  .path button{padding:14px 10px}
+  .path .s{letter-spacing:.1em}
+  .path .l{font-size:17px}
+  .path .c{font-size:12px}
+  .item{gap:12px}
+  .rank{font-size:20px;width:28px}
+  .title-row a{font-size:16px}
+  .nums{gap:2px 14px}
+  .chip{padding:0 13px}
+  .tab b{font-size:17px}
+  .handle{font-size:17px}
+}
+@media print{
+  .controls,.toc,.check,.path,.reset{display:none!important}
+  .layout{grid-template-columns:1fr}
+  .item{break-inside:avoid;opacity:1!important}
+  a{color:inherit}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* ── milo 頁首小標規範（見 README「頁首小標」），請勿個別調整 ── */
+.page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow page-kicker">產品 · Grok Bot</p>
+  <header class="masthead">
+    <div class="seal" aria-hidden="true">導</div>
+    <div>
+      <h1>Grok Bot 學習導航</h1>
+      <p>每主題收藏榜</p>
+    </div>
+  </header>
+
+  <section class="preface" aria-label="說明">
+    <div>
+      <p class="lead">八個學習主題各 20 篇；每主題按收藏由多至少排列，同收藏再比轉推與讚。中英日文章混合分類，不再按編輯閱讀順序排列。</p>
+      <p class="fine">依貼文 ID 去重；同篇只有在實質涵蓋多個主題時才交叉收錄，並逐篇標示「跨主題」。不同主題加總不等於不同文章總數。</p>
+    </div>
+    <div class="stats">
+      <div><b class="num">8</b><span>學習主題</span></div>
+      <div><b class="num">20</b><span>每主題篇數</span></div>
+      <div><b class="num">132</b><span>篇不同文章</span></div>
+      <div><b class="num">160</b><span>個主題收錄位置</span></div>
+    </div>
+  </section>
+
+  <div class="tabs" role="tablist" aria-label="學習導航檢視">
+    <button id="article-tab" class="tab" type="button" role="tab" aria-selected="true" aria-controls="article-panel" tabindex="0" data-tab="article"><b>篇目</b><small>依主題收藏榜</small></button>
+    <button id="author-tab" class="tab" type="button" role="tab" aria-selected="false" aria-controls="author-panel" tabindex="-1" data-tab="author"><b>作者</b><small>本選集排行</small></button>
+  </div>
+
+  <div class="layout" id="article-panel" role="tabpanel" aria-labelledby="article-tab">
+    <aside class="toc">
+      <div class="toc-head">
+        <h2>學習路線</h2>
+        <span id="totalRead" class="num"></span>
+      </div>
+      <nav id="topics" aria-label="主題"></nav>
+      <p class="toc-note">從「總覽」一覽全部，再依「立基、接通、自動、成事」四段由淺入深。節點外圈是閱讀進度，讀完即轉為實心；同一篇跨主題收錄時，各卷同步顯示已讀。</p>
+    </aside>
+
+    <main>
+      <div class="controls">
+        <label class="search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" style="color:var(--muted)"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <span class="sr-only">搜尋本主題標題或作者</span>
+          <input id="query" type="search" placeholder="搜尋本主題標題或作者" autocomplete="off">
+        </label>
+        <div class="filters">
+          <div class="fgroup" role="group" aria-label="原文語言"><span>原文</span><span id="langChips" style="display:contents"></span></div>
+          <button id="reset" class="reset" type="button">清除篩選</button>
+        </div>
+        <p id="status" class="status" aria-live="polite"></p>
+        <p class="sortnote">排序：收藏 ↓ → 轉推 ↓ → 讚 ↓；數字為不同時間的快照，不是即時排行榜，也不是全網或全部候選的主題 Top 20。這是已選入文章的主題內排序。</p>
+      </div>
+
+      <div id="head"></div>
+      <div id="results"></div>
+      <noscript><p class="empty">此互動清單需要啟用 JavaScript。所有文章資料已完整內嵌於本檔案。</p></noscript>
+
+    </main>
+  </div>
+
+  <div class="layout" id="author-panel" role="tabpanel" aria-labelledby="author-tab" hidden>
+    <aside class="toc">
+      <div class="toc-head">
+        <h2>範圍</h2>
+        <span id="aTocCount" class="num"></span>
+      </div>
+      <nav id="scopes" aria-label="作者榜範圍"></nav>
+      <p class="toc-note">路線與篇目頁相同。外圈為該卷作者數佔全選集的比例，會隨語言篩選變動；範圍、語言與排序獨立於篇目頁。</p>
+    </aside>
+
+    <main>
+      <section class="vol-head">
+        <div class="vol-line"><span class="vol" id="aScope"></span><span class="rule"></span><span class="stat num" id="aCount"></span></div>
+        <h2>作者排行</h2>
+        <p class="lead-s">範圍限定本頁已分類且確認 Article 的 132 篇不同文章，共 78 位作者；不是全部 1179 篇候選或全 X 的作者榜。較大候選庫仍含待複核的跨主題條目，因此不混入本榜。160 個分類位置先按貼文 ID 去重，再彙總作者；跨主題文章在全選集榜只算一次。</p>
+      </section>
+
+      <div class="controls">
+        <div class="filters">
+          <div class="fgroup" role="group" aria-label="作者榜文章語言"><span>原文</span><span id="aLangChips" style="display:contents"></span></div>
+          <div class="fgroup" role="group" aria-label="作者排序"><span>排序</span><span id="aSortChips" style="display:contents"></span></div>
+        </div>
+        <p id="authorStatus" class="status" aria-live="polite"></p>
+      </div>
+
+      <ol id="authorResults" class="list"></ol>
+
+      <p class="sortnote">預設按總收藏降序，同分依篇數、單篇最高收藏及作者帳號排序；平均＝目前篩選範圍總收藏÷篇數。代表作取範圍內單篇收藏最高文章，同收藏以轉推、讚決定。「本選集多篇」只表示本選集至少三篇，不推定固定更新；總收藏、平均與篇數均不是內容正確性或品質保證，單篇高分作者也可能有很高平均。</p>
+    </main>
+  </div>
+
+  <section class="colophon" aria-labelledby="src">
+    <h2 id="src">資料來源、驗證與限制</h2>
+    <ol>
+      <li>全部收錄均有原始 Article 欄位，不把一般長貼文、轉推或額外翻譯算成新文章。分類依實際標題、保存的預覽／摘要，以及可讀取正文的相關段落核對；未逐篇完整通讀，分類與難度仍為暫定。</li>
+      <li>來源為既有 ranked_v4 中文 335 篇與 foreign_v1 英文 708、日文 136 篇。這次對 75 篇缺少本地原始 Article 證據的中文文章，以貼文 ID 定向回查，75 篇均回傳 Article；沒有另做廣泛搜尋。部分多主題文章核對了正文相關段落，例如知識庫入庫與觸發器、內容團隊交接、技能同步及例程空轉。</li>
+      <li>本次定向回查的指標更新於 2026-11-08 約 16:00（台北時間）；其餘沿用保存快照。外文主要快照是 2026-11-08 01:40–01:49（台北時間），部分更早；未回查中文項目沿用 ranked_v4，精確抓取時刻未確認。不同批次的數字不完全同時，收藏可能下降，排序只代表本頁採用的快照。</li>
+      <li>依需求先完成每類 20 篇，並非 1179 篇中英日候選的全量分類。部分文章跨領域，收藏為零的文章也照實保留；沒有以交易收益或節費倍率作推薦依據。產品政策、費用、權限、登入方式、使用額度及成效敘述須另核對當前官方說明，作者標題不代表已驗證事實；交易相關文章不是投資建議。</li>
+    </ol>
+    <p class="fine">本檔為原 Page 的離線 HTML 匯出，樣式重新設計為獨立版面。篩選在本機執行；已讀圈記只存在你的瀏覽器中。開啟文章連結才會連到 X。內容與排序資料不變。</p>
+  </section>
+</div>
+
+<script id="article-data" type="application/json">{"data": [[0, "如何把 Grok Bot 接入你的微信？保姆级新手指南来了（附详细提示词）", "KinGao476942", "2108132811635032316", 9519, 1019, 5021, "中文", [2]], [1, "把这篇文章丢给 Grok Bot：给你注册 Claude，搭配 Orca + Tailscale，打造 7×24 在线的 Claude Code 云主机", "app_sail", "2108523630900748335", 4953, 355, 2319, "中文", [2]], [2, "土豆姐最全 Grok Bot 方法论", "kylewmi", "2117471459803328912", 4165, 455, 2355, "中文", [0, 1]], [3, "用 Grok Bot 搭一支 24 小时 AI 交易团队（完整提示词，照抄就能跑）", "waveking1314", "2118014699606585780", 2984, 281, 1510, "中文", [5]], [4, "如何用 Grok Bot 稳定注册并订阅 Claude Code：保姆级新手终极指南", "KinGao476942", "2106985933966832090", 1731, 125, 804, "中文", [2]], [5, "Grok Bot 从 0 到 1，装好之后怎么用，看这篇就够了", "xiaomovps", "2115738442181333337", 1558, 165, 903, "中文", [0]], [7, "Grok Bot 额度超长续航保姆级新手指南（直接发给 Bot！）", "cgnot996", "2108504325609984233", 1372, 74, 586, "中文", [7]], [10, "我看谁不学Grok bot -Day0", "czzzzzzJ_", "2110207286845292842", 920, 92, 505, "中文", [0]], [11, "如何用 Grok Bot 从零到1开发上线一个网站？保姆级新手指南（附详细提示词）", "KinGao476942", "2117853896580456514", 926, 78, 531, "中文", [6]], [12, "如何用 Grok Bot 做内容？ bot 军团全部开源（一键安装）", "Jackywxsz", "2108808842045956343", 822, 53, 382, "中文", [5, 6]], [13, "工程师如何用好 Grok bot?", "KinGao476942", "2096232745538334913", 861, 56, 304, "中文", [6]], [14, "做自媒体怎么用好 Grok bot", "KinGao476942", "2099736121781764594", 686, 37, 341, "中文", [6]], [16, "如何发挥 Grok Bot 的最强实力？拉开差距的 7 个底层用法", "Jackywxsz", "2112831856777605166", 610, 52, 209, "中文", [1]], [17, "马斯克的“大一统AI会员”来了！新手小白和老用户该怎么选？一站式搞定 Grok Bot、X 会员、Cursor 会员！", "KinGao476942", "2109824830698848561", 602, 58, 347, "中文", [7]], [18, "保姆级 Grok Bot + Orca ADE：搭建一套纯原生美国 VPS 的 Claude Code 稳定运行环境", "LawrenceW_Zen", "2108114415111606776", 589, 63, 306, "中文", [2]], [19, "Grok Bot Pages 新手保姆级教程：报告、备忘录、仪表盘实操", "0xlangeai", "2113561892505763850", 560, 43, 217, "中文", [3]], [20, "Grok Bot 怎么用才顺手？拆解 poteto 的使用指南", "0xlangeai", "2117197419779866647", 556, 41, 296, "中文", [1]], [21, "Grok Bot 从 0 到 1｜用云电脑和插件，搭一个能干活的 X 助手", "xiaomovps", "2094596141765857596", 527, 40, 229, "中文", [0, 2]], [22, "Grok Bot Webhook + 快捷指令：知识自动入库流水线搭建", "cgnot996", "2097487429104197688", 522, 28, 231, "中文", [3, 4]], [23, "Grok Bot 门槛又又又降了！Grok Bot 到底可以做什么，从入门到进阶", "MaiYangAI", "2090919833366040919", 499, 36, 229, "中文", [0]], [24, "Grok Bot 可以点美团外卖了！不付跑腿费，每天两个渠道自动领券（附开源 skill）", "leaf_sanren", "2116510650478502212", 486, 34, 281, "中文", [4]], [25, "非工程师怎么用好 Grok Bot？", "KinGao476942", "2097915898971742325", 416, 26, 218, "中文", [0]], [26, "Grok Bot 新手指南：从跑通单任务到多Bot分工协作", "cgnot996", "2112761781080965416", 415, 42, 226, "中文", [5]], [27, "Grok Bot 和 WorkBuddy 双向打通保姆级教程: 实操微信聊天记录案例", "0xlangeai", "2117582319473102854", 401, 45, 253, "中文", [2, 3]], [28, "Grok Bot 百万撤离：一套完善的 Agent 系统备份方案", "cgnot996", "2098222795847315967", 527, 28, 256, "中文", [7]], [30, "从一个 Bot 到一整个组织，Grok Bot 的进阶用法分享：本地电脑、AI 分工和知识库怎么接起来", "1999Zach22", "2109607405696983158", 359, 23, 166, "中文", [2, 3, 4, 5]], [31, "Grok Bot系列1-2 准备工作：下载、套餐和登录，一篇讲清楚", "ai_goge", "2113822097839685660", 338, 47, 200, "中文", [0]], [32, "Grok Bot 产品最佳实践：用一支 Bot 团队完成研究、PRD、设计与交付", "shao__meng", "2095852263747285001", 331, 38, 180, "中文", [5, 6]], [33, "10 万人看过的 Grok Bot 省额度帖，背后是这一整套带 Bot 的方法", "leaf_sanren", "2117935731838722255", 319, 21, 176, "中文", [7]], [34, "微信聊天记录打通 Grok Bot：快捷指令进阶版", "cgnot996", "2107039351519707602", 272, 12, 158, "中文", [2, 3]], [35, "Grok Bot 保姆级教程：9 段神级提示词，解决你所有烦心事", "0xluffy_eth", "2112360364662988956", 268, 31, 155, "中文", [1]], [36, "用 Grok Bot 做跨境电商的实战分享，从 0 到 1 搭建起一整个亚马逊团队", "1999Zach22", "2110078772225667115", 243, 32, 177, "中文", [5]], [37, "Grok Bot 系列 1-10｜手机上派活、审批、看结果", "ai_goge", "2116385803530289257", 217, 36, 173, "中文", [1, 2]], [38, "如何把 Grok bot 军团连接到你的飞书？保姆级新手教程", "KinGao476942", "2110325058585698654", 217, 14, 116, "中文", [2, 5]], [39, "别再盲目发推了！用 Grok Bot 搭建一套 X 运营流程，10步实操，附完整指令", "SIAxiom", "2111689540792655982", 212, 23, 100, "中文", [6]], [41, "实战篇｜Grok Bot 入门：一步步搭建教练式工作台", "Chchenhao0129", "2099045980221985208", 200, 5, 99, "中文", [0, 1]], [42, "Grok Bot打新台8个AI员工", "chenke20266", "2114016042020467047", 196, 21, 119, "中文", [5]], [43, "Grok Bot 系列教程 1-7｜让它定时干活：存技能，建例程", "ai_goge", "2115638628546470175", 182, 41, 142, "中文", [4]], [45, "Grok Bot 专属邮箱的妙用，收集互联网上的羊毛", "cgnot996", "2109468110575333611", 175, 14, 107, "中文", [2]], [46, "6 个提示词用 Grok bot 搭出一人公司【附完整用法】", "0xluffy_eth", "2117521651449622541", 176, 17, 96, "中文", [1, 5]], [48, "杭州线下活动回看：我是怎么让 Grok Bot 额度更耐用的", "cgnot996", "2096415217710461078", 164, 14, 98, "中文", [7]], [49, "保姆级教程｜Grok Bot 启动最佳实践", "Jackywxsz", "2098253836041486655", 164, 6, 70, "中文", [0, 1]], [51, "Grok Bot 虚拟机重置后工具全没了？备份恢复教程（附提示词）", "cgnot996", "2108874629163229628", 155, 8, 84, "中文", [7]], [52, "我让 Grok Bot 接上富途，14 个投研场景全跑了一遍", "QianXiguaAI", "2118339312722858268", 348, 28, 175, "中文", [2]], [54, "Grok Bot 系列 1-5｜做你的第一个 Bot：起名、定岗位、派第一件活", "ai_goge", "2114873656014930007", 139, 14, 108, "中文", [0, 1]], [55, "如何在一个小时内深入使用 Grok Bot", "tspy", "2109440690862342187", 138, 10, 71, "中文", [0]], [56, "Grok Bot 团队接入飞书保姆级教程（附飞书管家模板）", "cgnot996", "2109247903785198076", 131, 7, 93, "中文", [2, 5]], [57, "Grok Bot 系列 1-8｜教它一遍就会：录操作、学文风、记规矩", "ai_goge", "2115981840171577691", 129, 13, 98, "中文", [1, 4]], [58, "我看谁不学 Grok Bot · Day1：打通 IM 和本地设备", "czzzzzzJ_", "2114201579587096979", 126, 11, 84, "中文", [2]], [59, "为什么你的 Grok Bot 总走偏？教你写一个真正好用的 Bot 模板", "ai_edisonZ", "2117876738751369587", 105, 4, 39, "中文", [1]], [60, "AI出海必备的Grok bot需求猎手，从0到1搭建的保姆级教程", "fantuantalk", "2114584248883741061", 101, 8, 73, "中文", [6]], [61, "Grok Bot 系列 1-4｜连接你的应用：让 Bot 直接使用 Gmail、GitHub 和 X", "ai_goge", "2114548844847624227", 99, 4, 58, "中文", [2]], [62, "Grok Bot如何搭建自动化工作流？这篇文章详细拆解一个小红书工作流案例。", "yvchengshanren", "2091566195317309890", 92, 10, 51, "中文", [4, 6]], [63, "让 Claude Code 指挥你的 Grok Bot 干活：三步搞定，不废话", "LawrenceW_Zen", "2110993612838441143", 92, 6, 55, "中文", [2]], [64, "Grok bot 实测分享，工作流训练优化实录，如何打造云端小红书、公众号工作流？", "yvchengshanren", "2093266571582218333", 80, 3, 37, "中文", [6]], [65, "Grok Bot + Obsidian 打造你的全自动可进化第二大脑（附提示词+独家 skill ）", "Jackywine", "2118562780383216113", 78, 2, 43, "中文", [3, 4]], [66, "把自己的推文做成个人画像网站,  用 Grok Bot 从分析特点到上线分享保姆级教程", "0xlangeai", "2109115005069341175", 75, 6, 70, "中文", [6]], [67, "一个人 + Grok Bot = 一个内容团队（实操指南）", "bdall_1", "2114191938752815119", 74, 9, 45, "中文", [5, 6]], [68, "全流程｜如何用Grok Bot 做自媒体？", "Jackywxsz", "2099816894350110997", 71, 6, 47, "中文", [6]], [69, "Grok Bot 系列 1-6｜文件交给它，成果拿回来", "ai_goge", "2115280899516584064", 68, 9, 46, "中文", [3]], [70, "Grok Bot 系列 1-9｜安全守则：说清红线、设好审批、密码自己输", "ai_goge", "2116189689694855202", 67, 19, 59, "中文", [1, 7]], [71, "Grok Bot 系列 教程 2-3｜选题雷达与内容日历：每天找热点，排好一周发什么", "ai_goge", "2118142800235778514", 65, 11, 60, "中文", [4, 6]], [72, "Grok Bot 是什么？一个自带电脑的 AI 助理", "ai_goge", "2113286958365688149", 64, 9, 41, "中文", [0]], [74, "万文长｜Grok Bot 从零入门第一次上", "TodayKan", "2104789484277473522", 60, 7, 40, "中文", [0]], [76, "Grok Bot 全自动做公司培训课教程：5 步搞定视频和 PPT，提示词直接抄", "lidageai", "2117633087379218802", 54, 2, 30, "中文", [6]], [81, "Grok Bot 系列 教程2-2·市场与新媒体运营   一篇原稿，改成 9 个平台的版本", "ai_goge", "2117792437280338413", 39, 5, 41, "中文", [6]], [82, "Grok Bot FAQ：新手最常問的 7 個問題", "ChrisHKAI", "2096982246913888554", 36, 2, 30, "中文", [0]], [84, "Grok Bot系列1-3 云端电脑：看操作、帮登录、存文件", "ai_goge", "2114159642104525157", 35, 4, 26, "中文", [0, 2]], [86, "Grok Bot 系列教程2-1·市场与新媒体运营  让 Bot 写得像你：每个平台一份风格指南", "ai_goge", "2117440264117928224", 33, 2, 31, "中文", [1, 6]], [87, "如何把 30 美元的 GrokBot 用出极致性价比？", "arito_si", "2110436931494691016", 31, 1, 14, "中文", [7]], [90, "我把Grok Bot搬上Touch Bar，顺便把SDK开源了", "cgnot996", "2111001178490437882", 31, 6, 65, "中文", [2]], [94, "从一句话到执行结果：Codex × Grok Bot Bridge 实战指南", "GeekCatX", "2099187026214179174", 26, 3, 12, "中文", [2]], [97, "Grok Bot 额度再省一点：定时任务极限优化", "cgnot996", "2107418115412046064", 18, 0, 31, "中文", [4, 7]], [100, "教你养一堆 Bot 是让你跟AI打工：一个有判断力的 Grok Bot就够", "ai_chuhai", "2116983666308002092", 16, 0, 6, "中文", [1, 5]], [102, "Grok Bot 系列 1-12｜卡死了别删Bot：排错完整清单", "ai_goge", "2117116389190435107", 14, 2, 12, "中文", [7]], [105, "用好 Grok Bot，先丢掉「搜索引擎」思维", "kylewmi", "2115357577890685150", 11, 1, 15, "中文", [1]], [107, "我是怎么用Grok Bot 搭建 AI 小队的", "xx03199", "2117888133572550710", 9, 4, 71, "中文", [5]], [108, "Grok Bot 额度为什么烧得这么快：八成 token 花在重读旧对话上（附 11 步省用量清单）", "starkljm", "2115483998352974338", 9, 0, 6, "中文", [7]], [136, "Grok Bot 上手：交任务、存 Skill、定时跑", "xoyif63862452", "2116393550120099880", 3, 0, 8, "中文", [4]], [137, "同一种活，两种打法：Grok Bot 额度实测，差出 3.2 倍", "chfsunwy", "2117628540955054428", 3, 0, 6, "中文", [7]], [145, "当 Grok Bot 额度缩水，我仅用一招使额度变得比原来还耐用！", "arito_si", "2117721852131061964", 2, 0, 5, "中文", [7]], [155, "刚用 Grok Bot 没几天，后台额度跑飞、群消息乱成一团麻，满屏都是汇报提示，但真正交付的结果却寥寥无几？", "zhu1894341", "2117955402675491084", 2, 0, 0, "中文", [7]], [222, "我用 Notion 给一队 Grok Bot 写了一本「员工手册」", "trise981", "2118326233297744273", 0, 0, 2, "中文", [3]], [261, "Grok Bot 的 skills 不是写一次就两边通用，Codex 不放进同一个仓库每周改，过几天就不是你的做法了。", "TBugCrypto", "2117249600247472631", 0, 0, 1, "中文", [4]], [262, "Grok Bot 保姆级：扔 25 条公众号链接，Obsidian 自己长出研究库（附完整提示词）", "laoqinai", "2117185996433625088", 0, 0, 1, "中文", [3]], [285, "别再每次都从头教 bot：Grok Bot 技能（Skills）实战，从一次做对到每次都对", "DissipativeS", "2117955716942123047", 0, 0, 0, "中文", [4]], [328, "别再开空白 Bot：用模板和技能把 Grok Bot 打造成一支团队", "dustADD", "2115140031107203285", 0, 0, 0, "中文", [4]], [331, "你的 Grok Bot 例程，可能大半预算都烧在「什么都没发生」上", "dustADD", "2114600574159315443", 0, 0, 0, "中文", [4]], [336, "Grok Bot: How to Hire Your First AI Employee (Full Guide)", "distortgeekin", "2105275395901726845", 17832, 623, 4530, "英文", [0, 1]], [337, "Intro to Grok Bot", "mattyp", "2087252657589412119", 7724, 426, 4761, "英文", [0]], [338, "How to Use Grok Bot to Build a Team of AI Trading Agents", "RohOnChain", "2117625737792585969", 4842, 134, 1083, "英文", [5]], [340, "AI Company-in-a-Box: Full 12-Step Roadmap to Build a Self-Managing Company with Grok Bot + Jev", "unicodef1wn", "2102375891875581966", 3871, 145, 1101, "英文", [5]], [343, "The ultimate guide to Grok Bot for creators", "XCreators", "2118843705327026400", 3534, 235, 2449, "英文", [6]], [346, "The Grok Bot Team's Own Workflow: 11 steps to the roster they actually run (full course)", "0xCarnagee", "2090102148344262659", 3302, 98, 869, "英文", [5]], [347, "How to build a Second Brain that actually does the work (Grok Bot full course)", "Argona0x", "2110045296902164532", 3285, 107, 883, "英文", [3]], [349, "Grok Bot: How to Build Your First AI Team (Full Guide)", "distortgeekin", "2108897917729738810", 2724, 111, 849, "英文", [5]], [351, "Grok Bot. What It Is, and How to Actually Use It.", "Mahaximus_", "2091879951926522112", 2588, 100, 709, "英文", [0]], [352, "Grok Bot Agents: How to Build an AI Team You Can Actually Trust (Full Guide)", "0xjmori", "2101661510091034926", 2582, 83, 627, "英文", [5]], [353, "Grok Bot Agents: Build 24/7 AI Agent Graph That Automate Your Life (The Ultimate 5-Step Guide)", "0xCodila", "2090130749768786050", 2289, 94, 655, "英文", [5]], [354, "Grok Bot Engineering: Set Up a Harness for Your One-Person Company", "beamnxw", "2107143806546002398", 2285, 87, 654, "英文", [1]], [358, "How to Build Anything with Grok Bot (Full Course)", "Av1dlive", "2111125320590074017", 2103, 93, 806, "英文", [6]], [364, "Grok Bot + Opus 5.5: Build a 24/7 AI Engineering Team in 12 Steps", "0xjmori", "2109648700897116554", 1520, 63, 380, "英文", [6]], [365, "Grok Bot Memory Engineering: How One Agent Learns With a Team", "0xwhrrari", "2107093781807775896", 1387, 67, 509, "英文", [3]], [366, "How to actually use Grok Bot. 18 rule setup most  users skip", "adiix_official", "2095064938351940049", 1351, 37, 330, "英文", [1]], [374, "Grokbot 101: Everything you need to know", "eptwts", "2091190610040676447", 880, 20, 465, "英文", [0]], [376, "Grok Bot: The Complete Setup and Usage Guide", "0xGenAi", "2091199153942495683", 846, 33, 279, "英文", [0]], [386, "How to give Grok Bot its own email inbox", "adisingh", "2091295851943780737", 650, 26, 231, "英文", [2]], [389, "Grok Bot Setup: Write the Contract, Not the Job Title", "silentguyy66", "2108957020187468171", 553, 30, 181, "英文", [1]], [390, "How I Solved Grok Bot From Running Out Of Use For Your Grok Bot Plan.", "BrianRoemmele", "2117535332874731630", 553, 17, 191, "英文", [7]], [392, "How to build a profitable motion design studio in GrokBot with Opus 5.5 ( Full-course )", "0xCarnagee", "2108501747643670780", 524, 26, 253, "英文", [6]], [402, "I Built a Second Brain Using Grok Bot That Works 24×7, 365 Days", "KanikaBK", "2091804690568847710", 430, 29, 145, "英文", [3]], [411, "12 Ways to Reduce Your Grok Bot Token Bill (Copy \u0026 Paste Settings)", "maestrooth", "2118061328405561352", 285, 13, 80, "英文", [7]], [419, "【保存版】Grokの中の人が教える、Grok Botを使いこなす12のコツ", "dansyu_callenge", "2116998754335400373", 253, 10, 107, "日文", [1]], [425, "Grok Bot、入れたのに楽にならない？最初にやりたい7つの設定", "dansyu_callenge", "2114110194963841236", 188, 3, 98, "日文", [5]], [428, "Obsidian × Grok Botで自分の脳を超越する方法", "ai_ai_ailover", "2110649437567737941", 185, 9, 72, "日文", [3]], [439, "Grok Bot Keeps Hitting 100% Usage. Here's How to Fix It (Full Guide)", "0xbobaaa", "2117566749428138162", 140, 4, 101, "英文", [7]], [475, "Grok Bot’s Second Brain: How to Run a Business Through It ", "RealMarvelX", "2094368498390544572", 59, 13, 63, "英文", [3]], [479, "How Grok Bot Routines Changed the Way I Work", "eng_khairallah1", "2114647320834810139", 55, 6, 35, "英文", [4]], [500, "How To Make Your Grok Bot Weekly Limit Last 8x Longer (Full Setup + Prompts)", "KanikaBK", "2112829012515160139", 33, 15, 36, "英文", [7]], [557, "Grok Bot Meter: the budget, 10 rules and 5 routines priced in runs", "fayzonnn", "2109031498032533682", 14, 0, 22, "英文", [7]], [565, "Memory Transfer: Move Your ChatGPT or Claude Memories to Grok Without Starting Over", "TripVoxel", "2109933456897511673", 12, 11, 25, "英文", [3]], [619, "stop giving your grok bots memory", "0xxenonicle", "2111711182256279633", 5, 2, 17, "英文", [3]], [623, "Grok Bot: What It Actually Does, What It Costs, and Where It Breaks", "BayardXBT", "2091133247564480537", 5, 1, 8, "英文", [7]], [646, "Bots are Seats. Skills are Shared.", "Thumboperator", "2094412844460597264", 4, 0, 1, "英文", [4]], [661, "Grok Bot Power Pack: 25 Copy-Paste Routines \u0026 Skills ", "naveen_saradhi_", "2109572471443566685", 3, 1, 3, "英文", [4]], [669, "Notion vs. Coda for Grok Bot Memory: Why Shared Brains Need Verbs, Not Good Manners", "bfrench", "2118802405299306553", 3, 0, 6, "英文", [3]], [684, "Bots that Should be Skills", "bfrench", "2112537070396907650", 3, 0, 2, "英文", [4]], [696, "GROK BOT + OBSIDIAN = SECOND BRAIN ", "0xRoboAI", "2095921873661854147", 2, 1, 8, "英文", [3]], [945, "Grok Bot in Practice: Build a Reusable Skill (Part 2 of 4)", "petersykim", "2112518878181941252", 0, 0, 3, "英文", [4]], [957, "Grok Bot: An Automatic Second Brain for the Lazy ", "makneidinger", "2094212408835518832", 0, 0, 2, "英文", [3]], [973, "Grok Bot in Practice: Research a Purchase (Part 1 of 4)", "petersykim", "2112518726473916478", 0, 0, 2, "英文", [3]], [978, "Grok Bot Made Simple: Automate Tasks with Skills and Routines (Part 4 of 5)", "petersykim", "2111838436780920933", 0, 0, 2, "英文", [4]]], "groups": ["入門與基本設定", "交辦與提示設計", "連接應用與本機", "資訊、文件與筆記", "Skills 與例程", "多 Bot 分工協作", "程式與內容實作", "用量、備份與排障"], "goals": ["認識產品、下載設定、第一個 Bot 與基本工作方式。", "明確交辦、角色描述、提示、教學、文風與核准界線。", "訊息入口、應用連接、本機、雲端工具與外部 Agent。", "查證研究、資料交接、檔案、Pages、記憶與知識庫。", "保存可複用方法、示範教學、定時與事件觸發的工作流程。", "角色分工、團隊交接、共享狀態與協作案例。", "工程、網站、內容、設計、培訓及其他作品實作。", "使用額度、節費主張、安全、備份恢復與故障排查。"]}</script>
+<script>
+'use strict';
+(function(){
+  var raw = JSON.parse(document.getElementById('article-data').textContent);
+  var data = raw.data, groups = raw.groups, goals = raw.goals;
+  var NUM = ['壹','貳','參','肆','伍','陸','柒','捌'];
+  var LEVELS = ['入門','中階','進階'];
+  var LANGS = ['全部','中文','英文','日文'];
+  var STAGES = [
+    { k:'第一階', name:'立基', sub:'認識與交辦', t:[0,1] },
+    { k:'第二階', name:'接通', sub:'工具與資料', t:[2,3] },
+    { k:'第三階', name:'自動', sub:'流程與分工', t:[4,5] },
+    { k:'第四階', name:'成事', sub:'實作與維運', t:[6,7] }
+  ];
+  var stageOf = function(i){ for (var k=0;k<STAGES.length;k++) if (STAGES[k].t.indexOf(i) > -1) return STAGES[k]; };
+  var CAVEAT = {7:'節費數字與上下文機制是作者主張，未獨立驗證。'};
+  var levelOf = function(d){ return d[8].indexOf(0) > -1 ? '入門' : ([30,364,354,353].indexOf(d[0]) > -1 ? '進階' : '中階'); };
+  var cmp = function(a,b){ return b[4]-a[4] || b[5]-a[5] || b[6]-a[6] || a[3].localeCompare(b[3]); };
+  var lists = groups.map(function(_,i){
+    return data.filter(function(d){ return d[8].indexOf(i) > -1; }).sort(cmp).map(function(d,k){ return { d:d, rank:k+1, level:levelOf(d) }; });
+  });
+
+  var state = { t:0, all:false, lang:'全部', lv:'全部', q:'' };
+  var read = {};
+  try { read = JSON.parse(localStorage.getItem('grokbot-nav-read')) || {}; } catch(e){}
+  function save(){ try { localStorage.setItem('grokbot-nav-read', JSON.stringify(read)); } catch(e){} }
+
+  var $ = function(id){ return document.getElementById(id); };
+  var fmt = function(n){ return n.toLocaleString('en-US'); };
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  var isRead = function(d){ return !!read[d[3]]; };
+
+  function filtered(i, o){
+    o = o || {};
+    var lang = o.lang || state.lang, lv = o.lv || state.lv;
+    var q = state.q.trim().toLowerCase();
+    return lists[i].filter(function(x){
+      var d = x.d;
+      return (lang === '全部' || d[7] === lang) &&
+             (lv === '全部' || x.level === lv) &&
+             (!q || (d[1] + ' ' + d[2]).toLowerCase().indexOf(q) > -1);
+    });
+  }
+  var scopeIdx = function(){ return state.all ? groups.map(function(_,k){ return k; }) : [state.t]; };
+  var countIn = function(idx, o){ return idx.reduce(function(s,i){ return s + filtered(i, o).length; }, 0); };
+
+  function itemHTML(x, i){
+    var d = x.d, r = isRead(d);
+    var others = d[8].filter(function(g){ return g !== i; });
+    return '<li class="item' + (r ? ' is-read' : '') + (x.rank === 1 ? ' top' : '') + '">' +
+      '<span class="rank num">' + String(x.rank).padStart(2,'0') + '</span>' +
+      '<div class="body">' +
+        '<div class="title-row"><a href="https://x.com/' + encodeURIComponent(d[2]) + '/status/' + d[3] + '" target="_blank" rel="noopener noreferrer">' + esc(d[1]) +
+          '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4.5 2.5h5v5M9.5 2.5l-7 7"/></svg><span class="sr-only">（在 X 開啟）</span></a>' +
+          (x.rank === 1 ? '<span class="badge">本卷首選</span>' : '') + '</div>' +
+        '<div class="meta"><a class="author" href="https://x.com/' + encodeURIComponent(d[2]) + '" target="_blank" rel="noopener noreferrer" aria-label="在 X 開啟 @' + esc(d[2]) + ' 的個人頁">@' + esc(d[2]) + '</a><span class="sep" aria-hidden="true"></span><span class="pill">' + d[7] + '</span><span class="pill">' + x.level + '</span></div>' +
+        '<dl class="nums"><div><dt>收藏</dt><dd>' + fmt(d[4]) + '</dd></div><div><dt>轉推</dt><dd>' + fmt(d[5]) + '</dd></div><div><dt>讚</dt><dd>' + fmt(d[6]) + '</dd></div></dl>' +
+        (others.length ? '<div class="cross"><span>跨主題・亦收於</span>' + others.map(function(g){ return '<button class="xlink" type="button" data-go="' + g + '">' + NUM[g] + '・' + esc(groups[g]) + '</button>'; }).join('') + '</div>' : '') +
+      '</div>' +
+      '<button class="check" type="button" data-id="' + d[3] + '" aria-pressed="' + r + '" aria-label="' + (r ? '取消已讀：' : '標記為已讀：') + esc(d[1]) + '">' +
+        '<svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true"><circle class="ring" cx="13" cy="13" r="11.5" stroke-width="1.2"/><circle class="fill" cx="13" cy="13" r="12.1"/><path class="tick" d="M8 13.5l3.2 3.2L18 9.8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+      '</button></li>';
+  }
+
+  function render(){
+    // 卷目
+    var C = 2*Math.PI*16;
+    var uniqRead = data.filter(isRead).length;
+    var allPct = uniqRead / data.length;
+    $('topics').innerHTML = '<ol class="steps">' +
+      '<li class="stage"><div class="stage-label"><span class="k">總覽</span><span class="nm">全選集</span><span class="sub">八卷依序展開</span></div><ol class="nodes"><li>' +
+        '<button class="node overview' + (uniqRead === data.length ? ' done' : '') + '" type="button" data-all="1" aria-current="' + state.all + '" aria-label="全部主題，已讀 ' + uniqRead + ' / ' + data.length + ' 篇">' +
+        '<span class="ring" aria-hidden="true"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle class="bg" cx="18" cy="18" r="16" stroke-width="1.2"/><circle class="pg" cx="18" cy="18" r="16" stroke-width="2" stroke-dasharray="' + (C*allPct).toFixed(2) + ' ' + C.toFixed(2) + '"/></svg><span class="rn">全</span></span>' +
+        '<span class="txt" aria-hidden="true"><span class="name">全部主題</span><span class="p num">' + uniqRead + ' / ' + data.length + ' 篇・不重複</span></span></button></li></ol></li>' +
+      STAGES.map(function(st,k){
+      return '<li class="stage" style="--k:' + k + '"><div class="stage-label"><span class="k">' + st.k + '</span><span class="nm">' + st.name + '</span><span class="sub">' + st.sub + '</span></div><ol class="nodes">' +
+        st.t.map(function(i){
+          var n = lists[i].length, r = lists[i].filter(function(x){ return isRead(x.d); }).length;
+          var cur = !state.all && i === state.t;
+          return '<li><button class="node' + (r === n ? ' done' : '') + '" type="button" data-t="' + i + '" aria-current="' + cur + '" aria-label="卷' + NUM[i] + ' ' + esc(groups[i]) + '，已讀 ' + r + ' / ' + n + '">' +
+            '<span class="ring" aria-hidden="true"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle class="bg" cx="18" cy="18" r="16" stroke-width="1.2"/><circle class="pg" cx="18" cy="18" r="16" stroke-width="2" stroke-dasharray="' + (C*r/n).toFixed(2) + ' ' + C.toFixed(2) + '"/></svg><span class="rn">' + NUM[i] + '</span></span>' +
+            '<span class="txt" aria-hidden="true"><span class="name">' + esc(groups[i]) + '</span><span class="p num">' + r + ' / ' + n + ' 篇</span></span></button></li>';
+        }).join('') + '</ol></li>';
+    }).join('') + '</ol>';
+    $('totalRead').textContent = '已讀 ' + uniqRead + ' / ' + data.length + ' 篇';
+
+    var idx = scopeIdx();
+
+    // 語言鈕：顯示目前條件下的篇數，0 篇停用
+    $('langChips').innerHTML = LANGS.map(function(l){
+      var n = countIn(idx, { lang:l }), on = state.lang === l, off = !n && !on;
+      return '<button class="chip" type="button" data-lang="' + l + '" aria-pressed="' + on + '"' + (off ? ' disabled' : '') + '>' + l + '<span class="c">' + n + '</span></button>';
+    }).join('');
+
+    // 卷首
+    var head = '';
+    if (!state.all){
+      var i = state.t, full = lists[i];
+      var r = full.filter(function(x){ return isRead(x.d); }).length;
+      var pct = Math.round(r / full.length * 100);
+      head = '<section class="vol-head">' +
+        '<div class="vol-line"><span class="vol">' + stageOf(i).k + '・' + stageOf(i).name + '　卷' + NUM[i] + '</span><span class="rule"></span><span class="stat num">本卷已讀 ' + r + ' / ' + full.length + '</span></div>' +
+        '<h2>' + esc(groups[i]) + '</h2>' +
+        '<p class="goal">' + esc(goals[i]) + '</p>' +
+        (CAVEAT[i] ? '<p class="caveat">' + CAVEAT[i] + '</p>' : '') +
+        '<div class="bar" role="img" aria-label="本卷已讀 ' + pct + '%"><i style="width:' + pct + '%"></i></div></section>';
+    } else {
+      head = '<section class="vol-head"><div class="vol-line"><span class="vol">總覽</span><span class="rule"></span><span class="stat num">已讀 ' + uniqRead + ' / ' + data.length + ' 篇</span></div>' +
+        '<h2>全部主題</h2><p class="goal">八卷依序列出，各卷內仍按收藏排序；跨主題文章會在多卷重複出現。</p></section>';
+    }
+    // 難度層次：唯一的難度篩選，計數已套用語言與搜尋
+    head += '<div class="path-cap"><span><b>難度</b>暫定編輯評估</span><span>' + (state.lv === '全部' ? '點選層次可篩選' : '再點一次取消篩選') + '</span></div>' +
+      '<div class="path" role="group" aria-label="依難度篩選">' +
+      LEVELS.map(function(l,k){
+        var inScope = idx.reduce(function(s,j){ return s + lists[j].filter(function(x){ return x.level === l; }).length; }, 0);
+        var hits = [], seen = {};
+        idx.forEach(function(j){ filtered(j, { lv:l }).forEach(function(x){ hits.push(x); }); });
+        var n = hits.length, dn = hits.filter(function(x){ return isRead(x.d); }).length;
+        var on = state.lv === l, off = !n && !on;
+        var note = !inScope ? (state.all ? '無此難度' : '本卷無此難度') : (!n ? '目前條件下無篇目' : '已讀 ' + dn + ' / ' + n + ' 篇');
+        return '<button type="button" data-lv="' + l + '" aria-pressed="' + on + '"' + (off ? ' disabled' : '') + '><span class="s">第' + ['一','二','三'][k] + '層</span><span class="l">' + l + '</span><span class="c num">' + note + '</span></button>';
+      }).join('') + '</div>';
+    $('head').innerHTML = head;
+
+    // 清單
+    var shown = 0, html = '';
+    idx.forEach(function(i){
+      var v = filtered(i); shown += v.length;
+      if (!v.length) return;
+      html += '<section>' +
+        (state.all ? '<div class="group-head"><h3><em>卷' + NUM[i] + '</em>' + esc(groups[i]) + '</h3><span class="cnt num">' + v.length + ' / ' + lists[i].length + ' 篇・' + esc(goals[i]) + (CAVEAT[i] ? ' ' + CAVEAT[i] : '') + '</span></div>' : '') +
+        '<ol class="list">' + v.map(function(x){ return itemHTML(x, i); }).join('') + '</ol></section>';
+    });
+    if (!html) html = '<p class="empty">沒有符合條件的篇目。</p>';
+    if (!state.all){
+      var t = state.t, pv = t - 1, nx = t + 1, pg = '';
+      var card = function(j, cls, label){
+        return '<button class="' + cls + '" type="button" data-t="' + j + '"><span class="k">' + label + '</span><span class="nm">卷' + NUM[j] + '・' + esc(groups[j]) + '</span><span class="g">' + esc(goals[j]) + '</span></button>';
+      };
+      if (pv >= 0) pg += card(pv, 'prev' + (nx < groups.length ? '' : ' solo'), '← 上一卷');
+      if (nx < groups.length) pg += card(nx, 'next' + (pv >= 0 ? '' : ' solo'), '下一步・' + stageOf(nx).k + ' ' + stageOf(nx).name);
+      html += '<nav class="pager" aria-label="上下卷">' + pg + '</nav>';
+    }
+    $('results').innerHTML = html;
+    var total = idx.reduce(function(s,i){ return s + lists[i].length; }, 0);
+    $('status').textContent = (state.notice ? state.notice + ' ' : '') + (state.all ? '全部主題' : groups[state.t]) + '：顯示 ' + shown + ' / ' + total + ' 個收錄位置。' + (shown < total ? '取消語言、難度與搜尋條件可看到完整文章。' : '');
+    state.notice = '';
+  }
+
+  function settle(){
+    var idx = scopeIdx(), msg = [];
+    if (state.lv !== '全部' && !countIn(idx, {})) { var lv0 = state.lv; state.lv = '全部'; if (countIn(idx, {})) msg.push('此範圍沒有「' + lv0 + '」篇目'); else state.lv = lv0; }
+    if (state.lang !== '全部' && !countIn(idx, {})) { var lg0 = state.lang; state.lang = '全部'; if (countIn(idx, {})) msg.push('沒有' + lg0 + '篇目'); else state.lang = lg0; }
+    if (state.lv !== '全部' && !countIn(idx, {})) { state.lv = '全部'; }
+    if (msg.length) state.notice = msg.join('、') + '，已改為顯示全部。';
+  }
+  function goTopic(i){
+    state.t = i; state.all = false; settle(); render();
+    var b = document.querySelector('.node[data-t="' + i + '"]');
+    if (b && window.innerWidth <= 960) b.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+    var h = $('head'); if (h.getBoundingClientRect().top < 0) h.scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+
+  document.addEventListener('click', function(e){
+    var t = e.target.closest('button'); if (!t) return;
+    if (t.dataset.t !== undefined) return goTopic(+t.dataset.t);
+    if (t.dataset.go !== undefined) return goTopic(+t.dataset.go);
+    if (t.dataset.lang) { state.lang = t.dataset.lang; return render(); }
+    if (t.dataset.lv) { state.lv = (state.lv === t.dataset.lv && t.closest('.path')) ? '全部' : t.dataset.lv; return render(); }
+    if (t.dataset.id) { var id = t.dataset.id; if (read[id]) delete read[id]; else read[id] = 1; save(); return render(); }
+    if (t.dataset.all) { state.all = true; settle(); render(); if (window.innerWidth <= 960) t.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' }); var h = $('head'); if (h.getBoundingClientRect().top < 0) h.scrollIntoView({ behavior:'smooth', block:'start' }); return; }
+    if (t.id === 'reset') { state.lang = '全部'; state.lv = '全部'; state.q = ''; $('query').value = ''; return render(); }
+  });
+  $('query').addEventListener('input', function(e){ state.q = e.target.value; render(); });
+
+  // ===== 作者排行 =====
+  var astate = { scope:'全部', lang:'全部', sort:'總收藏' };
+  var SORTS = ['總收藏','平均收藏','篇數'];
+  function rankAuthors(scope, language, sort){
+    var seen = {}, authors = {}, order = [];
+    data.forEach(function(d){
+      if (seen[d[3]] || (scope !== '全部' && d[8].indexOf(Number(scope)) < 0) || (language !== '全部' && d[7] !== language)) return;
+      seen[d[3]] = 1;
+      var key = d[2].toLowerCase(), a = authors[key];
+      if (a){ a.total += d[4]; a.count += 1; if (cmp(d, a.rep) < 0){ a.rep = d; a.max = d[4]; } }
+      else { authors[key] = { handle:d[2], total:d[4], count:1, max:d[4], rep:d }; order.push(key); }
+    });
+    return order.map(function(k){ return authors[k]; }).sort(function(a,b){
+      var primary = sort === '平均收藏' ? b.total/b.count - a.total/a.count : sort === '篇數' ? b.count - a.count : b.total - a.total;
+      return primary || b.total - a.total || b.count - a.count || b.max - a.max || a.handle.localeCompare(b.handle);
+    });
+  }
+  var avg = function(a){ return (a.total / a.count).toLocaleString('en-US', { maximumFractionDigits:2 }); };
+  var EXT = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4.5 2.5h5v5M9.5 2.5l-7 7"/></svg>';
+
+  function renderAuthors(){
+    var scopes = ['全部'].concat(groups.map(function(_,i){ return String(i); }));
+    var C2 = 2*Math.PI*16;
+    var allN = rankAuthors('全部', astate.lang, astate.sort).length;
+    var snode = function(sc, label, name){
+      var n = sc === '全部' ? allN : rankAuthors(sc, astate.lang, astate.sort).length;
+      var share = allN ? n / allN : 0;
+      return '<li><button class="node' + (sc === '全部' ? ' overview' : '') + '" type="button" data-scope="' + sc + '" aria-current="' + (astate.scope === sc) + '" aria-label="' + esc(name) + '，' + n + ' 位作者">' +
+        '<span class="ring" aria-hidden="true"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle class="bg" cx="18" cy="18" r="16" stroke-width="1.2"/><circle class="pg" cx="18" cy="18" r="16" stroke-width="2" stroke-dasharray="' + (C2*share).toFixed(2) + ' ' + C2.toFixed(2) + '"/></svg><span class="rn">' + label + '</span></span>' +
+        '<span class="txt" aria-hidden="true"><span class="name">' + esc(name) + '</span><span class="p num">' + n + ' 位作者' + (sc === '全部' ? '' : '・佔 ' + Math.round(share*100) + '%') + '</span></span></button></li>';
+    };
+    $('scopes').innerHTML = '<ol class="steps">' +
+      '<li class="stage"><div class="stage-label"><span class="k">總覽</span><span class="nm">全選集</span><span class="sub">跨主題只計一次</span></div><ol class="nodes">' + snode('全部', '全', '本選集全部主題') + '</ol></li>' +
+      STAGES.map(function(st){
+        return '<li class="stage"><div class="stage-label"><span class="k">' + st.k + '</span><span class="nm">' + st.name + '</span><span class="sub">' + st.sub + '</span></div><ol class="nodes">' +
+          st.t.map(function(i){ return snode(String(i), NUM[i], groups[i]); }).join('') + '</ol></li>';
+      }).join('') + '</ol>';
+    $('aLangChips').innerHTML = LANGS.map(function(l){
+      var n = rankAuthors(astate.scope, l, astate.sort).length, on = astate.lang === l, off = !n && !on;
+      return '<button class="chip" type="button" data-alang="' + l + '" aria-pressed="' + on + '"' + (off ? ' disabled' : '') + '>' + l + '<span class="c">' + n + '</span></button>';
+    }).join('');
+    $('aSortChips').innerHTML = SORTS.map(function(l){ return '<button class="chip" type="button" data-asort="' + l + '" aria-pressed="' + (astate.sort === l) + '">' + l + '</button>'; }).join('');
+
+    var ranks = rankAuthors(astate.scope, astate.lang, astate.sort);
+    var sumN = ranks.reduce(function(s,a){ return s + a.count; }, 0), sumT = ranks.reduce(function(s,a){ return s + a.total; }, 0);
+    $('aScope').textContent = astate.scope === '全部' ? '全部主題' : '卷' + NUM[+astate.scope] + '・' + groups[+astate.scope];
+    $('aCount').textContent = ranks.length + ' 位作者';
+    $('aTocCount').textContent = '全選集 ' + allN + ' 位';
+    $('authorStatus').textContent = '目前 ' + ranks.length + ' 位作者、' + sumN + ' 篇文章，合計快照收藏 ' + fmt(sumT) + '。語言篩選依文章標籤，不代表作者國籍。';
+
+    var metric = function(a){ return astate.sort === '平均收藏' ? a.total/a.count : astate.sort === '篇數' ? a.count : a.total; };
+    var top = ranks.length ? Math.max.apply(null, ranks.map(metric)) : 0;
+    $('authorResults').innerHTML = ranks.length ? ranks.map(function(a, k){
+      var w = top ? Math.max(1.5, metric(a) / top * 100) : 0, r = a.rep;
+      var key = function(name){ return astate.sort === name ? ' class="key"' : ''; };
+      return '<li class="item' + (k === 0 ? ' top' : '') + '"><span class="rank num">' + String(k+1).padStart(2,'0') + '</span>' +
+        '<div class="body">' +
+          '<div class="title-row"><a class="handle" href="https://x.com/' + encodeURIComponent(a.handle) + '" target="_blank" rel="noopener noreferrer">@' + esc(a.handle) + EXT + '<span class="sr-only">（在 X 開啟個人頁）</span></a>' +
+            (a.count >= 3 ? '<span class="badge">本選集多篇</span>' : '') + '</div>' +
+          '<div class="abar" aria-hidden="true"><i style="width:' + w.toFixed(1) + '%"></i></div>' +
+          '<dl class="nums"><div><dt>總收藏</dt><dd' + key('總收藏') + '>' + fmt(a.total) + '</dd></div><div><dt>篇數</dt><dd' + key('篇數') + '>' + a.count + '</dd></div><div><dt>平均</dt><dd' + key('平均收藏') + '>' + avg(a) + '</dd></div><div><dt>單篇最高</dt><dd>' + fmt(a.max) + '</dd></div></dl>' +
+          '<div class="rep"><span>代表作</span><a href="https://x.com/' + encodeURIComponent(r[2]) + '/status/' + r[3] + '" target="_blank" rel="noopener noreferrer">' + esc(r[1]) + '</a></div>' +
+        '</div></li>';
+    }).join('') : '<p class="empty">此範圍沒有符合條件的作者。</p>';
+  }
+
+  document.addEventListener('click', function(e){
+    var t = e.target.closest('button'); if (!t) return;
+    if (t.dataset.scope) { astate.scope = t.dataset.scope; if (astate.lang !== '全部' && !rankAuthors(astate.scope, astate.lang, astate.sort).length) astate.lang = '全部'; renderAuthors(); if (window.innerWidth <= 960) t.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' }); return; }
+    if (t.dataset.alang) { astate.lang = t.dataset.alang; return renderAuthors(); }
+    if (t.dataset.asort) { astate.sort = t.dataset.asort; return renderAuthors(); }
+    if (t.dataset.tab) { switchTab(t.dataset.tab); }
+  });
+
+  function switchTab(name, focus){
+    var art = name === 'article';
+    $('article-panel').hidden = !art; $('author-panel').hidden = art;
+    $('article-tab').setAttribute('aria-selected', String(art)); $('author-tab').setAttribute('aria-selected', String(!art));
+    $('article-tab').tabIndex = art ? 0 : -1; $('author-tab').tabIndex = art ? -1 : 0;
+    if (focus) $(name + '-tab').focus();
+  }
+  ['article','author'].forEach(function(name){
+    $(name + '-tab').addEventListener('keydown', function(e){
+      if (['ArrowLeft','ArrowRight','Home','End'].indexOf(e.key) < 0) return;
+      e.preventDefault();
+      var next = e.key === 'Home' ? 'article' : e.key === 'End' ? 'author' : (name === 'article' ? 'author' : 'article');
+      switchTab(next, true);
+    });
+  });
+  renderAuthors();
+
+  render();
+})();
+</script>
+</body>
+</html>
