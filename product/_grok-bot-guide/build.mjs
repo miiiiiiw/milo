@@ -33,7 +33,7 @@ const zh = (n) => {
 };
 const pool = ds.candidate_pool || {};
 const tokens = {
-  topics: content.topics.length, topics_zh: zh(content.topics.length), per_topic: ds.display_per_topic,
+  topics: content.topics.length, topics_zh: zh(content.topics.length), per_topic: ds.display_per_topic, active: summary.active,
   unique: summary.selection_unique, placements: summary.selection_placements, authors: summary.selection_authors,
   pool_total: pool.total, pool_zh: pool.zh, pool_en: pool.en, pool_ja: pool.ja,
 };

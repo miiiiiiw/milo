@@ -12,7 +12,7 @@ const isISO = (s) => typeof s === "string" && !Number.isNaN(Date.parse(s)) && /T
 const isDate = (s) => typeof s === "string" && /^\d{4}-\d{2}-\d{2}$/.test(s);
 const nonEmpty = (s) => typeof s === "string" && s.trim().length > 0;
 // 文案中可用的自動數字（由 build 依資料計算後填入）
-export const TOKENS = ["topics", "topics_zh", "per_topic", "unique", "placements", "authors", "pool_total", "pool_zh", "pool_en", "pool_ja"];
+export const TOKENS = ["topics", "topics_zh", "per_topic", "active", "unique", "placements", "authors", "pool_total", "pool_zh", "pool_en", "pool_ja"];
 export const TEXT_FIELDS = ["intro", "dedupe_note", "sort_note", "author_note"];
 
 export function validate(c, prev) {
@@ -31,7 +31,7 @@ export function validate(c, prev) {
   for (const [k, t] of texts) {
     if (typeof t !== "string") continue;
     for (const m of t.matchAll(/\{(\w+)\}/g)) if (!TOKENS.includes(m[1])) err(`dataset.${k} 有未定義的自動數字 {${m[1]}}，可用：${TOKENS.join("、")}`);
-    if (/各\s*\d+\s*篇|\d+\s*位作者|\d+\s*篇不同文章|\d+\s*個(主題)?收錄位置/.test(t)) warn(`dataset.${k} 似乎寫死了會變動的數字，建議改用 {per_topic}、{unique}、{authors} 等自動數字`);
+    if (/各\s*\d+\s*篇|每[類卷主題]+\s*\d+\s*篇|Top\s*\d+|\d+\s*位作者|\d+\s*篇不同文章|\d+\s*個(主題)?收錄位置/.test(t)) warn(`dataset.${k} 似乎寫死了會變動的數字，建議改用 {per_topic}、{unique}、{authors} 等自動數字`);
   }
   for (const k of ["total", "zh", "en", "ja"]) if (ds.candidate_pool && ds.candidate_pool[k] !== undefined && !isInt(ds.candidate_pool[k])) err(`dataset.candidate_pool.${k} 需為非負整數`);
 
