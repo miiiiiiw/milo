@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-10T14:29:46.900Z",
+  "generated": "2026-11-10T15:38:15.187Z",
   "folders": {
     "tech": "技術筆記",
     "product": "產品",
@@ -89,6 +89,18 @@
       "tags": [
         "影片學習",
         "Graph Engineering",
+        "AI 代理",
+        "Gary_Chen"
+      ],
+      "date": "2026-11-10"
+    },
+    {
+      "path": "watching/gary-chen-loop-engineering.html",
+      "title": "高手都不寫 Prompt 了？Loop Engineering 完整解析（高手都不写Prompt了？Loop Engineering完整解析）",
+      "description": "Gary_Chen 談 Loop Engineering 的定義、適用任務，以及迴圈失控時的三類風險",
+      "tags": [
+        "影片學習",
+        "Loop Engineering",
         "AI 代理",
         "Gary_Chen"
       ],
