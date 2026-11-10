@@ -1,1 +1,22 @@
-{}
+{
+  "addy-agents-manager": {
+    "sha256": "fe4a87abdabd61f8a71cb1851ca9409df808b6cd53053b6bb99616563873bd74",
+    "v": 2,
+    "synced": "2026-11-10"
+  },
+  "addy-critical-thinking": {
+    "sha256": "8916c5f208b9095ff7b50d50468ce1164f9bdb7fcf00c23732f364a4a0244ecd",
+    "v": 2,
+    "synced": "2026-11-10"
+  },
+  "grokbot-creator-guide": {
+    "sha256": "91a9e5bee6ce78cad6d200e8ac807580187e3d369a3979cf4cd7470a8f343538",
+    "v": 2,
+    "synced": "2026-11-10"
+  },
+  "grokbot-token-usage": {
+    "sha256": "ed0b5e3ab1a81171d7ba78b24908b138c60e3ffdfd0953f85b23677043c48dc4",
+    "v": 2,
+    "synced": "2026-11-10"
+  }
+}
