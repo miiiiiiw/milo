@@ -6,7 +6,7 @@
 
 ```
 Grok Bot ──寫入──▶ grokbot-inbox 的 milo/reading/<檔名>.html
-                          │  每小時第 47 分（.github/workflows/reading-inbox.yml）
+                          │  每小時第 23 分（.github/workflows/reading-inbox.yml）
                           ▼
      sync.mjs：檢查 → 補 date、keywords 加「原文學習」、加頁首小標與距頂 CSS → 寫入 reading/
                           ▼
