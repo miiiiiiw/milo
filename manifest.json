@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-10T15:38:15.187Z",
+  "generated": "2026-11-10T16:47:18.607Z",
   "folders": {
     "tech": "技術筆記",
     "product": "產品",
@@ -8,6 +8,19 @@
     "watching": "影片學習"
   },
   "files": [
+    {
+      "path": "reading/nicholas-fable-seo.html",
+      "title": "用 Claude Fable 5.2 做 SEO，效果好到簡直像犯規（How to use Claude Fable 5.2 for SEO so well it feels illegal）",
+      "description": "用 Claude Fable 5.2 搭配真實搜尋資料做 SEO：先選會賺錢的關鍵字，再寫贏過前三名的一頁，每週一小時持續修正",
+      "tags": [
+        "原文學習",
+        "SEO",
+        "AI 代理",
+        "ChatSEO",
+        "Nicholas Dulait"
+      ],
+      "date": "2026-11-11"
+    },
     {
       "path": "product/grok-bot-guide.html",
       "title": "GrokBot 學習導航",
