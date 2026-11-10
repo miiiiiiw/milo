@@ -1,0 +1,110 @@
+# 每小時檢查 grokbot-inbox 的 milo/reading/，有新的或變動的 HTML 就檢查、套上 milo 規範，並開（或更新）PR。
+# 合併 PR＝發布。Grok Bot 只能寫收件匣，碰不到 milo；讀收件匣用的是唯讀權杖 GROKBOT_INBOX_TOKEN（與學習導航共用）。
+# 細節見 reading/_inbox/README.md。
+name: 原文學習收件匣同步
+
+on:
+  schedule:
+    - cron: "47 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: reading-inbox
+  cancel-in-progress: false
+
+env:
+  INBOX_REPO: miiiiiiw/grokbot-inbox
+  SRC: milo/reading
+  BRANCH: grokbot/reading
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 確認密鑰
+        env:
+          TOKEN: ${{ secrets.GROKBOT_INBOX_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "::error::尚未設定 GROKBOT_INBOX_TOKEN（Settings → Secrets and variables → Actions）"
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: 取得收件匣
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.INBOX_REPO }}
+          token: ${{ secrets.GROKBOT_INBOX_TOKEN }}
+          path: _inbox
+          fetch-depth: 0          # 需要 git 歷史來取得每篇的收件日期
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 檢查並套用規範
+        id: build
+        run: |
+          DAY=$(TZ=Asia/Taipei date +%F)
+          echo "day=$DAY" >> "$GITHUB_OUTPUT"
+          git checkout -B "$BRANCH" main
+          set +e
+          node reading/_inbox/sync.mjs "_inbox/$SRC" "$RUNNER_TEMP/report.md"
+          code=$?
+          set -e
+          [ $code -le 1 ] || exit $code
+          echo "ok=$([ $code = 0 ] && echo 1 || echo 0)" >> "$GITHUB_OUTPUT"
+          cat "$RUNNER_TEMP/report.md" >> "$GITHUB_STEP_SUMMARY"
+
+          git add reading
+          if git diff --cached --quiet; then
+            echo "與網站目前內容相同，無需更新"; echo "skip=1" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
+          git commit -q -m "更新：原文學習收件匣同步（$DAY）" -m "由原文學習收件匣同步自動產生。"
+
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null; then
+            git fetch -q origin "$BRANCH"
+            if git diff --quiet "origin/$BRANCH" HEAD && git merge-base --is-ancestor origin/main "origin/$BRANCH"; then
+              echo "PR 已是最新"; echo "skip=1" >> "$GITHUB_OUTPUT"; exit 0
+            fi
+          fi
+          echo "skip=0" >> "$GITHUB_OUTPUT"
+
+      - name: 推送分支並開／更新 PR
+        if: steps.build.outputs.skip == '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OK: ${{ steps.build.outputs.ok }}
+          DAY: ${{ steps.build.outputs.day }}
+        run: |
+          git push -q -f origin "$BRANCH"
+
+          if [ "$OK" = 1 ]; then TITLE="原文學習：收件匣新文章（$DAY）"; else TITLE="✗ 有檔案未通過：原文學習收件匣（$DAY）"; fi
+          {
+            cat "$RUNNER_TEMP/report.md"
+            echo
+            echo "---"
+            echo "**合併這個 PR＝發布到網站。** 合併前可以在 Files changed 檢查內容；未通過的檔案不會被放進網站。"
+            echo "收件匣有新資料時，這個 PR 會在一小時內自動更新。"
+          } > "$RUNNER_TEMP/body.md"
+
+          NUM=$(gh pr list --head "$BRANCH" --state open --json number -q '.[0].number')
+          if [ -z "$NUM" ]; then
+            gh pr create --base main --head "$BRANCH" --title "$TITLE" --body-file "$RUNNER_TEMP/body.md" $([ "$OK" = 1 ] || echo --draft)
+          else
+            gh pr edit "$NUM" --title "$TITLE" --body-file "$RUNNER_TEMP/body.md"
+            if [ "$OK" = 1 ]; then gh pr ready "$NUM" || true; else gh pr ready "$NUM" --undo || true; fi
+            gh pr comment "$NUM" --body "收件匣有新資料，已重新檢查：$([ "$OK" = 1 ] && echo '✓ 全部通過' || echo '✗ 有檔案未通過')。詳見上方 PR 說明。"
+          fi
