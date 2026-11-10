@@ -1,27 +1,32 @@
 {
   "addy-agents-manager": {
     "sha256": "fe4a87abdabd61f8a71cb1851ca9409df808b6cd53053b6bb99616563873bd74",
-    "v": 4,
-    "synced": "2026-11-10"
+    "v": 5,
+    "synced": "2026-11-11"
   },
   "addy-critical-thinking": {
     "sha256": "8916c5f208b9095ff7b50d50468ce1164f9bdb7fcf00c23732f364a4a0244ecd",
-    "v": 4,
-    "synced": "2026-11-10"
+    "v": 5,
+    "synced": "2026-11-11"
   },
   "grokbot-creator-guide": {
     "sha256": "7db8f87d46f46b802ae5481545c57e3e0673a57feb2653ee37e745a5e220568f",
-    "v": 4,
-    "synced": "2026-11-10"
+    "v": 5,
+    "synced": "2026-11-11"
   },
   "grokbot-token-usage": {
     "sha256": "ab95b775325defa25583d34cc3fb673d10a2e4035ad854041405fe144090a176",
-    "v": 4,
-    "synced": "2026-11-10"
+    "v": 5,
+    "synced": "2026-11-11"
   },
   "poteto-grokbot-method": {
     "sha256": "61e28dc122154e20bcf2180b592f5c4a53fad826ee782e554581006f6f72da3a",
-    "v": 4,
-    "synced": "2026-11-10"
+    "v": 5,
+    "synced": "2026-11-11"
+  },
+  "nicholas-fable-seo": {
+    "sha256": "598acf259a7d02a533f3b3addcf7e12006af6e9fdfcf41067b81e08eb8a77829",
+    "v": 5,
+    "synced": "2026-11-11"
   }
 }
