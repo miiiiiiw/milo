@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-10T14:14:31.789Z",
+  "generated": "2026-11-10T14:29:46.900Z",
   "folders": {
     "tech": "技術筆記",
     "product": "產品",
@@ -79,6 +79,18 @@
         "方法論",
         "Kyle_13",
         "poteto"
+      ],
+      "date": "2026-11-10"
+    },
+    {
+      "path": "watching/gary-chen-graph-engineering.html",
+      "title": "Graph Engineering 完整解析：Node、Edge、State 怎麼設計 AI 代理工作流程（Graph Engineering完整解析：Node、Edge、State怎么设计Agent工作流）",
+      "description": "Gary_Chen 談如何用 node、edge、state 設計可檢查、可退回的 AI 代理工作流程",
+      "tags": [
+        "影片學習",
+        "Graph Engineering",
+        "AI 代理",
+        "Gary_Chen"
       ],
       "date": "2026-11-10"
     },
