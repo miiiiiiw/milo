@@ -1,9 +1,10 @@
 {
-  "generated": "2026-11-10T05:16:56.776Z",
+  "generated": "2026-11-10T05:59:00.231Z",
   "folders": {
     "tech": "技術筆記",
     "product": "產品",
-    "family": "家庭"
+    "family": "家庭",
+    "reading": "原文學習"
   },
   "files": [
     {
@@ -15,6 +16,54 @@
         "AI",
         "學習導航",
         "收藏榜"
+      ],
+      "date": "2026-11-10"
+    },
+    {
+      "path": "reading/addy-agents-manager.html",
+      "title": "你的程式代理讓你成了主管（Your coding agents made you a manager）",
+      "description": "Addy Osmani 談：同時帶多個程式代理，你的角色從寫程式變成管理者",
+      "tags": [
+        "原文學習",
+        "AI 代理",
+        "Coding Agent",
+        "Addy Osmani"
+      ],
+      "date": "2026-11-10"
+    },
+    {
+      "path": "reading/addy-critical-thinking.html",
+      "title": "代理代勞時的批判性思考（Critical thinking when agents do the work）",
+      "description": "Addy Osmani 談：把工作交給 AI 代理時，哪些判斷要留在自己手上",
+      "tags": [
+        "原文學習",
+        "AI 代理",
+        "批判性思考",
+        "Addy Osmani"
+      ],
+      "date": "2026-11-10"
+    },
+    {
+      "path": "reading/grokbot-creator-guide.html",
+      "title": "創作者的 Grok Bot 終極指南（The ultimate guide to Grok Bot for creators）",
+      "description": "X Creators 官方指南：用 Grok Bot 發想點子、寫腳本到製作影片",
+      "tags": [
+        "原文學習",
+        "Grok Bot",
+        "內容創作",
+        "X"
+      ],
+      "date": "2026-11-10"
+    },
+    {
+      "path": "reading/grokbot-token-usage.html",
+      "title": "GrokBot 用量指南：十個步驟，讓你再也不會撞上上限（GrokBot Token Usage: how to never hit your limit again in 10 step）",
+      "description": "十個步驟管理 GrokBot 用量，避免撞上額度上限",
+      "tags": [
+        "原文學習",
+        "Grok Bot",
+        "Token",
+        "用量"
       ],
       "date": "2026-11-10"
     },
