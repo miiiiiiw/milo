@@ -58,6 +58,8 @@ const values = {
   st_topics: String(content.topics.length),
   st_per: String(ds.display_per_topic),
   st_unique: String(summary.selection_unique),
+  st_active: String(summary.active),
+  st_authors: String(summary.selection_authors),
   st_places: String(summary.selection_placements),
   // 內嵌 JSON：跳脫 < 以免 </script> 提早結束
   content_json: JSON.stringify(content).replace(/</g, "\\u003c"),
