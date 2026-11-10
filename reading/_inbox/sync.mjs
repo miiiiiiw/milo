@@ -26,7 +26,7 @@ const CSS =
   ".page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}\n";
 
 // 轉換版本：改了 transform（例如配色）就 +1，已同步的頁面下次執行會全部重新套用
-const VERSION = 2;
+const VERSION = 3;
 
 // ── 暗色模式：配色取自 milo 導覽頁（index.html :root 的暗色變數），對應 Grok 翻譯頁模板寫死的顏色 ──
 // 規則同導覽頁：預設跟系統；導覽頁 ◐ 切換後寫入 localStorage「cab:theme」，頁面讀取並即時同步。
@@ -34,7 +34,7 @@ const D = { paper: "#16150f", card: "#1e1c16", surf: "#26231c", cell: "#2c2921",
 const DARK_RULES = `
 body{background:${D.paper};color:${D.ink}}
 main{background:${D.card}}
-.en-title,.eg,.eyebrow,figcaption,h2 .en,h3 .en,.tabs a,.tabs label,.meta{color:${D.ink2}}
+.en-title,.zh-title,.eg,.eyebrow,figcaption,h2 .en,h3 .en,.tabs a,.tabs label,.meta,.prompt-lbl,blockquote.q .src{color:${D.ink2}}
 .note,footer,.tweet .when,.pair .lbl{color:${D.ink3}}
 .code-lab{color:${D.ink2}}
 h2,footer{border-color:${D.rule}}
@@ -49,6 +49,10 @@ pre{background:${D.stage};color:#e6edf3;border:1px solid ${D.rule}}
 a{color:${D.link}}
 .dg{border-color:rgba(236,230,216,.12)}
 img{filter:brightness(.88)}
+blockquote.q{background:${D.surf}}
+.callout,.callout.pin{background:rgba(29,155,240,.10)}
+.callout.warn{background:rgba(201,122,44,.14);border-left-color:#e0a060}
+.callout.ok{background:rgba(47,125,74,.18);border-left-color:#5fbf80}
 `;
 // SVG 圖解的 fill／stroke 屬性（CSS 可覆蓋呈現屬性）
 const SVG_MAP = [
