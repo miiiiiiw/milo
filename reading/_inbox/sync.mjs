@@ -26,7 +26,7 @@ const CSS =
   ".page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}\n";
 
 // 轉換版本：改了 transform（例如配色）就 +1，已同步的頁面下次執行會全部重新套用
-const VERSION = 4;
+const VERSION = 5;
 
 // ── 暗色模式：配色取自 milo 導覽頁（index.html :root 的暗色變數），對應 Grok 翻譯頁模板寫死的顏色 ──
 // 規則同導覽頁：預設跟系統；導覽頁 ◐ 切換後寫入 localStorage「cab:theme」，頁面讀取並即時同步。
@@ -41,7 +41,7 @@ h2,footer{border-color:${D.rule}}
 .tabs{background:${D.card};border-color:${D.rule}}
 .tabs a,.tabs label{background:${D.surf}}
 #r-tl:checked~.tabs .tl,#r-tk:checked~.tabs .tk,.tabs a[aria-selected="true"]{background:#1d9bf0;color:#fff}
-.meta{background:rgba(29,155,240,.10)}
+.meta,.cta{background:rgba(29,155,240,.10)}
 figcaption,.lbl{background:${D.surf}}
 .tweet{background:${D.surf};border-color:${D.rule}}
 .tweet .tr{border-color:${D.rule}}
