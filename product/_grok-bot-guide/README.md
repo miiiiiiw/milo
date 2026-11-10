@@ -28,7 +28,20 @@
 - `added_at` 是「首次收錄日」，不確定就是 `null`；遷移日另記在 `dataset.migrated_at`。已知的 `added_at` 不可修改，`null` 可以補上。
 - 文案中會變動的數字用自動數字（如 `{per_topic}`、`{topics_zh}`），由 build 依資料填入，不寫死。
 
-## 更新流程（Claude 執行）
+## 自動交件流程（主要）
+
+Grok Bot 把 `content.json`、`changes.md` 推到私人 repo `miiiiiiw/grokbot-inbox` 的 `milo/grok-bot-guide/`。
+milo 的 `.github/workflows/grokbot-inbox.yml` 每小時第 17 分執行（也可在 Actions 頁手動執行「GrokBot 收件匣同步」）：
+
+1. 用 `GROKBOT_INBOX_TOKEN`（只能讀收件匣）取得資料；與 main 相同就跳過。
+2. 以 main 為底建立分支 `grokbot/grok-bot-guide`，放入資料與 `changes/YYYY-MM-DD.md`。
+3. `inbox-report.mjs` 驗證並與 main 的上一版比對；通過才執行 `build.mjs` 產生頁面。
+4. 強制推送分支，開或更新 PR，報告寫在 PR 說明。未通過時 PR 為草稿、標題以 ✗ 開頭。
+5. 使用者合併＝發布；合併後 manifest workflow 會自動更新頁面清單。
+
+收件匣的 `README.md`（推送說明）與 `SPEC.md`（交接規格）由 Claude 維護。
+
+## 手動更新流程（備用，Claude 執行）
 
 收到 Grok Bot 的 `content.json` 與 `changes.md` 後：
 

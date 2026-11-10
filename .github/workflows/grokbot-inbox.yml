@@ -1,0 +1,116 @@
+# 每小時檢查 grokbot-inbox 的 milo/grok-bot-guide/，有新資料就驗證、產生頁面，並開（或更新）PR。
+# 合併 PR＝發布。Grok Bot 只能寫收件匣，碰不到 milo；讀收件匣用的是唯讀權杖 GROKBOT_INBOX_TOKEN。
+name: GrokBot 收件匣同步
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: grokbot-inbox
+  cancel-in-progress: false
+
+env:
+  INBOX_REPO: miiiiiiw/grokbot-inbox
+  SRC: milo/grok-bot-guide
+  DST: product/_grok-bot-guide
+  PAGE: product/grok-bot-guide.html
+  BRANCH: grokbot/grok-bot-guide
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 確認密鑰
+        env:
+          TOKEN: ${{ secrets.GROKBOT_INBOX_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "::error::尚未設定 GROKBOT_INBOX_TOKEN（Settings → Secrets and variables → Actions）"
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: 取得收件匣
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.INBOX_REPO }}
+          token: ${{ secrets.GROKBOT_INBOX_TOKEN }}
+          path: _inbox
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 比對是否有新資料
+        id: cmp
+        run: |
+          NEW="_inbox/$SRC/content.json"
+          if [ ! -f "$NEW" ]; then echo "收件匣沒有 content.json"; echo "skip=1" >> "$GITHUB_OUTPUT"; exit 0; fi
+          if cmp -s "$NEW" "$DST/content.json"; then echo "與網站目前資料相同，無需更新"; echo "skip=1" >> "$GITHUB_OUTPUT"; exit 0; fi
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null; then
+            git fetch -q origin "$BRANCH"
+            same_data=0; git show "origin/$BRANCH:$DST/content.json" 2>/dev/null | cmp -s - "$NEW" && same_data=1
+            up_to_date=0; git merge-base --is-ancestor origin/main "origin/$BRANCH" && up_to_date=1
+            if [ $same_data = 1 ] && [ $up_to_date = 1 ]; then echo "PR 已是最新"; echo "skip=1" >> "$GITHUB_OUTPUT"; exit 0; fi
+          fi
+          echo "skip=0" >> "$GITHUB_OUTPUT"
+
+      - name: 驗證並產生頁面
+        id: build
+        if: steps.cmp.outputs.skip == '0'
+        run: |
+          git show "main:$DST/content.json" > "$RUNNER_TEMP/prev.json" || echo '{}' > "$RUNNER_TEMP/prev.json"
+          git checkout -B "$BRANCH" main
+          cp "_inbox/$SRC/content.json" "$DST/content.json"
+          DAY=$(node -e 'const c=require(process.argv[1]);const d=new Date(c.dataset?.updated_at||Date.now());console.log(new Intl.DateTimeFormat("sv-SE",{timeZone:"Asia/Taipei"}).format(d))' "$PWD/$DST/content.json" 2>/dev/null || TZ=Asia/Taipei date +%F)
+          echo "day=$DAY" >> "$GITHUB_OUTPUT"
+          if [ -f "_inbox/$SRC/changes.md" ]; then mkdir -p "$DST/changes"; cp "_inbox/$SRC/changes.md" "$DST/changes/$DAY.md"; fi
+          set +e
+          node "$DST/inbox-report.mjs" "$DST/content.json" "$RUNNER_TEMP/prev.json" > "$RUNNER_TEMP/report.md"
+          ok=$?
+          set -e
+          [ -f "_inbox/$SRC/changes.md" ] || printf '\n> ⚠️ 收件匣沒有 changes.md，請 Grok Bot 補上變更說明。\n' >> "$RUNNER_TEMP/report.md"
+          if [ $ok = 0 ]; then node "$DST/build.mjs"; echo "ok=1" >> "$GITHUB_OUTPUT"; else echo "ok=0" >> "$GITHUB_OUTPUT"; fi
+          cat "$RUNNER_TEMP/report.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 推送分支並開／更新 PR
+        if: steps.cmp.outputs.skip == '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OK: ${{ steps.build.outputs.ok }}
+          DAY: ${{ steps.build.outputs.day }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
+          git add "$DST/content.json" "$DST/changes" "$PAGE"
+          git commit -q -m "更新：GrokBot 學習導航資料（$DAY）" -m "由 GrokBot 收件匣同步自動產生。"
+          git push -q -f origin "$BRANCH"
+
+          if [ "$OK" = 1 ]; then TITLE="GrokBot 學習導航資料更新（$DAY）"; else TITLE="✗ 驗證未通過：GrokBot 學習導航資料（$DAY）"; fi
+          {
+            cat "$RUNNER_TEMP/report.md"
+            echo
+            echo "---"
+            echo "**合併這個 PR＝發布到網站。** 合併前請確認上方報告；變更說明見 \`$DST/changes/$DAY.md\`。"
+            echo "收件匣有新資料時，這個 PR 會在一小時內自動更新。"
+          } > "$RUNNER_TEMP/body.md"
+
+          NUM=$(gh pr list --head "$BRANCH" --state open --json number -q '.[0].number')
+          if [ -z "$NUM" ]; then
+            gh pr create --base main --head "$BRANCH" --title "$TITLE" --body-file "$RUNNER_TEMP/body.md" $([ "$OK" = 1 ] || echo --draft)
+          else
+            gh pr edit "$NUM" --title "$TITLE" --body-file "$RUNNER_TEMP/body.md"
+            if [ "$OK" = 1 ]; then gh pr ready "$NUM" || true; else gh pr ready "$NUM" --undo || true; fi
+            gh pr comment "$NUM" --body "收件匣有新資料，已重新驗證：$([ "$OK" = 1 ] && echo '✓ 通過' || echo '✗ 未通過')。詳見上方 PR 說明。"
+          fi
