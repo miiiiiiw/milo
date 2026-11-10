@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-10T07:43:25.199Z",
+  "generated": "2026-11-10T08:24:02.897Z",
   "folders": {
     "tech": "技術筆記",
     "product": "產品",
@@ -51,7 +51,7 @@
         "原文學習",
         "Grok Bot",
         "內容創作",
-        "X"
+        "Creators"
       ],
       "date": "2026-11-10"
     },
@@ -63,19 +63,21 @@
         "原文學習",
         "Grok Bot",
         "Token",
-        "用量"
+        "用量",
+        "vartekx"
       ],
       "date": "2026-11-10"
     },
     {
       "path": "reading/poteto-grokbot-method.html",
       "title": "土豆姐最全 Grok Bot 方法論（土豆姐最全 Grok Bot 方法论）",
-      "description": "整理土豆姐最全的 Grok Bot 方法論：從選題、腳本、智能體到閉環，學會一套可複製的實作流程",
+      "description": "整理土豆姐最全的 Grok Bot 方法論：從選題、腳本、AI 代理到閉環，學會一套可複製的實作流程",
       "tags": [
         "原文學習",
         "Grok Bot",
         "方法論",
-        "Kyle_13"
+        "Kyle_13",
+        "poteto"
       ],
       "date": "2026-11-10"
     },
