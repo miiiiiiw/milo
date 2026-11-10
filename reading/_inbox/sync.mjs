@@ -25,6 +25,48 @@ const CSS =
   "\n/* ── milo 頁首小標規範（見 README「頁首小標」），請勿個別調整 ── */\n" +
   ".page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}\n";
 
+// 轉換版本：改了 transform（例如配色）就 +1，已同步的頁面下次執行會全部重新套用
+const VERSION = 2;
+
+// ── 暗色模式：配色取自 milo 導覽頁（index.html :root 的暗色變數），對應 Grok 翻譯頁模板寫死的顏色 ──
+// 規則同導覽頁：預設跟系統；導覽頁 ◐ 切換後寫入 localStorage「cab:theme」，頁面讀取並即時同步。
+const D = { paper: "#16150f", card: "#1e1c16", surf: "#26231c", cell: "#2c2921", ink: "#ece6d8", ink2: "#a9a291", ink3: "#8a8373", rule: "#2f2c23", stage: "#0f0e0a", link: "#7db4e6", blue: "#6fb1ec", red: "#ff7a63" };
+const DARK_RULES = `
+body{background:${D.paper};color:${D.ink}}
+main{background:${D.card}}
+.en-title,.eg,.eyebrow,figcaption,h2 .en,h3 .en,.tabs a,.tabs label,.meta{color:${D.ink2}}
+.note,footer,.tweet .when,.pair .lbl{color:${D.ink3}}
+.code-lab{color:${D.ink2}}
+h2,footer{border-color:${D.rule}}
+.tabs{background:${D.card};border-color:${D.rule}}
+.tabs a,.tabs label{background:${D.surf}}
+#r-tl:checked~.tabs .tl,#r-tk:checked~.tabs .tk,.tabs a[aria-selected="true"]{background:#1d9bf0;color:#fff}
+.meta{background:rgba(29,155,240,.10)}
+figcaption,.lbl{background:${D.surf}}
+.tweet{background:${D.surf};border-color:${D.rule}}
+code,p code,li code{background:${D.cell}}
+pre{background:${D.stage};color:#e6edf3;border:1px solid ${D.rule}}
+a{color:${D.link}}
+.dg{border-color:rgba(236,230,216,.12)}
+img{filter:brightness(.88)}
+`;
+// SVG 圖解的 fill／stroke 屬性（CSS 可覆蓋呈現屬性）
+const SVG_MAP = [
+  ["#ffffff", D.surf], ["#fff", D.surf], ["#f5f5f5", "#1a1813"], ["#ececec", D.cell],
+  ["#2d3142", D.ink], ["#4f5d75", D.ink2], ["#5a6580", D.ink2], ["#1d6fb8", D.blue],
+  ["#c43c2c", D.red], ["#b42318", "#ff8a75"],
+  ["rgba(45,49,66,0.45)", "rgba(236,230,216,.35)"], ["rgba(45,49,66,0.16)", "rgba(236,230,216,.14)"],
+  ["rgba(29,111,184,0.09)", "rgba(111,177,236,.14)"],
+];
+const svgRules = SVG_MAP.map(([from, to]) => `svg [fill="${from}" i]{fill:${to}}svg [stroke="${from}" i]{stroke:${to}}`).join("");
+const scope = (sel, rules) => rules.replace(/(^|\})\s*([^{}]+)\{/g, (_, b, s) => `${b}${s.split(",").map((x) => `${sel} ${x.trim()}`).join(",")}{`);
+const DARK_CSS =
+  "\n/* ── milo 暗色模式（原文學習收件匣同步自動加入，請勿手改） ── */\n:root{color-scheme:light}\n" +
+  `@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark}${scope(':root:not([data-theme="light"])', DARK_RULES + svgRules)}}\n` +
+  `:root[data-theme="dark"]{color-scheme:dark}${scope(':root[data-theme="dark"]', DARK_RULES + svgRules)}\n`;
+const THEME_JS =
+  '<script>/* milo 暗色模式：跟隨導覽頁的明暗切換 */(function(){var r=document.documentElement;function a(){try{var t=JSON.parse(localStorage.getItem("cab:theme"));if(t==="dark"||t==="light")r.dataset.theme=t;else delete r.dataset.theme}catch(e){}}a();addEventListener("storage",function(e){if(e.key==="cab:theme")a()})})();</script>';
+
 const sources = fs.existsSync(SOURCES) ? JSON.parse(fs.readFileSync(SOURCES, "utf8")) : {};
 const taipeiDay = (d) => new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Taipei" }).format(d);
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
@@ -75,7 +117,8 @@ function transform(html, { kicker, date }) {
     s = s.replace(/(<meta\s+name=["']keywords["']\s+content=["'])([^"']*)/i, `$1${CATEGORY}, $2`);
   }
   const i = s.search(/<\/style>/i);
-  s = s.slice(0, i) + CSS + s.slice(i);
+  s = s.slice(0, i) + CSS + DARK_CSS + s.slice(i);
+  s = s.replace(/<\/head>/i, THEME_JS + "</head>");
   s = s.replace(/(<main[^>]*>)\s*(<h1[\s>])/i, `$1\n<p class="eyebrow page-kicker">${CATEGORY} · ${esc(kicker)}</p>$2`);
   return s;
 }
@@ -89,7 +132,7 @@ for (const f of files) {
   const src = path.join(inboxDir, f);
   const buf = fs.readFileSync(src);
   const sha = crypto.createHash("sha256").update(buf).digest("hex");
-  if (sources[slug]?.sha256 === sha) continue; // 已同步過，沒有變動
+  if (sources[slug]?.sha256 === sha && sources[slug]?.v === VERSION) continue; // 已同步過，沒有變動
 
   const dst = path.join(DST, f);
   const exists = fs.existsSync(dst);
@@ -112,7 +155,7 @@ for (const f of files) {
   const keepDate = exists ? metaOf(fs.readFileSync(dst, "utf8"), "date") : null;
   const date = keepDate || inboxDate(src);
   fs.writeFileSync(dst, transform(html, { kicker: metaOf(html, "kicker"), date }));
-  sources[slug] = { sha256: sha, synced: taipeiDay(new Date()) };
+  sources[slug] = { sha256: sha, v: VERSION, synced: taipeiDay(new Date()) };
   changed++;
   rows.push(`| ✓ | \`${f}\` | ${title} | ${exists ? "更新" : "新增"}（${date}） |`);
   if (exists && !tracked)
