@@ -91,6 +91,11 @@ export function validate(c, prev) {
   const perTopic = {};
   topics.forEach((t) => { perTopic[t.id] = active.filter((a) => a.topics?.includes(t.id)).length; });
   for (const [id, n] of Object.entries(perTopic)) if (n < N) warn(`主題 ${id} 只有 ${n} 篇 active，少於每卷 ${N} 篇，請確認 changes.md 有說明`);
+  // 收錄規則 r2 中能機械檢查的部分（只發警告）
+  const norm = (t) => String(t || "").toLowerCase().replace(/[\s\p{P}\p{S}]+/gu, "");
+  const byTitle = new Map();
+  active.forEach((a) => { const k = norm(a.title); if (k) byTitle.set(k, [...(byTitle.get(k) || []), a.post_id]); });
+  for (const group of byTitle.values()) if (group.length > 1) warn(`標題相同的 active 文章（收錄規則 4.1 第 3 點只收一篇）：${group.join("、")}`);
   const noCapture = active.filter((a) => !a.metrics?.captured_at).length;
   if (noCapture) warn(`${noCapture} 篇 active 文章沒有 metrics.captured_at`);
 
@@ -121,7 +126,12 @@ export function validate(c, prev) {
     const diff = { added: [], status: [], topics: [], level: [], title: [], handle: [], added_at_backfilled: [] };
     for (const [id, a] of now) {
       const p = before.get(id);
-      if (!p) { diff.added.push(id); if (!a.added_at) warn(`新文章 ${id} 沒有 added_at，新收錄的文章應填當天日期`); continue; }
+      if (!p) {
+        diff.added.push(id);
+        if (!a.added_at) warn(`新文章 ${id} 沒有 added_at，新收錄的文章應填當天日期`);
+        if (a.status === "active" && a.metrics && a.metrics.bookmarks < 10) warn(`新文章 ${id} 收藏 ${a.metrics.bookmarks}，低於收錄門檻 10（收錄規則 4.1 第 2 點）`);
+        continue;
+      }
       if (p.added_at !== null && p.added_at !== undefined && p.added_at !== a.added_at) err(`${id} 的 added_at 被改動（${p.added_at} → ${a.added_at}）；已知的收錄日期不可修改`);
       if ((p.added_at === null || p.added_at === undefined) && a.added_at) diff.added_at_backfilled.push(`${id}: ${a.added_at}`);
       if (p.status !== a.status) diff.status.push(`${id}: ${p.status} → ${a.status}`);
