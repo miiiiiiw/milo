@@ -68,6 +68,32 @@ const DARK_CSS =
   "\n/* ── milo 暗色模式（原文學習收件匣同步自動加入，請勿手改） ── */\n:root{color-scheme:light}\n" +
   `@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark}${scope(':root:not([data-theme="light"])', DARK_RULES + svgRules)}}\n` +
   `:root[data-theme="dark"]{color-scheme:dark}${scope(':root[data-theme="dark"]', DARK_RULES + svgRules)}\n`;
+// ── 暗色覆蓋檢查：找出 Grok 頁面裡、暗色規則沒處理到的上色樣式與 SVG 顏色（只提醒，不擋上線）──
+// 這些顏色在暗色背景上也看得清楚，不必另外處理
+const DARK_SAFE = new Set(["#1d9bf0", "#0f1720", "#e6edf3", "#c97a2c", "#2f7d4a"]);
+const COVERED_SEL = new Set([
+  ...[...DARK_RULES.matchAll(/(?:^|\})\s*([^{}]+)\{/g)].flatMap((m) => m[1].split(",").map((x) => x.trim())),
+  ".pt", ".tabs a .s", ".tabs label .s", "h1", "h2", "h3",
+]);
+const SVG_KNOWN = new Set(SVG_MAP.map(([c]) => c.toLowerCase()).concat(["none", "currentcolor", "transparent"]));
+function darkGaps(html) {
+  const t = html.replace(/data:[a-z0-9.+\/-]+;base64,[A-Za-z0-9+\/=\s]+/gi, "data:");
+  let css = [...t.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)].map((m) => m[1]).join("\n").replace(/\/\*[\s\S]*?\*\//g, "");
+  css = css.replace(/@media\s+print\s*\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/gi, "");
+  const sels = new Set();
+  for (const [, sel, body] of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+    const colors = (body.match(/#[0-9a-f]{3,8}\b|rgba?\([^)]*\)/gi) || []).filter((c) => !DARK_SAFE.has(c.toLowerCase()));
+    if (!colors.length) continue;
+    for (const x of sel.split(",").map((x) => x.trim().replace(/\s+/g, " "))) if (x && !x.startsWith("@") && !COVERED_SEL.has(x)) sels.add(x);
+  }
+  const svg = new Set();
+  for (const [, c] of t.matchAll(/\s(?:fill|stroke)=["']([^"']+)["']/gi)) if (!SVG_KNOWN.has(c.toLowerCase()) && !c.startsWith("url(")) svg.add(c);
+  const out = [];
+  if (sels.size) out.push(`暗色模式可能未涵蓋的樣式：${[...sels].slice(0, 8).map((x) => "`" + x + "`").join("、")}${sels.size > 8 ? ` 等 ${sels.size} 項` : ""}`);
+  if (svg.size) out.push(`暗色模式可能未涵蓋的圖解顏色：${[...svg].slice(0, 8).map((x) => "`" + x + "`").join("、")}`);
+  return out;
+}
+
 const THEME_JS =
   '<script>/* milo 暗色模式：跟隨導覽頁的明暗切換 */(function(){var r=document.documentElement;function a(){try{var t=JSON.parse(localStorage.getItem("cab:theme"));if(t==="dark"||t==="light")r.dataset.theme=t;else delete r.dataset.theme}catch(e){}}a();addEventListener("storage",function(e){if(e.key==="cab:theme")a()})})();</script>';
 
@@ -141,6 +167,7 @@ for (const f of files) {
   const dst = path.join(DST, f);
   const exists = fs.existsSync(dst);
   const tracked = Boolean(sources[slug]);
+  const formatOnly = tracked && sources[slug].sha256 === sha; // 內容沒變，只是 transform 版本更新
   const errs = [];
   if (!SLUG_RE.test(slug)) errs.push("檔名只能用小寫英文、數字和 `-`（最多 5 個字），例如 `addy-agents-manager.html`");
   if (buf.length > MAX_BYTES) errs.push(`檔案 ${(buf.length / 1048576).toFixed(1)} MB，超過 5 MB 上限，請壓縮圖片`);
@@ -161,7 +188,9 @@ for (const f of files) {
   fs.writeFileSync(dst, transform(html, { kicker: metaOf(html, "kicker"), date }));
   sources[slug] = { sha256: sha, v: VERSION, synced: taipeiDay(new Date()) };
   changed++;
-  rows.push(`| ✓ | \`${f}\` | ${title} | ${exists ? "更新" : "新增"}（${date}） |`);
+  const kind = !exists ? "新增" : formatOnly ? "格式重新套用" : "內容更新";
+  rows.push(`| ✓ | \`${f}\` | ${title} | ${kind}（${date}） |`);
+  for (const g of darkGaps(html)) notes.push(`- \`${f}\`：⚠️ ${g}。請 Claude 補暗色對照表（不影響上線，但暗色模式下可能看不清楚）`);
   if (exists && !tracked)
     notes.push(`- \`${f}\`：會覆蓋原本手動上架的同名頁面。`);
   for (const w of warnings) notes.push(`- \`${f}\`：${w}`);
