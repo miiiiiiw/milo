@@ -26,7 +26,7 @@ const CSS =
   ".page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}\n";
 
 // 轉換版本：改了 transform（例如配色）就 +1，已同步的頁面下次執行會全部重新套用
-const VERSION = 5;
+const VERSION = 6;
 
 // ── 暗色模式：配色取自 milo 導覽頁（index.html :root 的暗色變數），對應 Grok 翻譯頁模板寫死的顏色 ──
 // 規則同導覽頁：預設跟系統；導覽頁 ◐ 切換後寫入 localStorage「cab:theme」，頁面讀取並即時同步。
@@ -50,7 +50,12 @@ pre{background:${D.stage};color:#e6edf3;border:1px solid ${D.rule}}
 a{color:${D.link}}
 .dg{border-color:rgba(236,230,216,.12)}
 img{filter:brightness(.88)}
+blockquote{background:rgba(29,155,240,.10);color:${D.ink}}
 blockquote.q{background:${D.surf}}
+th,td{border-color:${D.rule}}
+th{background:rgba(29,155,240,.10)}
+.xpost{background:${D.surf};border-color:${D.rule}}
+.xpost .who{color:${D.ink2}}
 .callout,.callout.pin{background:rgba(29,155,240,.10)}
 .callout.warn{background:rgba(201,122,44,.14);border-left-color:#e0a060}
 .callout.ok{background:rgba(47,125,74,.18);border-left-color:#5fbf80}
@@ -124,7 +129,9 @@ function check(html) {
   for (const n of ["description", "keywords", "kicker"]) if (!metaOf(t, n)) errors.push(`缺少 \`<meta name="${n}">\``);
   if (!/<body[^>]*>\s*<main[^>]*>\s*<h1[\s>]/i.test(t)) errors.push("`<body>` 後必須緊接 `<main>`，`<main>` 後必須緊接 `<h1>`");
   if (/page-kicker|class=["'][^"']*eyebrow/i.test(t)) errors.push("不要自己加頁首小標（eyebrow／page-kicker），由 milo 自動加");
-  if (!/https:\/\/(x|twitter)\.com\/[^"'\s]+\/status\/\d+/i.test(t)) errors.push("找不到原文連結（https://x.com/帳號/status/數字）");
+  // 原文連結：X 貼文最常見，但也接受其他網站的文章（例如官方部落格）；必須寫在 .meta 資訊區
+  const metaBlock = (t.match(/<div class=["']meta["'][\s\S]*?<\/div>/i) || [""])[0];
+  if (!/href=["']https:\/\/[^"']+["']/i.test(metaBlock)) errors.push("`.meta` 資訊區找不到原文連結（https:// 開頭，X 貼文或原文網頁皆可）");
   if ((t.match(/<\/style>/gi) || []).length < 1) errors.push("缺少 `<style>`");
   const banned = [
     [/<script[\s>]/i, "`<script>`"], [/<iframe[\s>]/i, "`<iframe>`"], [/<object[\s>]/i, "`<object>`"],
