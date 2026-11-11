@@ -30,7 +30,7 @@ const CSS =
   ".page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}\n";
 
 // 轉換版本：改了 transform（例如配色）就 +1，已同步的頁面下次執行會全部重新套用
-const VERSION = 1;
+const VERSION = 2;
 
 // ── 暗色模式：配色取自 milo 導覽頁（index.html :root 的暗色變數），對應 Grok 翻譯頁模板寫死的顏色 ──
 // 規則同導覽頁：預設跟系統；導覽頁 ◐ 切換後寫入 localStorage「cab:theme」，頁面讀取並即時同步。
@@ -70,6 +70,9 @@ const SVG_MAP = [
   // 影片頁模板（gary-chen-graph-engineering）另外用到的顏色
   ["#1a1a1a", D.ink], ["#5b6b82", D.ink2], ["#7a8ba3", D.ink3], ["#c5d0dc", "rgba(236,230,216,.22)"],
   ["#e8f2fa", "#1f2a33"], ["#f3f8fc", "#1c242b"], ["#f7fafc", "#1a1813"], ["#f7f7f7", "#1a1813"],
+  // 言說新事模板（yanshuo-remotion、yanshuo-video-workflow）：灰階與綠／紅對照框
+  ["#555", D.ink2], ["#888", D.ink3], ["#eee", D.rule],
+  ["#e8f5e9", "#1c2a1e"], ["#2e7d32", "#7fcf86"], ["#fdecea", "#2e1d1a"], ["#c0392b", D.red],
 ];
 const svgRules = SVG_MAP.map(([from, to]) => `svg [fill="${from}" i]{fill:${to}}svg [stroke="${from}" i]{stroke:${to}}`).join("");
 const scope = (sel, rules) => rules.replace(/(^|\})\s*([^{}]+)\{/g, (_, b, s) => `${b}${s.split(",").map((x) => `${sel} ${x.trim()}`).join(",")}{`);
