@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-10T16:47:18.607Z",
+  "generated": "2026-11-11T01:45:54.644Z",
   "folders": {
     "tech": "技術筆記",
     "product": "產品",
@@ -8,6 +8,18 @@
     "watching": "影片學習"
   },
   "files": [
+    {
+      "path": "reading/agent-memory-dreaming.html",
+      "title": "AI 代理記憶（agent memory）的組成（The components of agent memory）",
+      "description": "Anthropic 說明 AI 代理如何靠記憶筆記、做夢與 wiki，整理經驗、修正錯誤，讓下次工作派得上用場",
+      "tags": [
+        "原文學習",
+        "AI 代理",
+        "記憶",
+        "Anthropic"
+      ],
+      "date": "2026-11-11"
+    },
     {
       "path": "reading/nicholas-fable-seo.html",
       "title": "用 Claude Fable 5.2 做 SEO，效果好到簡直像犯規（How to use Claude Fable 5.2 for SEO so well it feels illegal）",
@@ -18,6 +30,31 @@
         "AI 代理",
         "ChatSEO",
         "Nicholas Dulait"
+      ],
+      "date": "2026-11-11"
+    },
+    {
+      "path": "reading/yooee-longform-framework.html",
+      "title": "一篇百萬級的長文，一夜萬粉，拆解他的長文寫作框架",
+      "description": "Yooee 拆解 Eian 那篇 240 萬瀏覽的長文，抽出承諾到收束的五層框架，並附上可直接使用的提示詞",
+      "tags": [
+        "原文學習",
+        "長文寫作",
+        "內容營運",
+        "Eian",
+        "Yooee"
+      ],
+      "date": "2026-11-11"
+    },
+    {
+      "path": "reading/yooee-longform-growth.html",
+      "title": "不會寫東西的人，怎麼靠一篇長文漲粉 700+，公開我長文百萬曝光秘訣",
+      "description": "Yooee 以高考語文 37 分，公開 28 天寫 10 篇長文的方法：先拉高流量層級，再寫標題、框架與排版",
+      "tags": [
+        "原文學習",
+        "長文寫作",
+        "內容營運",
+        "Yooee"
       ],
       "date": "2026-11-11"
     },
@@ -35,7 +72,7 @@
     },
     {
       "path": "reading/addy-agents-manager.html",
-      "title": "你的程式代理讓你成了主管（Your coding agents made you a manager）",
+      "title": "你的程式代理（coding agent）讓你成了主管（Your coding agents made you a manager）",
       "description": "Addy Osmani 談：同時帶多個程式代理，你的角色從寫程式變成管理者",
       "tags": [
         "原文學習",
