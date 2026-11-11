@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-11T04:16:25.043Z",
+  "generated": "2026-11-11T06:49:48.775Z",
   "folders": {
     "tech": "技術筆記",
     "product": "產品",
@@ -29,6 +29,42 @@
         "AI 代理",
         "記憶",
         "Anthropic"
+      ],
+      "date": "2026-11-11"
+    },
+    {
+      "path": "reading/dankoe-ai-business.html",
+      "title": "2027 年最能賺錢的 AI 生意（The most lucrative AI business to start in 2027）",
+      "description": "Dan Koe 談 2027 最能賺錢的 AI 生意：成為一人創意團隊，為自己或客戶抓住注意力。",
+      "tags": [
+        "原文學習",
+        "內容創作",
+        "個人品牌",
+        "Dan Koe"
+      ],
+      "date": "2026-11-11"
+    },
+    {
+      "path": "reading/dankoe-one-day.html",
+      "title": "如何在一天內修好整個人生（How to fix your entire life in 1 day）",
+      "description": "Dan Koe 談新年決心為何失敗，並提出一天完成的反願景與心理挖掘方案，幫你看清真正想過的生活。",
+      "tags": [
+        "原文學習",
+        "行為改變",
+        "生產力",
+        "Dan Koe"
+      ],
+      "date": "2026-11-11"
+    },
+    {
+      "path": "reading/dankoe-survive-ai.html",
+      "title": "如何在 AI 大規模取代中活下來（並逃出薪資奴役）（How to survive AI mass replacement (& escape wage slavery)）",
+      "description": "Dan Koe 談如何逃出薪資奴役：培養能動性與品味等五項要素，並用十五分鐘找出你的一生志業。",
+      "tags": [
+        "原文學習",
+        "能動性",
+        "個人品牌",
+        "Dan Koe"
       ],
       "date": "2026-11-11"
     },
@@ -71,6 +107,32 @@
       "date": "2026-11-11"
     },
     {
+      "path": "watching/gary-chen-brownfield-handover.html",
+      "title": "AI 改程式碼一直改 A 壞 B？安全接手舊專案的五個步驟（AI改代码一直改A坏B？安全接手旧项目的五个步骤）",
+      "description": "Gary_Chen 說明如何讓 AI 安全接手棕地（brownfield）舊專案：先定位畫面、梳理資料流、寫清防護欄，再小步審查與回歸驗證。",
+      "tags": [
+        "影片學習",
+        "棕地",
+        "AI 代理",
+        "Gary_Chen",
+        "防護欄"
+      ],
+      "date": "2026-11-11"
+    },
+    {
+      "path": "watching/gary-chen-harness-engineering.html",
+      "title": "Harness Engineering：為什麼你的 AI 很聰明，卻做不好事？（Harness Engineering：为什么你的 AI 很聪明，却做不好事？）",
+      "description": "Gary_Chen 說明為什麼聰明的 AI 卻常做不好事，以及如何用 Harness Engineering 為 AI 代理設計可執行、可檢查的工作環境。",
+      "tags": [
+        "影片學習",
+        "Harness Engineering",
+        "AI 代理",
+        "Gary_Chen",
+        "Context Engineering"
+      ],
+      "date": "2026-11-11"
+    },
+    {
       "path": "watching/yanshuo-remotion.html",
       "title": "Remotion 教學：從安裝 Skill 到案例實作，完整拆解（Remotion教程：从装skill到案例实操，完整拆解）",
       "description": "言說新事拆解如何用 Remotion 做程式化動畫：從安裝官方 Skill、建立動效庫，到模型選擇、Studio 調參與高德地圖 API。",
@@ -95,6 +157,19 @@
       "date": "2026-11-11"
     },
     {
+      "path": "watching/yihuishi-hyperframes-vs-remotion.html",
+      "title": "HyperFrames 與 Remotion 終極對照：拆解發展歷程與特性，幫你選對工具（HyperFrames与Remotion终极对比|硬核拆解发展历程与特性，帮你选择合适的工具）",
+      "description": "儀繪士BY 對照 HyperFrames 與 Remotion 的剪輯實測、AI 代理生態、技術路線與授權，說明什麼情境該選哪一套。",
+      "tags": [
+        "影片學習",
+        "HyperFrames",
+        "Remotion",
+        "儀繪士BY",
+        "AI 剪輯"
+      ],
+      "date": "2026-11-11"
+    },
+    {
       "path": "watching/yihuishi-hyperframes.html",
       "title": "HyperFrames 剪影片：零程式基礎入門教學，Codex、Trae、WorkBuddy 都可用（HyperFrames剪视频，0代码基础入门教程，Codex Trae workbuddy可用）",
       "description": "儀繪士BY 示範如何從安裝 HyperFrames、認識 Studio 與專案結構，到用口播素材讓 AI 粗剪並精修成片。",
@@ -103,6 +178,19 @@
         "HyperFrames",
         "AI 剪輯",
         "儀繪士BY"
+      ],
+      "date": "2026-11-11"
+    },
+    {
+      "path": "watching/yihuishi-opener-animation.html",
+      "title": "Remotion、HyperFrames 進階動畫拆解：一步步做出炫酷片頭（Remotion HyperFrames高级动画拆解教程|逐步教你制作出炫酷的片头）",
+      "description": "儀繪士BY 拆解往期片頭，把堆疊動畫分成文字、上層動畫、中間動畫與背景層，示範用 SVG、素材卡與時間線做出有層次的開場。",
+      "tags": [
+        "影片學習",
+        "HyperFrames",
+        "Remotion",
+        "儀繪士BY",
+        "MG 動畫"
       ],
       "date": "2026-11-11"
     },
