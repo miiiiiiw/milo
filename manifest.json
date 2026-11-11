@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-11T03:22:44.511Z",
+  "generated": "2026-11-11T04:16:25.043Z",
   "folders": {
     "tech": "技術筆記",
     "product": "產品",
@@ -91,6 +91,18 @@
         "Remotion",
         "Skill",
         "言說新事"
+      ],
+      "date": "2026-11-11"
+    },
+    {
+      "path": "watching/yihuishi-hyperframes.html",
+      "title": "HyperFrames 剪影片：零程式基礎入門教學，Codex、Trae、WorkBuddy 都可用（HyperFrames剪视频，0代码基础入门教程，Codex Trae workbuddy可用）",
+      "description": "儀繪士BY 示範如何從安裝 HyperFrames、認識 Studio 與專案結構，到用口播素材讓 AI 粗剪並精修成片。",
+      "tags": [
+        "影片學習",
+        "HyperFrames",
+        "AI 剪輯",
+        "儀繪士BY"
       ],
       "date": "2026-11-11"
     },
