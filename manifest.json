@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-11T01:48:25.219Z",
+  "generated": "2026-11-11T02:44:11.174Z",
   "folders": {
     "tech": "技術筆記",
     "product": "產品",
@@ -55,6 +55,30 @@
         "長文寫作",
         "內容營運",
         "Yooee"
+      ],
+      "date": "2026-11-11"
+    },
+    {
+      "path": "watching/yanshuo-remotion.html",
+      "title": "Remotion 教學：從安裝 Skill 到案例實作，完整拆解（Remotion教程：从装skill到案例实操，完整拆解）",
+      "description": "言說新事拆解如何用 Remotion 做程式化動畫：從安裝官方 Skill、建立動效庫，到模型選擇、Studio 調參與高德地圖 API。",
+      "tags": [
+        "影片學習",
+        "Remotion",
+        "AI 代理",
+        "言說新事"
+      ],
+      "date": "2026-11-11"
+    },
+    {
+      "path": "watching/yanshuo-video-workflow.html",
+      "title": "影片製作全流程：腳本／配音／素材／Skill／成片（视频制作全流程：脚本/配音/素材/skill/成片）",
+      "description": "言說新事以上期 Remotion 教學為例，拆解從腳本、素材、配音、SRT 到成片與音效的完整製作流程。",
+      "tags": [
+        "影片學習",
+        "Remotion",
+        "Skill",
+        "言說新事"
       ],
       "date": "2026-11-11"
     },
