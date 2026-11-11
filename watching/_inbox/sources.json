@@ -18,5 +18,10 @@
     "sha256": "202b9672a40fa4e8cd08fd80c6aa1396a27ed8c5aec81db30169cf1191fe2b9a",
     "v": 2,
     "synced": "2026-11-11"
+  },
+  "yihuishi-hyperframes": {
+    "sha256": "4183110d8c8eb87828e509c0e60062b112529e1229af923c44bde6e65ced431d",
+    "v": 2,
+    "synced": "2026-11-11"
   }
 }
