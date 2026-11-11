@@ -1,12 +1,22 @@
 {
   "gary-chen-graph-engineering": {
     "sha256": "0cb74aef06e3eb5d175b1a23d75a0acaeb29b64ee18d9a53631ffc1360c016f2",
-    "v": 1,
+    "v": 2,
     "synced": "2026-11-11"
   },
   "gary-chen-loop-engineering": {
     "sha256": "4d4d22e4b9fa34ac725bca0c84274c4db943e659080039eb8ed2bb56d27c45a2",
-    "v": 1,
+    "v": 2,
+    "synced": "2026-11-11"
+  },
+  "yanshuo-remotion": {
+    "sha256": "74247f87892aaf54f4dab6d539b67f705fdf0f53d6e41b41df00415323fd38c0",
+    "v": 2,
+    "synced": "2026-11-11"
+  },
+  "yanshuo-video-workflow": {
+    "sha256": "202b9672a40fa4e8cd08fd80c6aa1396a27ed8c5aec81db30169cf1191fe2b9a",
+    "v": 2,
     "synced": "2026-11-11"
   }
 }
