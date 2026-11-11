@@ -209,7 +209,7 @@ for (const f of files) {
   changed++;
   const kind = !exists ? "新增" : formatOnly ? "格式重新套用" : "內容更新";
   rows.push(`| ✓ | \`${f}\` | ${title} | ${kind}（${date}） |`);
-  for (const g of darkGaps(html)) notes.push(`- \`${f}\`：⚠️ ${g}。請 Claude 補暗色對照表（不影響上線，但暗色模式下可能看不清楚）`);
+  for (const g of darkGaps(html)) notes.push(`- \`${f}\`：⚠️ ${g}。這些顏色不在交件規格的固定色票裡：請 Grok 改用色票重推，或由 Claude 補暗色對照表（不影響上線，但暗色模式下可能看不清楚）`);
   if (exists && !tracked)
     notes.push(`- \`${f}\`：會覆蓋原本手動上架的同名頁面。`);
   for (const w of warnings) notes.push(`- \`${f}\`：${w}`);
