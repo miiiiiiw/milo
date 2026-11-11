@@ -10,6 +10,11 @@ on:
 permissions:
   contents: write
 
+# 連續合併多個 PR 時排隊執行，避免互相搶推送
+concurrency:
+  group: manifest
+  cancel-in-progress: false
+
 jobs:
   manifest:
     runs-on: ubuntu-latest
@@ -20,13 +25,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: node scripts/build-manifest.mjs
-      - name: Commit manifest if changed
+      - name: Build and commit manifest
         run: |
-          if ! git diff --quiet -- manifest.json || [ -n "$(git ls-files --others -- manifest.json)" ]; then
-            git config user.name  "github-actions[bot]"
-            git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
+          # main 在建置期間被更新時（例如連續合併兩個 PR），推送會被拒絕：同步到最新 main 後重建再推，最多三次
+          for i in 1 2 3; do
+            node scripts/build-manifest.mjs
+            if git diff --quiet -- manifest.json && [ -z "$(git ls-files --others -- manifest.json)" ]; then
+              echo "manifest 沒有變動"; exit 0
+            fi
             git add manifest.json
-            git commit -m "chore: update manifest [skip ci]"
-            git push
-          fi
+            git commit -q -m "chore: update manifest [skip ci]"
+            if git push -q; then exit 0; fi
+            echo "::notice::main 已有新的提交，同步後重試（第 $i 次）"
+            git fetch -q origin main
+            git reset -q --hard origin/main
+          done
+          echo "::error::重試三次仍無法推送 manifest"; exit 1
