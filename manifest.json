@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-11T02:44:11.174Z",
+  "generated": "2026-11-11T03:22:44.511Z",
   "folders": {
     "tech": "技術筆記",
     "product": "產品",
@@ -8,6 +8,18 @@
     "watching": "影片學習"
   },
   "files": [
+    {
+      "path": "product/grok-bot-guide.html",
+      "title": "GrokBot 學習導航",
+      "description": "八個學習主題、132 篇 X 長文的收藏榜與作者排行，依學習路線由淺入深",
+      "tags": [
+        "Grok Bot",
+        "AI",
+        "學習導航",
+        "收藏榜"
+      ],
+      "date": "2026-11-11"
+    },
     {
       "path": "reading/agent-memory-dreaming.html",
       "title": "AI 代理記憶（agent memory）的組成（The components of agent memory）",
@@ -81,18 +93,6 @@
         "言說新事"
       ],
       "date": "2026-11-11"
-    },
-    {
-      "path": "product/grok-bot-guide.html",
-      "title": "GrokBot 學習導航",
-      "description": "八個學習主題、132 篇 X 長文的收藏榜與作者排行，依學習路線由淺入深",
-      "tags": [
-        "Grok Bot",
-        "AI",
-        "學習導航",
-        "收藏榜"
-      ],
-      "date": "2026-11-10"
     },
     {
       "path": "reading/addy-agents-manager.html",
