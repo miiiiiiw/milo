@@ -1,4 +1,5 @@
-# 每小時檢查 grokbot-inbox 的 milo/grok-bot-guide/，有新資料就驗證、產生頁面，並開（或更新）PR。
+# 檢查 grokbot-inbox 的 milo/grok-bot-guide/，有新資料就驗證、產生頁面，並開（或更新）PR。
+# 主要由 Claude 在使用者說「資料更新了」時手動觸發；每小時排程只是備援（GitHub 排程常延遲數小時）。
 # 合併 PR＝發布。Grok Bot 只能寫收件匣，碰不到 milo；讀收件匣用的是唯讀權杖 GROKBOT_INBOX_TOKEN。
 name: GrokBot 收件匣同步
 
@@ -103,7 +104,7 @@ jobs:
             echo
             echo "---"
             echo "**合併這個 PR＝發布到網站。** 合併前請確認上方報告；變更說明見 \`$DST/changes/$DAY.md\`。"
-            echo "收件匣有新資料時，這個 PR 會在一小時內自動更新。"
+            echo "收件匣有新資料時，再次執行「GrokBot 收件匣同步」（手動或排程）就會更新這個 PR。"
           } > "$RUNNER_TEMP/body.md"
 
           NUM=$(gh pr list --head "$BRANCH" --state open --json number -q '.[0].number')

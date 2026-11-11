@@ -31,7 +31,7 @@
 ## 自動交件流程（主要）
 
 Grok Bot 把 `content.json`、`changes.md` 推到私人 repo `miiiiiiw/grokbot-inbox` 的 `milo/grok-bot-guide/`。
-milo 的 `.github/workflows/grokbot-inbox.yml` 每小時第 17 分執行（也可在 Actions 頁手動執行「GrokBot 收件匣同步」）：
+milo 的 `.github/workflows/grokbot-inbox.yml` 負責處理。**主要觸發方式是手動**：使用者說「資料更新了」時，Claude 執行 `gh workflow run grokbot-inbox.yml`。每小時第 17 分的排程只是備援，GitHub 常延遲數小時，不要依賴它：
 
 1. 用 `GROKBOT_INBOX_TOKEN`（只能讀收件匣）取得資料；與 main 相同就跳過。
 2. 以 main 為底建立分支 `grokbot/grok-bot-guide`，放入資料與 `changes/YYYY-MM-DD.md`。
