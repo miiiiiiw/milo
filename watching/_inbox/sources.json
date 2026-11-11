@@ -1,12 +1,12 @@
 {
   "gary-chen-graph-engineering": {
-    "sha256": "595da690d90f78ed7252d64feefbb8cc80c3ce9aaa68e858e8e389d1e3c085f9",
+    "sha256": "0cb74aef06e3eb5d175b1a23d75a0acaeb29b64ee18d9a53631ffc1360c016f2",
     "v": 1,
-    "synced": "2026-11-10"
+    "synced": "2026-11-11"
   },
   "gary-chen-loop-engineering": {
-    "sha256": "e38b158580ae07caf52a23b99c793d2d3556a340146aa6032e27dd437f84da89",
+    "sha256": "4d4d22e4b9fa34ac725bca0c84274c4db943e659080039eb8ed2bb56d27c45a2",
     "v": 1,
-    "synced": "2026-11-10"
+    "synced": "2026-11-11"
   }
 }
