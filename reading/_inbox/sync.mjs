@@ -26,7 +26,7 @@ const CSS =
   ".page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}\n";
 
 // 轉換版本：改了 transform（例如配色）就 +1，已同步的頁面下次執行會全部重新套用
-const VERSION = 6;
+const VERSION = 7;
 
 // ── 暗色模式：配色取自 milo 導覽頁（index.html :root 的暗色變數），對應 Grok 翻譯頁模板寫死的顏色 ──
 // 規則同導覽頁：預設跟系統；導覽頁 ◐ 切換後寫入 localStorage「cab:theme」，頁面讀取並即時同步。
@@ -34,7 +34,7 @@ const D = { paper: "#16150f", card: "#1e1c16", surf: "#26231c", cell: "#2c2921",
 const DARK_RULES = `
 body{background:${D.paper};color:${D.ink}}
 main{background:${D.card}}
-.en-title,.zh-title,.eg,.eyebrow,figcaption,h2 .en,h3 .en,.tabs a,.tabs label,.meta,.prompt-lbl,blockquote.q .src,.tweet .tr-lbl{color:${D.ink2}}
+.en-title,.zh-title,.eg,.eyebrow,figcaption,h2 .en,h3 .en,h4 .en,blockquote .src,.tabs a,.tabs label,.meta,.prompt-lbl,blockquote.q .src,.tweet .tr-lbl{color:${D.ink2}}
 .note,footer,.tweet .when,.pair .lbl{color:${D.ink3}}
 .code-lab{color:${D.ink2}}
 h2,footer{border-color:${D.rule}}

@@ -30,7 +30,7 @@ const CSS =
   ".page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}\n";
 
 // 轉換版本：改了 transform（例如配色）就 +1，已同步的頁面下次執行會全部重新套用
-const VERSION = 2;
+const VERSION = 3;
 
 // ── 暗色模式：配色取自 milo 導覽頁（index.html :root 的暗色變數），對應 Grok 翻譯頁模板寫死的顏色 ──
 // 規則同導覽頁：預設跟系統；導覽頁 ◐ 切換後寫入 localStorage「cab:theme」，頁面讀取並即時同步。
@@ -73,6 +73,9 @@ const SVG_MAP = [
   // 言說新事模板（yanshuo-remotion、yanshuo-video-workflow）：灰階與綠／紅對照框
   ["#555", D.ink2], ["#888", D.ink3], ["#eee", D.rule],
   ["#e8f5e9", "#1c2a1e"], ["#2e7d32", "#7fcf86"], ["#fdecea", "#2e1d1a"], ["#c0392b", D.red],
+  // 色票「版面」列的顏色也可能用在圖解（gary-chen-harness-engineering、gary-chen-brownfield-handover）
+  ["#fafafa", "#1a1813"], ["#1d9bf0", D.blue], ["#777", D.ink3],
+  ["#e5e5e5", D.rule], ["#f2f2f2", "#1a1813"], ["#f0f2f5", D.cell], ["#111", D.stage],
 ];
 const svgRules = SVG_MAP.map(([from, to]) => `svg [fill="${from}" i]{fill:${to}}svg [stroke="${from}" i]{stroke:${to}}`).join("");
 const scope = (sel, rules) => rules.replace(/(^|\})\s*([^{}]+)\{/g, (_, b, s) => `${b}${s.split(",").map((x) => `${sel} ${x.trim()}`).join(",")}{`);
