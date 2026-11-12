@@ -9,6 +9,7 @@ import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
 import { execFileSync } from "node:child_process";
+import { TABS_CSS, TABS_JS } from "../../scripts/page-enhance.mjs";
 
 const [inboxDir, reportPath] = process.argv.slice(2);
 if (!inboxDir || !reportPath) { console.error("用法：node reading/_inbox/sync.mjs <收件匣資料夾> <報告.md>"); process.exit(2); }
@@ -26,7 +27,7 @@ const CSS =
   ".page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}\n";
 
 // 轉換版本：改了 transform（例如配色）就 +1，已同步的頁面下次執行會全部重新套用
-const VERSION = 8;
+const VERSION = 9;
 
 // ── 暗色模式：配色取自 milo 導覽頁（index.html :root 的暗色變數），對應 Grok 翻譯頁模板寫死的顏色 ──
 // 規則同導覽頁：預設跟系統；導覽頁 ◐ 切換後寫入 localStorage「cab:theme」，頁面讀取並即時同步。
@@ -155,8 +156,8 @@ function transform(html, { kicker, date }) {
     s = s.replace(/(<meta\s+name=["']keywords["']\s+content=["'])([^"']*)/i, `$1${CATEGORY}, $2`);
   }
   const i = s.search(/<\/style>/i);
-  s = s.slice(0, i) + CSS + DARK_CSS + s.slice(i);
-  s = s.replace(/<\/head>/i, THEME_JS + "</head>");
+  s = s.slice(0, i) + CSS + DARK_CSS + TABS_CSS + s.slice(i);
+  s = s.replace(/<\/head>/i, THEME_JS + TABS_JS + "</head>");
   s = s.replace(/(<main[^>]*>)\s*(<h1[\s>])/i, `$1\n<p class="eyebrow page-kicker">${CATEGORY} · ${esc(kicker)}</p>$2`);
   return s;
 }

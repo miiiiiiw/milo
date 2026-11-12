@@ -34,6 +34,7 @@ Grok Bot ──寫入──▶ grokbot-inbox 的 milo/reading/<檔名>.html
 - 收件匣同名檔案更新＝覆蓋網站頁面。刪除不自動化：要下架請手動處理（README「修改、改名、刪除」），並請 Grok Bot 從收件匣移除該檔，否則下次會被當成新檔再放回來。
 - **暗色模式**：`sync.mjs` 會注入暗色 CSS（配色取自導覽頁 `index.html` 的暗色變數）與一小段腳本，讀 `localStorage` 的 `cab:theme`，跟著導覽頁 ◐ 即時切換；沒有設定時跟隨系統。配色是對應 Grok 模板寫死的顏色（`DARK_RULES`、`SVG_MAP`），Grok 改了模板配色就要補對應。改 transform 時把 `VERSION` +1，所有已同步頁面會重新套用。
 - **原文連結**：`.meta` 資訊區要有 https 原文連結；X 貼文最常見，也接受官方部落格等其他網站（2026-11-11 起）。
+- **分頁置頂縮小**：`sync.mjs` 另外注入 `scripts/page-enhance.mjs`（原文學習與影片學習共用）的 CSS 與腳本：分頁按鈕滑到置頂後縮成細列、只顯示英文；縮小時量測位移補回，內容不跳動；置頂時切換分頁會捲到新分頁開頭。改 `page-enhance.mjs` 後兩邊 `VERSION` 都要 +1。
 - 不允許 `<script>`、`<iframe>`、`<form>`、事件屬性、外部資源；圖片一律 data: URI。頁面在公開網站上，這些限制用來避免 Grok 產出夾帶可執行內容。
 - **PR 報告**：每篇標「新增／內容更新／格式重新套用」（最後一種是 `VERSION` 變動造成、內容沒變）。提醒欄的「⚠️ 暗色模式可能未涵蓋」由 `darkGaps()` 產生：Grok 頁面有暗色規則沒處理到的上色樣式或 SVG 顏色時出現，不擋上線；補 `DARK_RULES`／`SVG_MAP` 並把 `VERSION` +1。
 - 手動上架（milo-reading-publish skill）仍可使用；之後若收件匣出現同名檔，會覆蓋手動版本並在報告提醒。

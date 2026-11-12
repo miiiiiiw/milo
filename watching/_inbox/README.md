@@ -50,3 +50,4 @@ Grok Bot ──寫入──▶ grokbot-inbox 的 milo/watching/<檔名>.html
 - **固定色票**：交件規格 v1.5 起，Grok 只能用規格列出的顏色，色票裡的每個顏色在 `SVG_MAP`／`DARK_RULES` 都已有暗色對照。報告出現「⚠️ 暗色模式可能未涵蓋」＝用了色票以外的顏色：
   - 預設請 Grok 改用色票重推。
   - 顏色確實有需要（Grok 在回報中提出用途）時，補 `SVG_MAP`／`DARK_RULES`、`VERSION` +1，並把該色加進收件匣規格的色票表，兩邊保持一致。
+- **分頁置頂縮小**：`sync.mjs` 另外注入 `scripts/page-enhance.mjs`（原文學習與影片學習共用）的 CSS 與腳本：分頁按鈕滑到置頂後縮成細列、只顯示英文；縮小時量測位移補回，內容不跳動；置頂時切換分頁會捲到新分頁開頭。改 `page-enhance.mjs` 後兩邊 `VERSION` 都要 +1。
