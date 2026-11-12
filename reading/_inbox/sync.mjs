@@ -27,7 +27,7 @@ const CSS =
   ".page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}\n";
 
 // 轉換版本：改了 transform（例如配色）就 +1，已同步的頁面下次執行會全部重新套用
-const VERSION = 9;
+const VERSION = 10;
 
 // ── 暗色模式：配色取自 milo 導覽頁（index.html :root 的暗色變數），對應 Grok 翻譯頁模板寫死的顏色 ──
 // 規則同導覽頁：預設跟系統；導覽頁 ◐ 切換後寫入 localStorage「cab:theme」，頁面讀取並即時同步。
@@ -47,6 +47,7 @@ figcaption,.lbl{background:${D.surf}}
 .tweet{background:${D.surf};border-color:${D.rule}}
 .tweet .tr{border-color:${D.rule}}
 code,p code,li code{background:${D.cell}}
+pre code{background:none}
 pre{background:${D.stage};color:#e6edf3;border:1px solid ${D.rule}}
 a{color:${D.link}}
 .dg{border-color:rgba(236,230,216,.12)}
@@ -54,6 +55,11 @@ img{filter:brightness(.88)}
 blockquote{background:rgba(29,155,240,.10);color:${D.ink}}
 blockquote.q{background:${D.surf}}
 th,td{border-color:${D.rule}}
+.tbl th,.tbl td{border-color:${D.rule}}
+.tbl th{background:rgba(29,155,240,.10)}
+.tbl tr:nth-child(even) td{background:${D.surf}}
+.flow,.zh-note{background:rgba(29,155,240,.10)}
+.flow,.zh-note summary{color:#cfe0f2}
 th{background:rgba(29,155,240,.10)}
 .xpost{background:${D.surf};border-color:${D.rule}}
 .xpost .who{color:${D.ink2}}
@@ -68,7 +74,11 @@ const SVG_MAP = [
   ["#c43c2c", D.red], ["#b42318", "#ff8a75"],
   ["rgba(45,49,66,0.45)", "rgba(236,230,216,.35)"], ["rgba(45,49,66,0.35)", "rgba(236,230,216,.28)"], ["rgba(45,49,66,0.16)", "rgba(236,230,216,.14)"],
   ["rgba(29,111,184,0.09)", "rgba(111,177,236,.14)"],
+  ["rgba(45,49,66,0.3)", "rgba(236,230,216,.25)"], ["rgba(45,49,66,0.08)", "rgba(236,230,216,.06)"],
+  ["#161615", "rgba(236,230,216,.4)"],
 ];
+// 圖解裡刻意示範的顏色（例如配色色票），屬於內容，暗色模式維持原色，也不列入「未涵蓋」提醒
+const SVG_KEEP = ["#c8c6d8", "#7d8b63", "#e8cbc8", "#c96f4f", "#6e97bf"];
 const svgRules = SVG_MAP.map(([from, to]) => `svg [fill="${from}" i]{fill:${to}}svg [stroke="${from}" i]{stroke:${to}}`).join("");
 const scope = (sel, rules) => rules.replace(/(^|\})\s*([^{}]+)\{/g, (_, b, s) => `${b}${s.split(",").map((x) => `${sel} ${x.trim()}`).join(",")}{`);
 const DARK_CSS =
@@ -82,7 +92,7 @@ const COVERED_SEL = new Set([
   ...[...DARK_RULES.matchAll(/(?:^|\})\s*([^{}]+)\{/g)].flatMap((m) => m[1].split(",").map((x) => x.trim())),
   ".pt", ".tabs a .s", ".tabs label .s", "h1", "h2", "h3",
 ]);
-const SVG_KNOWN = new Set(SVG_MAP.map(([c]) => c.toLowerCase()).concat(["none", "currentcolor", "transparent"]));
+const SVG_KNOWN = new Set(SVG_MAP.map(([c]) => c.toLowerCase()).concat(["none", "currentcolor", "transparent"], SVG_KEEP));
 function darkGaps(html) {
   const t = html.replace(/data:[a-z0-9.+\/-]+;base64,[A-Za-z0-9+\/=\s]+/gi, "data:");
   let css = [...t.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)].map((m) => m[1]).join("\n").replace(/\/\*[\s\S]*?\*\//g, "");
