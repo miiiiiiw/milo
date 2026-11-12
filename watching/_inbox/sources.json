@@ -1,67 +1,67 @@
 {
   "gary-chen-graph-engineering": {
     "sha256": "0cb74aef06e3eb5d175b1a23d75a0acaeb29b64ee18d9a53631ffc1360c016f2",
-    "v": 3,
-    "synced": "2026-11-11"
+    "v": 4,
+    "synced": "2026-11-12"
   },
   "gary-chen-loop-engineering": {
     "sha256": "4d4d22e4b9fa34ac725bca0c84274c4db943e659080039eb8ed2bb56d27c45a2",
-    "v": 3,
-    "synced": "2026-11-11"
+    "v": 4,
+    "synced": "2026-11-12"
   },
   "yanshuo-remotion": {
     "sha256": "74247f87892aaf54f4dab6d539b67f705fdf0f53d6e41b41df00415323fd38c0",
-    "v": 3,
-    "synced": "2026-11-11"
+    "v": 4,
+    "synced": "2026-11-12"
   },
   "yanshuo-video-workflow": {
     "sha256": "202b9672a40fa4e8cd08fd80c6aa1396a27ed8c5aec81db30169cf1191fe2b9a",
-    "v": 3,
-    "synced": "2026-11-11"
+    "v": 4,
+    "synced": "2026-11-12"
   },
   "yihuishi-hyperframes": {
     "sha256": "4183110d8c8eb87828e509c0e60062b112529e1229af923c44bde6e65ced431d",
-    "v": 3,
-    "synced": "2026-11-11"
+    "v": 4,
+    "synced": "2026-11-12"
   },
   "gary-chen-brownfield-handover": {
     "sha256": "781e6fe4bce2c7b4cbf47338459de2cf3c40266b21162144da9574436238f620",
-    "v": 3,
-    "synced": "2026-11-11"
+    "v": 4,
+    "synced": "2026-11-12"
   },
   "gary-chen-harness-engineering": {
     "sha256": "8ac9650bac5644b56dfee93bfc109f72274cf608e706b60b315786d1567cd0d7",
-    "v": 3,
-    "synced": "2026-11-11"
+    "v": 4,
+    "synced": "2026-11-12"
   },
   "yihuishi-hyperframes-vs-remotion": {
     "sha256": "f11f0d25a004faa778ad7e16fe397665ec3598d2720c0c88061ec3d98100df2d",
-    "v": 3,
-    "synced": "2026-11-11"
+    "v": 4,
+    "synced": "2026-11-12"
   },
   "yihuishi-opener-animation": {
     "sha256": "4a2c1ef40cd0721f36a920e1d08c178e6eed5693998e5cc82a961a419840e0ad",
-    "v": 3,
-    "synced": "2026-11-11"
+    "v": 4,
+    "synced": "2026-11-12"
   },
   "zimo-ai-job-resume": {
     "sha256": "3540468eb415a5e3b8b6b393aeb25e44b44a1567d53937037cbbca8c045da7af",
-    "v": 3,
+    "v": 4,
     "synced": "2026-11-12"
   },
   "zimo-grokbot-platforms": {
     "sha256": "fb7749452b66b1ffc5b35c8ba2f5d3cff69bfe276d0db8e78b1b03d5c9e24990",
-    "v": 3,
+    "v": 4,
     "synced": "2026-11-12"
   },
   "zimo-opus-remotion": {
     "sha256": "91867d5828c9b5c405a5f29b36ad28abb853a35e71cf0fb40d63d80e49c56523",
-    "v": 3,
+    "v": 4,
     "synced": "2026-11-12"
   },
   "zimo-stickman-channel": {
     "sha256": "e2a8f7b5b710f37bef8a76de38e8247748103288aad733677ee76ad52f4eca18",
-    "v": 3,
+    "v": 4,
     "synced": "2026-11-12"
   }
 }
