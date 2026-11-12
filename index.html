@@ -236,6 +236,8 @@ const store = {
   set(k, v){ try{ localStorage.setItem("cab:"+k, JSON.stringify(v)); }catch{} }
 };
 let OPEN = new Set(store.get("open", []));
+// 搜尋時預設全部展開；使用者在搜尋中手動收合的資料夾記在這裡，換關鍵字或清空搜尋就重設
+let SEARCH_CLOSED = new Set();
 
 const ICON = {
   folder: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
@@ -323,7 +325,7 @@ function renderTree(node, depth=0){
   const files = [...node.files].sort((a,b)=> ts(b)-ts(a) || a.title.localeCompare(b.title));
   let html = "";
   for(const d of dirs){
-    const open = QUERY || OPEN.has(d.path);
+    const open = QUERY ? !SEARCH_CLOSED.has(d.path) : OPEN.has(d.path);
     html += `<div class="folder ${open?"open":""}" data-dir="${esc(d.path)}">
       <button class="row" data-toggle="${esc(d.path)}" aria-expanded="${!!open}">
         <span class="tw">▶</span>${open?ICON.folderOpen:ICON.folder}
@@ -440,7 +442,10 @@ function route(){
 document.addEventListener("click", e=>{
   const o = e.target.closest("[data-open]"); if(o){ show(o.dataset.open); return; }
   const t = e.target.closest("[data-toggle]");
-  if(t){ const p=t.dataset.toggle; OPEN.has(p)?OPEN.delete(p):OPEN.add(p); store.set("open",[...OPEN]); render(); return; }
+  if(t){ const p=t.dataset.toggle;
+    if(QUERY){ SEARCH_CLOSED.has(p)?SEARCH_CLOSED.delete(p):SEARCH_CLOSED.add(p); }
+    else { OPEN.has(p)?OPEN.delete(p):OPEN.add(p); store.set("open",[...OPEN]); }
+    render(); return; }
   const r = e.target.closest("[data-reveal]");
   if(r){ setView("tree"); let acc=""; for(const s of r.dataset.reveal.split("/")){acc=acc?acc+"/"+s:s;OPEN.add(acc);} store.set("open",[...OPEN]); render();
     document.body.classList.add("drawer");
@@ -448,9 +453,9 @@ document.addEventListener("click", e=>{
 });
 function setView(v){ VIEW=v; store.set("view",v); document.querySelectorAll("[data-view]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.view===v)); render(); }
 document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>setView(b.dataset.view));
-$("#q").addEventListener("input", e=>{ QUERY=e.target.value.trim().toLowerCase(); render(); });
-$("#expand").onclick = ()=>{ const walk=n=>n.dirs.forEach(d=>{OPEN.add(d.path);walk(d);}); walk(buildTree(FILES)); store.set("open",[...OPEN]); render(); };
-$("#collapse").onclick = ()=>{ OPEN.clear(); store.set("open",[]); render(); };
+$("#q").addEventListener("input", e=>{ const q=e.target.value.trim().toLowerCase(); if(q!==QUERY) SEARCH_CLOSED.clear(); QUERY=q; render(); });
+$("#expand").onclick = ()=>{ if(QUERY){ SEARCH_CLOSED.clear(); render(); return; } const walk=n=>n.dirs.forEach(d=>{OPEN.add(d.path);walk(d);}); walk(buildTree(FILES)); store.set("open",[...OPEN]); render(); };
+$("#collapse").onclick = ()=>{ if(QUERY){ const walk=n=>n.dirs.forEach(d=>{SEARCH_CLOSED.add(d.path);walk(d);}); walk(buildTree(FILES)); render(); return; } OPEN.clear(); store.set("open",[]); render(); };
 $("#home").onclick = ()=>home();
 $("#frame").addEventListener("load", e=>{ clearTimeout(e.target._t); e.target.classList.remove("loading"); });
 $("#site-title").onclick = e=>{ e.preventDefault(); home(); document.body.classList.remove("drawer"); };
@@ -503,7 +508,7 @@ $("#theme").onclick = ()=>{
   const next = cur==="dark"?"light":"dark"; document.documentElement.dataset.theme=next; store.set("theme",next);
 };
 document.addEventListener("keydown", e=>{
-  if(e.target.matches("input")){ if(e.key==="Escape"){ e.target.value=""; QUERY=""; render(); e.target.blur(); } return; }
+  if(e.target.matches("input")){ if(e.key==="Escape"){ e.target.value=""; QUERY=""; SEARCH_CLOSED.clear(); render(); e.target.blur(); } return; }
   if(e.key==="/"){ e.preventDefault(); document.body.classList.add("drawer"); $("#q").focus(); }
   if(e.key==="f" && CURRENT) document.body.classList.toggle("full");
   if(e.key==="Escape") document.body.classList.remove("full","drawer");
