@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-12T05:57:10.019Z",
+  "generated": "2026-11-12T17:00:36.483Z",
   "folders": {
     "tech": "技術筆記",
     "product": "產品",
@@ -8,6 +8,127 @@
     "watching": "影片學習"
   },
   "files": [
+    {
+      "path": "reading/ringo-claude-aesthetics.html",
+      "title": "萬字拆解 Claude 美學，做出自己的高級感設計（內附提示詞＋思考脈絡）",
+      "description": "從減法、配色、手繪與物件隱喻拆解 Claude 的視覺美學，附可直接使用的出圖提示詞。",
+      "tags": [
+        "原文學習",
+        "設計美學",
+        "Claude",
+        "提示詞",
+        "Ringo"
+      ],
+      "date": "2026-11-12"
+    },
+    {
+      "path": "reading/runmaotui-ai-pm.html",
+      "title": "AI 產品經理技術能力指南：從 GPU 到 AI 代理（附學習指南）",
+      "description": "一線 AI 產品經理拆解從 GPU 到 AI 代理的五層技術，說明該學什麼、學多深，如何做取捨。",
+      "tags": [
+        "原文學習",
+        "AI 產品經理",
+        "技術堆疊",
+        "AI 代理",
+        "奔跑的大毛腿"
+      ],
+      "date": "2026-11-12"
+    },
+    {
+      "path": "reading/runmaotui-pm-handbook.html",
+      "title": "深度長文｜2026 產品經理 AI 實踐手冊",
+      "description": "一線產品經理復盤讓 AI 代理參與從需求到上線的完整流程，附三個心法與專案初始化做法。",
+      "tags": [
+        "原文學習",
+        "產品經理",
+        "AI 工作流程",
+        "AI 代理",
+        "奔跑的大毛腿"
+      ],
+      "date": "2026-11-12"
+    },
+    {
+      "path": "watching/gary-chen-define-task-brief.html",
+      "title": "Prompt 再完整也沒用：先學會定義任務",
+      "description": "Gary_Chen 談為什麼模型升級成資深合作夥伴後，提示詞技巧不再是關鍵：先分清思考、探索、決定、執行四個階段，再用目標、背景、素材、邊界、完成定義五個欄位，把需求寫成 AI 接得住的任務簡報",
+      "tags": [
+        "影片學習",
+        "提示詞",
+        "提示工程",
+        "任務簡報",
+        "brief",
+        "定義任務",
+        "完成定義",
+        "AI 代理",
+        "Gary_Chen"
+      ],
+      "date": "2026-11-12"
+    },
+    {
+      "path": "watching/gary-chen-html-workpage.html",
+      "title": "為什麼 AI 工程師開始拋棄 Markdown？HTML 工作頁實戰",
+      "description": "Gary_Chen 從 HBR「AI 不會減少工作，只會讓工作更密集」研究談起：AI 時代的瓶頸從產出變成理解，Anthropic 工程師 Thariq 改用 HTML 當 AI 輸出格式，三種 HTML 工作頁用法，以及 AI 建構者如何讓能力證明跟著作品走",
+      "tags": [
+        "影片學習",
+        "Markdown",
+        "HTML",
+        "HTML 工作頁",
+        "AI 代理",
+        "Claude Code",
+        "審核成本",
+        "HBR",
+        "Gary_Chen"
+      ],
+      "date": "2026-11-12"
+    },
+    {
+      "path": "watching/gary-chen-sop-agent-workflow.html",
+      "title": "非技術人最該學：四步把 SOP 變成 AI 代理工作流程",
+      "description": "Gary_Chen 談任務拆解：為什麼巨型 AI 代理容易失敗，以及用格式標準化、任務拆解與連結、雙向開發、整合與執行環境四步，把給人看的 SOP 轉成 AI 代理工作流程，並以公司內部請求分類系統走完整條流程",
+      "tags": [
+        "影片學習",
+        "任務拆解",
+        "AI 代理",
+        "AI 代理工作流程",
+        "SOP",
+        "skill",
+        "MCP",
+        "human-in-the-loop",
+        "Gary_Chen"
+      ],
+      "date": "2026-11-12"
+    },
+    {
+      "path": "watching/tiye-design-psychology.html",
+      "title": "設計規範從哪裡來？上集：從心理學推出設計方法",
+      "description": "題葉的 AI 生成影片：以看見、讀懂、決定、動手、確認五個環節，從心理學依據推出專業設計師的做法，並標註證據強度",
+      "tags": [
+        "影片學習",
+        "設計規範",
+        "使用者介面",
+        "心理學",
+        "費茨定律",
+        "認知負荷",
+        "题叶"
+      ],
+      "date": "2026-11-12"
+    },
+    {
+      "path": "watching/tiye-design-system-build.html",
+      "title": "設計規範怎麼搭？下集：顏色、排版、動效、著色器裝飾與元件治理",
+      "description": "題葉的 AI 生成影片下集：把上集的心理學原則落成可執行的設計規範，涵蓋色階、對比度、排版、間距、動效令牌、著色器裝飾、三層令牌、元件狀態矩陣、治理與 WCAG",
+      "tags": [
+        "影片學習",
+        "設計規範",
+        "設計令牌",
+        "動效",
+        "著色器",
+        "無障礙",
+        "WCAG",
+        "题叶"
+      ],
+      "date": "2026-11-12"
+    },
     {
       "path": "product/grok-bot-guide.html",
       "title": "GrokBot 學習導航",
