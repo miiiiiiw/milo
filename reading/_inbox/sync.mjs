@@ -26,7 +26,7 @@ const CSS =
   ".page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}\n";
 
 // 轉換版本：改了 transform（例如配色）就 +1，已同步的頁面下次執行會全部重新套用
-const VERSION = 7;
+const VERSION = 8;
 
 // ── 暗色模式：配色取自 milo 導覽頁（index.html :root 的暗色變數），對應 Grok 翻譯頁模板寫死的顏色 ──
 // 規則同導覽頁：預設跟系統；導覽頁 ◐ 切換後寫入 localStorage「cab:theme」，頁面讀取並即時同步。
@@ -65,7 +65,7 @@ const SVG_MAP = [
   ["#ffffff", D.surf], ["#fff", D.surf], ["#f5f5f5", "#1a1813"], ["#ececec", D.cell],
   ["#2d3142", D.ink], ["#4f5d75", D.ink2], ["#5a6580", D.ink2], ["#1d6fb8", D.blue],
   ["#c43c2c", D.red], ["#b42318", "#ff8a75"],
-  ["rgba(45,49,66,0.45)", "rgba(236,230,216,.35)"], ["rgba(45,49,66,0.16)", "rgba(236,230,216,.14)"],
+  ["rgba(45,49,66,0.45)", "rgba(236,230,216,.35)"], ["rgba(45,49,66,0.35)", "rgba(236,230,216,.28)"], ["rgba(45,49,66,0.16)", "rgba(236,230,216,.14)"],
   ["rgba(29,111,184,0.09)", "rgba(111,177,236,.14)"],
 ];
 const svgRules = SVG_MAP.map(([from, to]) => `svg [fill="${from}" i]{fill:${to}}svg [stroke="${from}" i]{stroke:${to}}`).join("");
