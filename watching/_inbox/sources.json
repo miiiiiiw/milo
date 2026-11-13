@@ -1,92 +1,97 @@
 {
   "gary-chen-graph-engineering": {
     "sha256": "0cb74aef06e3eb5d175b1a23d75a0acaeb29b64ee18d9a53631ffc1360c016f2",
-    "v": 5,
+    "v": 6,
     "synced": "2026-11-13"
   },
   "gary-chen-loop-engineering": {
     "sha256": "4d4d22e4b9fa34ac725bca0c84274c4db943e659080039eb8ed2bb56d27c45a2",
-    "v": 5,
+    "v": 6,
     "synced": "2026-11-13"
   },
   "yanshuo-remotion": {
     "sha256": "74247f87892aaf54f4dab6d539b67f705fdf0f53d6e41b41df00415323fd38c0",
-    "v": 5,
+    "v": 6,
     "synced": "2026-11-13"
   },
   "yanshuo-video-workflow": {
     "sha256": "202b9672a40fa4e8cd08fd80c6aa1396a27ed8c5aec81db30169cf1191fe2b9a",
-    "v": 5,
+    "v": 6,
     "synced": "2026-11-13"
   },
   "yihuishi-hyperframes": {
     "sha256": "4183110d8c8eb87828e509c0e60062b112529e1229af923c44bde6e65ced431d",
-    "v": 5,
+    "v": 6,
     "synced": "2026-11-13"
   },
   "gary-chen-brownfield-handover": {
     "sha256": "781e6fe4bce2c7b4cbf47338459de2cf3c40266b21162144da9574436238f620",
-    "v": 5,
+    "v": 6,
     "synced": "2026-11-13"
   },
   "gary-chen-harness-engineering": {
     "sha256": "8ac9650bac5644b56dfee93bfc109f72274cf608e706b60b315786d1567cd0d7",
-    "v": 5,
+    "v": 6,
     "synced": "2026-11-13"
   },
   "yihuishi-hyperframes-vs-remotion": {
     "sha256": "f11f0d25a004faa778ad7e16fe397665ec3598d2720c0c88061ec3d98100df2d",
-    "v": 5,
+    "v": 6,
     "synced": "2026-11-13"
   },
   "yihuishi-opener-animation": {
     "sha256": "4a2c1ef40cd0721f36a920e1d08c178e6eed5693998e5cc82a961a419840e0ad",
-    "v": 5,
+    "v": 6,
     "synced": "2026-11-13"
   },
   "zimo-ai-job-resume": {
     "sha256": "3540468eb415a5e3b8b6b393aeb25e44b44a1567d53937037cbbca8c045da7af",
-    "v": 5,
+    "v": 6,
     "synced": "2026-11-13"
   },
   "zimo-grokbot-platforms": {
     "sha256": "fb7749452b66b1ffc5b35c8ba2f5d3cff69bfe276d0db8e78b1b03d5c9e24990",
-    "v": 5,
+    "v": 6,
     "synced": "2026-11-13"
   },
   "zimo-opus-remotion": {
     "sha256": "91867d5828c9b5c405a5f29b36ad28abb853a35e71cf0fb40d63d80e49c56523",
-    "v": 5,
+    "v": 6,
     "synced": "2026-11-13"
   },
   "zimo-stickman-channel": {
     "sha256": "e2a8f7b5b710f37bef8a76de38e8247748103288aad733677ee76ad52f4eca18",
-    "v": 5,
+    "v": 6,
     "synced": "2026-11-13"
   },
   "gary-chen-define-task-brief": {
     "sha256": "b1d9a753c72961c5fc11b24e32eb47d8516ecdedc249c7d59cab8cc6339214ef",
-    "v": 5,
+    "v": 6,
     "synced": "2026-11-13"
   },
   "gary-chen-html-workpage": {
     "sha256": "5fa00ec5f781f62e658cf8644d6ad51518dd434dcacc7a76000d80ec3fdc08d4",
-    "v": 5,
+    "v": 6,
     "synced": "2026-11-13"
   },
   "gary-chen-sop-agent-workflow": {
     "sha256": "0676890b8eafb35284885222756a3d93f329d4f54c3d0d7f52d7d8d7b7e1a44d",
-    "v": 5,
+    "v": 6,
     "synced": "2026-11-13"
   },
   "tiye-design-psychology": {
     "sha256": "38422ffbd73d65269c67e6a434060ff5c5144731775882c466876d1bc193abb7",
-    "v": 5,
+    "v": 6,
     "synced": "2026-11-13"
   },
   "tiye-design-system-build": {
     "sha256": "d72ad9e15b1c400bc6e0b99a82344625b95b8a02d4be94cb0f31d1f37a750747",
-    "v": 5,
+    "v": 6,
+    "synced": "2026-11-13"
+  },
+  "papaya-ai-animation": {
+    "sha256": "00bbd9edf55db1289f2fab93ae6296fb8175d6753fb163349998b6fb6ebdeb8a",
+    "v": 6,
     "synced": "2026-11-13"
   }
 }
