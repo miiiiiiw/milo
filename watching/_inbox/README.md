@@ -46,6 +46,7 @@ Grok Bot ──寫入──▶ grokbot-inbox 的 milo/watching/<檔名>.html
 - 檔名＝網址：`watching/<檔名>.html` → `https://miiiiiiw.github.io/milo/watching/<檔名>`。
 - 新頁面的 `date`＝該檔在收件匣最後一次 commit 的日期（台北時間）；更新既有頁面時保留原日期。
 - 收件匣同名檔案更新＝覆蓋網站頁面。刪除不自動化：要下架請手動刪 `watching/<檔名>.html`，並請 Grok Bot 從收件匣移除該檔，否則下次會被當成新檔再放回來。
+- **原片標題是繁體中文**（規格 v1.7）：可以沒有 `.en-title`、`<title>` 不帶括號原標題，檢查不會擋。`h1` 直接接 `.meta` 時由 `CSS` 的 `h1+.meta{margin-top:18px}` 補間距（和 `h1` 的 4px 下邊距摺疊後剛好 18px，與 `.en-title` 到 `.meta` 一致）。
 - **暗色模式**：同原文學習，讀 `localStorage` 的 `cab:theme` 跟著導覽頁 ◐ 切換。
 - **固定色票**：交件規格 v1.5 起，Grok 只能用規格列出的顏色，色票裡的每個顏色在 `SVG_MAP`／`DARK_RULES` 都已有暗色對照。報告出現「⚠️ 暗色模式可能未涵蓋」＝用了色票以外的顏色：
   - 預設請 Grok 改用色票重推。

@@ -28,10 +28,13 @@ const VIDEO_HOSTS = /^(?:www\.|m\.)?(?:bilibili\.com|b23\.tv|youtube\.com|youtu\
 const CSS =
   "\nmain{padding-top:56px}@media (max-width:560px){main{padding-top:32px}}.eyebrow{color:#555}" +
   "\n/* ── milo 頁首小標規範（見 README「頁首小標」），請勿個別調整 ── */\n" +
-  ".page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}\n";
+  ".page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}\n" +
+  // 原片標題本來就是繁體中文時可省略 .en-title（規格 v1.7）：h1 直接接 .meta 時，間距比照 .en-title 到 .meta 的 18px
+  // （和 h1 的 margin-bottom 4px 會摺疊，取較大者，所以寫 18px）
+  "h1+.meta{margin-top:18px}\n";
 
 // 轉換版本：改了 transform（例如配色）就 +1，已同步的頁面下次執行會全部重新套用
-const VERSION = 5;
+const VERSION = 6;
 
 // ── 暗色模式：配色取自 milo 導覽頁（index.html :root 的暗色變數），對應 Grok 翻譯頁模板寫死的顏色 ──
 // 規則同導覽頁：預設跟系統；導覽頁 ◐ 切換後寫入 localStorage「cab:theme」，頁面讀取並即時同步。
