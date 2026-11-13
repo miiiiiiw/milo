@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-12T17:00:52.431Z",
+  "generated": "2026-11-13T00:56:13.025Z",
   "folders": {
     "tech": "技術筆記",
     "product": "產品",
@@ -8,6 +8,20 @@
     "watching": "影片學習"
   },
   "files": [
+    {
+      "path": "watching/papaya-ai-animation.html",
+      "title": "一人動畫公司不是夢！揭密 AI 動畫完整製作流程 ~ 從發想到影片生成一條龍實作教學！",
+      "description": "PAPAYA 電腦教室示範一人做 AI 動畫：角色設計、分鏡、影片生成、配音、嘴型同步到配樂與畫質提升的完整流程",
+      "tags": [
+        "影片學習",
+        "AI 動畫",
+        "AI 影片",
+        "Nano Banana",
+        "Midjourney",
+        "PAPAYA 電腦教室"
+      ],
+      "date": "2026-11-13"
+    },
     {
       "path": "reading/ringo-claude-aesthetics.html",
       "title": "萬字拆解 Claude 美學，做出自己的高級感設計（內附提示詞＋思考脈絡）",
