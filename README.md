@@ -66,10 +66,11 @@ push 任何 `.html` 後，GitHub Action「Build manifest」會執行 `scripts/bu
 
 - **檔名與資料夾名**：只用小寫英文、數字和 `-`，盡量 1–3 個字。例如 `tech/cloudflare-d1.html`，分享網址就是 `https://miiiiiiw.github.io/milo/tech/cloudflare-d1`。
 - **日期**：寫在 `<meta name="date">`，不建議放進檔名，以免網址變長。如果檔名仍以 `YYYYMMDD` 開頭（`20261012-wages.html`），會被當作日期。
-- **資料夾的中文名稱**：寫在根目錄的 `folders.json`，鍵是完整的資料夾路徑。沒設定的資料夾直接顯示英文名稱。
+- **資料夾的中文名稱與順序**：寫在根目錄的 `folders.json`，鍵是完整的資料夾路徑。導覽頁的目錄和首頁「依主題」都照這個檔案的書寫順序排列；沒設定的資料夾排在最後，直接顯示英文名稱。改中文名稱時，記得一併更新該資料夾內各頁的頁首小標（含 `_` 開頭資料夾裡的頁面範本）。
 
   ```json
   {
+    "family": "家庭生活",
     "tech": "技術筆記",
     "tech/cloudflare": "Cloudflare"
   }
@@ -163,3 +164,4 @@ push 任何 `.html` 後，GitHub Action「Build manifest」會執行 `scripts/bu
 - 2026-10-26：文案改為以筆記為主；點 Cabinet 回首頁；手機可從左緣右滑開啟目錄；切換頁面時不再閃白；訂定「頁首小標」規範並套用到既有頁面。
 - 2026-11-10：新增「原文學習」（`reading/`）與收件匣同步：Grok Bot 交到 grokbot-inbox 的 `milo/reading/`，每小時自動檢查、套用規範並開 PR，合併即發布（見 `reading/_inbox/README.md`）。
 - 2026-11-12：導覽頁搜尋時可收合資料夾（原本會被強制展開）；約定 Claude 的變更方式：影響外觀或操作的開 PR，內部維護直接推送（見「與 Claude 協作」）。
+- 2026-11-13：資料夾顯示順序改為依 `folders.json` 的書寫順序（原本依英文名稱排序，首頁「依主題」原本依最近更新排序）；「家庭」改名「家庭生活」、「產品」改名「產品應用」。

@@ -226,6 +226,11 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt
 let FILES = [], FOLDERS = {}, VIEW = "tree", QUERY = "", CURRENT = null;
 // 資料夾顯示名稱：folders.json 有設定就用，否則用資料夾名
 const label = p => FOLDERS[p] || p.split("/").pop();
+// 資料夾排序：依 folders.json 的書寫順序；沒列在裡面的排在後面，依名稱排序
+const byOrder = (a,b) => {
+  const keys = Object.keys(FOLDERS), ia = keys.indexOf(a.path), ib = keys.indexOf(b.path);
+  return (ia<0) - (ib<0) || ia - ib || a.name.localeCompare(b.name, "zh-Hant", {numeric:true});
+};
 const dirLabel = dir => { if(!dir) return ""; let acc = ""; return dir.split("/").map(s => label(acc = acc ? acc+"/"+s : s)).join(" / "); };
 // 網址用的短路徑：去掉 .html，子資料夾的 index.html 只留資料夾
 const slug = p => p.replace(/(^|\/)index\.html?$/i, "$1").replace(/\.html?$/i, "");
@@ -321,7 +326,7 @@ function matches(f){
 }
 
 function renderTree(node, depth=0){
-  const dirs = [...node.dirs.values()].sort((a,b)=>a.name.localeCompare(b.name, "zh-Hant", {numeric:true}));
+  const dirs = [...node.dirs.values()].sort(byOrder);
   const files = [...node.files].sort((a,b)=> ts(b)-ts(a) || a.title.localeCompare(b.title));
   let html = "";
   for(const d of dirs){
@@ -377,7 +382,7 @@ function render(){
 function renderCover(){
   const recent = [...FILES].sort((a,b)=>ts(b)-ts(a)).slice(0,6);
   const tree = buildTree(FILES);
-  const topics = [...tree.dirs.values()].sort((a,b)=>latest(b)-latest(a));
+  const topics = [...tree.dirs.values()].sort(byOrder);
   const tile = (f,i) => `<button class="tile" data-open="${esc(f.path)}">
       <div class="n"><span>${String(i+1).padStart(2,"0")}</span><span>${fmtDate(f.date)}</span></div>
       <div class="t">${esc(f.title)}</div>
