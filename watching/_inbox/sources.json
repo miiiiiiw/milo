@@ -93,5 +93,10 @@
     "sha256": "00bbd9edf55db1289f2fab93ae6296fb8175d6753fb163349998b6fb6ebdeb8a",
     "v": 6,
     "synced": "2026-11-13"
+  },
+  "gary-chen-pstack": {
+    "sha256": "49d0801ebd7501731700f2f51bd1e6ee6b927140b5268de29476013b9b1f5e33",
+    "v": 6,
+    "synced": "2026-11-14"
   }
 }
