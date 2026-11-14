@@ -97,6 +97,7 @@ h2{font-family:var(--serif);font-size:1.1rem;margin:0 0 12px}
 .log{list-style:none;margin:0;padding:0}
 .log li{display:grid;grid-template-columns:auto 1fr auto auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--rule);font-size:.92rem}
 .log li:last-child{border-bottom:0}
+.log li.sep{display:block;text-align:center;color:var(--muted);font-size:.8rem;padding:16px 0 6px;border-bottom:1px solid var(--rule)}
 .log .t{font-family:var(--mono);font-variant-numeric:tabular-nums}
 .log .meta{color:var(--muted);font-size:.85rem}
 .log .gap{font-family:var(--mono);font-size:.85rem;padding:2px 8px;border-radius:999px;background:var(--card-2)}
@@ -204,7 +205,8 @@ h2{font-family:var(--serif);font-size:1.1rem;margin:0 0 12px}
       </button>
     </div>
     <div class="cue" id="cue"></div>
-    <div class="forgot" id="forgot">好像比較久了，是不是忘了按結束？<button class="btn soft" id="cancelBtn" type="button" style="margin-top:8px">這次不算，取消</button></div>
+    <div class="forgot" id="forgot">好像比較久了，是不是忘了按結束？
+      <div class="row-btns" style="justify-content:center;margin-top:8px"><button class="btn primary" id="oneMinBtn" type="button">記為約 1 分鐘</button><button class="btn soft" id="cancelBtn" type="button">這次不算</button></div></div>
   </section>
 
   <section class="card">
@@ -216,6 +218,7 @@ h2{font-family:var(--serif);font-size:1.1rem;margin:0 0 12px}
       <div class="stat"><div class="k">近 1 小時次數</div><div class="v" id="sHour">0<small>次</small></div></div>
     </div>
     <div id="barsBox"></div>
+    <p class="note">間隔是從上一次「開始」算到這一次「開始」。超過 2 小時沒有宮縮，會自動分成新的一段，數字只算目前這一段。</p>
   </section>
 
   <section class="card">
@@ -272,7 +275,7 @@ h2{font-family:var(--serif);font-size:1.1rem;margin:0 0 12px}
         <button type="button" id="plus" aria-label="增加">＋</button>
       </div>
     </div>
-    <p class="note">連續 3 次間隔都在這個時間以內，就會提醒出發。紀錄只存在這支手機裡。可以用瀏覽器的「加入主畫面」，像 App 一樣打開。</p>
+    <p class="note">連續 3 次間隔都在這個時間以內，就會提醒出發；如果連續 2 次在 5 分鐘以內，也會直接提醒出發。紀錄只存在這支手機裡。可以用瀏覽器的「加入主畫面」，像 App 一樣打開。</p>
   </section>
 
   <p class="foot">這只是記錄的小幫手，一切以醫師和產房的判斷為準。<br>妳和寶寶都會好好的。🤍</p>
@@ -311,28 +314,44 @@ const fmtGap = ms => { const m = ms / 60000; return m < 1 ? `${Math.round(ms/100
 const fmtGapPlain = ms => { const m = ms / 60000; return m < 1 ? `${Math.round(ms/1000)} 秒` : `${m.toFixed(m < 10 ? 1 : 0)} 分`; };
 const mmss = ms => { const s = Math.floor(ms / 1000); return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; };
 
-function gaps(){ const L = S.list; const g = []; for (let i = 1; i < L.length; i++) g.push(L[i].start - L[i-1].start); return g; }
+const SESSION_GAP = 2 * 3600000;   // 相隔超過 2 小時，視為新的一段
+const FAST = 5 * 60000;            // 第二胎快速進展：連續 2 次 ≤ 5 分鐘直接出發
 
-// 判斷狀態：連續 3 次間隔 ≤ 門檻 → 出發；接近門檻 → 準備；其他 → 觀察
+// 目前這一段：從最後一筆往回找，遇到相隔超過 2 小時就停
+function cur(){ const L = S.list; let i = L.length - 1; while (i > 0 && L[i].start - L[i-1].start <= SESSION_GAP) i--; return L.slice(Math.max(i, 0)); }
+function gaps(){ const L = cur(); const g = []; for (let i = 1; i < L.length; i++) g.push(L[i].start - L[i-1].start); return g; }
+// 宮縮進行中時，把「上一次開始 → 這一次開始」也算進去
+function liveGaps(){ const L = cur(), g = gaps(); if (S.active && L.length) { const p = S.active - L[L.length-1].start; return p > SESSION_GAP ? [] : [...g, p]; } return g; }
+const streakOf = (g, lim) => { let n = 0; for (let i = g.length - 1; i >= 0 && g[i] <= lim; i--) n++; return n; };
+const fmtAgo = ms => { const m = Math.max(0, Math.round(ms / 60000)); return m < 60 ? `${m} 分鐘` : `${Math.floor(m/60)} 小時${m%60 ? ` ${m%60} 分` : ''}`; };
+const fmtDay = t => { const d = new Date(t); return `${d.getMonth()+1}/${d.getDate()} ${fmtClock(t)}`; };
+
+// 判斷狀態：連續 2 次 ≤ 5 分 或 連續 3 次 ≤ 門檻 → 出發；接近門檻 → 準備；其他 → 觀察
 function evaluate(){
-  const T = S.threshold * 60000, L = S.list, g = gaps(), now = Date.now();
-  if (!L.length) return ['watch', '🌿', '還沒有紀錄', '宮縮來的時候，按下面的按鈕就好。'];
-  const sinceLast = now - L[L.length - 1].start;
-  if (sinceLast > Math.max(30 * 60000, T * 3) && !S.active)
-    return ['watch', '🌿', '先休息一下', `已經 ${Math.round(sinceLast/60000)} 分鐘沒有宮縮了，節奏還不規律。`];
-  const last3 = g.slice(-3);
-  if (last3.length === 3 && last3.every(x => x <= T))
-    return ['go', '🧡', '可以準備出發了', `已經連續 3 次間隔在 ${S.threshold} 分鐘以內。打個電話給產房，慢慢出門。`];
-  const near = g.length && g[g.length - 1] <= T * 1.5;
-  const okCount = [...last3].reverse().findIndex(x => x > T); const streak = okCount === -1 ? last3.length : okCount;
-  if (near || streak > 0)
-    return ['prep', '🍯', '節奏越來越近了', streak > 0 ? `已經連續 ${streak} 次在 ${S.threshold} 分鐘以內，再觀察 ${3 - streak} 次。可以先檢查待產包。` : '間隔接近了，可以先檢查待產包、跟家人說一聲。'];
-  return ['watch', '🌿', '觀察中', '間隔還長，可以休息、吃點東西、洗個澡。'];
+  const T = S.threshold * 60000, tm = S.threshold, L = cur(), g = liveGaps(), now = Date.now();
+  const R = (cls, dot, title, text, share) => ({ cls, dot, title, text, share });
+  if (!S.list.length) return R('watch', '🌿', S.active ? '第一次紀錄中' : '還沒有紀錄', '宮縮來的時候，按下面的按鈕就好。', '剛開始記錄');
+  const lastStart = L[L.length - 1].start;
+  if (S.active && S.active - lastStart > SESSION_GAP)
+    return R('watch', '🌿', '新的一段開始了', '隔了一段時間又開始宮縮，先觀察接下來的間隔。', '隔了一段時間又開始宮縮，觀察中');
+  const sinceLast = now - lastStart;
+  if (!S.active && sinceLast > Math.max(30 * 60000, T * 3))
+    return R('watch', '🌿', '先休息一下', `已經 ${fmtAgo(sinceLast)}沒有宮縮了，節奏還不規律。`, '已有一段時間沒有宮縮');
+  if (FAST < T && streakOf(g, FAST) >= 2)
+    return R('go', '🧡', '請直接出發', '連續 2 次間隔在 5 分鐘以內，第二胎可能進展很快。打給產房，直接出門。', '請直接出發，連續 2 次間隔在 5 分鐘內');
+  const streak = streakOf(g, T);
+  if (streak >= 3)
+    return R('go', '🧡', '可以準備出發了', `已經連續 ${streak} 次間隔在 ${tm} 分鐘以內。打個電話給產房，慢慢出門。`, `準備出發，已連續 ${streak} 次間隔在 ${tm} 分鐘內`);
+  if (streak > 0 || (g.length && g[g.length - 1] <= T * 1.5))
+    return R('prep', '🍯', '節奏越來越近了',
+      streak > 0 ? `已經連續 ${streak} 次在 ${tm} 分鐘以內，再觀察 ${3 - streak} 次。可以先檢查待產包。` : '間隔接近了，可以先檢查待產包、跟家人說一聲。',
+      streak > 0 ? `漸趨規律，已連續 ${streak} 次在 ${tm} 分鐘內` : '間隔接近中，持續觀察');
+  return R('watch', '🌿', '觀察中', '間隔還長，可以休息、吃點東西、洗個澡。', '尚不規律，休息觀察中');
 }
 
 let lastState = null;
 function renderStatus(){
-  const [cls, dot, title, text] = evaluate();
+  const { cls, dot, title, text } = evaluate();
   $('status').className = 'status ' + cls; $('statusWrap').className = 'status-wrap ' + cls;
   $('statusDot').textContent = dot; $('statusTitle').textContent = title; $('statusText').textContent = text;
   if (lastState && lastState !== 'go' && cls === 'go') { vibrate([200, 100, 200, 100, 400]); }
@@ -340,13 +359,13 @@ function renderStatus(){
 }
 
 function renderStats(){
-  const L = S.list, g = gaps(), T = S.threshold * 60000, now = Date.now();
+  const L = cur(), g = gaps(), T = S.threshold * 60000, now = Date.now();
   const last3 = g.slice(-3);
   $('sAvgGap').innerHTML = last3.length ? fmtGap(last3.reduce((a,b)=>a+b,0) / last3.length) : '–';
   const durs = L.slice(-5).map(c => c.end - c.start);
   $('sAvgDur').innerHTML = durs.length ? fmtDur(durs.reduce((a,b)=>a+b,0) / durs.length) : '–';
   $('sLastGap').innerHTML = g.length ? fmtGap(g[g.length-1]) : '–';
-  $('sHour').innerHTML = `${L.filter(c => now - c.start <= 3600000).length}<small>次</small>`;
+  $('sHour').innerHTML = `${S.list.filter(c => now - c.start <= 3600000).length}<small>次</small>`;
   const recent = g.slice(-12);
   if (recent.length < 2) { $('barsBox').innerHTML = '<p class="empty" style="margin-top:12px">記錄幾次之後，這裡會畫出間隔的變化</p>'; return; }
   const max = Math.max(...recent, T * 1.2);
@@ -357,12 +376,13 @@ function renderStats(){
 function renderLog(){
   const L = S.list, T = S.threshold * 60000;
   if (!L.length) { $('log').innerHTML = '<li class="empty" style="display:block">還沒有紀錄</li>'; return; }
-  const rows = [];
-  for (let i = L.length - 1; i >= 0 && rows.length < 30; i--) {
-    const c = L[i], gap = i > 0 ? c.start - L[i-1].start : null;
+  const rows = []; let n = 0;
+  for (let i = L.length - 1; i >= 0 && n < 30; i--, n++) {
+    const c = L[i], gap = i > 0 ? c.start - L[i-1].start : null, newSeg = gap !== null && gap > SESSION_GAP;
     rows.push(`<li><span class="t">${fmtClock(c.start)}</span><span class="meta">持續 ${fmtDurPlain(c.end - c.start)}</span>
-      <span class="gap ${gap !== null && gap <= T ? 'ok' : ''}">${gap === null ? '第一次' : '隔 ' + fmtGapPlain(gap)}</span>
+      <span class="gap ${gap !== null && gap <= T ? 'ok' : ''}">${gap === null ? '第一次' : newSeg ? '新的一段' : '隔 ' + fmtGapPlain(gap)}</span>
       <button type="button" data-i="${i}" aria-label="刪除這筆">✕</button></li>`);
+    if (newSeg) rows.push(`<li class="sep">上一段・${fmtDay(L[i-1].end)} 結束</li>`);
   }
   $('log').innerHTML = rows.join('');
 }
@@ -374,22 +394,23 @@ function renderBag(){
 function renderAll(){ renderStatus(); renderStats(); renderLog(); $('thVal').textContent = S.threshold + ' 分'; }
 
 // 主按鈕與計時
-let cueTimer = null, cheer = '';
+let cheer = '';
 function tick(){
-  const now = Date.now();
+  const now = Date.now(), L = S.list;
   if (S.active) {
     const el = now - S.active;
     $('btnL1').innerHTML = `<span class="timer">${mmss(el)}</span>`; $('btnL2').textContent = '結束時按一下';
     const phase = (el / 1000) % 10;
     $('cue').innerHTML = phase < 4 ? '慢慢吸氣…<small>鼻子吸，肚子鼓起來</small>' : '長長吐氣…<small>嘴巴吐，肩膀放下來</small>';
     $('forgot').classList.toggle('show', el > 3 * 60000);
-    const L = S.list; $('since').innerHTML = L.length ? `距上次開始 <span class="num">${fmtGapPlain(S.active - L[L.length-1].start)}</span>` : '第一次紀錄';
+    const p = L.length ? S.active - L[L.length-1].start : null;
+    $('since').innerHTML = p === null ? '第一次紀錄' : p > SESSION_GAP ? '新的一段・第一次' : `距上次開始 <span class="num">${fmtGapPlain(p)}</span>`;
   } else {
     $('btnL1').textContent = '宮縮開始'; $('btnL2').textContent = '輕按一下';
-    $('cue').innerHTML = cheer ? `${cheer}` : '';
+    $('cue').innerHTML = cheer;
     $('forgot').classList.remove('show');
-    const L = S.list;
-    $('since').innerHTML = L.length ? `距離上次宮縮開始 <span class="num">${mmss(now - L[L.length-1].start)}</span>` : '宮縮開始時按一下，結束時再按一下';
+    const p = L.length ? now - L[L.length-1].start : null;
+    $('since').innerHTML = p === null ? '宮縮開始時按一下，結束時再按一下' : `距離上次宮縮開始 <span class="num">${p < 3600000 ? mmss(p) : fmtAgo(p)}</span>`;
   }
   $('stage').classList.toggle('active', !!S.active);
 }
@@ -398,17 +419,22 @@ function vibrate(p){ try { navigator.vibrate && navigator.vibrate(p); } catch {}
 let wakeLock = null;
 async function keepAwake(){ try { if ('wakeLock' in navigator && !wakeLock) { wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', () => wakeLock = null); } } catch {} }
 
+function finish(end){
+  S.list.push({ start: S.active, end }); S.active = null;
+  cheer = CHEERS[Math.floor(Math.random() * CHEERS.length)];
+}
 $('mainBtn').addEventListener('click', () => {
   keepAwake();
   if (!S.active) { S.active = Date.now(); cheer = ''; vibrate(60); }
   else {
     const end = Date.now();
-    if (end - S.active >= 5000) { S.list.push({ start: S.active, end }); cheer = CHEERS[Math.floor(Math.random() * CHEERS.length)]; }
-    else toast('不到 5 秒，這次先不記錄');
-    S.active = null; vibrate([40, 60, 40]);
+    if (end - S.active >= 5000) finish(end);
+    else { S.active = null; toast('不到 5 秒，這次先不記錄'); }
+    vibrate([40, 60, 40]);
   }
   store.save(); tick(); renderAll();
 });
+$('oneMinBtn').addEventListener('click', () => { finish(S.active + 60000); store.save(); tick(); renderAll(); toast('已記為約 1 分鐘'); });
 $('cancelBtn').addEventListener('click', () => { S.active = null; store.save(); tick(); renderAll(); toast('已取消這次'); });
 
 // 刪除與復原
@@ -431,37 +457,31 @@ $('clearBtn').addEventListener('click', () => { if (!S.list.length) return toast
 $('sheetNo').addEventListener('click', () => $('sheet').classList.remove('show'));
 $('sheetYes').addEventListener('click', () => { S.list = []; S.active = null; cheer = ''; store.save(); $('sheet').classList.remove('show'); tick(); renderAll(); toast('已清除'); });
 
-// 複製摘要
+// 複製完整紀錄（目前這一段）
 $('copyBtn').addEventListener('click', async () => {
-  const L = S.list; if (!L.length) return toast('目前沒有紀錄');
+  const L = cur(); if (!L.length) return toast('目前沒有紀錄');
   const g = gaps(), last3 = g.slice(-3);
-  const lines = [`宮縮紀錄（${new Date().toLocaleDateString('zh-TW')}）`,
-    last3.length ? `最近 3 次平均間隔 ${fmtGapPlain(last3.reduce((a,b)=>a+b,0)/last3.length)}` : '',
-    `共 ${L.length} 次，第一次 ${fmtClock(L[0].start)}`, ''];
+  const lines = [`宮縮紀錄（${new Date().toLocaleDateString('zh-TW')}）`];
+  if (last3.length) lines.push(`最近 3 次平均間隔 ${fmtGapPlain(last3.reduce((a,b)=>a+b,0)/last3.length)}`);
+  lines.push(`這一段共 ${L.length} 次，從 ${fmtDay(L[0].start)} 開始`, '');
   L.slice(-15).forEach((c, k, arr) => { const idx = L.length - arr.length + k; const gap = idx > 0 ? c.start - L[idx-1].start : null;
-    lines.push(`${fmtClock(c.start)}　持續 ${fmtDurPlain(c.end - c.start)}　${gap === null ? '' : '間隔 ' + fmtGapPlain(gap)}`); });
-  const text = lines.filter((l, i) => l !== '' || i === 3).join('\n');
+    lines.push(`${fmtClock(c.start)}　持續 ${fmtDurPlain(c.end - c.start)}${gap === null ? '' : '　間隔 ' + fmtGapPlain(gap)}`); });
+  const text = lines.join('\n');
   try { await navigator.clipboard.writeText(text); toast('已複製，可以貼到訊息裡'); }
   catch { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); toast('已複製'); } catch { toast('複製失敗'); } ta.remove(); }
 });
 
 // 傳給家人：精簡摘要，只放判斷需要的資訊
 function shareText(){
-  const L = S.list, g = gaps(), now = Date.now(), T = S.threshold;
-  const [cls] = evaluate();
-  const last3 = g.slice(-3), streak = (() => { let n = 0; for (let i = g.length - 1; i >= 0 && g[i] <= T * 60000; i--) n++; return n; })();
-  const status = {
-    go: `準備出發，已連續 ${Math.min(streak, 9)} 次間隔在 ${T} 分鐘內`,
-    prep: streak ? `漸趨規律，已連續 ${streak} 次在 ${T} 分鐘內` : '間隔接近中，持續觀察',
-    watch: L.length && now - L[L.length - 1].start > Math.max(30 * 60000, T * 180000) ? '已有一段時間沒有宮縮' : '尚不規律，休息觀察中'
-  }[cls];
-  const out = [`宮縮紀錄｜${fmtClock(now)}`, status, ''];
+  const L = cur(), g = gaps(), now = Date.now();
+  const out = [`宮縮紀錄｜${fmtClock(now)}`, evaluate().share, ''];
   if (S.active) out.push(`此刻正在宮縮中（${mmss(now - S.active)}）`);
+  const last3 = g.slice(-3);
   if (last3.length) out.push(`平均間隔 ${fmtGapPlain(last3.reduce((a,b)=>a+b,0) / last3.length).replace(/分$/, '分鐘')}`);
   const durs = L.slice(-5).map(c => c.end - c.start);
   if (durs.length) out.push(`每次持續 約 ${fmtDurPlain(durs.reduce((a,b)=>a+b,0) / durs.length)}`);
-  out.push(`近一小時 ${L.filter(c => now - c.start <= 3600000).length} 次`);
-  if (L.length && !S.active) out.push(`上一次 ${Math.max(0, Math.round((now - L[L.length-1].start) / 60000))} 分鐘前`);
+  out.push(`近一小時 ${S.list.filter(c => now - c.start <= 3600000).length} 次`);
+  if (L.length && !S.active) out.push(`上一次 ${fmtAgo(now - L[L.length-1].start)}前`);
   if (L.length) out.push('', '最近：' + L.slice(-4).reverse().map(c => fmtClock(c.start)).join('・'));
   return out.join('\n');
 }
