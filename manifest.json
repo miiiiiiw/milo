@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-14T07:07:44.224Z",
+  "generated": "2026-11-14T12:01:21.754Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -8,6 +8,19 @@
     "watching": "影片學習"
   },
   "files": [
+    {
+      "path": "family/contraction-timer.html",
+      "title": "宮縮計時・等二寶",
+      "description": "二寶待產用的宮縮計時：記錄間隔與持續時間，宮縮時陪著呼吸，十分鐘一次就提醒出發",
+      "tags": [
+        "家庭",
+        "二寶",
+        "待產",
+        "宮縮",
+        "陣痛計時"
+      ],
+      "date": "2026-11-14"
+    },
     {
       "path": "reading/felix-more-ambitious.html",
       "title": "怎樣變得更有野心：給手握模型的人類的教學（How to be more ambitious: A tutorial for humans with models）",
