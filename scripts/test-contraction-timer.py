@@ -41,7 +41,7 @@ def stored(pg): return pg.evaluate(f"JSON.parse(localStorage.getItem('{KEY}'))")
 def text(pg, sel): return pg.locator(sel).inner_text()
 
 with sync_playwright() as p:
-    b = p.chromium.launch()
+    b = p.chromium.launch(args=['--autoplay-policy=no-user-gesture-required'])
 
     # 1. 初次開啟
     ctx, pg, errs, _ = new_page(b)
@@ -269,6 +269,89 @@ with sync_playwright() as p:
     ctx = b.new_context(viewport={'width': 390, 'height': 844}, reduced_motion='reduce')
     pg = ctx.new_page(); pg.goto(URL)
     check('26 開啟「減少動態效果」時不播放呼吸動畫', anim('#orb') == 'none', anim('#orb'))
+    ctx.close()
+    # 27. 聲音開關
+    ctx, pg, errs, shared = new_page(b)
+    check('27 聲音預設開啟，開關在頁首看得到', text(pg, '#soundBtn') == '🔈 聲音開' and pg.locator('#soundBtn').is_visible())
+    pg.click('#soundBtn'); pg.reload(); pg.clock.run_for(300)
+    check('27 關閉聲音後重新整理仍保持關閉', text(pg, '#soundBtn') == '🔇 聲音關')
+    pg.click('#soundBtn'); pg.clock.run_for(300)
+
+    # 28. 宮縮中的呼吸伴奏
+    pg.locator('#mainBtn').click(force=True); pg.wait_for_timeout(400); pg.clock.run_for(600)
+    check('28 按下宮縮開始，呼吸伴奏響起', pg.evaluate("Sound.breathing"))
+    pg.click('#soundBtn'); pg.clock.run_for(300)
+    check('28 宮縮中關掉聲音，伴奏立刻停', not pg.evaluate("Sound.breathing"))
+    pg.click('#soundBtn'); pg.wait_for_timeout(300); pg.clock.run_for(600)
+    check('28 再打開，伴奏接回來', pg.evaluate("Sound.breathing"))
+    pg.clock.run_for(20000)
+    pg.locator('#mainBtn').click(force=True); pg.clock.run_for(600)
+    check('28 宮縮結束，伴奏安靜下來', not pg.evaluate("Sound.breathing"))
+    check('28 宮縮紀錄照常存下', len(stored(pg)['list']) == 1)
+
+    # 29. 譜曲
+    song = pg.evaluate("Sound.compose(DEMO_LIST)")
+    ns = song['notes']
+    check('29 每次宮縮對應一個音', len(ns) == 15)
+    check('29 所有音都在五聲音階上', all(n['midi'] % 12 in (0, 2, 4, 7, 9) for n in ns), str([n['midi'] for n in ns]))
+    check('29 時間依序前進', all(ns[i]['t'] < ns[i+1]['t'] for i in range(len(ns)-1)))
+    check('29 間隔變密時節奏變密', (ns[3]['t'] - ns[2]['t']) > (ns[14]['t'] - ns[13]['t']))
+    check('29 音色從木琴漸漸轉成鋼琴', ns[1]['piano'] == 0 and ns[-1]['piano'] == 1 and all(ns[i]['piano'] <= ns[i+1]['piano'] for i in range(1, len(ns)-1)))
+    check('29 最後接上出生和弦', song['chordAt'] > ns[-1]['t'] and len(song['chord']) >= 3 and song['total'] > song['chordAt'] + 5)
+    check('29 範例大約一分鐘', 50 < song['total'] < 100, str(round(song['total'])))
+    few = pg.evaluate("Sound.compose(DEMO_LIST.slice(0, 3))")
+    check('29 只有 3 個音也是完整的歌（有前奏、和弦，至少 25 秒）', len(few['notes']) == 3 and few['notes'][0]['t'] > 5 and few['total'] >= 25, str(round(few['total'])))
+    check('29 同一份紀錄永遠譜出同一首歌', pg.evaluate("JSON.stringify(Sound.compose(DEMO_LIST)) === JSON.stringify(Sound.compose(DEMO_LIST))"))
+
+    # 30. 試聽
+    pg.click('#demoBtn'); pg.wait_for_timeout(300)
+    check('30 試聽開始播放', pg.evaluate("Sound.playing") and '停止' in text(pg, '#demoBtn'))
+    pg.locator('#mainBtn').click(force=True); pg.clock.run_for(300)
+    check('30 按下宮縮按鈕，試聽立刻停止', not pg.evaluate("Sound.playing") and '試聽' in text(pg, '#demoBtn'))
+    pg.clock.run_for(10000); pg.locator('#mainBtn').click(force=True); pg.clock.run_for(300)
+    pg.click('#demoBtn'); pg.wait_for_timeout(200)
+    pg.click('#soundBtn'); pg.clock.run_for(300)
+    check('30 關掉聲音，試聽也一起停', not pg.evaluate("Sound.playing"))
+    pg.click('#demoBtn'); pg.clock.run_for(300)
+    check('30 聲音關閉時按試聽，提示先打開聲音', '聲音目前是關閉的' in text(pg, '#toastMsg'))
+    pg.click('#soundBtn'); pg.clock.run_for(300)
+    pg.click('#demoBtn'); pg.wait_for_timeout(200); pg.clock.run_for(120000)
+    check('30 播完自動回到「試聽範例」', not pg.evaluate("Sound.playing") and '試聽' in text(pg, '#demoBtn'))
+
+    # 31. 清除前自動封存、可以還原
+    n = len(stored(pg)['list'])
+    pg.click('#clearBtn'); pg.click('#sheetYes'); pg.clock.run_for(300)
+    check('31 清除後出現「還原」按鈕', pg.locator('#restoreBtn').is_visible() and f'{n} 筆' in text(pg, '#restoreBtn'), text(pg, '#restoreBtn'))
+    pg.reload(); pg.clock.run_for(300)
+    check('31 封存在重新整理後仍在', pg.locator('#restoreBtn').is_visible())
+    pg.click('#restoreBtn'); pg.clock.run_for(300)
+    check('31 按下還原，紀錄回來', len(stored(pg)['list']) == n and pg.locator('#restoreBtn').is_hidden(), f"{len(stored(pg)['list'])}/{n} archive={len(stored(pg)['archive'])}")
+
+    # 32. 匯出備份
+    with pg.expect_download() as dl:
+        pg.click('#exportBtn')
+    path = dl.value.path(); data = json.load(open(path))
+    check('32 匯出備份檔（含紀錄）', dl.value.suggested_filename.startswith('宮縮紀錄-') and len(data['list']) == n, dl.value.suggested_filename)
+
+    # 33. 匯入備份
+    pg.click('#clearBtn'); pg.click('#sheetYes'); pg.clock.run_for(300)
+    pg.evaluate("S.archive = []; store.save()")
+    pg.set_input_files('#importFile', path); pg.wait_for_timeout(300); pg.clock.run_for(300)
+    check('33 匯入備份，紀錄回來', len(stored(pg)['list']) == n, text(pg, '#toastMsg'))
+    pg.set_input_files('#importFile', path); pg.wait_for_timeout(300); pg.clock.run_for(300)
+    check('33 重複匯入不會變成兩份', len(stored(pg)['list']) == n and '沒有新的紀錄' in text(pg, '#toastMsg'), text(pg, '#toastMsg'))
+    bad = '/tmp/bad-backup.json'; open(bad, 'w').write('{"hello": 1}')
+    pg.set_input_files('#importFile', bad); pg.wait_for_timeout(300); pg.clock.run_for(300)
+    check('33 錯誤的檔案會被擋下', '不是宮縮紀錄備份' in text(pg, '#toastMsg') and len(stored(pg)['list']) == n)
+    check('33 全程沒有 JavaScript 錯誤', not errs, '; '.join(errs))
+    ctx.close()
+
+    # 34. 瀏覽器不支援音訊時，計時照常
+    ctx, pg, errs, shared = new_page(b)
+    pg.add_init_script("delete window.AudioContext; delete window.webkitAudioContext;")
+    pg.reload(); pg.clock.run_for(300)
+    contraction(pg, 30, 60)
+    check('34 沒有音訊功能時，計時與紀錄照常', len(stored(pg)['list']) == 1 and not errs, '; '.join(errs))
     ctx.close()
     b.close()
 
