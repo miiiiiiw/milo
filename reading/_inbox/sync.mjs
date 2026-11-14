@@ -27,7 +27,7 @@ const CSS =
   ".page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}\n";
 
 // 轉換版本：改了 transform（例如配色）就 +1，已同步的頁面下次執行會全部重新套用
-const VERSION = 10;
+const VERSION = 11;
 
 // ── 暗色模式：配色取自 milo 導覽頁（index.html :root 的暗色變數），對應 Grok 翻譯頁模板寫死的顏色 ──
 // 規則同導覽頁：預設跟系統；導覽頁 ◐ 切換後寫入 localStorage「cab:theme」，頁面讀取並即時同步。
@@ -48,6 +48,9 @@ figcaption,.lbl{background:${D.surf}}
 .tweet .tr{border-color:${D.rule}}
 code,p code,li code{background:${D.cell}}
 pre code{background:none}
+.tn{background:${D.surf};border-left-color:#5a5446;color:${D.ink2}}
+.fit{color:${D.ink2}}
+.orig{color:${D.ink3}}
 pre{background:${D.stage};color:#e6edf3;border:1px solid ${D.rule}}
 a{color:${D.link}}
 .dg{border-color:rgba(236,230,216,.12)}
@@ -75,7 +78,7 @@ const SVG_MAP = [
   ["rgba(45,49,66,0.45)", "rgba(236,230,216,.35)"], ["rgba(45,49,66,0.35)", "rgba(236,230,216,.28)"], ["rgba(45,49,66,0.16)", "rgba(236,230,216,.14)"],
   ["rgba(29,111,184,0.09)", "rgba(111,177,236,.14)"],
   ["rgba(45,49,66,0.3)", "rgba(236,230,216,.25)"], ["rgba(45,49,66,0.08)", "rgba(236,230,216,.06)"],
-  ["#161615", "rgba(236,230,216,.4)"],
+  ["#161615", "rgba(236,230,216,.4)"], ["#c9d3de", "#5a5446"],
 ];
 // 圖解裡刻意示範的顏色（例如配色色票），屬於內容，暗色模式維持原色，也不列入「未涵蓋」提醒
 const SVG_KEEP = ["#c8c6d8", "#7d8b63", "#e8cbc8", "#c96f4f", "#6e97bf"];
