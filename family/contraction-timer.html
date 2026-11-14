@@ -49,33 +49,44 @@ section{margin-top:22px}
 h2{font-family:var(--serif);font-size:1.1rem;margin:0 0 12px}
 
 /* 狀態 */
-.status{display:flex;gap:14px;align-items:center;border-radius:24px;padding:18px 20px;transition:background .5s}
+.status{display:flex;gap:14px;align-items:center;border-radius:24px;padding:18px 20px;transition:background .8s ease,color .8s ease}
 .status .dot{flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:1.5rem}
 .status b{display:block;font-family:var(--serif);font-size:1.2rem}
 .status p{margin:2px 0 0;font-size:.92rem}
 .status.watch{background:var(--sage-soft);color:var(--sage-ink)} .status.watch .dot{background:var(--card)}
 .status.prep{background:var(--honey-soft);color:var(--honey-ink)} .status.prep .dot{background:var(--card)}
-.status.go{background:var(--apricot-soft);color:var(--apricot-ink)} .status.go .dot{background:var(--card);animation:pulse 1.6s ease-in-out infinite}
+.status.go{background:var(--apricot-soft);color:var(--apricot-ink)} .status.go .dot{background:var(--card);animation:glow 6s ease-in-out infinite}
 .go-actions{display:none;gap:10px;margin-top:12px}
 .status-wrap.go .go-actions{display:flex}
-@keyframes pulse{50%{transform:scale(1.08)}}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(227,137,95,0)}50%{box-shadow:0 0 0 10px rgba(227,137,95,.22)}}
 
 /* 主按鈕 */
 .stage{display:flex;flex-direction:column;align-items:center;padding:26px 20px 22px;text-align:center}
 .since{color:var(--muted);font-size:.9rem;min-height:1.6em;margin-bottom:14px}
 .since .num{color:var(--ink)}
+.since,.cue{transition:opacity .45s ease}
 .orb-box{position:relative;width:230px;height:230px;display:grid;place-items:center}
-.breath{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,var(--apricot-soft) 0%,transparent 70%);opacity:0;transform:scale(.7)}
-.active .breath{opacity:1;animation:breathe 10s ease-in-out infinite}
-@keyframes breathe{0%{transform:scale(.72)}40%{transform:scale(1.12)}100%{transform:scale(.72)}}
+.breath{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,var(--apricot-soft) 0%,transparent 70%);opacity:0;transform:scale(.72);transition:opacity 1s ease}
+:root[data-theme="night"] .breath{background:radial-gradient(circle,rgba(217,138,100,.22) 0%,transparent 70%)}
+/* 呼吸節奏：吸 4 秒、吐 6 秒；--bd 由 JS 依實際經過時間設定，重新整理也同步 */
+.orb{border-radius:50%;animation:idle 8s ease-in-out infinite}
+.active .breath{opacity:1;animation:halo 10s infinite;animation-delay:var(--bd,0s)}
+.active .orb{animation:breathe 10s infinite;animation-delay:var(--bd,0s)}
+@keyframes idle{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+@keyframes breathe{0%{transform:scale(1);animation-timing-function:cubic-bezier(.37,0,.63,1)}40%{transform:scale(1.06);animation-timing-function:cubic-bezier(.37,0,.63,1)}100%{transform:scale(1)}}
+@keyframes halo{0%{transform:scale(.72);animation-timing-function:cubic-bezier(.37,0,.63,1)}40%{transform:scale(1.12);animation-timing-function:cubic-bezier(.37,0,.63,1)}100%{transform:scale(.72)}}
 .main-btn{position:relative;width:180px;height:180px;border-radius:50%;border:0;cursor:pointer;font:inherit;color:#fff;
   background:radial-gradient(circle at 35% 30%,#f0a882,var(--apricot) 60%,#cf7148);box-shadow:0 14px 30px rgba(207,113,72,.35),inset 0 -6px 14px rgba(0,0,0,.08);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:transform .15s,background .4s;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:transform .15s,box-shadow 1s ease;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.main-btn::before{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 35% 30%,#a9c2a5,var(--sage) 60%,#668363);opacity:0;transition:opacity 1s ease}
+.main-btn>span{position:relative}
 .main-btn:active{transform:scale(.96)}
 .main-btn .l1{font-family:var(--serif);font-size:1.45rem;font-weight:700;letter-spacing:.06em}
 .main-btn .l2{font-size:.85rem;opacity:.9}
-.active .main-btn{background:radial-gradient(circle at 35% 30%,#a9c2a5,var(--sage) 60%,#668363);box-shadow:0 14px 30px rgba(102,131,99,.35)}
-.main-btn .timer{font-family:var(--mono);font-size:2.1rem;font-variant-numeric:tabular-nums;line-height:1.1}
+.active .main-btn{box-shadow:0 14px 30px rgba(102,131,99,.35)}
+.active .main-btn::before{opacity:1}
+.main-btn .lab{display:block;font-family:var(--serif);font-size:1.35rem;font-weight:700;letter-spacing:.12em}
+.main-btn .timer{display:block;font-family:var(--mono);font-size:.95rem;font-weight:400;font-variant-numeric:tabular-nums;opacity:.75;margin-top:2px;letter-spacing:.04em}
 .cue{min-height:3.2em;margin-top:14px;font-family:var(--serif);font-size:1.15rem;color:var(--ink)}
 .cue small{display:block;font-family:var(--sans);font-size:.85rem;color:var(--muted)}
 .forgot{display:none;margin-top:4px;font-size:.85rem;color:var(--muted)}
@@ -159,8 +170,11 @@ h2{font-family:var(--serif);font-size:1.1rem;margin:0 0 12px}
 .sheet .card{width:100%;max-width:480px;margin-bottom:env(safe-area-inset-bottom)}
 .sheet p{margin:0 0 14px}
 
+/* 專注模式：宮縮時其他區塊淡下來 */
+.wrap>*{transition:opacity .9s ease}
+body.focus .wrap>*:not(#stage){opacity:.38}
 @media (max-width:560px){.wrap{padding-top:32px}}
-@media (prefers-reduced-motion:reduce){.active .breath,.status.go .dot{animation:none}.active .breath{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.orb,.active .orb,.active .breath,.status.go .dot{animation:none}.active .breath{transform:scale(1)}.since,.cue,.wrap>*{transition:none}}
 
 /* ── milo 頁首小標規範（見 README「頁首小標」），請勿個別調整 ── */
 .page-kicker{font-family:var(--mono);font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
@@ -199,10 +213,12 @@ h2{font-family:var(--serif);font-size:1.1rem;margin:0 0 12px}
     <div class="since" id="since">宮縮開始時按一下，結束時再按一下</div>
     <div class="orb-box">
       <div class="breath"></div>
+      <div class="orb" id="orb">
       <button class="main-btn" id="mainBtn" type="button">
         <span class="l1" id="btnL1">宮縮開始</span>
         <span class="l2" id="btnL2">輕按一下</span>
       </button>
+      </div>
     </div>
     <div class="cue" id="cue"></div>
     <div class="forgot" id="forgot">好像比較久了，是不是忘了按結束？
@@ -395,24 +411,41 @@ function renderAll(){ renderStatus(); renderStats(); renderLog(); $('thVal').tex
 
 // 主按鈕與計時
 let cheer = '';
+// 柔和換字：內容不同時先淡出、換字、再淡入
+const fadeState = {};
+function setSoft(id, html){
+  const el = $(id), st = fadeState[id] || (fadeState[id] = { want: el.innerHTML, timer: null });
+  if (st.want === html) return;
+  st.want = html;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { el.innerHTML = html; return; }
+  el.style.opacity = 0; clearTimeout(st.timer);
+  st.timer = setTimeout(() => { el.innerHTML = st.want; el.style.opacity = 1; }, 450);
+}
+let syncedFor = null;
+function syncBreath(){
+  if (S.active && syncedFor !== S.active) { $('stage').style.setProperty('--bd', `-${((Date.now() - S.active) / 1000) % 10}s`); syncedFor = S.active; }
+  if (!S.active) syncedFor = null;
+}
 function tick(){
   const now = Date.now(), L = S.list;
   if (S.active) {
     const el = now - S.active;
-    $('btnL1').innerHTML = `<span class="timer">${mmss(el)}</span>`; $('btnL2').textContent = '結束時按一下';
+    $('btnL1').innerHTML = `<span class="lab">宮縮中</span><span class="timer">${mmss(el)}</span>`; $('btnL2').textContent = '結束時按一下';
     const phase = (el / 1000) % 10;
-    $('cue').innerHTML = phase < 4 ? '慢慢吸氣…<small>鼻子吸，肚子鼓起來</small>' : '長長吐氣…<small>嘴巴吐，肩膀放下來</small>';
+    setSoft('cue', phase < 4 ? '慢慢吸氣…<small>鼻子吸，肚子鼓起來</small>' : '長長吐氣…<small>嘴巴吐，肩膀放下來</small>');
     $('forgot').classList.toggle('show', el > 3 * 60000);
     const p = L.length ? S.active - L[L.length-1].start : null;
-    $('since').innerHTML = p === null ? '第一次紀錄' : p > SESSION_GAP ? '新的一段・第一次' : `距上次開始 <span class="num">${fmtGapPlain(p)}</span>`;
+    setSoft('since', p === null ? '第一次紀錄' : p > SESSION_GAP ? '新的一段・第一次' : `距上次開始 <span class="num">${fmtGapPlain(p)}</span>`);
   } else {
     $('btnL1').textContent = '宮縮開始'; $('btnL2').textContent = '輕按一下';
-    $('cue').innerHTML = cheer;
+    setSoft('cue', cheer);
     $('forgot').classList.remove('show');
     const p = L.length ? now - L[L.length-1].start : null;
-    $('since').innerHTML = p === null ? '宮縮開始時按一下，結束時再按一下' : `距離上次宮縮開始 <span class="num">${p < 3600000 ? mmss(p) : fmtAgo(p)}</span>`;
+    setSoft('since', p === null ? '宮縮開始時按一下，結束時再按一下' : p < 60000 ? '上一次宮縮剛剛才開始' : `上一次宮縮在 <span class="num">${fmtAgo(p)}</span>前開始`);
   }
+  syncBreath();
   $('stage').classList.toggle('active', !!S.active);
+  document.body.classList.toggle('focus', !!S.active);
 }
 
 function vibrate(p){ try { navigator.vibrate && navigator.vibrate(p); } catch {} }
