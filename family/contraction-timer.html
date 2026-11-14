@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="二寶待產用的宮縮計時：記錄間隔與持續時間，宮縮時陪著呼吸，十分鐘一次就提醒出發">
+<meta name="keywords" content="家庭, 二寶, 待產, 宮縮, 陣痛計時">
+<meta name="date" content="2026-11-14">
+<meta name="theme-color" content="#fbf5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="宮縮計時">
+<title>宮縮計時・等二寶</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;700&display=swap">
+<style>
+/* 單頁工具：資料只存在這支手機的瀏覽器（localStorage），不上傳。 */
+:root{
+  --paper:#fbf5ec; --card:#fffaf3; --card-2:#f6ecdf;
+  --ink:#4a3c33; --muted:#86756a; --rule:rgba(74,60,51,.12);
+  --apricot:#e3895f; --apricot-soft:#f8dccb; --apricot-ink:#a5502b;
+  --sage:#7f9c7c; --sage-soft:#dfe8d9; --sage-ink:#46633f;
+  --honey:#d9a441; --honey-soft:#f6e6c2; --honey-ink:#835e12;
+  --rose:#c9615e; --rose-soft:#f6d9d6; --rose-ink:#93332f;
+  --shadow:0 10px 30px rgba(140,95,60,.12), 0 2px 6px rgba(140,95,60,.08);
+  --serif:'Noto Serif TC',serif;
+  --sans:'Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;
+  --mono:ui-monospace,Menlo,monospace;
+}
+:root[data-theme="night"]{
+  --paper:#231c18; --card:#2d2520; --card-2:#382e27;
+  --ink:#eadccd; --muted:#a8968a; --rule:rgba(234,220,205,.12);
+  --apricot:#d98a64; --apricot-soft:#4a3226; --apricot-ink:#f0b090;
+  --sage:#8fae8b; --sage-soft:#2f3a2c; --sage-ink:#b8d4b2;
+  --honey:#d9a441; --honey-soft:#45391f; --honey-ink:#ecc77a;
+  --rose:#d9726e; --rose-soft:#4a2826; --rose-ink:#f2aaa6;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6;
+  background-image:radial-gradient(circle at 15% 0%,rgba(227,137,95,.10),transparent 45%),radial-gradient(circle at 100% 30%,rgba(127,156,124,.10),transparent 40%);
+  background-attachment:fixed;transition:background-color .4s,color .4s}
+.wrap{max-width:520px;margin:0 auto;padding:56px 20px calc(48px + env(safe-area-inset-bottom))}
+h1{font-family:var(--serif);font-weight:700;font-size:1.75rem;line-height:1.3;margin:0}
+.sub{color:var(--muted);margin:6px 0 0;font-size:.95rem}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.icon-btn{flex:none;border:1px solid var(--rule);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 12px;font:inherit;font-size:.85rem;cursor:pointer}
+section{margin-top:22px}
+.card{background:var(--card);border-radius:24px;box-shadow:var(--shadow);padding:20px}
+h2{font-family:var(--serif);font-size:1.1rem;margin:0 0 12px}
+
+/* 狀態 */
+.status{display:flex;gap:14px;align-items:center;border-radius:24px;padding:18px 20px;transition:background .5s}
+.status .dot{flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:1.5rem}
+.status b{display:block;font-family:var(--serif);font-size:1.2rem}
+.status p{margin:2px 0 0;font-size:.92rem}
+.status.watch{background:var(--sage-soft);color:var(--sage-ink)} .status.watch .dot{background:var(--card)}
+.status.prep{background:var(--honey-soft);color:var(--honey-ink)} .status.prep .dot{background:var(--card)}
+.status.go{background:var(--apricot-soft);color:var(--apricot-ink)} .status.go .dot{background:var(--card);animation:pulse 1.6s ease-in-out infinite}
+.go-actions{display:none;gap:10px;margin-top:12px}
+.status-wrap.go .go-actions{display:flex}
+@keyframes pulse{50%{transform:scale(1.08)}}
+
+/* 主按鈕 */
+.stage{display:flex;flex-direction:column;align-items:center;padding:26px 20px 22px;text-align:center}
+.since{color:var(--muted);font-size:.9rem;min-height:1.6em;margin-bottom:14px}
+.since .num{color:var(--ink)}
+.orb-box{position:relative;width:230px;height:230px;display:grid;place-items:center}
+.breath{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,var(--apricot-soft) 0%,transparent 70%);opacity:0;transform:scale(.7)}
+.active .breath{opacity:1;animation:breathe 10s ease-in-out infinite}
+@keyframes breathe{0%{transform:scale(.72)}40%{transform:scale(1.12)}100%{transform:scale(.72)}}
+.main-btn{position:relative;width:180px;height:180px;border-radius:50%;border:0;cursor:pointer;font:inherit;color:#fff;
+  background:radial-gradient(circle at 35% 30%,#f0a882,var(--apricot) 60%,#cf7148);box-shadow:0 14px 30px rgba(207,113,72,.35),inset 0 -6px 14px rgba(0,0,0,.08);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:transform .15s,background .4s;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.main-btn:active{transform:scale(.96)}
+.main-btn .l1{font-family:var(--serif);font-size:1.45rem;font-weight:700;letter-spacing:.06em}
+.main-btn .l2{font-size:.85rem;opacity:.9}
+.active .main-btn{background:radial-gradient(circle at 35% 30%,#a9c2a5,var(--sage) 60%,#668363);box-shadow:0 14px 30px rgba(102,131,99,.35)}
+.main-btn .timer{font-family:var(--mono);font-size:2.1rem;font-variant-numeric:tabular-nums;line-height:1.1}
+.cue{min-height:3.2em;margin-top:14px;font-family:var(--serif);font-size:1.15rem;color:var(--ink)}
+.cue small{display:block;font-family:var(--sans);font-size:.85rem;color:var(--muted)}
+.forgot{display:none;margin-top:4px;font-size:.85rem;color:var(--muted)}
+.forgot.show{display:block}
+
+/* 數字 */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat{background:var(--card-2);border-radius:18px;padding:12px 14px}
+.stat .k{font-size:.8rem;color:var(--muted)}
+.stat .v{font-family:var(--mono);font-size:1.45rem;font-variant-numeric:tabular-nums;line-height:1.3}
+.stat .v small{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-left:2px}
+.bars{display:flex;align-items:flex-end;gap:5px;height:70px;margin-top:14px;padding:0 2px}
+.bars span{flex:1;border-radius:6px 6px 3px 3px;background:var(--sage);min-height:4px;opacity:.85}
+.bars span.ok{background:var(--apricot)}
+.bars-cap{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);margin-top:4px}
+.empty{color:var(--muted);font-size:.9rem;text-align:center;padding:8px 0}
+
+/* 紀錄 */
+.log{list-style:none;margin:0;padding:0}
+.log li{display:grid;grid-template-columns:auto 1fr auto auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--rule);font-size:.92rem}
+.log li:last-child{border-bottom:0}
+.log .t{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.log .meta{color:var(--muted);font-size:.85rem}
+.log .gap{font-family:var(--mono);font-size:.85rem;padding:2px 8px;border-radius:999px;background:var(--card-2)}
+.log .gap.ok{background:var(--apricot-soft);color:var(--apricot-ink)}
+.log button{border:0;background:none;color:var(--muted);font-size:1rem;cursor:pointer;padding:4px 6px}
+.row-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+
+.btn{border:0;border-radius:999px;padding:11px 16px;font:inherit;font-size:.92rem;font-weight:500;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn.primary{background:var(--apricot);color:#fff}
+.btn.soft{background:var(--card-2);color:var(--ink)}
+.btn.danger{background:var(--rose-soft);color:var(--rose-ink)}
+.btn.grow{flex:1}
+
+/* 紅旗 */
+.flags{background:var(--rose-soft);color:var(--rose-ink);border-radius:24px;padding:18px 20px}
+.flags h2{color:var(--rose-ink)}
+.flags ul{margin:0;padding-left:1.2em}
+.flags li{margin:4px 0}
+.flags p{margin:10px 0 0;font-size:.9rem}
+
+/* 產房 */
+.clinic dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.92rem}
+.clinic dt{color:var(--muted)}
+.clinic dd{margin:0}
+.tel-row{display:flex;gap:10px;margin-top:14px}
+.note{font-size:.85rem;color:var(--muted);margin:10px 0 0}
+
+/* 清單 */
+.check{list-style:none;margin:0;padding:0}
+.check label{display:flex;gap:12px;align-items:center;padding:9px 0;border-bottom:1px dashed var(--rule);cursor:pointer}
+.check li:last-child label{border-bottom:0}
+.check input{appearance:none;-webkit-appearance:none;flex:none;width:24px;height:24px;border-radius:8px;border:2px solid var(--sage);display:grid;place-items:center;margin:0;cursor:pointer;transition:background .2s}
+.check input:checked{background:var(--sage)}
+.check input:checked::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:translateY(-1px) rotate(45deg)}
+.check input:checked + span{color:var(--muted);text-decoration:line-through}
+.check .hint{font-size:.8rem;color:var(--muted);display:block}
+
+/* 設定 */
+.setting{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.stepper{display:flex;align-items:center;gap:6px}
+.stepper button{width:38px;height:38px;border-radius:50%;border:0;background:var(--card-2);color:var(--ink);font-size:1.2rem;cursor:pointer}
+.stepper output{font-family:var(--mono);font-size:1.2rem;min-width:3.5em;text-align:center}
+
+.foot{text-align:center;color:var(--muted);font-size:.82rem;margin-top:28px}
+
+/* 提示 */
+.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translate(-50%,30px);opacity:0;pointer-events:none;
+  background:var(--ink);color:var(--paper);padding:11px 16px;border-radius:999px;font-size:.9rem;display:flex;gap:14px;align-items:center;transition:.3s;max-width:calc(100% - 32px);z-index:10}
+.toast.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+.toast button{border:0;background:none;color:var(--apricot);font:inherit;font-weight:700;cursor:pointer;padding:0}
+.sheet{position:fixed;inset:0;background:rgba(40,28,20,.4);display:none;align-items:flex-end;justify-content:center;z-index:20;padding:16px}
+.sheet.show{display:flex}
+.sheet .card{width:100%;max-width:480px;margin-bottom:env(safe-area-inset-bottom)}
+.sheet p{margin:0 0 14px}
+
+@media (max-width:560px){.wrap{padding-top:32px}}
+@media (prefers-reduced-motion:reduce){.active .breath,.status.go .dot{animation:none}.active .breath{transform:scale(1)}}
+
+/* ── milo 頁首小標規範（見 README「頁首小標」），請勿個別調整 ── */
+.page-kicker{font-family:var(--mono);font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
+.page-kicker{color:var(--muted)}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="eyebrow page-kicker">家庭生活 · 宮縮計時</p>
+  <div class="top">
+    <div>
+      <h1>等二寶的宮縮計時</h1>
+      <p class="sub">慢慢來，每一次都記下來就好。</p>
+    </div>
+    <button class="icon-btn" id="themeBtn" type="button" aria-label="切換夜間模式">🌙 夜間</button>
+  </div>
+
+  <section class="status-wrap" id="statusWrap">
+    <div class="status watch" id="status" role="status" aria-live="polite">
+      <div class="dot" id="statusDot">🌿</div>
+      <div><b id="statusTitle">還沒有紀錄</b><p id="statusText">宮縮來的時候，按下面的按鈕就好。</p></div>
+    </div>
+    <div class="go-actions">
+      <a class="btn primary grow" href="tel:0233932211,105">📞 打給產房</a>
+      <a class="btn soft grow" href="#bag">🎒 看帶什麼</a>
+    </div>
+  </section>
+
+  <section class="card stage" id="stage">
+    <div class="since" id="since">宮縮開始時按一下，結束時再按一下</div>
+    <div class="orb-box">
+      <div class="breath"></div>
+      <button class="main-btn" id="mainBtn" type="button">
+        <span class="l1" id="btnL1">宮縮開始</span>
+        <span class="l2" id="btnL2">輕按一下</span>
+      </button>
+    </div>
+    <div class="cue" id="cue"></div>
+    <div class="forgot" id="forgot">好像比較久了，是不是忘了按結束？<button class="btn soft" id="cancelBtn" type="button" style="margin-top:8px">這次不算，取消</button></div>
+  </section>
+
+  <section class="card">
+    <h2>最近的節奏</h2>
+    <div class="stats">
+      <div class="stat"><div class="k">最近 3 次平均間隔</div><div class="v" id="sAvgGap">–</div></div>
+      <div class="stat"><div class="k">平均持續</div><div class="v" id="sAvgDur">–</div></div>
+      <div class="stat"><div class="k">上一次間隔</div><div class="v" id="sLastGap">–</div></div>
+      <div class="stat"><div class="k">近 1 小時次數</div><div class="v" id="sHour">0<small>次</small></div></div>
+    </div>
+    <div id="barsBox"></div>
+  </section>
+
+  <section class="card">
+    <h2>紀錄</h2>
+    <ul class="log" id="log"></ul>
+    <div class="row-btns">
+      <button class="btn soft grow" id="copyBtn" type="button">📋 複製給護理師看</button>
+      <button class="btn danger" id="clearBtn" type="button">清除全部</button>
+    </div>
+  </section>
+
+  <section class="flags">
+    <h2>這些情況不用等，直接出發</h2>
+    <ul>
+      <li>破水（有液體一直流出來，不論多少）</li>
+      <li>出血量像月經一樣多，或是鮮紅色</li>
+      <li>胎動明顯變少、變弱</li>
+      <li>持續劇痛不會放鬆，或有很強的想用力、便意感</li>
+    </ul>
+    <p>第二胎產程通常比較快，覺得不對勁就先打電話問產房，不必等到數字達標。</p>
+  </section>
+
+  <section class="card clinic">
+    <h2>產房資訊</h2>
+    <dl>
+      <dt>診所</dt><dd>許世賓婦產科診所</dd>
+      <dt>電話</dt><dd>02-3393-2211 分機 105 或 106</dd>
+      <dt>夜間</dt><dd>按<b>大門旁邊</b>的<b>急診鈴</b>，24 小時都有醫護人員</dd>
+    </dl>
+    <div class="tel-row">
+      <a class="btn primary grow" href="tel:0233932211,105">📞 撥打 #105</a>
+      <a class="btn soft grow" href="tel:0233932211,106">📞 撥打 #106</a>
+    </div>
+    <div class="tel-row">
+      <a class="btn soft grow" href="https://www.google.com/maps/search/?api=1&query=%E8%A8%B1%E4%B8%96%E8%B3%93%E5%A9%A6%E7%94%A2%E7%A7%91%E8%A8%BA%E6%89%80" target="_blank" rel="noopener">🗺️ 開地圖導航</a>
+    </div>
+    <p class="note">撥號後會自動停頓再撥分機；如果手機沒有自動轉，等語音後再按分機號碼。</p>
+  </section>
+
+  <section class="card" id="bag">
+    <h2>入院要帶的東西</h2>
+    <ul class="check" id="check"></ul>
+    <p class="note">自然產包（免洗內褲、沖洗器、優碘、看護墊、沖洗棉支、產墊、衛生紙）診所會準備，不用自己帶。</p>
+  </section>
+
+  <section class="card">
+    <h2>設定</h2>
+    <div class="setting">
+      <div>出發提醒的間隔<span class="note" style="display:block;margin:0">醫師交代：第二胎約 10 分鐘一次就出發</span></div>
+      <div class="stepper">
+        <button type="button" id="minus" aria-label="減少">−</button>
+        <output id="thVal">10 分</output>
+        <button type="button" id="plus" aria-label="增加">＋</button>
+      </div>
+    </div>
+    <p class="note">連續 3 次間隔都在這個時間以內，就會提醒出發。紀錄只存在這支手機裡。可以用瀏覽器的「加入主畫面」，像 App 一樣打開。</p>
+  </section>
+
+  <p class="foot">這只是記錄的小幫手，一切以醫師和產房的判斷為準。<br>妳和寶寶都會好好的。🤍</p>
+</main>
+
+<div class="toast" id="toast"><span id="toastMsg"></span><button id="toastAct" type="button"></button></div>
+<div class="sheet" id="sheet"><div class="card"><p id="sheetMsg"></p><div class="row-btns" style="margin-top:0"><button class="btn soft grow" id="sheetNo" type="button">先不要</button><button class="btn danger grow" id="sheetYes" type="button">確定清除</button></div></div></div>
+
+<script>
+const KEY = 'milo-contraction-v1';
+const $ = id => document.getElementById(id);
+const store = {
+  load(){ try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } },
+  save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} }
+};
+const S = Object.assign({ list: [], active: null, threshold: 10, theme: null, bag: {} }, store.load());
+
+const BAG = [
+  ['id', '夫妻雙方身分證', '需完成配偶登記'],
+  ['nhi', '媽媽和寶寶的健保卡'],
+  ['book', '媽媽手冊'],
+  ['hyg', '牙膏、牙刷、拖鞋、水杯'],
+  ['clothes', '媽媽和寶寶的出院衣物'],
+  ['phone', '手機和充電線'],
+  ['kid', '大寶的照顧安排已聯絡好']
+];
+const CHEERS = [
+  '又撐過一次了，妳很棒。', '深呼吸，放鬆肩膀，喝口水。', '每一次宮縮，都讓寶寶更靠近一點。',
+  '辛苦了，休息一下。', '妳做得很好，我們一起。', '身體知道該怎麼做，相信它。', '這一波過去了，好好喘口氣。'
+];
+
+const fmtClock = t => new Date(t).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', hour12: false });
+const fmtDur = ms => { const s = Math.round(ms / 1000); return s < 60 ? `${s}<small>秒</small>` : `${Math.floor(s/60)}<small>分</small>${String(s%60).padStart(2,'0')}<small>秒</small>`; };
+const fmtDurPlain = ms => { const s = Math.round(ms / 1000); return s < 60 ? `${s} 秒` : `${Math.floor(s/60)} 分 ${s%60} 秒`; };
+const fmtGap = ms => { const m = ms / 60000; return m < 1 ? `${Math.round(ms/1000)}<small>秒</small>` : `${m.toFixed(m < 10 ? 1 : 0)}<small>分</small>`; };
+const fmtGapPlain = ms => { const m = ms / 60000; return m < 1 ? `${Math.round(ms/1000)} 秒` : `${m.toFixed(m < 10 ? 1 : 0)} 分`; };
+const mmss = ms => { const s = Math.floor(ms / 1000); return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; };
+
+function gaps(){ const L = S.list; const g = []; for (let i = 1; i < L.length; i++) g.push(L[i].start - L[i-1].start); return g; }
+
+// 判斷狀態：連續 3 次間隔 ≤ 門檻 → 出發；接近門檻 → 準備；其他 → 觀察
+function evaluate(){
+  const T = S.threshold * 60000, L = S.list, g = gaps(), now = Date.now();
+  if (!L.length) return ['watch', '🌿', '還沒有紀錄', '宮縮來的時候，按下面的按鈕就好。'];
+  const sinceLast = now - L[L.length - 1].start;
+  if (sinceLast > Math.max(30 * 60000, T * 3) && !S.active)
+    return ['watch', '🌿', '先休息一下', `已經 ${Math.round(sinceLast/60000)} 分鐘沒有宮縮了，節奏還不規律。`];
+  const last3 = g.slice(-3);
+  if (last3.length === 3 && last3.every(x => x <= T))
+    return ['go', '🧡', '可以準備出發了', `已經連續 3 次間隔在 ${S.threshold} 分鐘以內。打個電話給產房，慢慢出門。`];
+  const near = g.length && g[g.length - 1] <= T * 1.5;
+  const okCount = [...last3].reverse().findIndex(x => x > T); const streak = okCount === -1 ? last3.length : okCount;
+  if (near || streak > 0)
+    return ['prep', '🍯', '節奏越來越近了', streak > 0 ? `已經連續 ${streak} 次在 ${S.threshold} 分鐘以內，再觀察 ${3 - streak} 次。可以先檢查待產包。` : '間隔接近了，可以先檢查待產包、跟家人說一聲。'];
+  return ['watch', '🌿', '觀察中', '間隔還長，可以休息、吃點東西、洗個澡。'];
+}
+
+let lastState = null;
+function renderStatus(){
+  const [cls, dot, title, text] = evaluate();
+  $('status').className = 'status ' + cls; $('statusWrap').className = 'status-wrap ' + cls;
+  $('statusDot').textContent = dot; $('statusTitle').textContent = title; $('statusText').textContent = text;
+  if (lastState && lastState !== 'go' && cls === 'go') { vibrate([200, 100, 200, 100, 400]); }
+  lastState = cls;
+}
+
+function renderStats(){
+  const L = S.list, g = gaps(), T = S.threshold * 60000, now = Date.now();
+  const last3 = g.slice(-3);
+  $('sAvgGap').innerHTML = last3.length ? fmtGap(last3.reduce((a,b)=>a+b,0) / last3.length) : '–';
+  const durs = L.slice(-5).map(c => c.end - c.start);
+  $('sAvgDur').innerHTML = durs.length ? fmtDur(durs.reduce((a,b)=>a+b,0) / durs.length) : '–';
+  $('sLastGap').innerHTML = g.length ? fmtGap(g[g.length-1]) : '–';
+  $('sHour').innerHTML = `${L.filter(c => now - c.start <= 3600000).length}<small>次</small>`;
+  const recent = g.slice(-12);
+  if (recent.length < 2) { $('barsBox').innerHTML = '<p class="empty" style="margin-top:12px">記錄幾次之後，這裡會畫出間隔的變化</p>'; return; }
+  const max = Math.max(...recent, T * 1.2);
+  $('barsBox').innerHTML = `<div class="bars" aria-hidden="true">${recent.map(x => `<span class="${x<=T?'ok':''}" style="height:${Math.max(6, x/max*100)}%"></span>`).join('')}</div>
+    <div class="bars-cap"><span>較早</span><span>橘色＝${S.threshold} 分鐘以內</span><span>最近</span></div>`;
+}
+
+function renderLog(){
+  const L = S.list, T = S.threshold * 60000;
+  if (!L.length) { $('log').innerHTML = '<li class="empty" style="display:block">還沒有紀錄</li>'; return; }
+  const rows = [];
+  for (let i = L.length - 1; i >= 0 && rows.length < 30; i--) {
+    const c = L[i], gap = i > 0 ? c.start - L[i-1].start : null;
+    rows.push(`<li><span class="t">${fmtClock(c.start)}</span><span class="meta">持續 ${fmtDurPlain(c.end - c.start)}</span>
+      <span class="gap ${gap !== null && gap <= T ? 'ok' : ''}">${gap === null ? '第一次' : '隔 ' + fmtGapPlain(gap)}</span>
+      <button type="button" data-i="${i}" aria-label="刪除這筆">✕</button></li>`);
+  }
+  $('log').innerHTML = rows.join('');
+}
+
+function renderBag(){
+  $('check').innerHTML = BAG.map(([k, t, h]) => `<li><label><input type="checkbox" data-k="${k}" ${S.bag[k] ? 'checked' : ''}><span>${t}${h ? `<span class="hint">${h}</span>` : ''}</span></label></li>`).join('');
+}
+
+function renderAll(){ renderStatus(); renderStats(); renderLog(); $('thVal').textContent = S.threshold + ' 分'; }
+
+// 主按鈕與計時
+let cueTimer = null, cheer = '';
+function tick(){
+  const now = Date.now();
+  if (S.active) {
+    const el = now - S.active;
+    $('btnL1').innerHTML = `<span class="timer">${mmss(el)}</span>`; $('btnL2').textContent = '結束時按一下';
+    const phase = (el / 1000) % 10;
+    $('cue').innerHTML = phase < 4 ? '慢慢吸氣…<small>鼻子吸，肚子鼓起來</small>' : '長長吐氣…<small>嘴巴吐，肩膀放下來</small>';
+    $('forgot').classList.toggle('show', el > 3 * 60000);
+    const L = S.list; $('since').innerHTML = L.length ? `距上次開始 <span class="num">${fmtGapPlain(S.active - L[L.length-1].start)}</span>` : '第一次紀錄';
+  } else {
+    $('btnL1').textContent = '宮縮開始'; $('btnL2').textContent = '輕按一下';
+    $('cue').innerHTML = cheer ? `${cheer}` : '';
+    $('forgot').classList.remove('show');
+    const L = S.list;
+    $('since').innerHTML = L.length ? `距離上次宮縮開始 <span class="num">${mmss(now - L[L.length-1].start)}</span>` : '宮縮開始時按一下，結束時再按一下';
+  }
+  $('stage').classList.toggle('active', !!S.active);
+}
+
+function vibrate(p){ try { navigator.vibrate && navigator.vibrate(p); } catch {} }
+let wakeLock = null;
+async function keepAwake(){ try { if ('wakeLock' in navigator && !wakeLock) { wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', () => wakeLock = null); } } catch {} }
+
+$('mainBtn').addEventListener('click', () => {
+  keepAwake();
+  if (!S.active) { S.active = Date.now(); cheer = ''; vibrate(60); }
+  else {
+    const end = Date.now();
+    if (end - S.active >= 5000) { S.list.push({ start: S.active, end }); cheer = CHEERS[Math.floor(Math.random() * CHEERS.length)]; }
+    else toast('不到 5 秒，這次先不記錄');
+    S.active = null; vibrate([40, 60, 40]);
+  }
+  store.save(); tick(); renderAll();
+});
+$('cancelBtn').addEventListener('click', () => { S.active = null; store.save(); tick(); renderAll(); toast('已取消這次'); });
+
+// 刪除與復原
+let undo = null;
+$('log').addEventListener('click', e => {
+  const b = e.target.closest('button[data-i]'); if (!b) return;
+  const i = +b.dataset.i, item = S.list.splice(i, 1)[0]; store.save(); renderAll();
+  undo = () => { S.list.splice(i, 0, item); store.save(); renderAll(); };
+  toast(`已刪除 ${fmtClock(item.start)} 那筆`, '復原');
+});
+let toastT;
+function toast(msg, act){
+  $('toastMsg').textContent = msg; $('toastAct').textContent = act || ''; $('toastAct').style.display = act ? '' : 'none';
+  $('toast').classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => { $('toast').classList.remove('show'); undo = null; }, 4500);
+}
+$('toastAct').addEventListener('click', () => { undo && undo(); undo = null; $('toast').classList.remove('show'); });
+
+// 清除
+$('clearBtn').addEventListener('click', () => { if (!S.list.length) return toast('目前沒有紀錄'); $('sheetMsg').textContent = `要清除全部 ${S.list.length} 筆紀錄嗎？清除後無法復原。`; $('sheet').classList.add('show'); });
+$('sheetNo').addEventListener('click', () => $('sheet').classList.remove('show'));
+$('sheetYes').addEventListener('click', () => { S.list = []; S.active = null; cheer = ''; store.save(); $('sheet').classList.remove('show'); tick(); renderAll(); toast('已清除'); });
+
+// 複製摘要
+$('copyBtn').addEventListener('click', async () => {
+  const L = S.list; if (!L.length) return toast('目前沒有紀錄');
+  const g = gaps(), last3 = g.slice(-3);
+  const lines = [`宮縮紀錄（${new Date().toLocaleDateString('zh-TW')}）`,
+    last3.length ? `最近 3 次平均間隔 ${fmtGapPlain(last3.reduce((a,b)=>a+b,0)/last3.length)}` : '',
+    `共 ${L.length} 次，第一次 ${fmtClock(L[0].start)}`, ''];
+  L.slice(-15).forEach((c, k, arr) => { const idx = L.length - arr.length + k; const gap = idx > 0 ? c.start - L[idx-1].start : null;
+    lines.push(`${fmtClock(c.start)}　持續 ${fmtDurPlain(c.end - c.start)}　${gap === null ? '' : '間隔 ' + fmtGapPlain(gap)}`); });
+  const text = lines.filter((l, i) => l !== '' || i === 3).join('\n');
+  try { await navigator.clipboard.writeText(text); toast('已複製，可以貼到訊息裡'); }
+  catch { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); toast('已複製'); } catch { toast('複製失敗'); } ta.remove(); }
+});
+
+// 待產包
+$('check').addEventListener('change', e => { const k = e.target.dataset.k; if (!k) return; S.bag[k] = e.target.checked; store.save(); });
+
+// 門檻
+const setTh = v => { S.threshold = Math.min(20, Math.max(3, v)); store.save(); renderAll(); };
+$('minus').addEventListener('click', () => setTh(S.threshold - 1));
+$('plus').addEventListener('click', () => setTh(S.threshold + 1));
+
+// 夜間模式：預設跟系統，手動切換後記住
+function applyTheme(){
+  const night = S.theme ? S.theme === 'night' : matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.dataset.theme = night ? 'night' : 'day';
+  $('themeBtn').textContent = night ? '☀️ 白天' : '🌙 夜間';
+  document.querySelector('meta[name="theme-color"]').content = night ? '#231c18' : '#fbf5ec';
+}
+$('themeBtn').addEventListener('click', () => { S.theme = document.documentElement.dataset.theme === 'night' ? 'day' : 'night'; store.save(); applyTheme(); });
+matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', applyTheme);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { if (S.active) keepAwake(); tick(); renderAll(); } });
+
+applyTheme(); renderBag(); renderAll(); tick();
+setInterval(tick, 250);
+setInterval(renderStatus, 30000);
+</script>
+</body>
+</html>
