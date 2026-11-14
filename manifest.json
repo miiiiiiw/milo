@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-14T00:25:29.349Z",
+  "generated": "2026-11-14T00:35:50.969Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -20,6 +20,18 @@
         "Felix Rieseberg"
       ],
       "date": "2026-11-14"
+    },
+    {
+      "path": "product/grok-bot-guide.html",
+      "title": "GrokBot 學習導航",
+      "description": "八個學習主題、132 篇 X 長文的收藏榜與作者排行，依學習路線由淺入深",
+      "tags": [
+        "Grok Bot",
+        "AI",
+        "學習導航",
+        "收藏榜"
+      ],
+      "date": "2026-11-13"
     },
     {
       "path": "reading/adrian-html-agent-homepage.html",
@@ -212,18 +224,6 @@
         "题叶"
       ],
       "date": "2026-11-12"
-    },
-    {
-      "path": "product/grok-bot-guide.html",
-      "title": "GrokBot 學習導航",
-      "description": "八個學習主題、132 篇 X 長文的收藏榜與作者排行，依學習路線由淺入深",
-      "tags": [
-        "Grok Bot",
-        "AI",
-        "學習導航",
-        "收藏榜"
-      ],
-      "date": "2026-11-11"
     },
     {
       "path": "reading/agent-memory-dreaming.html",
