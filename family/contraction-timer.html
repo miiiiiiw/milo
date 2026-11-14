@@ -70,11 +70,13 @@ h2{font-family:var(--serif);font-size:1.1rem;margin:0 0 12px}
 :root[data-theme="night"] .breath{background:radial-gradient(circle,rgba(217,138,100,.22) 0%,transparent 70%)}
 /* 呼吸節奏：吸 4 秒、吐 6 秒；--bd 由 JS 依實際經過時間設定，重新整理也同步 */
 .orb{border-radius:50%;animation:idle 8s ease-in-out infinite}
+.breath{animation:idleHalo 8s ease-in-out infinite}
 .active .breath{opacity:1;animation:halo 10s infinite;animation-delay:var(--bd,0s)}
 .active .orb{animation:breathe 10s infinite;animation-delay:var(--bd,0s)}
-@keyframes idle{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
-@keyframes breathe{0%{transform:scale(1);animation-timing-function:cubic-bezier(.37,0,.63,1)}40%{transform:scale(1.06);animation-timing-function:cubic-bezier(.37,0,.63,1)}100%{transform:scale(1)}}
-@keyframes halo{0%{transform:scale(.72);animation-timing-function:cubic-bezier(.37,0,.63,1)}40%{transform:scale(1.12);animation-timing-function:cubic-bezier(.37,0,.63,1)}100%{transform:scale(.72)}}
+@keyframes idle{0%,100%{transform:scale(.96)}50%{transform:scale(1.04)}}
+@keyframes idleHalo{0%,100%{transform:scale(.8);opacity:.35}50%{transform:scale(1);opacity:.7}}
+@keyframes breathe{0%{transform:scale(.9);animation-timing-function:cubic-bezier(.37,0,.63,1)}40%{transform:scale(1.12);animation-timing-function:cubic-bezier(.37,0,.63,1)}100%{transform:scale(.9)}}
+@keyframes halo{0%{transform:scale(.78);opacity:.55;animation-timing-function:cubic-bezier(.37,0,.63,1)}40%{transform:scale(1.3);opacity:1;animation-timing-function:cubic-bezier(.37,0,.63,1)}100%{transform:scale(.78);opacity:.55}}
 .main-btn{position:relative;width:180px;height:180px;border-radius:50%;border:0;cursor:pointer;font:inherit;color:#fff;
   background:radial-gradient(circle at 35% 30%,#f0a882,var(--apricot) 60%,#cf7148);box-shadow:0 14px 30px rgba(207,113,72,.35),inset 0 -6px 14px rgba(0,0,0,.08);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:transform .15s,box-shadow 1s ease;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
@@ -174,7 +176,7 @@ h2{font-family:var(--serif);font-size:1.1rem;margin:0 0 12px}
 .wrap>*{transition:opacity .9s ease}
 body.focus .wrap>*:not(#stage){opacity:.38}
 @media (max-width:560px){.wrap{padding-top:32px}}
-@media (prefers-reduced-motion:reduce){.orb,.active .orb,.active .breath,.status.go .dot{animation:none}.active .breath{transform:scale(1)}.since,.cue,.wrap>*{transition:none}}
+@media (prefers-reduced-motion:reduce){.orb,.active .orb,.breath,.active .breath,.status.go .dot{animation:none}.active .breath{transform:scale(1)}.since,.cue,.wrap>*{transition:none}}
 
 /* ── milo 頁首小標規範（見 README「頁首小標」），請勿個別調整 ── */
 .page-kicker{font-family:var(--mono);font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
