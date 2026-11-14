@@ -60,6 +60,8 @@ with sync_playwright() as p:
     check('2 結束後存入 1 筆，持續約 55 秒', len(s['list']) == 1 and abs((s['list'][0]['end'] - s['list'][0]['start']) / 1000 - 55) < 1)
     check('2 結束後顯示鼓勵的話', len(text(pg, '#cue')) > 3, text(pg, '#cue'))
     check('2 紀錄列表出現「第一次」', '第一次' in text(pg, '#log'))
+    import re
+    check('2 紀錄時間精確到秒（時:分:秒）', re.fullmatch(r'\d{2}:\d{2}:\d{2}', pg.locator('#log .t').first.inner_text()) is not None, pg.locator('#log .t').first.inner_text())
 
     # 3. 誤觸：不到 5 秒不記錄
     pg.locator('#mainBtn').click(force=True); pg.clock.run_for(2000); pg.locator('#mainBtn').click(force=True); pg.clock.run_for(300)
@@ -137,6 +139,7 @@ with sync_playwright() as p:
     pg.click('#copyBtn'); pg.clock.run_for(300)
     clip = pg.evaluate("navigator.clipboard.readText()")
     check('12 複製完整紀錄到剪貼簿', '宮縮紀錄' in clip and '持續' in clip, clip[:60])
+    check('12 完整紀錄的時間精確到秒', re.search(r'\n\d{2}:\d{2}:\d{2}　持續', clip) is not None, clip[:120])
 
     # 13. 清除全部（含取消）
     pg.click('#clearBtn'); pg.click('#sheetNo')

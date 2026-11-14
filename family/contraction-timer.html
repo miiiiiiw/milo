@@ -359,6 +359,7 @@ const CHEERS = [
 ];
 
 const fmtClock = t => new Date(t).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', hour12: false });
+const fmtSec = t => new Date(t).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });   // 紀錄列表與完整紀錄：精確到秒
 const fmtDur = ms => { const s = Math.round(ms / 1000); return s < 60 ? `${s}<small>秒</small>` : `${Math.floor(s/60)}<small>分</small>${String(s%60).padStart(2,'0')}<small>秒</small>`; };
 const fmtDurPlain = ms => { const s = Math.round(ms / 1000); return s < 60 ? `${s} 秒` : `${Math.floor(s/60)} 分 ${s%60} 秒`; };
 const fmtGap = ms => { const m = ms / 60000; return m < 1 ? `${Math.round(ms/1000)}<small>秒</small>` : `${m.toFixed(m < 10 ? 1 : 0)}<small>分</small>`; };
@@ -430,7 +431,7 @@ function renderLog(){
   const rows = []; let n = 0;
   for (let i = L.length - 1; i >= 0 && n < 30; i--, n++) {
     const c = L[i], gap = i > 0 ? c.start - L[i-1].start : null, newSeg = gap !== null && gap > SESSION_GAP;
-    rows.push(`<li><span class="t">${fmtClock(c.start)}</span><span class="meta">持續 ${fmtDurPlain(c.end - c.start)}</span>
+    rows.push(`<li><span class="t">${fmtSec(c.start)}</span><span class="meta">持續 ${fmtDurPlain(c.end - c.start)}</span>
       <span class="gap ${gap !== null && gap <= T ? 'ok' : ''}">${gap === null ? '第一次' : newSeg ? '新的一段' : '隔 ' + fmtGapPlain(gap)}</span>
       <button type="button" data-i="${i}" aria-label="刪除這筆">✕</button></li>`);
     if (newSeg) rows.push(`<li class="sep">上一段・${fmtDay(L[i-1].end)} 結束</li>`);
@@ -513,7 +514,7 @@ $('log').addEventListener('click', e => {
   const b = e.target.closest('button[data-i]'); if (!b) return;
   const i = +b.dataset.i, item = S.list.splice(i, 1)[0]; store.save(); renderAll();
   undo = () => { S.list.splice(i, 0, item); store.save(); renderAll(); };
-  toast(`已刪除 ${fmtClock(item.start)} 那筆`, '復原');
+  toast(`已刪除 ${fmtSec(item.start)} 那筆`, '復原');
 });
 let toastT;
 function toast(msg, act){
@@ -535,7 +536,7 @@ $('copyBtn').addEventListener('click', async () => {
   if (last3.length) lines.push(`最近 3 次平均間隔 ${fmtGapPlain(last3.reduce((a,b)=>a+b,0)/last3.length)}`);
   lines.push(`這一段共 ${L.length} 次，從 ${fmtDay(L[0].start)} 開始`, '');
   L.slice(-15).forEach((c, k, arr) => { const idx = L.length - arr.length + k; const gap = idx > 0 ? c.start - L[idx-1].start : null;
-    lines.push(`${fmtClock(c.start)}　持續 ${fmtDurPlain(c.end - c.start)}${gap === null ? '' : '　間隔 ' + fmtGapPlain(gap)}`); });
+    lines.push(`${fmtSec(c.start)}　持續 ${fmtDurPlain(c.end - c.start)}${gap === null ? '' : '　間隔 ' + fmtGapPlain(gap)}`); });
   const text = lines.join('\n');
   try { await navigator.clipboard.writeText(text); toast('已複製，可以貼到訊息裡'); }
   catch { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); toast('已複製'); } catch { toast('複製失敗'); } ta.remove(); }
