@@ -36,6 +36,7 @@
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
+[hidden]{display:none!important}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6;
   background-image:radial-gradient(circle at 15% 0%,rgba(227,137,95,.10),transparent 45%),radial-gradient(circle at 100% 30%,rgba(127,156,124,.10),transparent 40%);
   background-attachment:fixed;transition:background-color .4s,color .4s}
@@ -43,6 +44,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);l
 h1{font-family:var(--serif);font-weight:700;font-size:1.75rem;line-height:1.3;margin:0}
 .sub{color:var(--muted);margin:6px 0 0;font-size:.95rem}
 .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.top-btns{flex:none;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
 .icon-btn{flex:none;border:1px solid var(--rule);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 12px;font:inherit;font-size:.85rem;cursor:pointer}
 section{margin-top:22px}
 .card{background:var(--card);border-radius:24px;box-shadow:var(--shadow);padding:20px}
@@ -124,6 +126,15 @@ h2{font-family:var(--serif);font-size:1.1rem;margin:0 0 12px}
 .btn.danger{background:var(--rose-soft);color:var(--rose-ink)}
 .btn.grow{flex:1}
 
+/* 出生交響曲 */
+.symph{background:linear-gradient(160deg,var(--card) 0%,var(--card-2) 100%)}
+.symph p{margin:0 0 12px;font-size:.92rem}
+.symph .play-btn[aria-pressed="true"]{background:var(--sage);color:#fff}
+.symph .bar{height:4px;border-radius:4px;background:var(--rule);overflow:hidden;margin-top:12px;display:none}
+.symph .bar.show{display:block}
+.symph .bar i{display:block;height:100%;width:0;background:var(--apricot);transition:width .25s linear}
+.icon-btn[aria-pressed="false"]{color:var(--muted)}
+
 /* LINE 內建瀏覽器提醒 */
 .inapp{margin-top:18px;background:var(--honey-soft);color:var(--honey-ink);border-radius:20px;padding:16px 18px}
 .inapp p{margin:0 0 12px;font-size:.9rem}
@@ -191,7 +202,10 @@ body.focus .wrap>*:not(#stage){opacity:.38}
       <h1>等二寶的宮縮計時</h1>
       <p class="sub">慢慢來，每一次都記下來就好。</p>
     </div>
-    <button class="icon-btn" id="themeBtn" type="button" aria-label="切換夜間模式">🌙 夜間</button>
+    <div class="top-btns">
+      <button class="icon-btn" id="soundBtn" type="button" aria-pressed="true" aria-label="切換聲音">🔈 聲音開</button>
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="切換夜間模式">🌙 夜間</button>
+    </div>
   </div>
 
   <div class="inapp" id="inapp" hidden>
@@ -283,6 +297,15 @@ body.focus .wrap>*:not(#stage){opacity:.38}
     <p class="note">自然產包（免洗內褲、沖洗器、優碘、看護墊、沖洗棉支、產墊、衛生紙）診所會準備，不用自己帶。</p>
   </section>
 
+  <section class="card symph">
+    <h2>出生交響曲 🎵</h2>
+    <p>每一次記錄的宮縮，都會變成一首歌裡的一個音：間隔越短，節奏越密；從輕柔的木琴，慢慢轉成溫暖的鋼琴，最後以一段「出生和弦」迎接二寶。</p>
+    <p>宮縮時只會有一個很輕的呼吸長音陪著呼吸，宮縮一結束就安靜；覺得吵就按右上角的「🔈」關掉，紀錄一樣會留著。完整的播放功能，會在二寶出生後加上。</p>
+    <button class="btn soft play-btn" id="demoBtn" type="button" aria-pressed="false">▶ 試聽範例</button>
+    <div class="bar" id="demoBar"><i></i></div>
+    <p class="note" style="margin:10px 0 0">範例用的是虛構的紀錄，大約一分鐘。請先戴耳機或調小音量。</p>
+  </section>
+
   <section class="card">
     <h2>設定</h2>
     <div class="setting">
@@ -294,6 +317,14 @@ body.focus .wrap>*:not(#stage){opacity:.38}
       </div>
     </div>
     <p class="note">連續 3 次間隔都在這個時間以內，就會提醒出發；如果連續 2 次在 5 分鐘以內，也會直接提醒出發。紀錄只存在這支手機裡。可以用瀏覽器的「加入主畫面」，像 App 一樣打開。</p>
+    <h2 style="margin-top:20px">備份紀錄</h2>
+    <p class="note" style="margin-top:0">紀錄是出生交響曲的樂譜。換手機或清除瀏覽器資料前，先匯出一份；也可以傳到 LINE 給自己保存。</p>
+    <div class="row-btns">
+      <button class="btn soft grow" id="exportBtn" type="button">⬇️ 匯出備份</button>
+      <button class="btn soft grow" id="importBtn" type="button">⬆️ 匯入備份</button>
+      <input type="file" id="importFile" accept=".json,application/json" hidden>
+    </div>
+    <button class="btn soft" id="restoreBtn" type="button" style="margin-top:10px;width:100%" hidden></button>
   </section>
 
   <p class="foot">這只是記錄的小幫手，一切以醫師和產房的判斷為準。<br>妳和寶寶都會好好的。🤍</p>
@@ -309,7 +340,9 @@ const store = {
   load(){ try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } },
   save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} }
 };
-const S = Object.assign({ list: [], active: null, threshold: 10, theme: null, bag: {} }, store.load());
+const S = Object.assign({ list: [], active: null, threshold: 10, theme: null, bag: {}, sound: true, archive: [] }, store.load());
+// 聲音模組在另一段 script，任何錯誤都不影響計時
+const snd = (fn, ...a) => { try { if (typeof Sound !== 'undefined' && Sound[fn]) Sound[fn](...a); } catch (e) { console.warn('sound', e); } };
 
 const BAG = [
   ['id', '夫妻雙方身分證', '需完成配偶登記'],
@@ -446,6 +479,7 @@ function tick(){
     setSoft('since', p === null ? '宮縮開始時按一下，結束時再按一下' : p < 60000 ? '上一次宮縮剛剛才開始' : `上一次宮縮在 <span class="num">${fmtAgo(p)}</span>前開始`);
   }
   syncBreath();
+  snd('tick');
   $('stage').classList.toggle('active', !!S.active);
   document.body.classList.toggle('focus', !!S.active);
 }
@@ -468,6 +502,7 @@ $('mainBtn').addEventListener('click', () => {
     vibrate([40, 60, 40]);
   }
   store.save(); tick(); renderAll();
+  snd('gesture');
 });
 $('oneMinBtn').addEventListener('click', () => { finish(S.active + 60000); store.save(); tick(); renderAll(); toast('已記為約 1 分鐘'); });
 $('cancelBtn').addEventListener('click', () => { S.active = null; store.save(); tick(); renderAll(); toast('已取消這次'); });
@@ -488,9 +523,9 @@ function toast(msg, act){
 $('toastAct').addEventListener('click', () => { undo && undo(); undo = null; $('toast').classList.remove('show'); });
 
 // 清除
-$('clearBtn').addEventListener('click', () => { if (!S.list.length) return toast('目前沒有紀錄'); $('sheetMsg').textContent = `要清除全部 ${S.list.length} 筆紀錄嗎？清除後無法復原。`; $('sheet').classList.add('show'); });
+$('clearBtn').addEventListener('click', () => { if (!S.list.length) return toast('目前沒有紀錄'); $('sheetMsg').textContent = `要清除全部 ${S.list.length} 筆紀錄嗎？清除前會自動封存一份，之後可以在「設定」還原。`; $('sheet').classList.add('show'); });
 $('sheetNo').addEventListener('click', () => $('sheet').classList.remove('show'));
-$('sheetYes').addEventListener('click', () => { S.list = []; S.active = null; cheer = ''; store.save(); $('sheet').classList.remove('show'); tick(); renderAll(); toast('已清除'); });
+$('sheetYes').addEventListener('click', () => { S.archive = [{ at: Date.now(), list: S.list }, ...(S.archive || [])].slice(0, 5); renderRestore(); S.list = []; S.active = null; cheer = ''; store.save(); $('sheet').classList.remove('show'); tick(); renderAll(); toast('已清除'); });
 
 // 複製完整紀錄（目前這一段）
 $('copyBtn').addEventListener('click', async () => {
@@ -537,6 +572,43 @@ if (/\bLine\//i.test(navigator.userAgent)) {
   $('openExt').href = u.toString();
 }
 
+// 備份：匯出成檔案（手機上可分享到 LINE 或存到檔案），也能匯回來
+function mergeList(items){
+  const seen = new Set(S.list.map(c => c.start)); let n = 0;
+  for (const c of items) if (c && Number.isFinite(c.start) && Number.isFinite(c.end) && c.end > c.start && !seen.has(c.start)) { S.list.push({ start: c.start, end: c.end }); seen.add(c.start); n++; }
+  S.list.sort((a, b) => a.start - b.start); store.save(); renderAll(); return n;
+}
+function renderRestore(){
+  const a = (S.archive || [])[0];
+  $('restoreBtn').hidden = !a;
+  if (a) $('restoreBtn').textContent = `↩︎ 還原 ${fmtDay(a.at)} 清除的 ${a.list.length} 筆紀錄`;
+}
+$('restoreBtn').addEventListener('click', () => {
+  const a = S.archive.shift(); if (!a) return;
+  const n = mergeList(a.list); renderRestore(); toast(`已還原 ${n} 筆紀錄`);
+});
+$('exportBtn').addEventListener('click', async () => {
+  if (!S.list.length && !(S.archive || []).length) return toast('目前沒有紀錄');
+  const d = new Date(), pad = x => String(x).padStart(2, '0');
+  const name = `宮縮紀錄-${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}.json`;
+  const body = JSON.stringify({ app: 'milo-contraction-timer', version: 1, exportedAt: d.toISOString(), list: S.list, archive: S.archive || [] }, null, 1);
+  const file = new File([body], name, { type: 'application/json' });
+  try { if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: '宮縮紀錄備份' }); return; } }
+  catch (e) { if (e.name === 'AbortError') return; }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = name; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000); toast('已匯出備份檔');
+});
+$('importBtn').addEventListener('click', () => $('importFile').click());
+$('importFile').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  try {
+    const d = JSON.parse(await f.text());
+    if (!d || !Array.isArray(d.list)) throw new Error('format');
+    const n = mergeList([...d.list, ...(d.archive || []).flatMap(x => x.list || [])]);
+    toast(n ? `已匯入 ${n} 筆紀錄` : '沒有新的紀錄（都已經在了）');
+  } catch { toast('這個檔案看起來不是宮縮紀錄備份'); }
+});
+
 // 待產包
 $('check').addEventListener('change', e => { const k = e.target.dataset.k; if (!k) return; S.bag[k] = e.target.checked; store.save(); });
 
@@ -556,9 +628,204 @@ $('themeBtn').addEventListener('click', () => { S.theme = document.documentEleme
 matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', applyTheme);
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { if (S.active) keepAwake(); tick(); renderAll(); } });
 
-applyTheme(); renderBag(); renderAll(); tick();
+applyTheme(); renderBag(); renderAll(); renderRestore(); tick();
 setInterval(tick, 250);
 setInterval(renderStatus, 30000);
+</script>
+<script>
+// ── 出生交響曲：聲音模組（第一階段：宮縮中的呼吸伴奏、範例試聽）──
+// 獨立的 script：這裡出錯不會影響計時、提醒和撥號。
+const Sound = (() => {
+  let ctx = null, master = null;
+  const AC = window.AudioContext || window.webkitAudioContext;
+  const ensure = () => {
+    if (!AC) return null;
+    if (!ctx) {
+      ctx = new AC(); master = ctx.createGain(); master.gain.value = 0.8;
+      const lim = ctx.createDynamicsCompressor();   // 溫和的限幅，避免和弦疊起來太大聲
+      lim.threshold.value = -14; lim.knee.value = 12; lim.ratio.value = 4; lim.attack.value = 0.01; lim.release.value = 0.4;
+      master.connect(lim).connect(ctx.destination);
+    }
+    if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+    return ctx;
+  };
+  const midiHz = m => 440 * Math.pow(2, (m - 69) / 12);
+
+  // 呼吸曲線：吸氣時升起、吐氣時落下（0 → 1 → 0）
+  function breathCurve(len, inhaleRatio, n = 96){
+    const a = new Float32Array(n), inh = len * inhaleRatio;
+    for (let i = 0; i < n; i++) {
+      const t = i / (n - 1) * len;
+      a[i] = t < inh ? Math.sin(Math.PI / 2 * t / inh) ** 2 : Math.cos(Math.PI / 2 * (t - inh) / (len - inh)) ** 2;
+    }
+    return a;
+  }
+
+  // 一個柔和的長音聲部（兩個正弦波＋低通），音量與音高跟著呼吸起伏
+  function makePad(dest, rootMidi, level){
+    const out = ctx.createGain(); out.gain.value = 0;
+    const fader = ctx.createGain(); fader.gain.value = 1;   // 停止時只動這一層，避免和呼吸曲線衝突
+    const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 900; lp.Q.value = 0.3;
+    const o1 = ctx.createOscillator(), o2 = ctx.createOscillator(), g2 = ctx.createGain();
+    o1.type = 'sine'; o2.type = 'sine'; o1.frequency.value = midiHz(rootMidi); o2.frequency.value = midiHz(rootMidi + 7); g2.gain.value = 0.45;
+    o1.connect(lp); o2.connect(g2).connect(lp); lp.connect(out).connect(fader).connect(dest);
+    o1.start(); o2.start();
+    return {
+      out, level,
+      cycle(at, len, inhaleRatio){   // 安排一個呼吸循環
+        const c = breathCurve(len, inhaleRatio);
+        const g = c.map(v => level * (0.18 + 0.82 * v));
+        const f1 = c.map(v => midiHz(rootMidi) * (1 + 0.03 * v)), f2 = c.map(v => midiHz(rootMidi + 7) * (1 + 0.03 * v));
+        out.gain.setValueCurveAtTime(g, at, len - 0.001);
+        o1.frequency.setValueCurveAtTime(f1, at, len - 0.001);
+        o2.frequency.setValueCurveAtTime(f2, at, len - 0.001);
+      },
+      stop(fade = 1.2){
+        const now = ctx.currentTime;
+        fader.gain.setValueAtTime(1, now); fader.gain.linearRampToValueAtTime(0, now + fade);
+        o1.stop(now + fade + 0.1); o2.stop(now + fade + 0.1);
+        setTimeout(() => { try { fader.disconnect(); } catch {} }, (fade + 0.3) * 1000);
+      }
+    };
+  }
+
+  // ── 宮縮中的呼吸伴奏：吸 4 秒、吐 6 秒，對齊畫面上的呼吸圓圈 ──
+  let breath = null;   // { pad, base, next }
+  const LEN = 10, INH = 0.4, LEVEL = 0.05;
+  function startBreath(){
+    if (breath || !S.sound || !S.active || demo || !ensure() || ctx.state !== 'running') return;
+    const pad = makePad(master, 55, LEVEL);   // G3
+    const now = ctx.currentTime, elapsed = Math.max(0, (Date.now() - S.active) / 1000);
+    let base = now - elapsed, k;   // base：這次宮縮開始在音訊時間軸上的位置
+    if (elapsed % LEN < 0.3) { k = Math.floor(elapsed / LEN); base = now + 0.06 - k * LEN; }   // 剛好在循環開頭：從現在開始
+    else k = Math.ceil((now + 0.05 - base) / LEN);                                          // 循環中途（例如重新整理）：等下一次吸氣
+    breath = { pad, base, next: k };
+    const firstAt = base + k * LEN;
+    pad.out.gain.setValueAtTime(0, now); pad.out.gain.linearRampToValueAtTime(LEVEL * 0.18, firstAt - 0.005);
+    schedule();
+  }
+  function schedule(){
+    if (!breath) return;
+    while (breath.base + breath.next * LEN < ctx.currentTime + 12) {
+      const at = breath.base + breath.next * LEN;
+      if (at >= ctx.currentTime + 0.02) breath.pad.cycle(at, LEN, INH);
+      breath.next++;
+    }
+  }
+  function stopBreath(){ if (breath) { breath.pad.stop(1.5); breath = null; } }
+
+  // ── 譜曲：把宮縮紀錄變成旋律（產後播放與試聽共用）──
+  const PENTA = [0, 2, 4, 7, 9];
+  const degMidi = d => 60 + 12 * Math.floor(d / 5) + PENTA[((d % 5) + 5) % 5];
+  function rng(seed){ let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function compose(list){
+    const BEAT = 60 / 72, rand = rng(list.reduce((a, c) => (a + Math.floor(c.start / 1000)) % 2147483647, 7));
+    const slow = list.length < 6 ? 2 : 1;           // 音很少時拉長，歌依然完整
+    const notes = []; let t = BEAT * 8, deg = 2;     // 先有 8 拍的呼吸前奏
+    list.forEach((c, i) => {
+      const gap = i ? (c.start - list[i-1].start) / 60000 : 20;
+      if (i) t += Math.min(6, Math.max(1, Math.round(gap / 3))) * BEAT * slow;
+      const piano = Math.min(1, Math.max(0, (15 - gap) / 10));   // 間隔 15 分→木琴、5 分→鋼琴
+      const steps = [-2, -1, 1, 1, 2];
+      deg = Math.min(9, Math.max(0, deg + steps[Math.floor(rand() * steps.length)] + (piano > 0.5 && rand() < 0.3 ? 1 : 0)));
+      const len = Math.min(2, Math.max(0.5, (c.end - c.start) / 45000)) * BEAT;
+      notes.push({ t, midi: degMidi(deg), len, piano, i, start: c.start, gap: i ? gap : null, dur: (c.end - c.start) / 1000 });
+    });
+    const chordAt = t + BEAT * 3;
+    return { notes, chordAt, total: chordAt + 8, beat: BEAT, chord: [48, 55, 64, 67, 74], sparkle: [84, 88, 91] };
+  }
+
+  // ── 音色 ──
+  function xylo(dest, at, midi, len, g){
+    const f = midiHz(midi), env = ctx.createGain(); env.connect(dest);
+    [[1, 1], [3.93, 0.22], [9.2, 0.05]].forEach(([r, a]) => { const o = ctx.createOscillator(); o.frequency.value = f * r; const gg = ctx.createGain(); gg.gain.value = a; o.connect(gg).connect(env); o.start(at); o.stop(at + 2); });
+    env.gain.setValueAtTime(0.0001, at); env.gain.exponentialRampToValueAtTime(g, at + 0.006); env.gain.exponentialRampToValueAtTime(0.0001, at + 0.8 + len * 0.3);
+  }
+  function piano(dest, at, midi, len, g){
+    const f = midiHz(midi), env = ctx.createGain(), lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass'; lp.frequency.setValueAtTime(2600, at); lp.frequency.exponentialRampToValueAtTime(700, at + 1.5);
+    lp.connect(env).connect(dest);
+    const end = at + len + 2.2;
+    [[1, 1], [2, 0.45], [3, 0.22], [4, 0.12], [5, 0.06]].forEach(([r, a], k) => { const o = ctx.createOscillator(); o.type = k ? 'sine' : 'triangle'; o.frequency.value = f * r * (1 + (k % 2 ? 0.0007 : -0.0005)); const gg = ctx.createGain(); gg.gain.value = a; o.connect(gg).connect(lp); o.start(at); o.stop(end + 0.1); });
+    env.gain.setValueAtTime(0.0001, at); env.gain.exponentialRampToValueAtTime(g, at + 0.012);
+    env.gain.setTargetAtTime(g * 0.35, at + 0.012, 0.35); env.gain.setTargetAtTime(0.0001, at + len + 0.4, 0.5);
+  }
+
+  // ── 播放（試聽用；產後播放頁也會用同一套）──
+  let demo = null;
+  function play(list, onEnd){
+    if (!ensure()) return false;
+    stopBreath(); stopPlay();
+    const song = compose(list), bus = ctx.createGain(); bus.gain.value = 1; bus.connect(master);
+    const t0 = ctx.currentTime + 0.15, pad = makePad(bus, 48, 0.06), PAD = song.beat * 8;
+    for (let at = 0; at < song.total; at += PAD) pad.cycle(t0 + at, PAD, 0.4);
+    song.notes.forEach(n => {
+      const g = 0.2;
+      if (n.piano < 1) xylo(bus, t0 + n.t, n.midi + 12, n.len, g * (1 - n.piano) + 0.0001);
+      if (n.piano > 0) piano(bus, t0 + n.t, n.midi, n.len, g * n.piano + 0.0001);
+    });
+    song.chord.forEach((m, k) => piano(bus, t0 + song.chordAt + k * 0.13, m, 4.5, 0.08));
+    song.sparkle.forEach((m, k) => xylo(bus, t0 + song.chordAt + 1.4 + k * 0.22, m, 0.5, 0.06));
+    bus.gain.setValueAtTime(1, t0 + song.total - 2.5); bus.gain.linearRampToValueAtTime(0, t0 + song.total);
+    demo = { bus, pad, t0, song, timer: setTimeout(() => { stopPlay(); onEnd && onEnd(); }, (song.total + 0.4) * 1000) };
+    return true;
+  }
+  function stopPlay(){
+    if (!demo) return;
+    clearTimeout(demo.timer); const now = ctx.currentTime;
+    demo.bus.gain.cancelScheduledValues(now); demo.bus.gain.setValueAtTime(demo.bus.gain.value, now); demo.bus.gain.linearRampToValueAtTime(0, now + 0.6);
+    demo.pad.stop(0.6); const b = demo.bus; setTimeout(() => b.disconnect(), 900); demo = null;
+  }
+  const progress = () => demo ? Math.min(1, (ctx.currentTime - demo.t0) / demo.song.total) : 0;
+
+  return {
+    compose, play, stopPlay, progress,
+    get playing(){ return !!demo; },
+    get breathing(){ return !!breath; },
+    get state(){ return ctx ? ctx.state : 'none'; },
+    gesture(){ if (S.sound && S.active) { ensure(); startBreath(); } if (!S.active) stopBreath(); },
+    tick(){ if (S.active && S.sound) { if (breath) schedule(); else if (ctx && ctx.state === 'running') startBreath(); } else stopBreath(); },
+    off(){ stopBreath(); stopPlay(); }
+  };
+})();
+
+// 範例：一段虛構、典型的第二胎產程（間隔從 20 分鐘慢慢變成 4 分鐘）
+const DEMO_LIST = (() => {
+  const gaps = [0, 20, 18, 16, 14, 12, 11, 10, 9, 8, 7, 6, 5, 4.5, 4];
+  let t = Date.UTC(2026, 10, 20, 14, 0); const out = [];
+  gaps.forEach((g, i) => { t += g * 60000; const d = 40 + i * 2.5; out.push({ start: t, end: t + d * 1000 }); });
+  return out;
+})();
+
+(() => {
+  const btn = $('demoBtn'), bar = $('demoBar');
+  let raf = null;
+  const reset = () => { btn.textContent = '▶ 試聽範例'; btn.setAttribute('aria-pressed', 'false'); bar.classList.remove('show'); clearInterval(raf); };
+  btn.addEventListener('click', () => {
+    try {
+      if (Sound.playing) { Sound.stopPlay(); reset(); return; }
+      if (!S.sound) { toast('聲音目前是關閉的，按右上角「🔇」打開'); return; }
+      if (S.active) { toast('宮縮進行中，結束後再試聽'); return; }
+      if (!Sound.play(DEMO_LIST, reset)) { toast('這個瀏覽器不支援播放'); return; }
+      btn.textContent = '■ 停止'; btn.setAttribute('aria-pressed', 'true'); bar.classList.add('show');
+      raf = setInterval(() => { bar.firstElementChild.style.width = (Sound.progress() * 100) + '%'; }, 250);
+    } catch (e) { console.warn(e); reset(); }
+  });
+  // 重新整理後還在宮縮中：任何一次觸碰都讓呼吸伴奏接上
+  document.addEventListener('pointerdown', () => { if (S.active && S.sound) Sound.gesture(); }, { passive: true });
+  // 按下宮縮按鈕時，試聽立刻停止
+  $('mainBtn').addEventListener('click', () => { if (Sound.playing) { Sound.stopPlay(); reset(); } }, true);
+
+  // 聲音開關：一眼就找得到，一按全部安靜
+  const sb = $('soundBtn');
+  const paint = () => { sb.textContent = S.sound ? '🔈 聲音開' : '🔇 聲音關'; sb.setAttribute('aria-pressed', String(!!S.sound)); };
+  sb.addEventListener('click', () => {
+    S.sound = !S.sound; store.save(); paint();
+    if (!S.sound) { Sound.off(); reset(); toast('已關閉聲音，紀錄照常保存'); }
+    else { Sound.gesture(); toast('已開啟聲音'); }
+  });
+  paint();
+})();
 </script>
 </body>
 </html>
