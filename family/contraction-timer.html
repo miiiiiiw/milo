@@ -110,6 +110,12 @@ h2{font-family:var(--serif);font-size:1.1rem;margin:0 0 12px}
 .btn.danger{background:var(--rose-soft);color:var(--rose-ink)}
 .btn.grow{flex:1}
 
+/* LINE 內建瀏覽器提醒 */
+.inapp{margin-top:18px;background:var(--honey-soft);color:var(--honey-ink);border-radius:20px;padding:16px 18px}
+.inapp p{margin:0 0 12px;font-size:.9rem}
+.inapp p b{display:block;font-size:1rem}
+.inapp .note{color:var(--honey-ink);opacity:.85}
+
 /* 紅旗 */
 .flags{background:var(--rose-soft);color:var(--rose-ink);border-radius:24px;padding:18px 20px}
 .flags h2{color:var(--rose-ink)}
@@ -171,6 +177,12 @@ h2{font-family:var(--serif);font-size:1.1rem;margin:0 0 12px}
     <button class="icon-btn" id="themeBtn" type="button" aria-label="切換夜間模式">🌙 夜間</button>
   </div>
 
+  <div class="inapp" id="inapp" hidden>
+    <p><b>目前是在 LINE 裡打開的</b>LINE 的視窗可能會清掉紀錄，請改用手機的瀏覽器開啟，再加入主畫面。</p>
+    <a class="btn primary" id="openExt" href="#">用瀏覽器開啟</a>
+    <p class="note" style="margin:8px 0 0">沒反應的話：按右上角「⋯」→「用預設瀏覽器開啟」</p>
+  </div>
+
   <section class="status-wrap" id="statusWrap">
     <div class="status watch" id="status" role="status" aria-live="polite">
       <div class="dot" id="statusDot">🌿</div>
@@ -178,7 +190,7 @@ h2{font-family:var(--serif);font-size:1.1rem;margin:0 0 12px}
     </div>
     <div class="go-actions">
       <a class="btn primary grow" href="tel:0233932211,105">📞 打給產房</a>
-      <a class="btn soft grow" href="#bag">🎒 看帶什麼</a>
+      <button class="btn soft grow share-btn" type="button">📤 通知家人</button>
     </div>
   </section>
 
@@ -210,9 +222,10 @@ h2{font-family:var(--serif);font-size:1.1rem;margin:0 0 12px}
     <h2>紀錄</h2>
     <ul class="log" id="log"></ul>
     <div class="row-btns">
-      <button class="btn soft grow" id="copyBtn" type="button">📋 複製給護理師看</button>
-      <button class="btn danger" id="clearBtn" type="button">清除全部</button>
+      <button class="btn primary grow share-btn" type="button">📤 傳給家人</button>
+      <button class="btn soft grow" id="copyBtn" type="button">📋 複製完整紀錄</button>
     </div>
+    <p class="note" style="text-align:right;margin-top:12px"><button class="btn danger" id="clearBtn" type="button" style="padding:6px 12px;font-size:.82rem">清除全部</button></p>
   </section>
 
   <section class="flags">
@@ -431,6 +444,43 @@ $('copyBtn').addEventListener('click', async () => {
   try { await navigator.clipboard.writeText(text); toast('已複製，可以貼到訊息裡'); }
   catch { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); toast('已複製'); } catch { toast('複製失敗'); } ta.remove(); }
 });
+
+// 傳給家人：精簡摘要，只放判斷需要的資訊
+function shareText(){
+  const L = S.list, g = gaps(), now = Date.now(), T = S.threshold;
+  const [cls] = evaluate();
+  const last3 = g.slice(-3), streak = (() => { let n = 0; for (let i = g.length - 1; i >= 0 && g[i] <= T * 60000; i--) n++; return n; })();
+  const status = {
+    go: `準備出發，已連續 ${Math.min(streak, 9)} 次間隔在 ${T} 分鐘內`,
+    prep: streak ? `漸趨規律，已連續 ${streak} 次在 ${T} 分鐘內` : '間隔接近中，持續觀察',
+    watch: L.length && now - L[L.length - 1].start > Math.max(30 * 60000, T * 180000) ? '已有一段時間沒有宮縮' : '尚不規律，休息觀察中'
+  }[cls];
+  const out = [`宮縮紀錄｜${fmtClock(now)}`, status, ''];
+  if (S.active) out.push(`此刻正在宮縮中（${mmss(now - S.active)}）`);
+  if (last3.length) out.push(`平均間隔 ${fmtGapPlain(last3.reduce((a,b)=>a+b,0) / last3.length).replace(/分$/, '分鐘')}`);
+  const durs = L.slice(-5).map(c => c.end - c.start);
+  if (durs.length) out.push(`每次持續 約 ${fmtDurPlain(durs.reduce((a,b)=>a+b,0) / durs.length)}`);
+  out.push(`近一小時 ${L.filter(c => now - c.start <= 3600000).length} 次`);
+  if (L.length && !S.active) out.push(`上一次 ${Math.max(0, Math.round((now - L[L.length-1].start) / 60000))} 分鐘前`);
+  if (L.length) out.push('', '最近：' + L.slice(-4).reverse().map(c => fmtClock(c.start)).join('・'));
+  return out.join('\n');
+}
+document.querySelectorAll('.share-btn').forEach(b => b.addEventListener('click', async () => {
+  if (!S.list.length && !S.active) return toast('還沒有紀錄可以傳');
+  const text = shareText();
+  if (navigator.share) {
+    try { await navigator.share({ text }); return; }
+    catch (e) { if (e.name === 'AbortError') return; }
+  }
+  location.href = 'https://line.me/R/share?text=' + encodeURIComponent(text);
+}));
+
+// 在 LINE 內建瀏覽器打開時提醒改用外部瀏覽器（LINE 支援 openExternalBrowser=1 參數）
+if (/\bLine\//i.test(navigator.userAgent)) {
+  $('inapp').hidden = false;
+  const u = new URL(location.href); u.searchParams.set('openExternalBrowser', '1');
+  $('openExt').href = u.toString();
+}
 
 // 待產包
 $('check').addEventListener('change', e => { const k = e.target.dataset.k; if (!k) return; S.bag[k] = e.target.checked; store.save(); });
