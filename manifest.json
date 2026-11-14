@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-14T00:35:50.969Z",
+  "generated": "2026-11-14T07:07:44.224Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -18,6 +18,20 @@
         "提示詞",
         "AI 工作方法",
         "Felix Rieseberg"
+      ],
+      "date": "2026-11-14"
+    },
+    {
+      "path": "watching/gary-chen-pstack.html",
+      "title": "pstack 深度拆解！一個人是怎麼樣一個月合併 2,500 張 PR的？",
+      "description": "Gary_Chen 拆解 Lauren Tan 開源的 pstack：規劃、實作、驗收三階段怎麼讓 AI 一次做對、睡覺時自動合併，以及一般人可照走的六個步驟",
+      "tags": [
+        "影片學習",
+        "AI 代理",
+        "pstack",
+        "Claude Code",
+        "Lauren Tan",
+        "Gary_Chen"
       ],
       "date": "2026-11-14"
     },
