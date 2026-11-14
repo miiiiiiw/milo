@@ -1,82 +1,107 @@
 {
   "addy-agents-manager": {
     "sha256": "3f9ed1e69b029c4d391c1f2b0c366a76adcbffbc9bb775912c3d0ddf0250993d",
-    "v": 10,
-    "synced": "2026-11-13"
+    "v": 11,
+    "synced": "2026-11-14"
   },
   "addy-critical-thinking": {
     "sha256": "7e94194acfb901b7612ae38dd27c602fa21f8dfe27e5a5d8f184b21d2dd2b30b",
-    "v": 10,
-    "synced": "2026-11-13"
+    "v": 11,
+    "synced": "2026-11-14"
   },
   "grokbot-creator-guide": {
     "sha256": "d817a80a634e9043bd8a2a6a074ad58c5a7148fb3604e738436f76c9a3e57dcf",
-    "v": 10,
-    "synced": "2026-11-13"
+    "v": 11,
+    "synced": "2026-11-14"
   },
   "grokbot-token-usage": {
     "sha256": "97332d8b8bacd0685bbcb9c41940e56cda5998b89625e8958b4f62c70f5b6e31",
-    "v": 10,
-    "synced": "2026-11-13"
+    "v": 11,
+    "synced": "2026-11-14"
   },
   "poteto-grokbot-method": {
     "sha256": "c96aff20cb181f6ffe420c7f570f6de1179e612ad7d9b8dfe005f852dea0ef7a",
-    "v": 10,
-    "synced": "2026-11-13"
+    "v": 11,
+    "synced": "2026-11-14"
   },
   "nicholas-fable-seo": {
     "sha256": "6a5751ea6e4ca8ebc27c228f974a2869d514931bb0a99426c4f8277405e2397b",
-    "v": 10,
-    "synced": "2026-11-13"
+    "v": 11,
+    "synced": "2026-11-14"
   },
   "agent-memory-dreaming": {
     "sha256": "5873491c923ae383e8de9b427005a81b8bf7b2e538ba95b303f9f4852e475b5b",
-    "v": 10,
-    "synced": "2026-11-13"
+    "v": 11,
+    "synced": "2026-11-14"
   },
   "yooee-longform-framework": {
     "sha256": "b2f83e45850687b9472fe6b1f5bea8dae664eb6576e9157fd7866fb608da71f3",
-    "v": 10,
-    "synced": "2026-11-13"
+    "v": 11,
+    "synced": "2026-11-14"
   },
   "yooee-longform-growth": {
     "sha256": "310cfe05e877afc42f9dffcc979683998a287005c4ecde646dafd0e1f0e27e31",
-    "v": 10,
-    "synced": "2026-11-13"
+    "v": 11,
+    "synced": "2026-11-14"
   },
   "dankoe-ai-business": {
     "sha256": "87da01e5dd48b4fc186c7afef0fa71bc85acc251704b74614a4e30078ee02196",
-    "v": 10,
-    "synced": "2026-11-13"
+    "v": 11,
+    "synced": "2026-11-14"
   },
   "dankoe-one-day": {
     "sha256": "3424857a6856014ebb40244d92e4a6082729a0e444f1cb4ffa1db235ab7ef0d9",
-    "v": 10,
-    "synced": "2026-11-13"
+    "v": 11,
+    "synced": "2026-11-14"
   },
   "dankoe-survive-ai": {
     "sha256": "baa4b1b1a03b1c50ae2f11d7609ab7b7f9a899d7235adc98ad28a5dd2b327c45",
-    "v": 10,
-    "synced": "2026-11-13"
+    "v": 11,
+    "synced": "2026-11-14"
   },
   "dankoe-human-30": {
     "sha256": "16e26626a28719515b149df28a2fcba69e2cd1dfdcf940d086cf45b423a5c180",
-    "v": 10,
-    "synced": "2026-11-13"
+    "v": 11,
+    "synced": "2026-11-14"
   },
   "ringo-claude-aesthetics": {
     "sha256": "dcd3c6c94fe471b0221e122ddbff357be80adadeedf636575ecbdeb800c536f8",
-    "v": 10,
-    "synced": "2026-11-13"
+    "v": 11,
+    "synced": "2026-11-14"
   },
   "runmaotui-ai-pm": {
     "sha256": "61f5320f9ff4fac247af67ff24d3854ce811533f7671a7f813760707888ec99c",
-    "v": 10,
-    "synced": "2026-11-13"
+    "v": 11,
+    "synced": "2026-11-14"
   },
   "runmaotui-pm-handbook": {
     "sha256": "2cd4e0126eea9f3b944e87efb847c87d86c9c8c0aeff1c3d13bfcd73fa652e25",
-    "v": 10,
-    "synced": "2026-11-13"
+    "v": 11,
+    "synced": "2026-11-14"
+  },
+  "adrian-html-agent-homepage": {
+    "sha256": "afc0370e276b9a9834183f2c6509f7a57f29699a0e645473bcd8e0234df9f9b5",
+    "v": 11,
+    "synced": "2026-11-14"
+  },
+  "adrian-vibe-dictionary-1": {
+    "sha256": "c09f996fa9367a5d6f431f3e9aec8182da2a51c7a81338eff708a415a806d0af",
+    "v": 11,
+    "synced": "2026-11-14"
+  },
+  "adrian-vibe-dictionary-2": {
+    "sha256": "e815f390828dcfd319619c67d6a49ab6def7d9addfc4abbd25f7f0bc9ac5979b",
+    "v": 11,
+    "synced": "2026-11-14"
+  },
+  "arito-grokbot-image-api": {
+    "sha256": "c4eab8dbad802f7594d5b61cc405c2339f9d4d4fbc9cbde9a4f9c37207657469",
+    "v": 11,
+    "synced": "2026-11-14"
+  },
+  "felix-more-ambitious": {
+    "sha256": "d636996f64ead9f5fc4680094306bc911ffbba4894d6eba42daab4b1ca4be77c",
+    "v": 11,
+    "synced": "2026-11-14"
   }
 }
