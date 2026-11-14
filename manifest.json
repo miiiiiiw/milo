@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-13T03:21:31.657Z",
+  "generated": "2026-11-14T00:25:29.349Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -8,6 +8,76 @@
     "watching": "影片學習"
   },
   "files": [
+    {
+      "path": "reading/felix-more-ambitious.html",
+      "title": "怎樣變得更有野心：給手握模型的人類的教學（How to be more ambitious: A tutorial for humans with models）",
+      "description": "Anthropic 工程經理教你從高度、深度、廣度三個方向，對 AI 提出更有野心的要求。",
+      "tags": [
+        "原文學習",
+        "Claude",
+        "提示詞",
+        "AI 工作方法",
+        "Felix Rieseberg"
+      ],
+      "date": "2026-11-14"
+    },
+    {
+      "path": "reading/adrian-html-agent-homepage.html",
+      "title": "HTML 新手從 0 到 1：學懂網頁基礎，再用 AI 代理做出個人首頁",
+      "description": "從零認識 HTML、CSS、JavaScript 與檔案路徑，再用 AI 代理做出個人首頁並上線。",
+      "tags": [
+        "原文學習",
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "AI 代理",
+        "個人首頁",
+        "GitHub Pages",
+        "Adrian Punk"
+      ],
+      "date": "2026-11-13"
+    },
+    {
+      "path": "reading/adrian-vibe-dictionary-1.html",
+      "title": "Vibe Coding 視覺詞典（上篇）：布局、頁面結構、導覽與常用元件",
+      "description": "40 個網頁布局、頁面結構、導覽與元件詞彙，各附說明、適用情境與可直接複製給 AI 的提示詞。",
+      "tags": [
+        "原文學習",
+        "Vibe Coding",
+        "網頁設計",
+        "提示詞",
+        "Adrian Punk"
+      ],
+      "date": "2026-11-13"
+    },
+    {
+      "path": "reading/adrian-vibe-dictionary-2.html",
+      "title": "Vibe Coding 視覺詞典（下篇）：捲動動作、提示載入、視覺風格與高級效果",
+      "description": "40 個捲動動作、提示載入、視覺風格與高級效果詞彙，各附說明與可直接複製給 AI 的提示詞。",
+      "tags": [
+        "原文學習",
+        "Vibe Coding",
+        "網頁設計",
+        "動態效果",
+        "視覺風格",
+        "提示詞",
+        "Adrian Punk"
+      ],
+      "date": "2026-11-13"
+    },
+    {
+      "path": "reading/arito-grokbot-image-api.html",
+      "title": "怎麼把生圖成本砍下來、跑通全自動生圖流程？教你在 Grok Bot 裡呼叫便宜的生圖 API（內附完整教學）",
+      "description": "在 Grok Bot 用腳本串接便宜的外部生圖 API，四步存成 Skill，自動帶入固定角色素材。",
+      "tags": [
+        "原文學習",
+        "Grok Bot",
+        "生圖 API",
+        "Skill",
+        "muon"
+      ],
+      "date": "2026-11-13"
+    },
     {
       "path": "watching/papaya-ai-animation.html",
       "title": "一人動畫公司不是夢！揭密 AI 動畫完整製作流程 ~ 從發想到影片生成一條龍實作教學！",
