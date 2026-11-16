@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-15T00:41:07.012Z",
+  "generated": "2026-11-16T01:16:27.921Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -8,6 +8,59 @@
     "watching": "影片學習"
   },
   "files": [
+    {
+      "path": "reading/ayi-always-on-agents.html",
+      "title": "全天候 AI 代理，其實大部分時間都在睡覺：Anthropic 指南的 5 個核心元件（Anthropic 刚刚放出一份含金量极高的工程指南，手把手教大家怎么搭建全天候运行的 AI Agent（討論串，無標題））",
+      "description": "全天候 AI 代理大多在休眠：用收件匣、計時器、記憶、權限與寄件匣五個元件搭起來。",
+      "tags": [
+        "原文學習",
+        "AI 代理",
+        "系統架構",
+        "Anthropic",
+        "AYi"
+      ],
+      "date": "2026-11-15"
+    },
+    {
+      "path": "reading/claude-model-choice.html",
+      "title": "該用哪個 Claude 模型來開發？Fable、Opus、Sonnet 還是 Haiku（Which Claude model should you build with? Fable, Opus, Sonnet, or Haiku）",
+      "description": "Claude 四個模型怎麼選、各要多少錢，以及如何搭配費力等級與子代理省成本。",
+      "tags": [
+        "原文學習",
+        "Claude 模型",
+        "AI 成本",
+        "子代理",
+        "Addy Osmani"
+      ],
+      "date": "2026-11-15"
+    },
+    {
+      "path": "reading/dankoe-multiple-interests.html",
+      "title": "如果你有多重興趣，別浪費接下來的 2～3 年（If you have multiple interests, do not waste the next 2-3 years）",
+      "description": "多重興趣是優勢：用品牌、內容與產品，把興趣變成能養活自己的一人事業。",
+      "tags": [
+        "原文學習",
+        "多重興趣",
+        "一人事業",
+        "內容創作",
+        "Dan Koe"
+      ],
+      "date": "2026-11-15"
+    },
+    {
+      "path": "watching/lauren-tan-all-code-slop.html",
+      "title": "所有程式碼都是濫作，除了我寫的（All Code Is Slop (Except Mine) — Lauren Tan, SpaceXSI）",
+      "description": "Lauren Tan（poteto）分享 Grok Bot 團隊怎麼用程式碼檢查規則、架構限制與執行期、形式化驗證，讓 AI 代理一個月合併上萬張 PR、回滾率約 0.5%",
+      "tags": [
+        "影片學習",
+        "AI 代理",
+        "驗證",
+        "pstack",
+        "Lauren Tan",
+        "AI Engineer"
+      ],
+      "date": "2026-11-15"
+    },
     {
       "path": "family/contraction-timer.html",
       "title": "宮縮計時・等小寶",
@@ -18,6 +71,45 @@
         "待產",
         "宮縮",
         "陣痛計時"
+      ],
+      "date": "2026-11-14"
+    },
+    {
+      "path": "reading/addy-claude-code-review.html",
+      "title": "Claude Code 團隊如何做程式碼審查（How the Claude Code team does code review）",
+      "description": "Claude Code 團隊讓 AI 先審程式碼，依風險分配人工審查，再靠快速回滾把關。",
+      "tags": [
+        "原文學習",
+        "程式碼審查",
+        "Claude Code",
+        "AI 代理",
+        "Addy Osmani"
+      ],
+      "date": "2026-11-14"
+    },
+    {
+      "path": "reading/adrian-ip-illustration.html",
+      "title": "視覺印記：每一個 IP 都應該有一套屬於自己的插圖（视觉印记：每一个IP都应该有一套属于自己的插图）",
+      "description": "用照片做出固定的個人 IP 角色，再用兩段提示詞產生流程拆解與核心動作長文插圖。",
+      "tags": [
+        "原文學習",
+        "AI 繪圖",
+        "提示詞",
+        "個人 IP",
+        "Adrian Punk"
+      ],
+      "date": "2026-11-14"
+    },
+    {
+      "path": "reading/buzzoni-jev-engineering.html",
+      "title": "當 Loop Engineering 遇上 Jev Engineering：如何把 Claude 帳單從每月 765 美元降到 3 美元（Loop Engineering Meets Jev Engineering: How to Cut Your Claude Bill From $765 to $3 a Month）",
+      "description": "把 Claude 迴圈的是非判斷交給 Jev，用三個 hook 讓月帳單從 765 降到 3 美元。",
+      "tags": [
+        "原文學習",
+        "Claude Code",
+        "AI 代理",
+        "迴圈工程",
+        "Mr. Buzzoni"
       ],
       "date": "2026-11-14"
     },
