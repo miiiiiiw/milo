@@ -103,5 +103,35 @@
     "sha256": "d636996f64ead9f5fc4680094306bc911ffbba4894d6eba42daab4b1ca4be77c",
     "v": 11,
     "synced": "2026-11-14"
+  },
+  "addy-claude-code-review": {
+    "sha256": "4fc928ab4d2ee07ae0e30a2c2bdff67f71c0b15ea78ede501c263874d9c40635",
+    "v": 11,
+    "synced": "2026-11-16"
+  },
+  "adrian-ip-illustration": {
+    "sha256": "6eabb2451e7d4a3d0da6b6a20ab1d0a735941bb1bb2ab2859a6c8758301e49e6",
+    "v": 11,
+    "synced": "2026-11-16"
+  },
+  "ayi-always-on-agents": {
+    "sha256": "99d8e39bd31860882cdf6834ac9b6cfde88e0fbd6e5d4a90066c664baff027d2",
+    "v": 11,
+    "synced": "2026-11-16"
+  },
+  "buzzoni-jev-engineering": {
+    "sha256": "90c564561a5e6a0289376c652f74a2d6258bb6e82f30d76888df7b682f7ec87f",
+    "v": 11,
+    "synced": "2026-11-16"
+  },
+  "claude-model-choice": {
+    "sha256": "85f30048a933384f7be5be47e0e3a813b2c8eb40c63c90b50a5acab4bb227c28",
+    "v": 11,
+    "synced": "2026-11-16"
+  },
+  "dankoe-multiple-interests": {
+    "sha256": "2cc460af0364f6c4abc732f9e9dc174e9e1708244d2c2c746e7dce78861dc9f4",
+    "v": 11,
+    "synced": "2026-11-16"
   }
 }
