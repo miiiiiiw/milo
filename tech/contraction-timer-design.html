@@ -1,0 +1,729 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="宮縮計時的功能與設計圖解：使用者旅程、出發判斷狀態機、按鈕流程、跨人交接、資料去向與呼吸節奏">
+<meta name="keywords" content="宮縮計時, 狀態機, 使用者旅程, 泳道圖, 資料流程, 設計圖解">
+<meta name="date" content="2026-11-17">
+<title>宮縮計時的功能與設計圖解</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@400;600&display=swap">
+<style>
+/* Layout: 頁籤切換六張圖，每張圖配一段說明。Skin = diagram-design 預設配色（與其他技術筆記一致）。 */
+:root{
+  --paper:#f5f5f5; --paper-2:#ececec; --node:#ffffff;
+  --ink:#2d3142; --muted:#4f5d75; --soft:#5a6580;
+  --rule:rgba(45,49,66,.12); --rule-solid:#bfc0c0;
+  --accent:#bf4520; --accent-tint:rgba(191,69,32,.08); --accent-soft:rgba(191,69,32,.5); --accent-faint:rgba(191,69,32,.05);
+  --link:#2e5aa8;
+  --zone:rgba(45,49,66,.025); --ext:rgba(45,49,66,.03); --ext-stroke:rgba(45,49,66,.30);
+  --input:rgba(79,93,117,.10); --store:rgba(45,49,66,.05);
+  --code-bg:#ececec;
+  --serif:'Instrument Serif','Noto Serif TC',serif;
+  --sans:'Geist','Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;
+  --mono:'Geist Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#2d3142; --paper-2:#393e53; --node:#393e53;
+  --ink:#f5f5f5; --muted:#bfc0c0; --soft:#949eb2;
+  --rule:rgba(245,245,245,.12); --rule-solid:rgba(191,192,192,.25);
+  --accent:#f08a59; --accent-tint:rgba(240,138,89,.10); --accent-soft:rgba(240,138,89,.5); --accent-faint:rgba(240,138,89,.06);
+  --link:#739fdf;
+  --zone:rgba(245,245,245,.025); --ext:rgba(245,245,245,.04); --ext-stroke:rgba(245,245,245,.30);
+  --input:rgba(191,192,192,.10); --store:rgba(245,245,245,.06);
+  --code-bg:#252836; color-scheme:dark;
+}}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.75;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:56px 64px}
+.wrap{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.eyebrow{font-family:var(--mono);font-size:.7rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,5vw,2.75rem);line-height:1.15;letter-spacing:-.01em;margin:0;text-wrap:balance}
+h2{font-family:var(--serif);font-weight:400;font-size:1.65rem;line-height:1.25;margin:4px 0 0;text-wrap:balance;display:flex;gap:12px;align-items:baseline}
+h2 .no{font-family:var(--mono);font-size:.75rem;color:var(--accent);letter-spacing:.1em}
+p{margin:0;max-width:65ch}
+.lede{font-size:1.05rem;color:var(--muted)}
+code{font-family:var(--mono);font-size:.86em;background:var(--code-bg);padding:1px 5px;border-radius:4px}
+a{color:var(--link);text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.open-app{font-weight:500}
+ul.points{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+
+/* 頁籤 */
+.tabs{display:flex;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;border-bottom:1px solid var(--rule);margin-top:8px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;display:flex;align-items:baseline;gap:6px;border:0;background:none;color:var(--muted);font:500 .95rem var(--sans);
+  padding:10px 12px;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;white-space:nowrap}
+.tab .no{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;color:var(--soft)}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab[aria-selected="true"] .no{color:var(--accent)}
+.panel{display:flex;flex-direction:column;gap:16px;padding-top:8px}
+.panel+.panel{border-top:1px solid var(--rule);padding-top:28px;margin-top:12px}
+.js .panel+.panel{border-top:0;margin-top:0;padding-top:8px}
+
+/* figures */
+figure{margin:4px 0;display:flex;flex-direction:column;gap:8px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.scroll svg{display:block;width:100%;min-width:var(--w);height:auto}
+figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
+.swipe{display:none;font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;color:var(--soft)}
+@media (max-width:1040px){.swipe.w-wide{display:block}}
+@media (max-width:800px){.swipe{display:block}}
+@media print{.scroll{overflow:visible}.scroll svg{min-width:0}.tabs{display:none}.panel[hidden]{display:flex!important}}
+
+/* svg skin */
+.d .bg,.d .mask{fill:var(--paper)}
+.d .zone{fill:var(--zone);stroke:var(--rule);stroke-width:.8}
+.d .n-backend{fill:var(--node);stroke:var(--ink);stroke-width:1}
+.d .n-focal{fill:var(--accent-tint);stroke:var(--accent);stroke-width:1.2}
+.d .n-ext{fill:var(--ext);stroke:var(--ext-stroke);stroke-width:1}
+.d .n-input{fill:var(--input);stroke:var(--soft);stroke-width:1}
+.d .n-store{fill:var(--store);stroke:var(--muted);stroke-width:1}
+.d .n-warn{fill:var(--accent-faint);stroke:var(--accent-soft);stroke-width:1;stroke-dasharray:4 4}
+.d .nm{fill:var(--ink);font:600 12px var(--sans)}
+.d .sub{fill:var(--muted);font:400 9px var(--mono)}
+.d .sub-zh{fill:var(--muted);font:400 12px var(--sans)}
+.d .lbl{fill:var(--soft);font:400 8px var(--mono);letter-spacing:.06em}
+.d .lbl-zh{fill:var(--soft);font:500 12px var(--sans)}
+.d .lbl-acc{fill:var(--accent)}
+.d .row-zh{fill:var(--muted);font:500 12px var(--sans)}
+.d .eb{fill:var(--muted);font:500 8px var(--mono);letter-spacing:.18em}
+.d .txt{fill:var(--ink);font:400 12px var(--sans)}
+.d .txt-m{fill:var(--muted);font:400 12px var(--sans)}
+.d .callout{fill:var(--muted);font:italic 400 14px var(--serif)}
+.d .a{fill:none;stroke:var(--muted);stroke-width:1.2}
+.d .a-acc{fill:none;stroke:var(--accent);stroke-width:1.4}
+.d .a-dash{fill:none;stroke:var(--muted);stroke-width:1;stroke-dasharray:5 4}
+.d .hair{stroke:var(--rule);stroke-width:.8}
+.d .hair-s{stroke:var(--rule-solid);stroke-width:1}
+.d .curve{fill:none;stroke:var(--muted);stroke-width:1.5}
+.d .curve-acc{fill:none;stroke:var(--accent);stroke-width:1.5}
+.d .dot{fill:var(--muted)} .d .dot-acc{fill:var(--accent)} .d .dot-ink{fill:var(--ink)}
+.d .ring{fill:none;stroke:var(--ink);stroke-width:1.2}
+.d .pain{fill:var(--accent-faint);stroke:var(--accent-soft);stroke-width:1;stroke-dasharray:3 3}
+.d .band-in{fill:var(--input)} .d .band-out{fill:var(--store)}
+.d .m-muted{fill:var(--muted)} .d .m-acc{fill:var(--accent)}
+.d .focal-line{stroke:var(--accent);stroke-width:1;stroke-dasharray:3 3}
+
+[hidden]{display:none!important}
+.foot{font-size:.85rem;color:var(--soft);border-top:1px solid var(--rule);padding-top:16px;margin-top:16px}
+
+/* ── milo 頁首小標規範（見 README「頁首小標」），請勿個別調整 ── */
+.page-kicker{font-family:var(--mono);font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
+.page-kicker{color:var(--muted)}
+.wrap>.page-kicker{margin-bottom:-8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow page-kicker">技術筆記 · 宮縮計時</p>
+  <h1><span style="white-space:nowrap">宮縮計時的</span><span style="white-space:nowrap">功能與設計圖解</span></h1>
+  <p class="lede">宮縮計時是給太太待產用的單頁工具：一顆大按鈕記錄宮縮，自動判斷什麼時候該出發，並陪著呼吸。這份筆記用六張圖，從使用情境拆解它的功能和背後的規則，方便日後修改時知道會影響哪個情境。</p>
+  <p><a class="open-app" href="../family/contraction-timer">→ 打開宮縮計時</a></p>
+
+  <div class="tabs" role="tablist" aria-label="切換圖表" hidden>
+    <button class="tab" role="tab" id="t-journey" aria-controls="journey" type="button"><span class="no">01</span>使用旅程</button>
+    <button class="tab" role="tab" id="t-state" aria-controls="state" type="button"><span class="no">02</span>出發判斷</button>
+    <button class="tab" role="tab" id="t-press" aria-controls="press" type="button"><span class="no">03</span>按下按鈕</button>
+    <button class="tab" role="tab" id="t-lanes" aria-controls="lanes" type="button"><span class="no">04</span>誰做什麼</button>
+    <button class="tab" role="tab" id="t-data" aria-controls="data" type="button"><span class="no">05</span>紀錄去向</button>
+    <button class="tab" role="tab" id="t-breath" aria-controls="breath" type="button"><span class="no">06</span>呼吸節奏</button>
+  </div>
+
+  <!-- 01 使用旅程 -->
+  <section class="panel" id="journey" role="tabpanel" aria-labelledby="t-journey">
+    <h2><span class="no">01</span>從產前到小寶出生後</h2>
+    <p>整個工具圍繞五個階段設計。情緒曲線在「出發去醫院」跌到最低：最痛、最趕，也最容易手忙腳亂，所以這個階段的功能都做成「狀態一到，按鈕就自己出現」，不需要找。</p>
+    <figure>
+      <span class="swipe w-wide">← 左右滑動看完整圖 →</span>
+      <div class="scroll">
+<svg class="d" viewBox="0 0 960 520" style="--w:960px" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="journey-title journey-desc">
+  <title id="journey-title">宮縮計時的使用旅程</title>
+  <desc id="journey-desc">五個階段：產前準備、宮縮開始、節奏變密、出發去醫院、小寶出生後；情緒在出發去醫院時最緊繃，每個階段列出太太在做的事與用到的功能。</desc>
+  <rect class="bg" width="960" height="520"/>
+
+  <!-- stage headers -->
+  <g text-anchor="middle">
+    <text class="eb" x="164" y="52">STAGE 1</text><text class="nm" x="164" y="72">產前準備</text>
+    <text class="eb" x="332" y="52">STAGE 2</text><text class="nm" x="332" y="72">宮縮開始</text>
+    <text class="eb" x="500" y="52">STAGE 3</text><text class="nm" x="500" y="72">節奏變密</text>
+    <text class="eb" x="668" y="52">STAGE 4</text><text class="nm" x="668" y="72">出發去醫院</text>
+    <text class="eb" x="836" y="52">STAGE 5</text><text class="nm" x="836" y="72">小寶出生後</text>
+  </g>
+
+  <!-- sentiment band -->
+  <line class="hair" x1="88" y1="104" x2="912" y2="104"/>
+  <line class="hair" x1="88" y1="184" x2="912" y2="184"/>
+  <line class="hair" x1="88" y1="264" x2="912" y2="264"/>
+  <text class="row-zh" x="76" y="108" text-anchor="end">放鬆</text>
+  <text class="row-zh" x="76" y="188" text-anchor="end">平穩</text>
+  <text class="row-zh" x="76" y="268" text-anchor="end">緊繃</text>
+
+  <path class="curve" d="M164,144 C248,144 248,184 332,184 C416,184 416,224 500,224"/>
+  <path class="curve-acc" d="M500,224 C584,224 584,264 668,264"/>
+  <path class="curve" d="M668,264 C752,264 752,104 836,104"/>
+  <circle class="dot" cx="164" cy="144" r="5"/>
+  <circle class="dot" cx="332" cy="184" r="5"/>
+  <circle class="dot" cx="500" cy="224" r="5"/>
+  <circle class="dot-acc" cx="668" cy="264" r="5"/>
+  <circle class="dot" cx="836" cy="104" r="5"/>
+
+  <!-- row: actions -->
+  <line class="hair" x1="16" y1="284" x2="912" y2="284"/>
+  <text class="row-zh" x="76" y="308" text-anchor="end">她在做什麼</text>
+  <g text-anchor="middle">
+    <text class="txt" x="164" y="308">試聽範例、</text><text class="txt" x="164" y="326">整理待產包</text>
+    <text class="txt" x="332" y="308">按下大按鈕、</text><text class="txt" x="332" y="326">跟著圓圈呼吸</text>
+    <text class="txt" x="500" y="308">看狀態、</text><text class="txt" x="500" y="326">通知家人</text>
+    <text class="txt" x="668" y="308">打給產房、</text><text class="txt" x="668" y="326">出門到院</text>
+    <text class="txt" x="836" y="308">全家一起聽</text><text class="txt" x="836" y="326">那一夜的歌</text>
+  </g>
+  <rect class="pain" x="624" y="334" width="88" height="20" rx="2"/>
+  <text class="lbl-zh lbl-acc" x="668" y="349" text-anchor="middle">最痛也最趕</text>
+
+  <!-- row: features -->
+  <line class="hair" x1="16" y1="364" x2="912" y2="364"/>
+  <text class="row-zh" x="76" y="388" text-anchor="end">用到的功能</text>
+  <g text-anchor="middle">
+    <text class="txt-m" x="164" y="388">試聽範例</text><text class="txt-m" x="164" y="406">待產包清單</text><text class="txt-m" x="164" y="424">加入主畫面</text><text class="txt-m" x="164" y="442">匯出備份</text>
+    <text class="txt-m" x="332" y="388">大按鈕計時</text><text class="txt-m" x="332" y="406">呼吸引導與伴奏</text><text class="txt-m" x="332" y="424">專注模式</text><text class="txt-m" x="332" y="442">聲音開關</text>
+    <text class="txt-m" x="500" y="388">準備中狀態</text><text class="txt-m" x="500" y="406">傳給家人</text><text class="txt-m" x="500" y="424">LINE 開啟提醒</text>
+    <text class="txt-m" x="668" y="388">可以出發提醒</text><text class="txt-m" x="668" y="406">打給產房</text><text class="txt-m" x="668" y="424">複製完整紀錄</text><text class="txt-m" x="668" y="442">急診鈴資訊</text>
+    <text class="txt-m" x="836" y="388">出生交響曲</text><text class="txt-m" x="836" y="406">卡拉 OK 字幕</text><text class="txt-m" x="836" y="424">匯出音檔</text><text class="txt-m" x="836" y="442">（第二階段）</text>
+  </g>
+  <line class="hair" x1="16" y1="456" x2="912" y2="456"/>
+
+  <!-- legend -->
+  <line class="hair" x1="40" y1="476" x2="920" y2="476"/>
+  <line class="curve" x1="40" y1="500" x2="64" y2="500"/><circle class="dot" cx="52" cy="500" r="4"/>
+  <text class="row-zh" x="72" y="504">情緒曲線</text>
+  <circle class="dot-acc" cx="232" cy="500" r="4"/>
+  <text class="row-zh" x="244" y="504">最緊繃的階段</text>
+  <rect class="pain" x="408" y="492" width="24" height="16" rx="2"/>
+  <text class="row-zh" x="440" y="504">痛點</text>
+</svg>
+      </div>
+      <figcaption>情緒曲線是推估的情境，不是量測值。第五階段的播放功能還沒做，會在小寶出生後加上。</figcaption>
+    </figure>
+  </section>
+
+  <!-- 02 出發判斷 -->
+  <section class="panel" id="state" role="tabpanel" aria-labelledby="t-state">
+    <h2><span class="no">02</span>什麼時候該出發</h2>
+    <p>畫面上方的狀態卡由一個狀態機決定。「間隔」一律從上一次開始算到這一次開始，而且只看目前這一段（相隔超過 2 小時就分成新的一段）。</p>
+    <figure>
+      <span class="swipe">← 左右滑動看完整圖 →</span>
+      <div class="scroll">
+<svg class="d" viewBox="0 0 720 624" style="--w:720px" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="state-title state-desc">
+  <title id="state-title">出發判斷的狀態機</title>
+  <desc id="state-desc">從還沒有紀錄開始，第一次宮縮進入觀察中，間隔在 15 分鐘內進入準備中，連續 3 次在 10 分鐘內進入可以出發；連續 2 次在 5 分鐘內可直接出發；30 分鐘沒有宮縮會進入先休息。</desc>
+  <defs>
+    <marker id="state-ar" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker>
+    <marker id="state-ar-acc" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-acc" points="0 0, 8 3, 0 6"/></marker>
+  </defs>
+  <rect class="bg" width="720" height="624"/>
+
+  <!-- transitions first -->
+  <circle class="dot-ink" cx="280" cy="40" r="6"/>
+  <line class="a" x1="280" y1="46" x2="280" y2="71" marker-end="url(#state-ar)"/>
+
+  <line class="a" x1="280" y1="128" x2="280" y2="199" marker-end="url(#state-ar)"/>
+  <rect class="mask" x="292" y="156" width="68" height="16" rx="2"/>
+  <text class="lbl-zh" x="326" y="168" text-anchor="middle">第一次宮縮</text>
+
+  <line class="a" x1="280" y1="256" x2="280" y2="327" marker-end="url(#state-ar)"/>
+  <rect class="mask" x="292" y="284" width="88" height="16" rx="2"/>
+  <text class="lbl-zh" x="336" y="296" text-anchor="middle">間隔 ≤ 15 分</text>
+
+  <line class="a" x1="280" y1="384" x2="280" y2="455" marker-end="url(#state-ar)"/>
+  <rect class="mask" x="292" y="412" width="120" height="16" rx="2"/>
+  <text class="lbl-zh" x="352" y="424" text-anchor="middle">連續 3 次 ≤ 10 分</text>
+
+  <path class="a-acc" d="M200,236 H128 Q120,236 120,244 V476 Q120,484 128,484 H199" marker-end="url(#state-ar-acc)"/>
+  <rect class="mask" x="128" y="404" width="112" height="16" rx="2"/>
+  <text class="lbl-zh lbl-acc" x="184" y="416" text-anchor="middle">連續 2 次 ≤ 5 分</text>
+
+  <path class="a-dash" d="M360,484 H432 Q440,484 440,476 V364 Q440,356 432,356 H361" marker-end="url(#state-ar)"/>
+  <rect class="mask" x="452" y="412" width="96" height="16" rx="2"/>
+  <text class="lbl-zh" x="500" y="424" text-anchor="middle">間隔 10–15 分</text>
+
+  <line class="a" x1="360" y1="216" x2="479" y2="216" marker-end="url(#state-ar)"/>
+  <rect class="mask" x="376" y="192" width="88" height="16" rx="2"/>
+  <text class="lbl-zh" x="420" y="204" text-anchor="middle">30 分鐘沒宮縮</text>
+
+  <line class="a-dash" x1="480" y1="240" x2="361" y2="240" marker-end="url(#state-ar)"/>
+  <rect class="mask" x="396" y="248" width="56" height="16" rx="2"/>
+  <text class="lbl-zh" x="424" y="260" text-anchor="middle">再次宮縮</text>
+
+  <!-- states -->
+  <rect class="mask" x="200" y="72" width="160" height="56" rx="8"/>
+  <rect class="n-backend" x="200" y="72" width="160" height="56" rx="8"/>
+  <text class="nm" x="280" y="96" text-anchor="middle">還沒有紀錄</text>
+  <text class="sub-zh" x="280" y="116" text-anchor="middle">第一次按下前</text>
+
+  <rect class="mask" x="200" y="200" width="160" height="56" rx="8"/>
+  <rect class="n-backend" x="200" y="200" width="160" height="56" rx="8"/>
+  <text class="nm" x="280" y="224" text-anchor="middle">觀察中</text>
+  <text class="sub-zh" x="280" y="244" text-anchor="middle">間隔還長，可以休息</text>
+
+  <rect class="mask" x="200" y="328" width="160" height="56" rx="8"/>
+  <rect class="n-backend" x="200" y="328" width="160" height="56" rx="8"/>
+  <text class="nm" x="280" y="352" text-anchor="middle">準備中</text>
+  <text class="sub-zh" x="280" y="372" text-anchor="middle">檢查待產包</text>
+
+  <rect class="mask" x="200" y="456" width="160" height="56" rx="8"/>
+  <rect class="n-focal" x="200" y="456" width="160" height="56" rx="8"/>
+  <text class="nm" x="280" y="480" text-anchor="middle">可以出發</text>
+  <text class="sub-zh" x="280" y="500" text-anchor="middle">打給產房・通知家人</text>
+
+  <rect class="mask" x="480" y="200" width="160" height="56" rx="8"/>
+  <rect class="n-backend" x="480" y="200" width="160" height="56" rx="8"/>
+  <text class="nm" x="560" y="224" text-anchor="middle">先休息</text>
+  <text class="sub-zh" x="560" y="244" text-anchor="middle">很久沒有宮縮</text>
+
+  <!-- callouts -->
+  <text class="callout" x="480" y="300">隔超過 2 小時才又宮縮，</text>
+  <text class="callout" x="480" y="320">會分成新的一段重新計算</text>
+  <text class="callout" x="480" y="528">間隔超過 15 分鐘，</text>
+  <text class="callout" x="480" y="548">會直接回到觀察中</text>
+
+  <!-- legend -->
+  <line class="hair" x1="40" y1="572" x2="680" y2="572"/>
+  <rect class="n-backend" x="40" y="588" width="24" height="16" rx="4"/>
+  <text class="row-zh" x="72" y="600">狀態</text>
+  <rect class="n-focal" x="160" y="588" width="24" height="16" rx="4"/>
+  <text class="row-zh" x="192" y="600">出發狀態</text>
+  <line class="a-acc" x1="304" y1="596" x2="336" y2="596"/>
+  <text class="row-zh" x="344" y="600">快速進展</text>
+  <line class="a-dash" x1="456" y1="596" x2="488" y2="596"/>
+  <text class="row-zh" x="496" y="600">退回</text>
+</svg>
+      </div>
+      <figcaption>「10 分」是設定裡的出發門檻（可在 3–20 分之間調整），「15 分」是門檻的 1.5 倍；「30 分鐘」取 30 分鐘與 3 倍門檻中較長的那個。「連續 2 次 ≤ 5 分」是固定的快速規則，進入出發狀態時手機會震動。</figcaption>
+    </figure>
+  </section>
+
+  <!-- 03 按下按鈕 -->
+  <section class="panel" id="press" role="tabpanel" aria-labelledby="t-press">
+    <h2><span class="no">03</span>按下大按鈕之後</h2>
+    <p>整頁只有一顆主要按鈕，同一顆按鈕負責開始和結束。慌亂時常見的兩種失誤：按太快、忘了按結束，都在流程裡接住了。</p>
+    <figure>
+      <span class="swipe">← 左右滑動看完整圖 →</span>
+      <div class="scroll">
+<svg class="d" viewBox="0 0 760 624" style="--w:760px" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="press-title press-desc">
+  <title id="press-title">按下大按鈕之後的流程</title>
+  <desc id="press-desc">按下按鈕時若不在宮縮中就開始計時；若在宮縮中，持續 5 秒以上就記下一筆，不到 5 秒不記錄；開始後超過 3 分鐘會提醒忘了按結束，可以補記為約 1 分鐘或這次不算。</desc>
+  <defs>
+    <marker id="press-ar" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker>
+  </defs>
+  <rect class="bg" width="760" height="624"/>
+
+  <!-- arrows first -->
+  <line class="a" x1="200" y1="72" x2="200" y2="95" marker-end="url(#press-ar)"/>
+
+  <line class="a" x1="276" y1="136" x2="363" y2="136" marker-end="url(#press-ar)"/>
+  <rect class="mask" x="308" y="112" width="24" height="16" rx="2"/>
+  <text class="lbl-zh" x="320" y="124" text-anchor="middle">是</text>
+
+  <line class="a" x1="516" y1="136" x2="571" y2="136" marker-end="url(#press-ar)"/>
+  <rect class="mask" x="532" y="112" width="24" height="16" rx="2"/>
+  <text class="lbl-zh" x="544" y="124" text-anchor="middle">否</text>
+
+  <line class="a" x1="440" y1="176" x2="440" y2="227" marker-end="url(#press-ar)"/>
+  <rect class="mask" x="452" y="194" width="24" height="16" rx="2"/>
+  <text class="lbl-zh" x="464" y="206" text-anchor="middle">是</text>
+
+  <line class="a" x1="200" y1="176" x2="200" y2="227" marker-end="url(#press-ar)"/>
+  <rect class="mask" x="212" y="194" width="24" height="16" rx="2"/>
+  <text class="lbl-zh" x="224" y="206" text-anchor="middle">否</text>
+
+  <line class="a-dash" x1="200" y1="284" x2="200" y2="347" marker-end="url(#press-ar)"/>
+  <rect class="mask" x="212" y="308" width="80" height="16" rx="2"/>
+  <text class="lbl-zh" x="252" y="320" text-anchor="middle">等了 3 分鐘</text>
+
+  <line class="a" x1="280" y1="376" x2="359" y2="376" marker-end="url(#press-ar)"/>
+  <rect class="mask" x="304" y="352" width="32" height="16" rx="2"/>
+  <text class="lbl-zh" x="320" y="364" text-anchor="middle">補記</text>
+
+  <line class="a" x1="200" y1="404" x2="200" y2="467" marker-end="url(#press-ar)"/>
+  <rect class="mask" x="212" y="428" width="32" height="16" rx="2"/>
+  <text class="lbl-zh" x="228" y="440" text-anchor="middle">不算</text>
+
+  <line class="a" x1="440" y1="348" x2="440" y2="285" marker-end="url(#press-ar)"/>
+  <rect class="mask" x="452" y="308" width="56" height="16" rx="2"/>
+  <text class="lbl-zh" x="480" y="320" text-anchor="middle">存成一筆</text>
+
+  <!-- nodes -->
+  <rect class="mask" x="128" y="32" width="144" height="40" rx="20"/>
+  <rect class="n-backend" x="128" y="32" width="144" height="40" rx="20"/>
+  <text class="nm" x="200" y="56" text-anchor="middle">按下大按鈕</text>
+
+  <polygon class="mask" points="200,96 276,136 200,176 124,136"/>
+  <polygon class="n-backend" points="200,96 276,136 200,176 124,136"/>
+  <text class="nm" x="200" y="140" text-anchor="middle">宮縮進行中？</text>
+
+  <polygon class="mask" points="440,96 516,136 440,176 364,136"/>
+  <polygon class="n-backend" points="440,96 516,136 440,176 364,136"/>
+  <text class="nm" x="440" y="140" text-anchor="middle">持續 ≥ 5 秒？</text>
+
+  <rect class="mask" x="572" y="108" width="144" height="56" rx="6"/>
+  <rect class="n-backend" x="572" y="108" width="144" height="56" rx="6"/>
+  <text class="nm" x="644" y="132" text-anchor="middle">不記錄</text>
+  <text class="sub-zh" x="644" y="152" text-anchor="middle">提示不到 5 秒</text>
+
+  <rect class="mask" x="120" y="228" width="160" height="56" rx="6"/>
+  <rect class="n-backend" x="120" y="228" width="160" height="56" rx="6"/>
+  <text class="nm" x="200" y="252" text-anchor="middle">開始計時</text>
+  <text class="sub-zh" x="200" y="272" text-anchor="middle">轉綠・呼吸引導・伴奏</text>
+
+  <rect class="mask" x="360" y="228" width="160" height="56" rx="6"/>
+  <rect class="n-focal" x="360" y="228" width="160" height="56" rx="6"/>
+  <text class="nm" x="440" y="252" text-anchor="middle">記下一筆</text>
+  <text class="sub-zh" x="440" y="272" text-anchor="middle">重算狀態・鼓勵的話</text>
+
+  <rect class="mask" x="120" y="348" width="160" height="56" rx="6"/>
+  <rect class="n-warn" x="120" y="348" width="160" height="56" rx="6"/>
+  <text class="nm" x="200" y="372" text-anchor="middle">忘了按結束？</text>
+  <text class="sub-zh" x="200" y="392" text-anchor="middle">按鈕下方出現提醒</text>
+
+  <rect class="mask" x="360" y="348" width="160" height="56" rx="6"/>
+  <rect class="n-backend" x="360" y="348" width="160" height="56" rx="6"/>
+  <text class="nm" x="440" y="372" text-anchor="middle">記為約 1 分鐘</text>
+  <text class="sub-zh" x="440" y="392" text-anchor="middle">保留開始時間</text>
+
+  <rect class="mask" x="120" y="468" width="160" height="56" rx="6"/>
+  <rect class="n-backend" x="120" y="468" width="160" height="56" rx="6"/>
+  <text class="nm" x="200" y="492" text-anchor="middle">這次不算</text>
+  <text class="sub-zh" x="200" y="512" text-anchor="middle">取消，不記錄</text>
+
+  <!-- callouts -->
+  <text class="callout" x="560" y="252">開始後再按一次，</text>
+  <text class="callout" x="560" y="272">就走上面的「是」</text>
+  <text class="callout" x="560" y="452">宮縮中重新整理，</text>
+  <text class="callout" x="560" y="472">計時會接著跑</text>
+
+  <!-- legend -->
+  <line class="hair" x1="40" y1="556" x2="720" y2="556"/>
+  <rect class="n-backend" x="40" y="576" width="32" height="16" rx="8"/>
+  <text class="row-zh" x="80" y="588">起點</text>
+  <rect class="n-backend" x="152" y="576" width="24" height="16" rx="3"/>
+  <text class="row-zh" x="184" y="588">步驟</text>
+  <polygon class="n-backend" points="268,576 280,584 268,592 256,584"/>
+  <text class="row-zh" x="288" y="588">判斷</text>
+  <rect class="n-warn" x="360" y="576" width="24" height="16" rx="3"/>
+  <text class="row-zh" x="392" y="588">時間觸發的提醒</text>
+  <rect class="n-focal" x="528" y="576" width="24" height="16" rx="3"/>
+  <text class="row-zh" x="560" y="588">成功記錄</text>
+</svg>
+      </div>
+      <figcaption>記下一筆後會立刻重算上一張圖的狀態，並顯示一句鼓勵的話。「記為約 1 分鐘」把結束時間設成開始時間加 60 秒，間隔資料就不會斷掉。</figcaption>
+    </figure>
+  </section>
+
+  <!-- 04 誰做什麼 -->
+  <section class="panel" id="lanes" role="tabpanel" aria-labelledby="t-lanes">
+    <h2><span class="no">04</span>從計時到入院，誰做什麼</h2>
+    <p>工具本身不分辨是誰按的。真正跨人的時刻只有兩個：太太把摘要傳給家人，以及打電話給產房。下面是最常見的一條路徑。</p>
+    <figure>
+      <span class="swipe w-wide">← 左右滑動看完整圖 →</span>
+      <div class="scroll">
+<svg class="d" viewBox="0 0 1000 480" style="--w:1000px" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="lanes-title lanes-desc">
+  <title id="lanes-title">從計時到入院的分工</title>
+  <desc id="lanes-desc">太太按下宮縮按鈕，計時頁判斷可以出發後出現按鈕；太太按通知家人，先生在 LINE 收到摘要後打給產房；產房接聽並準備，到院後太太出示完整紀錄給護理師。</desc>
+  <defs>
+    <marker id="lanes-ar" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker>
+    <marker id="lanes-ar-acc" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-acc" points="0 0, 8 3, 0 6"/></marker>
+  </defs>
+  <rect class="bg" width="1000" height="480"/>
+
+  <!-- lanes -->
+  <line class="hair" x1="16" y1="40" x2="984" y2="40"/>
+  <line class="hair" x1="16" y1="136" x2="984" y2="136"/>
+  <line class="hair" x1="16" y1="232" x2="984" y2="232"/>
+  <line class="hair" x1="16" y1="328" x2="984" y2="328"/>
+  <line class="hair" x1="16" y1="424" x2="984" y2="424"/>
+  <text class="row-zh" x="24" y="92">太太</text>
+  <text class="row-zh" x="24" y="188">計時頁</text>
+  <text class="row-zh" x="24" y="284">先生／家人</text>
+  <text class="row-zh" x="24" y="380">產房</text>
+
+  <!-- arrows first -->
+  <path class="a" d="M150,116 V176 Q150,184 158,184 H219" marker-end="url(#lanes-ar)"/>
+  <path class="a" d="M274,156 V96 Q274,88 282,88 H343" marker-end="url(#lanes-ar)"/>
+  <path class="a-acc" d="M398,116 V272 Q398,280 406,280 H467" marker-end="url(#lanes-ar-acc)"/>
+  <rect class="mask" x="406" y="178" width="28" height="12" rx="2"/>
+  <text class="lbl lbl-acc" x="420" y="187" text-anchor="middle">LINE</text>
+  <line class="a" x1="576" y1="280" x2="591" y2="280" marker-end="url(#lanes-ar)"/>
+  <path class="a" d="M646,308 V368 Q646,376 654,376 H715" marker-end="url(#lanes-ar)"/>
+  <rect class="mask" x="658" y="332" width="32" height="16" rx="2"/>
+  <text class="lbl-zh" x="674" y="344" text-anchor="middle">撥號</text>
+  <path class="a" d="M770,348 V96 Q770,88 778,88 H839" marker-end="url(#lanes-ar)"/>
+  <rect class="mask" x="782" y="176" width="32" height="16" rx="2"/>
+  <text class="lbl-zh" x="798" y="188" text-anchor="middle">到院</text>
+
+  <!-- nodes -->
+  <rect class="mask" x="96" y="60" width="108" height="56" rx="6"/>
+  <rect class="n-input" x="96" y="60" width="108" height="56" rx="6"/>
+  <text class="nm" x="150" y="84" text-anchor="middle">按下宮縮按鈕</text>
+  <text class="sub-zh" x="150" y="104" text-anchor="middle">開始／結束</text>
+
+  <rect class="mask" x="220" y="156" width="108" height="56" rx="6"/>
+  <rect class="n-focal" x="220" y="156" width="108" height="56" rx="6"/>
+  <text class="nm" x="274" y="180" text-anchor="middle">判斷可以出發</text>
+  <text class="sub-zh" x="274" y="200" text-anchor="middle">出現兩顆按鈕</text>
+
+  <rect class="mask" x="344" y="60" width="108" height="56" rx="6"/>
+  <rect class="n-input" x="344" y="60" width="108" height="56" rx="6"/>
+  <text class="nm" x="398" y="84" text-anchor="middle">按「通知家人」</text>
+  <text class="sub-zh" x="398" y="104" text-anchor="middle">叫出分享選單</text>
+
+  <rect class="mask" x="468" y="252" width="108" height="56" rx="6"/>
+  <rect class="n-backend" x="468" y="252" width="108" height="56" rx="6"/>
+  <text class="nm" x="522" y="276" text-anchor="middle">收到摘要</text>
+  <text class="sub-zh" x="522" y="296" text-anchor="middle">狀態・間隔・次數</text>
+
+  <rect class="mask" x="592" y="252" width="108" height="56" rx="6"/>
+  <rect class="n-backend" x="592" y="252" width="108" height="56" rx="6"/>
+  <text class="nm" x="646" y="276" text-anchor="middle">打給產房</text>
+  <text class="sub" x="646" y="296" text-anchor="middle">#105 / #106</text>
+
+  <rect class="mask" x="716" y="348" width="108" height="56" rx="6"/>
+  <rect class="n-ext" x="716" y="348" width="108" height="56" rx="6"/>
+  <text class="nm" x="770" y="372" text-anchor="middle">接聽、準備</text>
+  <text class="sub-zh" x="770" y="392" text-anchor="middle">夜間按急診鈴</text>
+
+  <rect class="mask" x="840" y="60" width="108" height="56" rx="6"/>
+  <rect class="n-input" x="840" y="60" width="108" height="56" rx="6"/>
+  <text class="nm" x="894" y="84" text-anchor="middle">出示完整紀錄</text>
+  <text class="sub-zh" x="894" y="104" text-anchor="middle">複製給護理師</text>
+
+  <!-- callout -->
+  <text class="callout" x="480" y="190">計時頁上也能直接按「打給產房」</text>
+
+  <!-- legend -->
+  <line class="hair" x1="40" y1="440" x2="960" y2="440"/>
+  <rect class="n-input" x="40" y="452" width="24" height="16" rx="3"/>
+  <text class="row-zh" x="72" y="464">太太操作</text>
+  <rect class="n-focal" x="184" y="452" width="24" height="16" rx="3"/>
+  <text class="row-zh" x="216" y="464">自動判斷</text>
+  <rect class="n-ext" x="328" y="452" width="24" height="16" rx="3"/>
+  <text class="row-zh" x="360" y="464">工具以外</text>
+  <line class="a-acc" x1="472" y1="460" x2="504" y2="460"/>
+  <text class="row-zh" x="512" y="464">最關鍵的交接</text>
+</svg>
+      </div>
+      <figcaption>摘要只放判斷需要的資訊（狀態、平均間隔、每次持續、近一小時次數、最近幾次的時間），時間精確到分；給護理師的完整紀錄則精確到秒。撥號會先打總機，停頓後自動撥分機。</figcaption>
+    </figure>
+  </section>
+
+  <!-- 05 紀錄去向 -->
+  <section class="panel" id="data" role="tabpanel" aria-labelledby="t-data">
+    <h2><span class="no">05</span>紀錄去了哪裡</h2>
+    <p>所有資料都存在這支手機的瀏覽器裡（localStorage 的 <code>milo-contraction-v1</code>），沒有任何伺服器。紀錄同時是出發判斷的依據，也是出生交響曲的樂譜，所以清除前一定會先封存。</p>
+    <figure>
+      <span class="swipe">← 左右滑動看完整圖 →</span>
+      <div class="scroll">
+<svg class="d" viewBox="0 0 776 520" style="--w:776px" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="data-title data-desc">
+  <title id="data-title">宮縮紀錄的資料去向</title>
+  <desc id="data-desc">大按鈕把紀錄寫入手機的 localStorage；清除前封存、可以還原；紀錄可匯出成備份檔再匯入；紀錄整理成摘要文字分享到 LINE，也被譜成出生交響曲；資料不會上傳。</desc>
+  <defs>
+    <marker id="data-ar" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker>
+  </defs>
+  <rect class="bg" width="776" height="520"/>
+
+  <!-- zones -->
+  <rect class="zone" x="24" y="40" width="576" height="392" rx="8"/>
+  <text class="row-zh" x="40" y="64">這支手機・不會上傳</text>
+  <rect class="zone" x="200" y="80" width="200" height="212" rx="8"/>
+  <text class="eb" x="212" y="98">LOCALSTORAGE</text>
+
+  <!-- arrows first -->
+  <line class="a" x1="168" y1="132" x2="215" y2="132" marker-end="url(#data-ar)"/>
+  <rect class="mask" x="176" y="108" width="32" height="16" rx="2"/>
+  <text class="lbl-zh" x="192" y="120" text-anchor="middle">寫入</text>
+
+  <line class="a" x1="272" y1="168" x2="272" y2="215" marker-end="url(#data-ar)"/>
+  <rect class="mask" x="220" y="184" width="44" height="16" rx="2"/>
+  <text class="lbl-zh" x="242" y="196" text-anchor="middle">清除前</text>
+
+  <line class="a-dash" x1="328" y1="216" x2="328" y2="169" marker-end="url(#data-ar)"/>
+  <rect class="mask" x="340" y="184" width="32" height="16" rx="2"/>
+  <text class="lbl-zh" x="356" y="196" text-anchor="middle">還原</text>
+
+  <line class="a" x1="384" y1="132" x2="439" y2="132" marker-end="url(#data-ar)"/>
+  <rect class="mask" x="396" y="108" width="32" height="16" rx="2"/>
+  <text class="lbl-zh" x="412" y="120" text-anchor="middle">整理</text>
+
+  <path class="a" d="M384,156 H404 Q412,156 412,164 V236 Q412,244 420,244 H439" marker-end="url(#data-ar)"/>
+  <rect class="mask" x="420" y="184" width="32" height="16" rx="2"/>
+  <text class="lbl-zh" x="436" y="196" text-anchor="middle">譜曲</text>
+
+  <line class="a" x1="576" y1="140" x2="639" y2="140" marker-end="url(#data-ar)"/>
+  <rect class="mask" x="592" y="116" width="32" height="16" rx="2"/>
+  <text class="lbl-zh" x="608" y="128" text-anchor="middle">分享</text>
+
+  <line class="a" x1="300" y1="272" x2="300" y2="343" marker-end="url(#data-ar)"/>
+  <rect class="mask" x="312" y="300" width="32" height="16" rx="2"/>
+  <text class="lbl-zh" x="328" y="312" text-anchor="middle">匯出</text>
+
+  <path class="a-dash" d="M216,372 H196 Q188,372 188,364 V164 Q188,156 196,156 H215" marker-end="url(#data-ar)"/>
+  <rect class="mask" x="148" y="304" width="32" height="16" rx="2"/>
+  <text class="lbl-zh" x="164" y="316" text-anchor="middle">匯入</text>
+
+  <!-- nodes -->
+  <rect class="mask" x="48" y="112" width="120" height="56" rx="6"/>
+  <rect class="n-input" x="48" y="112" width="120" height="56" rx="6"/>
+  <text class="nm" x="108" y="136" text-anchor="middle">大按鈕</text>
+  <text class="sub-zh" x="108" y="156" text-anchor="middle">開始／結束</text>
+
+  <rect class="mask" x="216" y="112" width="168" height="56" rx="6"/>
+  <rect class="n-focal" x="216" y="112" width="168" height="56" rx="6"/>
+  <text class="nm" x="300" y="136" text-anchor="middle">宮縮紀錄</text>
+  <text class="sub" x="300" y="156" text-anchor="middle">list: [{ start, end }]</text>
+
+  <rect class="mask" x="216" y="216" width="168" height="56" rx="6"/>
+  <rect class="n-store" x="216" y="216" width="168" height="56" rx="6"/>
+  <text class="nm" x="300" y="240" text-anchor="middle">清除前的封存</text>
+  <text class="sub-zh" x="300" y="260" text-anchor="middle">最多保留 5 份</text>
+
+  <rect class="mask" x="216" y="344" width="168" height="56" rx="6"/>
+  <rect class="n-ext" x="216" y="344" width="168" height="56" rx="6"/>
+  <text class="nm" x="300" y="368" text-anchor="middle">備份檔</text>
+  <text class="sub-zh" x="300" y="388" text-anchor="middle">宮縮紀錄-日期.json</text>
+
+  <rect class="mask" x="440" y="112" width="136" height="56" rx="6"/>
+  <rect class="n-backend" x="440" y="112" width="136" height="56" rx="6"/>
+  <text class="nm" x="508" y="136" text-anchor="middle">摘要文字</text>
+  <text class="sub-zh" x="508" y="156" text-anchor="middle">傳給家人・複製</text>
+
+  <rect class="mask" x="440" y="216" width="136" height="56" rx="6"/>
+  <rect class="n-focal" x="440" y="216" width="136" height="56" rx="6"/>
+  <text class="nm" x="508" y="240" text-anchor="middle">出生交響曲</text>
+  <text class="sub" x="508" y="260" text-anchor="middle">Sound.compose()</text>
+
+  <rect class="mask" x="640" y="112" width="112" height="56" rx="6"/>
+  <rect class="n-ext" x="640" y="112" width="112" height="56" rx="6"/>
+  <text class="nm" x="696" y="136" text-anchor="middle">LINE／家人</text>
+  <text class="sub-zh" x="696" y="156" text-anchor="middle">系統分享</text>
+
+  <!-- callouts -->
+  <text class="callout" x="440" y="312">產後播放頁也會從</text>
+  <text class="callout" x="440" y="332">同一份紀錄譜曲</text>
+  <text class="callout" x="40" y="460">換手機或清除瀏覽器資料前，記得先匯出備份</text>
+
+  <!-- legend -->
+  <line class="hair" x1="40" y1="476" x2="736" y2="476"/>
+  <rect class="n-input" x="40" y="488" width="24" height="16" rx="3"/>
+  <text class="row-zh" x="72" y="500">輸入</text>
+  <rect class="n-focal" x="152" y="488" width="24" height="16" rx="3"/>
+  <text class="row-zh" x="184" y="500">核心資料與成果</text>
+  <rect class="n-store" x="328" y="488" width="24" height="16" rx="3"/>
+  <text class="row-zh" x="360" y="500">保險</text>
+  <rect class="n-ext" x="440" y="488" width="24" height="16" rx="3"/>
+  <text class="row-zh" x="472" y="500">離開瀏覽器</text>
+  <line class="a-dash" x1="584" y1="496" x2="616" y2="496"/>
+  <text class="row-zh" x="624" y="500">救回資料</text>
+</svg>
+      </div>
+      <figcaption>同一個 localStorage 物件裡還存著門檻、聲音、夜間模式和待產包勾選，圖上省略。匯入時會略過開始時間重複的紀錄，錯誤的檔案會被擋下。從 LINE 內建瀏覽器打開時，紀錄可能被清掉，頁面會提醒改用手機瀏覽器開啟。</figcaption>
+    </figure>
+  </section>
+
+  <!-- 06 呼吸節奏 -->
+  <section class="panel" id="breath" role="tabpanel" aria-labelledby="t-breath">
+    <h2><span class="no">06</span>10 秒的呼吸循環</h2>
+    <p>宮縮進行中，按鈕、引導文字和呼吸伴奏共用同一個 10 秒循環：吸氣 4 秒、吐氣 6 秒。吐氣比吸氣長，是讓人放鬆的關鍵。</p>
+    <figure>
+      <span class="swipe">← 左右滑動看完整圖 →</span>
+      <div class="scroll">
+<svg class="d" viewBox="0 0 760 448" style="--w:760px" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="breath-title breath-desc">
+  <title id="breath-title">10 秒呼吸循環的同步</title>
+  <desc id="breath-desc">一個 10 秒循環中，前 4 秒吸氣、後 6 秒吐氣；按鈕從 90% 放大到 112% 再縮回，引導文字在第 4 秒淡出淡入換成吐氣，呼吸伴奏的音量跟著升起和落下。</desc>
+  <rect class="bg" width="760" height="448"/>
+
+  <!-- phase bands -->
+  <rect class="band-in" x="120" y="44" width="240" height="28" rx="2"/>
+  <rect class="band-out" x="360" y="44" width="360" height="28" rx="2"/>
+  <text class="nm" x="240" y="63" text-anchor="middle">吸氣 4 秒</text>
+  <text class="nm" x="540" y="63" text-anchor="middle">吐氣 6 秒</text>
+
+  <!-- focal turning point -->
+  <line class="focal-line" x1="360" y1="76" x2="360" y2="356"/>
+
+  <!-- row 1: button scale -->
+  <text class="row-zh" x="104" y="140" text-anchor="end">按鈕大小</text>
+  <line class="hair" x1="120" y1="104" x2="720" y2="104"/>
+  <line class="hair" x1="120" y1="168" x2="720" y2="168"/>
+  <text class="sub" x="728" y="107">112%</text>
+  <text class="sub" x="728" y="171">90%</text>
+  <path class="curve" d="M120,168 C216,168 264,104 360,104 C504,104 576,168 720,168"/>
+
+  <!-- row 2: guide text -->
+  <text class="row-zh" x="104" y="232" text-anchor="end">引導文字</text>
+  <rect class="n-input" x="124" y="208" width="228" height="36" rx="4"/>
+  <text class="txt" x="238" y="231" text-anchor="middle">慢慢吸氣…</text>
+  <rect class="n-store" x="368" y="208" width="348" height="36" rx="4"/>
+  <text class="txt" x="542" y="231" text-anchor="middle">長長吐氣…</text>
+  <text class="sub" x="372" y="260">FADE 0.45s</text>
+
+  <!-- row 3: breath tone -->
+  <text class="row-zh" x="104" y="316" text-anchor="end">呼吸伴奏</text>
+  <line class="hair" x1="120" y1="288" x2="720" y2="288"/>
+  <line class="hair" x1="120" y1="340" x2="720" y2="340"/>
+  <text class="sub" x="728" y="291">100%</text>
+  <text class="sub" x="728" y="343">18%</text>
+  <path class="curve" d="M120,340 C216,340 264,288 360,288 C504,288 576,340 720,340"/>
+
+  <!-- time axis -->
+  <line class="hair-s" x1="120" y1="372" x2="720" y2="372"/>
+  <g class="lbl" text-anchor="middle">
+    <line class="hair-s" x1="120" y1="372" x2="120" y2="378"/><text x="120" y="390">0s</text>
+    <line class="hair-s" x1="180" y1="372" x2="180" y2="376"/>
+    <line class="hair-s" x1="240" y1="372" x2="240" y2="376"/><text x="240" y="390">2s</text>
+    <line class="hair-s" x1="300" y1="372" x2="300" y2="376"/>
+    <line class="hair-s" x1="360" y1="372" x2="360" y2="378"/><text x="360" y="390" class="lbl-acc">4s</text>
+    <line class="hair-s" x1="420" y1="372" x2="420" y2="376"/>
+    <line class="hair-s" x1="480" y1="372" x2="480" y2="376"/><text x="480" y="390">6s</text>
+    <line class="hair-s" x1="540" y1="372" x2="540" y2="376"/>
+    <line class="hair-s" x1="600" y1="372" x2="600" y2="376"/><text x="600" y="390">8s</text>
+    <line class="hair-s" x1="660" y1="372" x2="660" y2="376"/>
+    <line class="hair-s" x1="720" y1="372" x2="720" y2="378"/><text x="720" y="390">10s</text>
+  </g>
+
+  <!-- callouts -->
+  <text class="callout" x="120" y="420">重新整理後，用「經過時間 ÷ 10 的餘數」對齊，畫面、文字和聲音不會錯拍</text>
+  <text class="callout" x="120" y="440">待機時改成 8 秒一次、96%↔104% 的輕微起伏；伴奏只在宮縮中出現</text>
+</svg>
+      </div>
+      <figcaption>按鈕和伴奏都用 <code>cubic-bezier(.37, 0, .63, 1)</code> 的緩動，在最大和最小時自然停頓。光暈跟按鈕同一個節奏，範圍是 78% ↔ 130%。手機開啟「減少動態效果」時，動畫會自動關閉。</figcaption>
+    </figure>
+  </section>
+
+  <p class="foot">依據 <code>family/contraction-timer.html</code> 2026-11-17 的版本繪製。改了判斷規則或流程時，記得同步更新這份圖解，並執行 <code>python3 scripts/test-contraction-timer.py</code>。</p>
+</div>
+
+<script>
+// 頁籤：沒有 JavaScript 時六張圖依序全部顯示
+(() => {
+  const list = document.querySelector('.tabs'), tabs = [...list.querySelectorAll('.tab')];
+  const panels = tabs.map(t => document.getElementById(t.getAttribute('aria-controls')));
+  document.documentElement.classList.add('js'); list.hidden = false;
+  function show(i, focus, user){
+    tabs.forEach((t, k) => { const on = k === i; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; panels[k].hidden = !on; });
+    if (focus) tabs[i].focus();
+    const t = tabs[i]; if (t.offsetLeft < list.scrollLeft || t.offsetLeft + t.offsetWidth > list.scrollLeft + list.clientWidth) list.scrollLeft = t.offsetLeft - 16;   // 只捲頁籤列，不捲整頁
+    if (user) try { history.replaceState(null, '', '#' + panels[i].id); } catch {}   // 初次載入不改網址，避免瀏覽器跳到錨點
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => show(i, false, true));
+    t.addEventListener('keydown', e => {
+      const n = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : null;
+      if (n === null) return; e.preventDefault(); show((n + tabs.length) % tabs.length, true, true);
+    });
+  });
+  const start = panels.findIndex(p => '#' + p.id === location.hash);
+  show(start < 0 ? 0 : start);
+})();
+</script>
+</body>
+</html>
