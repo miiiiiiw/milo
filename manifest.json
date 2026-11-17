@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-17T07:02:08.835Z",
+  "generated": "2026-11-17T08:23:32.714Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -8,6 +8,20 @@
     "watching": "影片學習"
   },
   "files": [
+    {
+      "path": "tech/contraction-timer-design.html",
+      "title": "宮縮計時的功能與設計圖解",
+      "description": "宮縮計時的功能與設計圖解：使用者旅程、出發判斷狀態機、按鈕流程、跨人交接、資料去向與呼吸節奏",
+      "tags": [
+        "宮縮計時",
+        "狀態機",
+        "使用者旅程",
+        "泳道圖",
+        "資料流程",
+        "設計圖解"
+      ],
+      "date": "2026-11-17"
+    },
     {
       "path": "tech/image-api-cost.html",
       "title": "生圖外接 API 決策紀錄",
