@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-17T16:29:26.859Z",
+  "generated": "2026-11-17T23:36:18.883Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -9,6 +9,21 @@
   },
   "files": [
     {
+      "path": "reading/maiyang-grokbot-qa.html",
+      "title": "【值得學習】Matt Palmer 和 Lauren Tan 回答了 Grok Bot 近 50 個問題，從會議、用量講到 Cloud Agents（【值得学习】 Matt Palmer 和 Lauren Tan 回答了 Grok Bot 近 50 个问题，从会议、额度讲到 Cloud Agents）",
+      "description": "Grok Bot 直播近 50 題問答整理：會議、用量、Bot 組織與安全，學會把 Bot 當助理用",
+      "tags": [
+        "原文學習",
+        "Grok Bot",
+        "AI 代理",
+        "直播問答",
+        "Mai Yang",
+        "Matt Palmer",
+        "Lauren Tan"
+      ],
+      "date": "2026-11-18"
+    },
+    {
       "path": "family/legal-consult.html",
       "title": "11/18 犯保協會法律諮詢・當天手冊",
       "description": "岳父交通意外後，犯保協會 30 分鐘律師諮詢的流程、提問清單與計時器",
@@ -17,6 +32,20 @@
         "車禍",
         "法律諮詢",
         "犯保協會"
+      ],
+      "date": "2026-11-17"
+    },
+    {
+      "path": "reading/addy-claude-code-verification.html",
+      "title": "Claude Code 團隊如何看待驗證（How the Claude Code team thinks about verification）",
+      "description": "Claude Code 團隊用端到端、屬性、差異測試與不可自改的檢查，讓 AI 代理以證據驗證。",
+      "tags": [
+        "原文學習",
+        "驗證",
+        "測試",
+        "Claude Code",
+        "AI 代理",
+        "Addy Osmani"
       ],
       "date": "2026-11-17"
     },
