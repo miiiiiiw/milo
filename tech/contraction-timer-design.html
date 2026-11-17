@@ -49,6 +49,20 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 .open-app{font-weight:500}
 ul.points{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px;max-width:65ch}
 
+/* 導覽 */
+.guide{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:20px 0 8px;margin-top:4px}
+.guide ol{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;column-gap:40px}
+.guide li{border-top:1px solid var(--rule)}
+.guide li:nth-child(-n+2){border-top:0}
+.guide a{display:grid;grid-template-columns:auto 1fr;column-gap:12px;row-gap:2px;padding:12px 0;color:var(--ink);text-decoration:none}
+.guide a:hover .q{color:var(--accent)}
+.guide .no{grid-row:span 2;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--accent);padding-top:5px}
+.guide .q{font-weight:500;line-height:1.5;transition:color .2s}
+.guide .k{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;color:var(--soft)}
+@media (max-width:720px){.guide ol{grid-template-columns:1fr}.guide li:nth-child(2){border-top:1px solid var(--rule)}}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
 /* 章節 */
 .panel{display:flex;flex-direction:column;gap:16px;scroll-margin-top:24px}
 .panel+.panel{border-top:1px solid var(--rule);padding-top:32px;margin-top:16px}
@@ -112,6 +126,18 @@ figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
   <h1><span style="white-space:nowrap">宮縮計時的</span><span style="white-space:nowrap">功能與設計圖解</span></h1>
   <p class="lede">宮縮計時是給太太待產用的單頁工具：一顆大按鈕記錄宮縮，自動判斷什麼時候該出發，並陪著呼吸。這份筆記用六張圖，從使用情境拆解它的功能和背後的規則，方便日後修改時知道會影響哪個情境。</p>
   <p><a class="open-app" href="../family/contraction-timer">→ 打開宮縮計時</a></p>
+
+  <nav class="guide" aria-label="六個情境導覽">
+    <p class="eyebrow">六個情境・點一下直接跳過去</p>
+    <ol>
+      <li><a href="#journey"><span class="no">01</span><span class="q">從產前到小寶出生後，每個階段會用到什麼？</span><span class="k">使用者旅程</span></a></li>
+      <li><a href="#state"><span class="no">02</span><span class="q">狀態卡什麼時候會說「可以出發了」？</span><span class="k">狀態機</span></a></li>
+      <li><a href="#press"><span class="no">03</span><span class="q">按太快、忘了按結束，會發生什麼事？</span><span class="k">流程圖</span></a></li>
+      <li><a href="#lanes"><span class="no">04</span><span class="q">從計時到入院，太太、家人、產房各做什麼？</span><span class="k">泳道圖</span></a></li>
+      <li><a href="#data"><span class="no">05</span><span class="q">紀錄存在哪裡，清掉了能不能救回來？</span><span class="k">資料流程圖</span></a></li>
+      <li><a href="#breath"><span class="no">06</span><span class="q">按鈕、文字和聲音怎麼跟著呼吸同步？</span><span class="k">時間軸</span></a></li>
+    </ol>
+  </nav>
 
   <!-- 01 使用旅程 -->
   <section class="panel" id="journey">
