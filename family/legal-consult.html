@@ -13,6 +13,25 @@
 :root{
   --bg:#f6f4ef; --card:#ffffff; --ink:#26241f; --muted:#6f6a60; --line:#e4dfd4;
   --accent:#3d6b5e; --accent-soft:#e3eee9; --warn:#a2552f; --warn-soft:#f7e9e1; --gold:#8a6d2b; --gold-soft:#f5eedb;
+  --nav-bg:rgba(246,244,239,.96); --soft:#f8f6f1; --field:#fcfbf8; --note-line:#eadfc0; --warn-line:#efd6c8;
+  --on-accent:#fff; --bar-bg:#26241f; --bar-ink:#fff; --bar-muted:#cfcac0; --bar-line:#5a564e; --bar-fill:#7fb8a6;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#161716; --card:#1f201e; --ink:#ecebe6; --muted:#a4a19a; --line:#34352f;
+  --accent:#86c2ad; --accent-soft:#22332d; --warn:#e2a970; --warn-soft:#352a1f; --gold:#d9bd7a; --gold-soft:#2e2919;
+  --nav-bg:rgba(22,23,22,.94); --soft:#262724; --field:#1a1b19; --note-line:#4a4128; --warn-line:#4d3a2a;
+  --on-accent:#10201a; --bar-bg:#0e0f0e; --bar-ink:#ecebe6; --bar-muted:#a4a19a; --bar-line:#3a3b36; --bar-fill:#86c2ad;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#161716; --card:#1f201e; --ink:#ecebe6; --muted:#a4a19a; --line:#34352f;
+    --accent:#86c2ad; --accent-soft:#22332d; --warn:#e2a970; --warn-soft:#352a1f; --gold:#d9bd7a; --gold-soft:#2e2919;
+    --nav-bg:rgba(22,23,22,.94); --soft:#262724; --field:#1a1b19; --note-line:#4a4128; --warn-line:#4d3a2a;
+    --on-accent:#10201a; --bar-bg:#0e0f0e; --bar-ink:#ecebe6; --bar-muted:#a4a19a; --bar-line:#3a3b36; --bar-fill:#86c2ad;
+    color-scheme:dark;
+  }
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -22,11 +41,15 @@ header{padding:56px 18px 14px;max-width:760px;margin:0 auto}
 .eyebrow{color:var(--muted)}
 header h1{font-size:22px;margin:0 0 4px;letter-spacing:.02em}
 header p{margin:0;color:var(--muted);font-size:14px}
-nav{position:sticky;top:0;z-index:10;background:rgba(246,244,239,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+header .hd{display:flex;align-items:flex-start;gap:12px}
+header .hd h1{flex:1}
+.theme{flex:none;font:inherit;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:5px 12px;cursor:pointer;margin-top:2px}
+a{color:var(--accent)}
+nav{position:sticky;top:0;z-index:10;background:var(--nav-bg);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
 nav .wrap{display:flex;gap:6px;overflow-x:auto;padding:10px 14px;max-width:760px;margin:0 auto;scrollbar-width:none}
 nav .wrap::-webkit-scrollbar{display:none}
 nav a{flex:none;text-decoration:none;color:var(--ink);font-size:14px;padding:6px 12px;border-radius:999px;background:var(--card);border:1px solid var(--line);white-space:nowrap}
-nav a.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+nav a.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
 main{max-width:760px;margin:0 auto;padding:6px 14px 120px}
 section{scroll-margin-top:62px;margin-top:22px}
 h2{font-size:19px;margin:0 0 10px;display:flex;align-items:center;gap:8px}
@@ -34,8 +57,8 @@ h2 .tag{font-size:12px;font-weight:500;padding:2px 8px;border-radius:999px;backg
 h3{font-size:16px;margin:0 0 6px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px}
 .muted{color:var(--muted);font-size:14px}
-.note{background:var(--gold-soft);border-color:#eadfc0;font-size:14.5px}
-.warn{background:var(--warn-soft);border-color:#efd6c8}
+.note{background:var(--gold-soft);border-color:var(--note-line);font-size:14.5px}
+.warn{background:var(--warn-soft);border-color:var(--warn-line)}
 ul{padding-left:20px;margin:6px 0}
 li{margin:3px 0}
 b{font-weight:700}
@@ -67,7 +90,7 @@ b{font-weight:700}
 .q summary{list-style:none;cursor:pointer;padding:13px 16px;display:flex;gap:10px;align-items:center}
 .q summary::-webkit-details-marker{display:none}
 .q .num{flex:none;width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
-.q.asked .num{background:var(--accent);color:#fff}
+.q.asked .num{background:var(--accent);color:var(--on-accent)}
 .q .ttl{flex:1;font-weight:700}
 .q .min{flex:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 8px}
 .q .chev{flex:none;font-size:12px;color:var(--accent);white-space:nowrap}
@@ -76,28 +99,28 @@ b{font-weight:700}
 .q:not([open]){border-color:var(--accent)}
 .q .body{padding:0 16px 14px}
 .q .body ul{margin-top:0}
-.q textarea{width:100%;min-height:70px;border:1px solid var(--line);border-radius:10px;padding:9px 10px;font:inherit;font-size:15px;background:#fcfbf8;resize:vertical}
+.q textarea{width:100%;min-height:70px;border:1px solid var(--line);border-radius:10px;padding:9px 10px;font:inherit;font-size:15px;background:var(--field);color:var(--ink);resize:vertical}
 .q .row{display:flex;gap:8px;align-items:center;margin-top:8px}
 .btn{font:inherit;font-size:14px;border:1px solid var(--accent);background:var(--card);color:var(--accent);border-radius:10px;padding:7px 12px;cursor:pointer}
-.btn.solid{background:var(--accent);color:#fff}
+.btn.solid{background:var(--accent);color:var(--on-accent)}
 .btn:active{transform:scale(.98)}
-.why{font-size:13.5px;color:var(--muted);background:#f8f6f1;border-radius:8px;padding:8px 10px;margin:6px 0 10px}
+.why{font-size:13.5px;color:var(--muted);background:var(--soft);border-radius:8px;padding:8px 10px;margin:6px 0 10px}
 
 /* timer */
-.timer{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--ink);color:#fff;padding:10px 14px calc(10px + env(safe-area-inset-bottom))}
+.timer{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--bar-bg);color:var(--bar-ink);border-top:1px solid var(--bar-line);padding:10px 14px calc(10px + env(safe-area-inset-bottom))}
 .timer .wrap{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:12px}
 .timer .clock{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;min-width:4.2em}
 .timer .cur{flex:1;font-size:13.5px;line-height:1.4}
 .timer .cur b{display:block;font-size:15px}
-.timer .bar{position:absolute;left:0;top:0;height:3px;background:#7fb8a6;width:0}
-.timer button{font:inherit;font-size:14px;border:0;border-radius:10px;padding:8px 12px;background:#fff;color:var(--ink);cursor:pointer}
-.timer button.ghost{background:transparent;color:#cfcac0;border:1px solid #5a564e}
+.timer .bar{position:absolute;left:0;top:0;height:3px;background:var(--bar-fill);width:0}
+.timer button{font:inherit;font-size:14px;border:0;border-radius:10px;padding:8px 12px;background:var(--bar-ink);color:var(--bar-bg);cursor:pointer}
+.timer button.ghost{background:transparent;color:var(--bar-muted);border:1px solid var(--bar-line)}
 
 table{width:100%;border-collapse:collapse;font-size:14.5px}
 td{padding:7px 4px;border-top:1px solid var(--line);vertical-align:top}
 tr:first-child td{border-top:0}
 td:first-child{color:var(--muted);width:7.5em}
-.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--accent);color:#fff;padding:8px 14px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:30}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--accent);color:var(--on-accent);padding:8px 14px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:30}
 .toast.show{opacity:1}
 /* ── milo 頁首小標規範（見 README「頁首小標」），請勿個別調整 ── */
 .page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
@@ -107,7 +130,7 @@ td:first-child{color:var(--muted);width:7.5em}
 
 <header>
   <p class="eyebrow page-kicker">家庭生活 · 法律諮詢</p>
-  <h1>11/18 犯保協會法律諮詢・當天手冊</h1>
+  <div class="hd"><h1>11/18 犯保協會法律諮詢・當天手冊</h1><button class="theme" id="themeBtn" type="button">深色</button></div>
   <p>14:15 專員 → 14:30–15:00 律師 → 15:00–15:30 專員。勾選與筆記只存在這台裝置上。</p>
 </header>
 
@@ -196,7 +219,7 @@ td:first-child{color:var(--muted);width:7.5em}
 
 <section id="lawyer">
   <h2>問律師 <span class="tag">14:30，30 分鐘</span></h2>
-  <div class="card note">按下方黑色計時器「開始」，它會提示現在該問到哪一題。問完點題目右下角「已問」，題號會變實心。每題的灰底小字是給你們看的背景，不用念。</div>
+  <div class="card note">按畫面最下方計時器的「開始」，它會提示現在該問到哪一題。問完點題目右下角「已問」，題號會變實心。每題的灰底小字是給你們看的背景，不用念。</div>
   <div id="qs-lawyer"></div>
 </section>
 
@@ -333,6 +356,21 @@ const STAFF2 = [
     "其他可申請的補助（新北市意外致死救助等）協會是否清楚？"
   ]}
 ];
+
+/* theme */
+const THEME_KEY="consult-1118-theme";
+const themeBtn=document.getElementById("themeBtn");
+function isDark(){ const t=document.documentElement.dataset.theme; return t ? t==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; }
+function syncThemeBtn(){ themeBtn.textContent = isDark() ? "淺色" : "深色"; }
+try{ const t=localStorage.getItem(THEME_KEY); if(t) document.documentElement.dataset.theme=t; }catch(e){}
+syncThemeBtn();
+themeBtn.addEventListener("click",()=>{
+  const next = isDark() ? "light" : "dark";
+  document.documentElement.dataset.theme=next;
+  try{ localStorage.setItem(THEME_KEY,next); }catch(e){}
+  syncThemeBtn();
+});
+try{ matchMedia("(prefers-color-scheme: dark)").addEventListener("change",syncThemeBtn); }catch(e){}
 
 const KEY = "consult-1118-v1";
 let store = {};
