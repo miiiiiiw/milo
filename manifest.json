@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-16T01:16:44.573Z",
+  "generated": "2026-11-17T07:02:08.835Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -8,6 +8,21 @@
     "watching": "影片學習"
   },
   "files": [
+    {
+      "path": "tech/image-api-cost.html",
+      "title": "生圖外接 API 決策紀錄",
+      "description": "每月 160 張文章配圖，升級訂閱還是按張付費：六個生圖模型與四條路線的月費試算與決定",
+      "tags": [
+        "生圖",
+        "API",
+        "OpenRouter",
+        "GPT Image",
+        "Grok",
+        "成本試算",
+        "決策紀錄"
+      ],
+      "date": "2026-11-17"
+    },
     {
       "path": "reading/ayi-always-on-agents.html",
       "title": "全天候 AI 代理，其實大部分時間都在睡覺：Anthropic 指南的 5 個核心元件（Anthropic 刚刚放出一份含金量极高的工程指南，手把手教大家怎么搭建全天候运行的 AI Agent（討論串，無標題））",
