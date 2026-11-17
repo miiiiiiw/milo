@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-17T08:50:28.123Z",
+  "generated": "2026-11-17T08:55:57.335Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -36,6 +36,61 @@
         "決策紀錄"
       ],
       "date": "2026-11-17"
+    },
+    {
+      "path": "watching/poteto-matt-pocock-pstack-interview.html",
+      "title": "兩個最會寫技能（Skill）工作流的人對談：每月 2,500 個合併請求（PR），睡覺時 AI 還在做事！pstack 作者怎麼做到的？（两个最会写 Skill 工作流的人的对话：每月 2500 个 PR，睡觉时 AI 还在干活！pstack 作者怎么做到的？）",
+      "description": "Matt Pocock 訪談 pstack 作者 poteto（Lauren Tan）：攀登信任階梯、把驗證交給 AI 代理、用內外迴圈與協調 AI 代理擴大規模，以及合併後抽樣審查的無人工廠。",
+      "tags": [
+        "影片學習",
+        "AI 代理",
+        "技能",
+        "pstack",
+        "Lauren Tan",
+        "Matt Pocock",
+        "驗證",
+        "軟體工廠"
+      ],
+      "date": "2026-11-17"
+    },
+    {
+      "path": "reading/adrian-ai-video-basics-1.html",
+      "title": "AI 影片基礎（上冊）：結構、素材與分鏡（AI 视频基础（上册）：结构、素材与分镜）",
+      "description": "用《刺激1995》當例子，看懂影片的結構、素材、A-roll／B-roll，學會寫分鏡表。",
+      "tags": [
+        "原文學習",
+        "AI 影片",
+        "分鏡",
+        "剪輯",
+        "Adrian Punk"
+      ],
+      "date": "2026-11-16"
+    },
+    {
+      "path": "reading/adrian-ai-video-basics-2.html",
+      "title": "AI 影片基礎（中冊）：景別、機位、運鏡與畫面連續性（AI 视频基础（中册）：景别、机位、运镜与画面连续性）",
+      "description": "用《幸福綠皮書》車內戲，學景別、機位、構圖、光線、運鏡與連續性，寫出三鏡練習表。",
+      "tags": [
+        "原文學習",
+        "AI 影片",
+        "景別運鏡",
+        "畫面連續性",
+        "Adrian Punk"
+      ],
+      "date": "2026-11-16"
+    },
+    {
+      "path": "reading/adrian-ai-video-basics-3.html",
+      "title": "AI 影片基礎（下冊）：剪輯、聲音、字幕與成片（AI 视频基础（下册）：剪辑、声音、字幕与成片）",
+      "description": "用《功夫》等五部電影，學剪輯節奏、聲音、字幕與匯出，剪出一支 20 秒小短片。",
+      "tags": [
+        "原文學習",
+        "AI 影片",
+        "剪輯",
+        "聲音字幕",
+        "Adrian Punk"
+      ],
+      "date": "2026-11-16"
     },
     {
       "path": "reading/ayi-always-on-agents.html",
