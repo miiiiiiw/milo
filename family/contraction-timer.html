@@ -172,6 +172,8 @@ h2{font-family:var(--serif);font-size:1.1rem;margin:0 0 12px}
 .stepper output{font-family:var(--mono);font-size:1.2rem;min-width:3.5em;text-align:center}
 
 .foot{text-align:center;color:var(--muted);font-size:.82rem;margin-top:28px}
+.design-link{margin-top:12px}
+.design-link a{color:var(--muted);text-underline-offset:3px}
 
 /* 提示 */
 .toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translate(-50%,30px);opacity:0;pointer-events:none;
@@ -328,6 +330,7 @@ body.focus .wrap>*:not(#stage){opacity:.38}
   </section>
 
   <p class="foot">這只是記錄的小幫手，一切以醫師和產房的判斷為準。<br>妳和寶寶都會好好的。🤍</p>
+  <p class="foot design-link"><a href="../tech/contraction-timer-design">功能與設計圖解 →</a></p>
 </main>
 
 <div class="toast" id="toast"><span id="toastMsg"></span><button id="toastAct" type="button"></button></div>

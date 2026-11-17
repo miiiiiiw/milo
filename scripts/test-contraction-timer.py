@@ -47,6 +47,7 @@ with sync_playwright() as p:
     ctx, pg, errs, _ = new_page(b)
     check('1 初次開啟：狀態為「還沒有紀錄」', '還沒有紀錄' in text(pg, '#statusTitle'))
     check('1 初次開啟：一般瀏覽器不顯示 LINE 提醒', pg.locator('#inapp').is_hidden())
+    check('1 頁尾有連到設計圖解的連結', pg.get_attribute('.design-link a', 'href') == '../tech/contraction-timer-design')
 
     # 2. 一次完整宮縮
     pg.locator('#mainBtn').click(force=True); pg.clock.run_for(3300)
