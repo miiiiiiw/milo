@@ -9,7 +9,7 @@
 <title>宮縮計時的功能與設計圖解</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@400;600&display=swap">
 <style>
-/* Layout: 頁籤切換六張圖，每張圖配一段說明。Skin = diagram-design 預設配色（與其他技術筆記一致）。 */
+/* Layout: 六張圖由上往下排列，每張圖配一段說明。Skin = diagram-design 預設配色（與其他技術筆記一致）。 */
 :root{
   --paper:#f5f5f5; --paper-2:#ececec; --node:#ffffff;
   --ink:#2d3142; --muted:#4f5d75; --soft:#5a6580;
@@ -49,17 +49,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 .open-app{font-weight:500}
 ul.points{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px;max-width:65ch}
 
-/* 頁籤 */
-.tabs{display:flex;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;border-bottom:1px solid var(--rule);margin-top:8px;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{flex:none;display:flex;align-items:baseline;gap:6px;border:0;background:none;color:var(--muted);font:500 .95rem var(--sans);
-  padding:10px 12px;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;white-space:nowrap}
-.tab .no{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;color:var(--soft)}
-.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
-.tab[aria-selected="true"] .no{color:var(--accent)}
-.panel{display:flex;flex-direction:column;gap:16px;padding-top:8px}
-.panel+.panel{border-top:1px solid var(--rule);padding-top:28px;margin-top:12px}
-.js .panel+.panel{border-top:0;margin-top:0;padding-top:8px}
+/* 章節 */
+.panel{display:flex;flex-direction:column;gap:16px;scroll-margin-top:24px}
+.panel+.panel{border-top:1px solid var(--rule);padding-top:32px;margin-top:16px}
 
 /* figures */
 figure{margin:4px 0;display:flex;flex-direction:column;gap:8px}
@@ -69,7 +61,7 @@ figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
 .swipe{display:none;font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;color:var(--soft)}
 @media (max-width:1040px){.swipe.w-wide{display:block}}
 @media (max-width:800px){.swipe{display:block}}
-@media print{.scroll{overflow:visible}.scroll svg{min-width:0}.tabs{display:none}.panel[hidden]{display:flex!important}}
+@media print{.scroll{overflow:visible}.scroll svg{min-width:0}}
 
 /* svg skin */
 .d .bg,.d .mask{fill:var(--paper)}
@@ -121,17 +113,8 @@ figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
   <p class="lede">宮縮計時是給太太待產用的單頁工具：一顆大按鈕記錄宮縮，自動判斷什麼時候該出發，並陪著呼吸。這份筆記用六張圖，從使用情境拆解它的功能和背後的規則，方便日後修改時知道會影響哪個情境。</p>
   <p><a class="open-app" href="../family/contraction-timer">→ 打開宮縮計時</a></p>
 
-  <div class="tabs" role="tablist" aria-label="切換圖表" hidden>
-    <button class="tab" role="tab" id="t-journey" aria-controls="journey" type="button"><span class="no">01</span>使用旅程</button>
-    <button class="tab" role="tab" id="t-state" aria-controls="state" type="button"><span class="no">02</span>出發判斷</button>
-    <button class="tab" role="tab" id="t-press" aria-controls="press" type="button"><span class="no">03</span>按下按鈕</button>
-    <button class="tab" role="tab" id="t-lanes" aria-controls="lanes" type="button"><span class="no">04</span>誰做什麼</button>
-    <button class="tab" role="tab" id="t-data" aria-controls="data" type="button"><span class="no">05</span>紀錄去向</button>
-    <button class="tab" role="tab" id="t-breath" aria-controls="breath" type="button"><span class="no">06</span>呼吸節奏</button>
-  </div>
-
   <!-- 01 使用旅程 -->
-  <section class="panel" id="journey" role="tabpanel" aria-labelledby="t-journey">
+  <section class="panel" id="journey">
     <h2><span class="no">01</span>從產前到小寶出生後</h2>
     <p>整個工具圍繞五個階段設計。情緒曲線在「出發去醫院」跌到最低：最痛、最趕，也最容易手忙腳亂，所以這個階段的功能都做成「狀態一到，按鈕就自己出現」，不需要找。</p>
     <figure>
@@ -208,7 +191,7 @@ figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
   </section>
 
   <!-- 02 出發判斷 -->
-  <section class="panel" id="state" role="tabpanel" aria-labelledby="t-state">
+  <section class="panel" id="state">
     <h2><span class="no">02</span>什麼時候該出發</h2>
     <p>畫面上方的狀態卡由一個狀態機決定。「間隔」一律從上一次開始算到這一次開始，而且只看目前這一段（相隔超過 2 小時就分成新的一段）。</p>
     <figure>
@@ -304,7 +287,7 @@ figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
   </section>
 
   <!-- 03 按下按鈕 -->
-  <section class="panel" id="press" role="tabpanel" aria-labelledby="t-press">
+  <section class="panel" id="press">
     <h2><span class="no">03</span>按下大按鈕之後</h2>
     <p>整頁只有一顆主要按鈕，同一顆按鈕負責開始和結束。慌亂時常見的兩種失誤：按太快、忘了按結束，都在流程裡接住了。</p>
     <figure>
@@ -421,7 +404,7 @@ figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
   </section>
 
   <!-- 04 誰做什麼 -->
-  <section class="panel" id="lanes" role="tabpanel" aria-labelledby="t-lanes">
+  <section class="panel" id="lanes">
     <h2><span class="no">04</span>從計時到入院，誰做什麼</h2>
     <p>工具本身不分辨是誰按的。真正跨人的時刻只有兩個：太太把摘要傳給家人，以及打電話給產房。下面是最常見的一條路徑。</p>
     <figure>
@@ -517,7 +500,7 @@ figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
   </section>
 
   <!-- 05 紀錄去向 -->
-  <section class="panel" id="data" role="tabpanel" aria-labelledby="t-data">
+  <section class="panel" id="data">
     <h2><span class="no">05</span>紀錄去了哪裡</h2>
     <p>所有資料都存在這支手機的瀏覽器裡（localStorage 的 <code>milo-contraction-v1</code>），沒有任何伺服器。紀錄同時是出發判斷的依據，也是出生交響曲的樂譜，所以清除前一定會先封存。</p>
     <figure>
@@ -630,7 +613,7 @@ figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
   </section>
 
   <!-- 06 呼吸節奏 -->
-  <section class="panel" id="breath" role="tabpanel" aria-labelledby="t-breath">
+  <section class="panel" id="breath">
     <h2><span class="no">06</span>10 秒的呼吸循環</h2>
     <p>宮縮進行中，按鈕、引導文字和呼吸伴奏共用同一個 10 秒循環：吸氣 4 秒、吐氣 6 秒。吐氣比吸氣長，是讓人放鬆的關鍵。</p>
     <figure>
@@ -702,28 +685,5 @@ figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
   <p class="foot">依據 <code>family/contraction-timer.html</code> 2026-11-17 的版本繪製。改了判斷規則或流程時，記得同步更新這份圖解，並執行 <code>python3 scripts/test-contraction-timer.py</code>。</p>
 </div>
 
-<script>
-// 頁籤：沒有 JavaScript 時六張圖依序全部顯示
-(() => {
-  const list = document.querySelector('.tabs'), tabs = [...list.querySelectorAll('.tab')];
-  const panels = tabs.map(t => document.getElementById(t.getAttribute('aria-controls')));
-  document.documentElement.classList.add('js'); list.hidden = false;
-  function show(i, focus, user){
-    tabs.forEach((t, k) => { const on = k === i; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; panels[k].hidden = !on; });
-    if (focus) tabs[i].focus();
-    const t = tabs[i]; if (t.offsetLeft < list.scrollLeft || t.offsetLeft + t.offsetWidth > list.scrollLeft + list.clientWidth) list.scrollLeft = t.offsetLeft - 16;   // 只捲頁籤列，不捲整頁
-    if (user) try { history.replaceState(null, '', '#' + panels[i].id); } catch {}   // 初次載入不改網址，避免瀏覽器跳到錨點
-  }
-  tabs.forEach((t, i) => {
-    t.addEventListener('click', () => show(i, false, true));
-    t.addEventListener('keydown', e => {
-      const n = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : null;
-      if (n === null) return; e.preventDefault(); show((n + tabs.length) % tabs.length, true, true);
-    });
-  });
-  const start = panels.findIndex(p => '#' + p.id === location.hash);
-  show(start < 0 ? 0 : start);
-})();
-</script>
 </body>
 </html>
