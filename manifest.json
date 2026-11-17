@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-17T08:56:15.437Z",
+  "generated": "2026-11-17T12:17:52.033Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -795,6 +795,18 @@
         "infographic"
       ],
       "date": "2026-10-23"
+    },
+    {
+      "path": "family/family-guide.html",
+      "title": "家人身後事處理指南",
+      "description": "新北市民交通意外身故後的死亡登記、補助、求償與繼承流程",
+      "tags": [
+        "指南",
+        "身後事",
+        "繼承",
+        "車禍"
+      ],
+      "date": "2026-10-20"
     },
     {
       "path": "tech/cloudflare-d1.html",
