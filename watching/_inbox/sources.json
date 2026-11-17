@@ -103,5 +103,10 @@
     "sha256": "d8177f75cd5fb849d25fe8b8047f54d34b3f39e1a2aab4100fc510444c161df2",
     "v": 6,
     "synced": "2026-11-16"
+  },
+  "poteto-matt-pocock-pstack-interview": {
+    "sha256": "79086b0e0a49a16e0d15b5add4339d40d18e7cf36763799d4b4bb8ecdc7bba6c",
+    "v": 6,
+    "synced": "2026-11-17"
   }
 }
