@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-17T15:04:55.492Z",
+  "generated": "2026-11-17T16:12:59.240Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -8,6 +8,18 @@
     "watching": "影片學習"
   },
   "files": [
+    {
+      "path": "family/legal-consult.html",
+      "title": "11/18 犯保協會法律諮詢・當天手冊",
+      "description": "岳父交通意外後，犯保協會 30 分鐘律師諮詢的流程、提問清單與計時器",
+      "tags": [
+        "指南",
+        "車禍",
+        "法律諮詢",
+        "犯保協會"
+      ],
+      "date": "2026-11-17"
+    },
     {
       "path": "tech/contraction-timer-design.html",
       "title": "宮縮計時的功能與設計圖解",
