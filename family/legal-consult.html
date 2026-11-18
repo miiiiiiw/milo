@@ -50,7 +50,7 @@ nav .wrap{display:flex;gap:6px;overflow-x:auto;padding:10px 14px;max-width:760px
 nav .wrap::-webkit-scrollbar{display:none}
 nav a{flex:none;text-decoration:none;color:var(--ink);font-size:14px;padding:6px 12px;border-radius:999px;background:var(--card);border:1px solid var(--line);white-space:nowrap}
 nav a.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
-main{max-width:760px;margin:0 auto;padding:6px 14px 120px}
+main{max-width:760px;margin:0 auto;padding:6px 14px 160px}
 section{scroll-margin-top:62px;margin-top:22px}
 h2{font-size:19px;margin:0 0 10px;display:flex;align-items:center;gap:8px}
 h2 .tag{font-size:12px;font-weight:500;padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
@@ -108,10 +108,16 @@ b{font-weight:700}
 
 /* timer */
 .timer{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--bar-bg);color:var(--bar-ink);border-top:1px solid var(--bar-line);padding:10px 14px calc(10px + env(safe-area-inset-bottom))}
-.timer .wrap{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:12px}
-.timer .clock{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;min-width:4.2em}
-.timer .cur{flex:1;font-size:13.5px;line-height:1.4}
-.timer .cur b{display:block;font-size:15px}
+.timer .wrap{max-width:760px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.timer .cur{order:-1;flex:1 1 100%;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:14px;line-height:1.35}
+.timer .cur b{font-size:15px;margin-right:8px}
+.timer .cur span{color:var(--bar-muted)}
+.timer .clock{flex:1 1 auto;min-width:0;font-size:26px;line-height:1.2;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.timer button{flex:none;white-space:nowrap}
+@media (min-width:700px){
+  .timer .cur{order:0;flex:1 1 0}
+  .timer .clock{flex:none;order:-1}
+}
 .timer .bar{position:absolute;left:0;top:0;height:3px;background:var(--bar-fill);width:0}
 .timer button{font:inherit;font-size:14px;border:0;border-radius:10px;padding:8px 12px;background:var(--bar-ink);color:var(--bar-bg);cursor:pointer}
 .timer button.ghost{background:transparent;color:var(--bar-muted);border:1px solid var(--bar-line)}
@@ -120,7 +126,7 @@ table{width:100%;border-collapse:collapse;font-size:14.5px}
 td{padding:7px 4px;border-top:1px solid var(--line);vertical-align:top}
 tr:first-child td{border-top:0}
 td:first-child{color:var(--muted);width:7.5em}
-.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--accent);color:var(--on-accent);padding:8px 14px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:30}
+.toast{position:fixed;left:50%;bottom:130px;transform:translateX(-50%);background:var(--accent);color:var(--on-accent);padding:8px 14px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:30}
 .toast.show{opacity:1}
 /* ── milo 頁首小標規範（見 README「頁首小標」），請勿個別調整 ── */
 .page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
@@ -279,7 +285,7 @@ td:first-child{color:var(--muted);width:7.5em}
   <div class="bar" id="tbar"></div>
   <div class="wrap">
     <div class="clock" id="tclock">30:00</div>
-    <div class="cur" id="tcur"><b>律師 30 分鐘計時</b>按開始後提示目前題目</div>
+    <div class="cur" id="tcur"><b>律師諮詢 30 分鐘</b><span>按「開始」計時</span></div>
     <button id="tstart">開始</button>
     <button class="ghost" id="treset">重設</button>
   </div>
@@ -436,7 +442,7 @@ function tick(){
     const next = LAWYER[idx+1];
     sub = next ? "下一題："+next.t : "最後一題";
   }
-  cur.innerHTML = `<b>${label}</b>${sub}`;
+  cur.innerHTML = `<b>${label}</b><span>${sub}</span>`;
 }
 function run(){ btn.textContent="暫停"; tick(); timerId=setInterval(tick,1000); }
 btn.addEventListener("click",()=>{
@@ -446,7 +452,7 @@ btn.addEventListener("click",()=>{
 document.getElementById("treset").addEventListener("click",()=>{
   clearInterval(timerId); timerId=null; startAt=null; store.timerStart=null; store.pausedEl=0; save();
   clock.textContent="30:00"; bar.style.width="0"; btn.textContent="開始";
-  cur.innerHTML="<b>律師 30 分鐘計時</b>按開始後提示目前題目";
+  cur.innerHTML="<b>律師諮詢 30 分鐘</b><span>按「開始」計時</span>";
 });
 if(startAt){ run(); } else if(store.pausedEl){ startAt=Date.now()-store.pausedEl*1000; tick(); btn.textContent="繼續"; }
 
