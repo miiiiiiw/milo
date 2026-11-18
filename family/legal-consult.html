@@ -161,8 +161,11 @@ td:first-child{color:var(--muted);width:7.5em}
   </div>
   <div class="card">
     <div class="tl">
-      <div class="step"><span class="time">09:00–12:00</span><span class="who">家人</span>
-        <div>打給臺北市交大事故處理組 <b>02-2375-2100</b>，報案件編號 <b>CAA046979</b>。問三件事：審核進度、分析研判表會不會出、如果不出能不能給書面理由。</div>
+      <div class="step"><span class="time">已完成</span><span class="who">家人</span>
+        <div>已聯繫北市交大：初判表<b>可以申請</b>，但需要一段時間。11/11 被退件是因為送到警政署平台（外縣市用），已轉給北市受理（CAA046979）。</div>
+      </div>
+      <div class="step"><span class="time">有空就去</span>
+        <div><b>現場圖、現場照片</b>可直接臨櫃申請：交通大隊，愛國西路 26 號（捷運小南門站 2 號出口），沒人排隊約 5 分鐘可取。拿到就一起帶去諮詢。</div>
       </div>
       <div class="step"><span class="time">出門前</span>
         <div>對照「文件」清單把資料裝好；手機充電；指定一人發問、一人記錄。</div>
@@ -190,7 +193,7 @@ td:first-child{color:var(--muted);width:7.5em}
       <dt>對方</dt><dd>3–4 名國中生一起騎腳踏車，肇事者約 13 或 14 歲；其父親事後騎機車到場</dd>
       <dt>處理</dt><dd>中正第二分局轄下派出所先到場，交通大隊趙員警接手；送萬芳醫院</dd>
       <dt>結果</dt><dd>岳父於＿月＿日過世，相驗進行中，報告尚未出來；病歷已調閱並提交檢調</dd>
-      <dt>警方</dt><dd>岳父無法做筆錄，口頭表示不會開初判表；我們仍已申請（北市案號 CAA046979）。監視器由交大翻拍存檔，只提供法院</dd>
+      <dt>警方</dt><dd>岳父無法做筆錄，口頭表示不會開初判表；但交大今早確認可以申請，需要時間（北市案號 CAA046979）。監視器由交大翻拍存檔，只提供法院</dd>
       <dt>物品</dt><dd>腳踏車、鴨舌帽暫存派出所</dd>
     </dl>
   </div>
@@ -204,8 +207,8 @@ td:first-child{color:var(--muted);width:7.5em}
     <div class="chk"><input type="checkbox" id="d2"><label for="d2">岳父除戶謄本</label></div>
     <div class="chk"><input type="checkbox" id="d3"><label for="d3">岳母與子女全戶戶籍謄本</label></div>
     <div class="chk"><input type="checkbox" id="d4"><label for="d4">道路交通事故當事人登記聯單</label></div>
-    <div class="chk"><input type="checkbox" id="d5"><label for="d5">現場圖、現場照片<small>已申請中，尚未取得就口頭說明</small></label></div>
-    <div class="chk"><input type="checkbox" id="d6"><label for="d6">初判表 → 說明警方表示不會開，但已申請<small>北市案號 CAA046979</small></label></div>
+    <div class="chk"><input type="checkbox" id="d5"><label for="d5">現場圖、現場照片<small>可到交通大隊臨櫃申請，約 5 分鐘可取（愛國西路 26 號）</small></label></div>
+    <div class="chk"><input type="checkbox" id="d6"><label for="d6">初判表 → 說明已確認可申請，但需要時間<small>北市案號 CAA046979</small></label></div>
   </div>
   <div class="card" data-group="docs2">
     <div class="muted" style="margin-bottom:4px">建議加帶</div>
@@ -254,8 +257,9 @@ td:first-child{color:var(--muted);width:7.5em}
       <tr><td>民事求償時效</td><td>知道損害及賠償義務人起 2 年</td></tr>
       <tr><td>北市交大事故處理組</td><td>02-2375-2100（09–12、14–17）</td></tr>
       <tr><td>中正第二分局</td><td>02-2375-1825</td></tr>
-      <tr><td>北市案件編號</td><td>CAA046979（11/11 申請，待簡訊通知）</td></tr>
-      <tr><td>警政署案號</td><td>1151111000341（已轉北市）、1151117000745（11/17）</td></tr>
+      <tr><td>交通大隊（臨櫃）</td><td>愛國西路 26 號，捷運小南門站 2 號出口；現場圖、照片當場可取</td></tr>
+      <tr><td>北市案件編號</td><td>CAA046979（初判表已確認可申請，需要時間；審核完簡訊通知）</td></tr>
+      <tr><td>警政署案號</td><td>1151111000341、1151117000745（誤送警政署平台＝外縣市用，已轉北市）</td></tr>
       <tr><td>北市領件網站</td><td><a href="https://esystem.tcpd.gov.tw" target="_blank" rel="noopener">esystem.tcpd.gov.tw</a>（自然人憑證）</td></tr>
       <tr><td>行車事故鑑定</td><td>聯單第四欄電話（錄音辨識為 2365-8270，待核對）</td></tr>
       <tr><td>犯保協會專線</td><td>0800-005850</td></tr>
@@ -314,11 +318,11 @@ const LAWYER = [
     "移送少年法院後，家屬能用什麼身分參與、陳述意見？能看到卷證和監視器嗎？",
     "怎麼查承辦檢察官與案件進度？"
   ], why:"開場摘要約 2 分鐘，這題從第 2 分鐘開始。未滿 14 歲依刑法第 18 條不罰，案子可能改由少年法院處理。"},
-  {id:"q2", t:"肇事責任鑑定（沒有初判表）", min:"7–12", start:7, end:12, items:[
+  {id:"q2", t:"肇事責任鑑定（初判表要等）", min:"7–12", start:7, end:12, items:[
     "自費 3,000 元申請行車事故鑑定，還是請檢察官或法院囑託？",
     "自費鑑定在已進入司法程序或事故超過 6 個月（約 2027/3/28）就不受理，我們現在還能自己申請嗎？",
     "河濱監視器要不要聲請證據保全？"
-  ], why:"初判表法規上可以申請、但警察沒有義務一定做，所以責任判斷主要靠鑑定。"},
+  ], why:"交大確認初判表可以申請但要等。有人死亡的案件，法院主要看鑑定報告，初判表只是參考。"},
   {id:"q3", t:"民事求償", min:"12–18", start:12, end:18, items:[
     "對象是肇事少年與其父母（法定代理人）連帶負責，對嗎？",
     "可以請求哪些？殯葬費、扶養費（岳母）、精神慰撫金各要什麼證明？誰當原告？",
