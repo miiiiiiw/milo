@@ -108,5 +108,30 @@
     "sha256": "79086b0e0a49a16e0d15b5add4339d40d18e7cf36763799d4b4bb8ecdc7bba6c",
     "v": 6,
     "synced": "2026-11-17"
+  },
+  "randomai-kurzgesagt-animation": {
+    "sha256": "651fc3d94735f8db6cd5265457f7e2b25a4a47783584ea3e224cc4ac3bb49d17",
+    "v": 6,
+    "synced": "2026-11-19"
+  },
+  "tiye-agile-project-management": {
+    "sha256": "7033239c83c407908265e1c45dbabebfed4246666bcccc4a1e4316b3ebb8e098",
+    "v": 6,
+    "synced": "2026-11-19"
+  },
+  "tiye-ai-fullstack-engineer": {
+    "sha256": "249104f7c3713d872ac415818aaf79a8bba57a7bd6632b5ffe60d4a0df55aca0",
+    "v": 6,
+    "synced": "2026-11-19"
+  },
+  "tiye-frontend-30-years": {
+    "sha256": "84aaca6b8d66ad84f002a55100173c3f22bdba1c48b43b3b6caa05892608ea50",
+    "v": 6,
+    "synced": "2026-11-19"
+  },
+  "tiye-modern-frontend": {
+    "sha256": "d3658cb13d5c0e34d01cefcf85d9934787c2090669a3ccabd1604212b1c0a8c3",
+    "v": 6,
+    "synced": "2026-11-19"
   }
 }
