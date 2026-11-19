@@ -27,7 +27,7 @@ const CSS =
   ".page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}\n";
 
 // 轉換版本：改了 transform（例如配色）就 +1，已同步的頁面下次執行會全部重新套用
-const VERSION = 13;
+const VERSION = 14;
 
 // ── 暗色模式：配色取自 milo 導覽頁（index.html :root 的暗色變數），對應 Grok 翻譯頁模板寫死的顏色 ──
 // 規則同導覽頁：預設跟系統；導覽頁 ◐ 切換後寫入 localStorage「cab:theme」，頁面讀取並即時同步。
@@ -38,7 +38,7 @@ main{background:${D.card}}
 .en-title,.zh-title,.eg,.eyebrow,figcaption,h2 .en,h3 .en,h4 .en,blockquote .src,.tabs a,.tabs label,.meta,.prompt-lbl,blockquote.q .src,.tweet .tr-lbl{color:${D.ink2}}
 .note,footer,.tweet .when,.pair .lbl{color:${D.ink3}}
 .code-lab{color:${D.ink2}}
-h2,footer{border-color:${D.rule}}
+h2,footer,hr{border-color:${D.rule}}
 .tabs{background:${D.card};border-color:${D.rule}}
 .tabs a,.tabs label{background:${D.surf}}
 #r-tl:checked~.tabs .tl,#r-tk:checked~.tabs .tk,.tabs a[aria-selected="true"]{background:#1d9bf0;color:#fff}
@@ -78,7 +78,7 @@ const SVG_MAP = [
   ["#2d3142", D.ink], ["#4f5d75", D.ink2], ["#5a6580", D.ink2], ["#1d6fb8", D.blue],
   ["#c43c2c", D.red], ["#b42318", "#ff8a75"],
   ["rgba(45,49,66,0.45)", "rgba(236,230,216,.35)"], ["rgba(45,49,66,0.35)", "rgba(236,230,216,.28)"], ["rgba(45,49,66,0.16)", "rgba(236,230,216,.14)"], ["#c0392b", D.red],
-  ["rgba(29,111,184,0.09)", "rgba(111,177,236,.14)"],
+  ["rgba(29,111,184,0.09)", "rgba(111,177,236,.14)"], ["rgba(29,111,184,0.18)", "rgba(111,177,236,.24)"], ["#aab4c3", "rgba(236,230,216,.30)"],
   ["rgba(45,49,66,0.3)", "rgba(236,230,216,.25)"], ["rgba(45,49,66,0.08)", "rgba(236,230,216,.06)"],
   ["#161615", "rgba(236,230,216,.4)"], ["#c9d3de", "#5a5446"], ["#e8f1fa", "rgba(111,177,236,.16)"],
 ];
