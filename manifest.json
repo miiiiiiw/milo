@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-19T06:52:59.076Z",
+  "generated": "2026-11-19T07:01:48.009Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -98,6 +98,20 @@
         "Anthropic",
         "Boris",
         "GoldenSpiderAI"
+      ],
+      "category": "build",
+      "date": "2026-11-19"
+    },
+    {
+      "path": "watching/matt-pocock-home-repo.html",
+      "title": "Home Repo：輕鬆搞定多儲存庫的 AI 代理設定（The Home Repo: The effortless multi-repo agent setup）",
+      "description": "Matt Pocock 介紹 home repo：集中放 skill，讓 AI 代理跨多個儲存庫工作",
+      "tags": [
+        "影片學習",
+        "AI 代理",
+        "home repo",
+        "多儲存庫",
+        "Matt Pocock"
       ],
       "category": "build",
       "date": "2026-11-19"
