@@ -28,8 +28,32 @@ const CSS =
   // 原標題是中文時移除 .en-title：h1 直接接 .meta，間距比照 .en-title 到 .meta 的 18px（和 h1 的 4px 摺疊後取大者）
   "h1+.meta{margin-top:18px}\n";
 
+// ── 字型規範（2026-11-19 與使用者確認）：英數用 Saira、中文用系統黑體；字級用偶數、行高用 4 的倍數 ──
+const FONT_LINK =
+  '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' +
+  '<link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;600;700&display=swap" rel="stylesheet">';
+const TYPE_CSS =
+  "\n/* ── milo 原文學習字型規範（收件匣同步自動加入，請勿手改） ── */\n" +
+  "body{font-family:'Saira','PingFang TC','Noto Sans TC','Noto Sans CJK TC','Microsoft JhengHei',sans-serif;font-size:16px;line-height:1.75;font-weight:300;letter-spacing:.5px}\n" +
+  "strong,b{font-weight:700}\n" +
+  "h1{font-size:28px;line-height:36px;font-weight:600}\n" +
+  "h2{font-size:22px;line-height:32px;font-weight:600}\n" +
+  "h3,h4,.pt h3{font-size:18px;line-height:28px;font-weight:600}\n" +
+  ".en-title{font-size:16px;line-height:24px}\n" +
+  "h2 .en{font-size:14px;line-height:20px}\n" +
+  "h3 .en,h4 .en{font-size:12px;line-height:20px}\n" +
+  ".lead,.tk .lead{font-size:16px;line-height:28px;font-weight:400}\n" +
+  ".meta,.tn,.orig,.eg,.flow,.zh-note,.fit,.tweet .who,blockquote .src{font-size:14px;line-height:24px}\n" +
+  ".tbl{font-size:14px;line-height:22px}\n" +
+  "pre{font-size:14px;line-height:22px}\n" +
+  "blockquote{line-height:24px}\n" +
+  "blockquote p{margin:4px 0}\n" +
+  "figcaption{font-size:12px;line-height:18px}\n" +
+  ".note,footer,.tweet .when,.emb-note,.zh-note .orig,.code-lab,.tweet .tr-lbl,.tabs label .s{font-size:12px;line-height:20px}\n" +
+  "@media (max-width:560px){h1{font-size:24px;line-height:32px}h2{font-size:20px;line-height:28px}}\n";
+
 // 轉換版本：改了 transform（例如配色）就 +1，已同步的頁面下次執行會全部重新套用
-const VERSION = 17;
+const VERSION = 18;
 
 // ── 暗色模式：配色取自 milo 導覽頁（index.html :root 的暗色變數），對應 Grok 翻譯頁模板寫死的顏色 ──
 // 規則同導覽頁：預設跟系統；導覽頁 ◐ 切換後寫入 localStorage「cab:theme」，頁面讀取並即時同步。
@@ -220,8 +244,8 @@ function transform(html, { kicker, date, category }) {
     s = s.replace(/(<meta\s+name=["']keywords["']\s+content=["'])([^"']*)/i, `$1${CATEGORY}, $2`);
   }
   const i = s.search(/<\/style>/i);
-  s = s.slice(0, i) + CSS + DARK_CSS + TABS_CSS + s.slice(i);
-  s = s.replace(/<\/head>/i, THEME_JS + TABS_JS + "</head>");
+  s = s.slice(0, i) + CSS + TYPE_CSS + DARK_CSS + TABS_CSS + s.slice(i);
+  s = s.replace(/<\/head>/i, FONT_LINK + THEME_JS + TABS_JS + "</head>");
   s = s.replace(/(<main[^>]*>)\s*(<h1[\s>])/i, `$1\n<p class="eyebrow page-kicker">${CATEGORY} · ${esc(kicker)}</p>$2`);
   return s;
 }
