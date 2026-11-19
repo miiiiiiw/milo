@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-19T02:58:22.956Z",
+  "generated": "2026-11-19T03:36:08.690Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -8,6 +8,19 @@
     "watching": "影片學習"
   },
   "files": [
+    {
+      "path": "family/accident-guide.html",
+      "title": "腳踏車事故家屬行動指引",
+      "description": "岳父腳踏車事故後的家屬行動指引：少年程序、補償金、民事求償、期限與待辦清單",
+      "tags": [
+        "指南",
+        "車禍",
+        "少年事件",
+        "犯罪被害補償金",
+        "民事求償"
+      ],
+      "date": "2026-11-19"
+    },
     {
       "path": "reading/jexchan-se-handbook.html",
       "title": "推薦一本書，AI 時代的軟體工程手冊",
