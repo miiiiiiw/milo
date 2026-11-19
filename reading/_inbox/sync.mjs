@@ -9,7 +9,7 @@ import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
 import { execFileSync } from "node:child_process";
-import { TABS_CSS, TABS_JS } from "../../scripts/page-enhance.mjs";
+import { TABS_CSS, TABS_JS, FONT_LINK, TYPE_CSS } from "../../scripts/page-enhance.mjs";
 
 const [inboxDir, reportPath] = process.argv.slice(2);
 if (!inboxDir || !reportPath) { console.error("用法：node reading/_inbox/sync.mjs <收件匣資料夾> <報告.md>"); process.exit(2); }
@@ -27,30 +27,6 @@ const CSS =
   ".page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}\n" +
   // 原標題是中文時移除 .en-title：h1 直接接 .meta，間距比照 .en-title 到 .meta 的 18px（和 h1 的 4px 摺疊後取大者）
   "h1+.meta{margin-top:18px}\n";
-
-// ── 字型規範（2026-11-19 與使用者確認）：英數用 Saira、中文用系統黑體；字級用偶數、行高用 4 的倍數 ──
-const FONT_LINK =
-  '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' +
-  '<link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;600;700&display=swap" rel="stylesheet">';
-const TYPE_CSS =
-  "\n/* ── milo 原文學習字型規範（收件匣同步自動加入，請勿手改） ── */\n" +
-  "body{font-family:'Saira','PingFang TC','Noto Sans TC','Noto Sans CJK TC','Microsoft JhengHei',sans-serif;font-size:16px;line-height:1.75;font-weight:300;letter-spacing:.5px}\n" +
-  "strong,b{font-weight:700}\n" +
-  "h1{font-size:28px;line-height:36px;font-weight:600}\n" +
-  "h2{font-size:22px;line-height:32px;font-weight:600}\n" +
-  "h3,h4,.pt h3{font-size:18px;line-height:28px;font-weight:600}\n" +
-  ".en-title{font-size:16px;line-height:24px}\n" +
-  "h2 .en{font-size:14px;line-height:20px}\n" +
-  "h3 .en,h4 .en{font-size:12px;line-height:20px}\n" +
-  ".lead,.tk .lead{font-size:16px;line-height:28px;font-weight:400}\n" +
-  ".meta,.tn,.orig,.eg,.flow,.zh-note,.fit,.tweet .who,blockquote .src{font-size:14px;line-height:24px}\n" +
-  ".tbl{font-size:14px;line-height:22px}\n" +
-  "pre{font-size:14px;line-height:22px}\n" +
-  "blockquote{line-height:24px}\n" +
-  "blockquote p{margin:4px 0}\n" +
-  "figcaption{font-size:12px;line-height:18px}\n" +
-  ".note,footer,.tweet .when,.emb-note,.zh-note .orig,.code-lab,.tweet .tr-lbl,.tabs label .s{font-size:12px;line-height:20px}\n" +
-  "@media (max-width:560px){h1{font-size:24px;line-height:32px}h2{font-size:20px;line-height:28px}}\n";
 
 // 轉換版本：改了 transform（例如配色）就 +1，已同步的頁面下次執行會全部重新套用
 const VERSION = 18;

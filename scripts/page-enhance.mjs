@@ -26,3 +26,27 @@ export const TABS_JS =
   'if(!t.classList.contains("stuck"))return;var p=nx();' +
   'if(p)window.scrollTo(0,p.getBoundingClientRect().top+window.pageYOffset-t.offsetHeight-base)})})}' +
   'if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init()})();</script>';
+
+// ── 字型規範（2026-11-19 與使用者確認；影片學習同日套用）：英數用 Saira、中文用系統黑體；字級用偶數、行高用 4 的倍數 ──
+export const FONT_LINK =
+  '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' +
+  '<link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;600;700&display=swap" rel="stylesheet">';
+export const TYPE_CSS =
+  "\n/* ── milo 字型規範（原文學習、影片學習共用，收件匣同步自動加入，請勿手改） ── */\n" +
+  "body{font-family:'Saira','PingFang TC','Noto Sans TC','Noto Sans CJK TC','Microsoft JhengHei',sans-serif;font-size:16px;line-height:1.75;font-weight:300;letter-spacing:.5px}\n" +
+  "strong,b{font-weight:700}\n" +
+  "h1{font-size:28px;line-height:36px;font-weight:600}\n" +
+  "h2{font-size:22px;line-height:32px;font-weight:600}\n" +
+  "h3,h4,.pt h3{font-size:18px;line-height:28px;font-weight:600}\n" +
+  ".en-title{font-size:16px;line-height:24px}\n" +
+  "h2 .en{font-size:14px;line-height:20px}\n" +
+  "h3 .en,h4 .en{font-size:12px;line-height:20px}\n" +
+  ".lead,.tk .lead{font-size:16px;line-height:28px;font-weight:400}\n" +
+  ".meta,.tn,.orig,.eg,.flow,.zh-note,.fit,.tweet .who,blockquote .src{font-size:14px;line-height:24px}\n" +
+  ".tbl{font-size:14px;line-height:22px}\n" +
+  "pre{font-size:14px;line-height:22px}\n" +
+  "blockquote{line-height:24px}\n" +
+  "blockquote p{margin:4px 0}\n" +
+  "figcaption{font-size:12px;line-height:18px}\n" +
+  ".note,footer,.tweet .when,.emb-note,.zh-note .orig,.code-lab,.tweet .tr-lbl,.tabs label .s{font-size:12px;line-height:20px}\n" +
+  "@media (max-width:560px){h1{font-size:24px;line-height:32px}h2{font-size:20px;line-height:28px}}\n";
