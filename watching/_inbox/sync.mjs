@@ -34,7 +34,7 @@ const CSS =
   "h1+.meta{margin-top:18px}\n";
 
 // 轉換版本：改了 transform（例如配色）就 +1，已同步的頁面下次執行會全部重新套用
-const VERSION = 6;
+const VERSION = 7;
 
 // ── 暗色模式：配色取自 milo 導覽頁（index.html :root 的暗色變數），對應 Grok 翻譯頁模板寫死的顏色 ──
 // 規則同導覽頁：預設跟系統；導覽頁 ◐ 切換後寫入 localStorage「cab:theme」，頁面讀取並即時同步。
@@ -165,8 +165,45 @@ function check(html) {
   return { errors, warnings, title };
 }
 
+// ── 原標題是中文（簡體或繁體）時不重複顯示 ──
+// 中文標題和中文原標題幾乎一樣，網站卡片會出現「推薦一本書（推荐一本书）」這種重複。
+// 判斷：括號原標題／.en-title 有漢字、沒有日文假名與韓文，且和中文標題長度相近、用字大多重疊（避免誤刪「（三集）」這類正常括號）。
+// 外文（英、日、韓等）原標題維持「中文標題（原文）」與 .en-title。
+const HAN = /[㐀-鿿]/, KANA_HANGUL = /[぀-ヿㇰ-ㇿ가-힯ᄀ-ᇿ]/;
+function sameChineseTitle(zh, orig) {
+  orig = orig.replace(/^\s*原(?:文|片)?標題[：:]\s*/, "").trim();
+  zh = zh.trim();
+  if (!orig || !zh || !HAN.test(orig) || KANA_HANGUL.test(orig)) return false;
+  const a = [...zh.replace(/\s/g, "")], b = [...orig.replace(/\s/g, "")];
+  const ratio = b.length / a.length;
+  if (ratio < 0.6 || ratio > 1.6) return false;
+  const set = new Set(a);
+  return b.filter((c) => set.has(c)).length / b.length >= 0.4;
+}
+function splitTitle(t) { // 「中文標題（原標題）」→ [中文標題, 原標題]；結尾不是括號就回傳 null
+  t = t.trim();
+  if (!t.endsWith("）")) return null;
+  let depth = 0;
+  for (let i = t.length - 1; i >= 0; i--) {
+    if (t[i] === "）") depth++;
+    else if (t[i] === "（" && --depth === 0) return [t.slice(0, i).trim(), t.slice(i + 1, -1)];
+  }
+  return null;
+}
+function dedupeChineseTitle(s) {
+  const h1 = ((s.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i) || [])[1] || "").replace(/<[^>]+>/g, "").trim();
+  s = s.replace(/<title>([^<]*)<\/title>/i, (m, t) => {
+    const p = splitTitle(t);
+    return p && p[0] && sameChineseTitle(p[0], p[1]) ? `<title>${p[0]}</title>` : m;
+  });
+  s = s.replace(/(<\/h1>)\s*<p\s+class=["']en-title["'][^>]*>([\s\S]*?)<\/p>/i, (m, end, inner) =>
+    h1 && sameChineseTitle(h1, inner.replace(/<[^>]+>/g, "")) ? end : m);
+  return s;
+}
+
 function transform(html, { kicker, date }) {
   let s = html;
+  s = dedupeChineseTitle(s);
   if (!metaOf(s, "date")) s = s.replace(/<\/title>/i, `</title><meta name="date" content="${date}">`);
   const kw = metaOf(s, "keywords");
   if (kw && !kw.split(/[,，]/).map((x) => x.trim()).includes(CATEGORY)) {
