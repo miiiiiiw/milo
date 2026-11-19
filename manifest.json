@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-19T01:00:52.020Z",
+  "generated": "2026-11-19T02:58:05.240Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -10,7 +10,7 @@
   "files": [
     {
       "path": "reading/jexchan-se-handbook.html",
-      "title": "推薦一本書，AI 時代的軟體工程手冊（推荐一本书，AI 时代的软件工程手册）",
+      "title": "推薦一本書，AI 時代的軟體工程手冊",
       "description": "jexchan 推薦免費《軟體工程師手冊》：AI 能寫程式，工程判斷不能外包，整理全書重點與帶走做法",
       "tags": [
         "原文學習",
@@ -24,7 +24,7 @@
     },
     {
       "path": "reading/maiyang-grokbot-qa.html",
-      "title": "【值得學習】Matt Palmer 和 Lauren Tan 回答了 Grok Bot 近 50 個問題，從會議、用量講到 Cloud Agents（【值得学习】 Matt Palmer 和 Lauren Tan 回答了 Grok Bot 近 50 个问题，从会议、额度讲到 Cloud Agents）",
+      "title": "【值得學習】Matt Palmer 和 Lauren Tan 回答了 Grok Bot 近 50 個問題，從會議、用量講到 Cloud Agents",
       "description": "Grok Bot 直播近 50 題問答整理：會議、用量、Bot 組織與安全，學會把 Bot 當助理用",
       "tags": [
         "原文學習",
@@ -39,7 +39,7 @@
     },
     {
       "path": "reading/phil-ai-ad-film-1.html",
-      "title": "獨立製作 AI 商業廣告片全流程分享①：如何從編導思維開始？（独立制作AI商业广告片全流程分享①：如何从编导思维开始？）",
+      "title": "獨立製作 AI 商業廣告片全流程分享①：如何從編導思維開始？",
       "description": "阿哲Phil 談獨立製作 AI 商業廣告片前，如何用編導思維理解產品、選片型與劇本，把片子想清楚",
       "tags": [
         "原文學習",
@@ -52,7 +52,7 @@
     },
     {
       "path": "watching/randomai-kurzgesagt-animation.html",
-      "title": "Claude Opus 5.5 做 Kurzgesagt 風格動畫：40 分鐘完成完整教學（Claude Opus 5.5 做 Kurzgesagt 风格动画：40 分钟完成完整教程）",
+      "title": "Claude Opus 5.5 做 Kurzgesagt 風格動畫：40 分鐘完成完整教學",
       "description": "RandomAI 示範用 Claude Opus 5.5 做 Kurzgesagt 風格動畫，含設定、風格與聲音",
       "tags": [
         "影片學習",
@@ -66,7 +66,7 @@
     },
     {
       "path": "watching/tiye-agile-project-management.html",
-      "title": "敏捷團隊的專案與任務管理：方法、工具與 AI 時代（三集）（敏捷团队的项目与任务管理：方法、工具与 AI 时代（三集））",
+      "title": "敏捷團隊的專案與任務管理：方法、工具與 AI 時代（三集）",
       "description": "题叶三集整理敏捷團隊的專案與任務管理：方法、工具選擇，以及 AI 代理加入後流程與角色的變化",
       "tags": [
         "影片學習",
@@ -79,7 +79,7 @@
     },
     {
       "path": "watching/tiye-ai-fullstack-engineer.html",
-      "title": "AI 時代全端工程師｜一個網站從需求到上線和維護（全 3P）（AI 时代全栈工程师｜一个网站从需求到上线和维护（全 3P））",
+      "title": "AI 時代全端工程師｜一個網站從需求到上線和維護（全 3P）",
       "description": "题叶三集用活動報名網站，講需求、開發、部署、監控與維運全流程，以及 AI 代理的分工邊界",
       "tags": [
         "影片學習",
@@ -92,7 +92,7 @@
     },
     {
       "path": "watching/tiye-frontend-30-years.html",
-      "title": "前端三十年：按問題梳理的技術史（三集）（前端三十年：按问题梳理的技术史（三集））",
+      "title": "前端三十年：按問題梳理的技術史（三集）",
       "description": "题叶用三集梳理前端三十年：從文件到應用、框架與工程化，再到渲染鐘擺與 AI 浪潮",
       "tags": [
         "影片學習",
@@ -105,7 +105,7 @@
     },
     {
       "path": "watching/tiye-modern-frontend.html",
-      "title": "現代前端｜桌面瀏覽器裡的知識與優化體系（全 3P）（现代前端｜桌面浏览器里的知识与优化体系（全 3P））",
+      "title": "現代前端｜桌面瀏覽器裡的知識與優化體系（全 3P）",
       "description": "题叶三集講桌面瀏覽器前端：知識地圖、效能優化、複雜應用架構與 Electron、Tauri 用戶端",
       "tags": [
         "影片學習",
@@ -174,7 +174,7 @@
     },
     {
       "path": "watching/poteto-matt-pocock-pstack-interview.html",
-      "title": "兩個最會寫技能（Skill）工作流的人對談：每月 2,500 個合併請求（PR），睡覺時 AI 還在做事！pstack 作者怎麼做到的？（两个最会写 Skill 工作流的人的对话：每月 2500 个 PR，睡觉时 AI 还在干活！pstack 作者怎么做到的？）",
+      "title": "兩個最會寫技能（Skill）工作流的人對談：每月 2,500 個合併請求（PR），睡覺時 AI 還在做事！pstack 作者怎麼做到的？",
       "description": "Matt Pocock 訪談 pstack 作者 poteto（Lauren Tan）：攀登信任階梯、把驗證交給 AI 代理、用內外迴圈與協調 AI 代理擴大規模，以及合併後抽樣審查的無人工廠。",
       "tags": [
         "影片學習",
@@ -190,7 +190,7 @@
     },
     {
       "path": "reading/adrian-ai-video-basics-1.html",
-      "title": "AI 影片基礎（上冊）：結構、素材與分鏡（AI 视频基础（上册）：结构、素材与分镜）",
+      "title": "AI 影片基礎（上冊）：結構、素材與分鏡",
       "description": "用《刺激1995》當例子，看懂影片的結構、素材、A-roll／B-roll，學會寫分鏡表。",
       "tags": [
         "原文學習",
@@ -203,7 +203,7 @@
     },
     {
       "path": "reading/adrian-ai-video-basics-2.html",
-      "title": "AI 影片基礎（中冊）：景別、機位、運鏡與畫面連續性（AI 视频基础（中册）：景别、机位、运镜与画面连续性）",
+      "title": "AI 影片基礎（中冊）：景別、機位、運鏡與畫面連續性",
       "description": "用《幸福綠皮書》車內戲，學景別、機位、構圖、光線、運鏡與連續性，寫出三鏡練習表。",
       "tags": [
         "原文學習",
@@ -216,7 +216,7 @@
     },
     {
       "path": "reading/adrian-ai-video-basics-3.html",
-      "title": "AI 影片基礎（下冊）：剪輯、聲音、字幕與成片（AI 视频基础（下册）：剪辑、声音、字幕与成片）",
+      "title": "AI 影片基礎（下冊）：剪輯、聲音、字幕與成片",
       "description": "用《功夫》等五部電影，學剪輯節奏、聲音、字幕與匯出，剪出一支 20 秒小短片。",
       "tags": [
         "原文學習",
@@ -229,7 +229,7 @@
     },
     {
       "path": "reading/ayi-always-on-agents.html",
-      "title": "全天候 AI 代理，其實大部分時間都在睡覺：Anthropic 指南的 5 個核心元件（Anthropic 刚刚放出一份含金量极高的工程指南，手把手教大家怎么搭建全天候运行的 AI Agent（討論串，無標題））",
+      "title": "全天候 AI 代理，其實大部分時間都在睡覺：Anthropic 指南的 5 個核心元件",
       "description": "全天候 AI 代理大多在休眠：用收件匣、計時器、記憶、權限與寄件匣五個元件搭起來。",
       "tags": [
         "原文學習",
@@ -308,7 +308,7 @@
     },
     {
       "path": "reading/adrian-ip-illustration.html",
-      "title": "視覺印記：每一個 IP 都應該有一套屬於自己的插圖（视觉印记：每一个IP都应该有一套属于自己的插图）",
+      "title": "視覺印記：每一個 IP 都應該有一套屬於自己的插圖",
       "description": "用照片做出固定的個人 IP 角色，再用兩段提示詞產生流程拆解與核心動作長文插圖。",
       "tags": [
         "原文學習",
@@ -663,7 +663,7 @@
     },
     {
       "path": "watching/gary-chen-brownfield-handover.html",
-      "title": "AI 改程式碼一直改 A 壞 B？安全接手舊專案的五個步驟（AI改代码一直改A坏B？安全接手旧项目的五个步骤）",
+      "title": "AI 改程式碼一直改 A 壞 B？安全接手舊專案的五個步驟",
       "description": "Gary_Chen 說明如何讓 AI 安全接手棕地（brownfield）舊專案：先定位畫面、梳理資料流、寫清防護欄，再小步審查與回歸驗證。",
       "tags": [
         "影片學習",
@@ -676,7 +676,7 @@
     },
     {
       "path": "watching/gary-chen-harness-engineering.html",
-      "title": "Harness Engineering：為什麼你的 AI 很聰明，卻做不好事？（Harness Engineering：为什么你的 AI 很聪明，却做不好事？）",
+      "title": "Harness Engineering：為什麼你的 AI 很聰明，卻做不好事？",
       "description": "Gary_Chen 說明為什麼聰明的 AI 卻常做不好事，以及如何用 Harness Engineering 為 AI 代理設計可執行、可檢查的工作環境。",
       "tags": [
         "影片學習",
@@ -689,7 +689,7 @@
     },
     {
       "path": "watching/yanshuo-remotion.html",
-      "title": "Remotion 教學：從安裝 Skill 到案例實作，完整拆解（Remotion教程：从装skill到案例实操，完整拆解）",
+      "title": "Remotion 教學：從安裝 Skill 到案例實作，完整拆解",
       "description": "言說新事拆解如何用 Remotion 做程式化動畫：從安裝官方 Skill、建立動效庫，到模型選擇、Studio 調參與高德地圖 API。",
       "tags": [
         "影片學習",
@@ -701,7 +701,7 @@
     },
     {
       "path": "watching/yanshuo-video-workflow.html",
-      "title": "影片製作全流程：腳本／配音／素材／Skill／成片（视频制作全流程：脚本/配音/素材/skill/成片）",
+      "title": "影片製作全流程：腳本／配音／素材／Skill／成片",
       "description": "言說新事以上期 Remotion 教學為例，拆解從腳本、素材、配音、SRT 到成片與音效的完整製作流程。",
       "tags": [
         "影片學習",
@@ -713,7 +713,7 @@
     },
     {
       "path": "watching/yihuishi-hyperframes-vs-remotion.html",
-      "title": "HyperFrames 與 Remotion 終極對照：拆解發展歷程與特性，幫你選對工具（HyperFrames与Remotion终极对比|硬核拆解发展历程与特性，帮你选择合适的工具）",
+      "title": "HyperFrames 與 Remotion 終極對照：拆解發展歷程與特性，幫你選對工具",
       "description": "儀繪士BY 對照 HyperFrames 與 Remotion 的剪輯實測、AI 代理生態、技術路線與授權，說明什麼情境該選哪一套。",
       "tags": [
         "影片學習",
@@ -726,7 +726,7 @@
     },
     {
       "path": "watching/yihuishi-hyperframes.html",
-      "title": "HyperFrames 剪影片：零程式基礎入門教學，Codex、Trae、WorkBuddy 都可用（HyperFrames剪视频，0代码基础入门教程，Codex Trae workbuddy可用）",
+      "title": "HyperFrames 剪影片：零程式基礎入門教學，Codex、Trae、WorkBuddy 都可用",
       "description": "儀繪士BY 示範如何從安裝 HyperFrames、認識 Studio 與專案結構，到用口播素材讓 AI 粗剪並精修成片。",
       "tags": [
         "影片學習",
@@ -738,7 +738,7 @@
     },
     {
       "path": "watching/yihuishi-opener-animation.html",
-      "title": "Remotion、HyperFrames 進階動畫拆解：一步步做出炫酷片頭（Remotion HyperFrames高级动画拆解教程|逐步教你制作出炫酷的片头）",
+      "title": "Remotion、HyperFrames 進階動畫拆解：一步步做出炫酷片頭",
       "description": "儀繪士BY 拆解往期片頭，把堆疊動畫分成文字、上層動畫、中間動畫與背景層，示範用 SVG、素材卡與時間線做出有層次的開場。",
       "tags": [
         "影片學習",
@@ -857,7 +857,7 @@
     },
     {
       "path": "reading/poteto-grokbot-method.html",
-      "title": "土豆姐最全 Grok Bot 方法論（土豆姐最全 Grok Bot 方法论）",
+      "title": "土豆姐最全 Grok Bot 方法論",
       "description": "整理土豆姐最全的 Grok Bot 方法論：從選題、腳本、AI 代理到閉環，學會一套可複製的實作流程",
       "tags": [
         "原文學習",
@@ -870,7 +870,7 @@
     },
     {
       "path": "watching/gary-chen-graph-engineering.html",
-      "title": "Graph Engineering 完整解析：Node、Edge、State 怎麼設計 AI 代理工作流程（Graph Engineering完整解析：Node、Edge、State怎么设计Agent工作流）",
+      "title": "Graph Engineering 完整解析：Node、Edge、State 怎麼設計 AI 代理工作流程",
       "description": "Gary_Chen 談如何用 node、edge、state 設計可檢查、可退回的 AI 代理工作流程",
       "tags": [
         "影片學習",
@@ -882,7 +882,7 @@
     },
     {
       "path": "watching/gary-chen-loop-engineering.html",
-      "title": "高手都不寫 Prompt 了？Loop Engineering 完整解析（高手都不写Prompt了？Loop Engineering完整解析）",
+      "title": "高手都不寫 Prompt 了？Loop Engineering 完整解析",
       "description": "Gary_Chen 談 Loop Engineering 的定義、適用任務，以及迴圈失控時的三類風險",
       "tags": [
         "影片學習",
