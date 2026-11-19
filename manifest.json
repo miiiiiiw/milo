@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-19T07:01:48.009Z",
+  "generated": "2026-11-19T07:19:21.698Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -83,6 +83,21 @@
         "例行任務",
         "poteto",
         "lauren"
+      ],
+      "category": "build",
+      "date": "2026-11-19"
+    },
+    {
+      "path": "reading/wquguru-poteto-supervise-smarter.html",
+      "title": "監督一個比你聰明的人：拆解土豆姐的 AI 代理與 Lint 工程哲學【長文慎點】",
+      "description": "拆解土豆姐怎麼管比自己強的 AI 代理：先複述、用原型規劃，再把每次糾正變成 lint 規則",
+      "tags": [
+        "原文學習",
+        "AI 代理",
+        "lint",
+        "poteto",
+        "Grok Bot",
+        "WquGuru"
       ],
       "category": "build",
       "date": "2026-11-19"
