@@ -23,6 +23,7 @@ Grok Bot ──寫入──▶ grokbot-inbox 的 milo/reading/<檔名>.html
 |---|---|
 | `sync.mjs` | 檢查與轉換。用法：`node reading/_inbox/sync.mjs <收件匣資料夾> <報告.md>`，在 repo 根目錄執行 |
 | `sources.json` | 已同步的檔案與其收件匣版本的 sha256；內容相同就略過，所以收件匣舊檔留著也不會重複處理 |
+| `category-map.json` | 檔名 → 分類的對照，補舊頁面或更正交件時標的分類 |
 | `rejected.json` | 目前未通過的檔案與原因。有變動時才會產生 PR（草稿、標題以 ✗ 開頭） |
 
 交件規格（給 Grok Bot）在收件匣的 `milo/reading/README.md`，由 Claude 維護；改 `sync.mjs` 的檢查規則時兩邊要一起改。
@@ -42,3 +43,11 @@ Grok Bot ──寫入──▶ grokbot-inbox 的 milo/reading/<檔名>.html
 ## 中文原標題
 
 - **中文原標題不重複顯示**（2026-11-19）：原標題是中文（簡體或繁體）時，`transform` 的 `dedupeChineseTitle` 會把 `<title>` 結尾的括號原標題和 `<h1>` 後的 `.en-title` 拿掉，避免首頁卡片出現「推薦一本書（推荐一本书）」這種重複。判斷：有漢字、沒有假名與韓文，且和中文標題長度相近（0.6–1.6 倍）、用字重疊 40% 以上，所以「（三集）」這類正常括號不會被誤刪。外文原標題不動。這是同步程式少數會改動標題內容的地方，收件匣原檔不變。h1 直接接 `.meta` 時由 `h1+.meta{margin-top:18px}` 補間距。reading 與 watching 的程式相同，改一邊要記得改另一邊。
+
+## 分類
+
+- 分類名單在 repo 根目錄 `categories.json`（`build` 工程、`motion` 影像、`design` 設計、`reach` 經營、`mind` 心智），書寫順序＝首頁顯示順序。原文學習和影片學習共用。
+- 每頁的分類寫在 `<meta name="category">`，`build-manifest.mjs` 讀進 `manifest.json`，首頁側邊欄在資料夾底下多一層**虛擬**分類資料夾；檔案不搬家，網址不變。分類連結：`#/reading/build`、`#/watching/motion`。
+- 同步時的分類來源：`category-map.json`（Claude 維護的「檔名 → 分類」）優先，其次是頁面自己標的 meta。對照表的值有變動時，該頁會重新同步。
+- 頁面標了五個以外的值 → 不通過。沒有分類 → 照常上線、放在「未分類」，報告提醒；上架時補進 `category-map.json`。
+- 要更正某篇的分類：改 `category-map.json` 後觸發同步即可，不用請 Grok 重推。

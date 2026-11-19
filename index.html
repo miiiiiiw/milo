@@ -223,11 +223,20 @@ const CONFIG = {
 /* ================================================================ */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-let FILES = [], FOLDERS = {}, VIEW = "tree", QUERY = "", CURRENT = null;
+let FILES = [], FOLDERS = {}, CATS = {}, VIEW = "tree", QUERY = "", CURRENT = null;
+// 分類（categories.json）：資料夾裡的頁面有 <meta name="category"> 時，側邊欄多一層虛擬分類資料夾，
+// 路徑是「資料夾/分類」（例如 reading/build），檔案本身不搬家、網址不變。
+const NO_CAT = "~";                    // 有分類的資料夾裡，沒標分類的頁面放這裡
+const CAT_DIRS = new Map();            // 虛擬分類資料夾路徑 → 分類 key
 // 資料夾顯示名稱：folders.json 有設定就用，否則用資料夾名
-const label = p => FOLDERS[p] || p.split("/").pop();
+const label = p => FOLDERS[p] || (CAT_DIRS.has(p) ? catName(CAT_DIRS.get(p)) : p.split("/").pop());
+const catName = k => k===NO_CAT ? "未分類" : (CATS[k] || k);
 // 資料夾排序：依 folders.json 的書寫順序；沒列在裡面的排在後面，依名稱排序
 const byOrder = (a,b) => {
+  if(CAT_DIRS.has(a.path) && CAT_DIRS.has(b.path)){ // 分類依 categories.json 的書寫順序，「未分類」最後
+    const ck = [...Object.keys(CATS), NO_CAT], ca = ck.indexOf(CAT_DIRS.get(a.path)), cb = ck.indexOf(CAT_DIRS.get(b.path));
+    return (ca<0) - (cb<0) || ca - cb;
+  }
   const keys = Object.keys(FOLDERS), ia = keys.indexOf(a.path), ib = keys.indexOf(b.path);
   return (ia<0) - (ib<0) || ia - ib || a.name.localeCompare(b.name, "zh-Hant", {numeric:true});
 };
@@ -257,7 +266,8 @@ async function load(){
     if(!r.ok) throw 0;
     const m = await r.json();
     FOLDERS = m.folders || {};
-    return (m.files || m).map(norm);
+    CATS = m.categories || {};
+    return withCats((m.files || m).map(norm));
   }catch{}
   // fallback: GitHub API
   const gh = guessRepo();
@@ -286,9 +296,25 @@ function norm(f){
     title: f.title || prettify(name),
     description: f.description || "",
     tags: f.tags || [],
+    cat: f.category || "",
     date: f.date || null,
-    dir: path.includes("/") ? path.slice(0, path.lastIndexOf("/")) : ""
+    dir: path.includes("/") ? path.slice(0, path.lastIndexOf("/")) : "",
+    get tdir(){ return this._tdir ?? this.dir; }, set tdir(v){ this._tdir = v; }
   };
+}
+// tdir：側邊欄用的資料夾路徑。資料夾裡只要有一頁標了分類，整個資料夾就分層，沒標的進「未分類」
+function withCats(files){
+  const known = k => Object.prototype.hasOwnProperty.call(CATS, k);
+  const catDirs = new Set(files.filter(f => known(f.cat)).map(f => f.dir));
+  CAT_DIRS.clear();
+  for(const f of files){
+    f.tdir = f.dir;
+    if(!catDirs.has(f.dir)) continue;
+    const k = known(f.cat) ? f.cat : NO_CAT;
+    f.tdir = f.dir ? f.dir+"/"+k : k;
+    CAT_DIRS.set(f.tdir, k);
+  }
+  return files;
 }
 function prettify(n){ return n.replace(/\.html?$/i,"").replace(/^\d{8}(?!\d)[-_ ]?/,"").replace(/[-_]+/g," ").trim() || n; }
 
@@ -296,7 +322,7 @@ function prettify(n){ return n.replace(/\.html?$/i,"").replace(/^\d{8}(?!\d)[-_ 
 function buildTree(files){
   const root = {name:"", path:"", dirs:new Map(), files:[]};
   for(const f of files){
-    const parts = f.path.split("/"); parts.pop();
+    const parts = f.tdir ? f.tdir.split("/") : [];
     let node = root, acc = "";
     for(const p of parts){
       acc = acc ? acc+"/"+p : p;
@@ -322,7 +348,7 @@ function hl(text){
 }
 function matches(f){
   if(!QUERY) return true;
-  return [f.title, f.path, f.description, ...(f.tags||[])].join(" ").toLowerCase().includes(QUERY);
+  return [f.title, f.path, f.description, f.cat && catName(f.cat), ...(f.tags||[])].join(" ").toLowerCase().includes(QUERY);
 }
 
 function renderTree(node, depth=0){
@@ -363,7 +389,7 @@ function renderTimeline(){
     if(m!==lastM){ html += `<div class="month">${m}</div>`; lastM = m; }
     html += `<button class="card ${CURRENT===f.path?"on":""}" data-open="${esc(f.path)}">
       <div class="d">${d?d.getDate():"–"}<small>${d?["SUN","MON","TUE","WED","THU","FRI","SAT"][d.getDay()]:""}</small></div>
-      <div><div class="t">${hl(f.title)}</div><div class="p">${hl(dirLabel(f.dir)||"/")}</div>
+      <div><div class="t">${hl(f.title)}</div><div class="p">${hl(dirLabel(f.tdir)||"/")}</div>
       ${f.tags.length?`<div class="tags">${f.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>`:""}</div></button>`;
   }
   return html;
@@ -418,11 +444,11 @@ function show(path, push=true){
   }
   frame.hidden = false; $("#cover").hidden = true;
   $("#open").href = url; ["open","copy","full"].forEach(id=>$("#"+id).hidden=false);
-  const segs = path.split("/");
-  $("#crumb").innerHTML = segs.slice(0,-1).map((s,i)=>`<span>${esc(label(segs.slice(0,i+1).join("/")))}</span><span class="sep">/</span>`).join("") + `<b>${esc(f.title)}</b>`;
+  const segs = f.tdir ? f.tdir.split("/") : [];
+  $("#crumb").innerHTML = segs.map((s,i)=>`<span>${esc(label(segs.slice(0,i+1).join("/")))}</span><span class="sep">/</span>`).join("") + `<b>${esc(f.title)}</b>`;
   document.title = `${f.title} · ${CONFIG.title}`;
   // 展開祖先資料夾
-  let acc=""; for(const s of segs.slice(0,-1)){ acc = acc?acc+"/"+s:s; OPEN.add(acc); } store.set("open",[...OPEN]);
+  let acc=""; for(const s of segs){ acc = acc?acc+"/"+s:s; OPEN.add(acc); } store.set("open",[...OPEN]);
   if(push) history.pushState(null,"","#/"+slug(path));
   render();
   document.body.classList.remove("drawer");
@@ -439,8 +465,16 @@ function home(push=true){
   render();
 }
 function route(){
-  const h = decodeURI(location.hash.replace(/^#\/?/,""));
+  const h = decodeURI(location.hash.replace(/^#\/?/,"")).replace(/\/$/,"");
+  if(CAT_DIRS.has(h)){ home(false); reveal(h); return; } // 分類連結，例如 #/reading/build
   h ? show(h,false) : home(false);
+}
+// 展開某個資料夾（含祖先）並捲到它
+function reveal(dir){
+  let acc=""; for(const s of dir.split("/")){ acc = acc?acc+"/"+s:s; OPEN.add(acc); } store.set("open",[...OPEN]);
+  if(VIEW!=="tree") setView("tree"); else render();
+  document.body.classList.add("drawer"); // 手機版側邊欄是抽屜，要打開才看得到分類（桌機無影響）
+  requestAnimationFrame(()=>document.querySelector(`[data-dir="${CSS.escape(dir)}"]`)?.scrollIntoView({block:"start",behavior:"smooth"}));
 }
 
 /* ---------- events ---------- */
