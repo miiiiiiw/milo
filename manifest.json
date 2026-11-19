@@ -1,11 +1,18 @@
 {
-  "generated": "2026-11-19T06:15:22.426Z",
+  "generated": "2026-11-19T06:51:34.017Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
     "tech": "技術筆記",
     "reading": "原文學習",
     "watching": "影片學習"
+  },
+  "categories": {
+    "build": "工程",
+    "motion": "影像",
+    "design": "設計",
+    "reach": "經營",
+    "mind": "心智"
   },
   "files": [
     {
