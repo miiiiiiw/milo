@@ -29,7 +29,7 @@ const CSS =
   "h1+.meta{margin-top:18px}\n";
 
 // 轉換版本：改了 transform（例如配色）就 +1，已同步的頁面下次執行會全部重新套用
-const VERSION = 16;
+const VERSION = 17;
 
 // ── 暗色模式：配色取自 milo 導覽頁（index.html :root 的暗色變數），對應 Grok 翻譯頁模板寫死的顏色 ──
 // 規則同導覽頁：預設跟系統；導覽頁 ◐ 切換後寫入 localStorage「cab:theme」，頁面讀取並即時同步。
@@ -54,7 +54,7 @@ pre code{background:none}
 .fit{color:${D.ink2}}
 .orig{color:${D.ink3}}
 .qa-sub{color:${D.ink2}}
-.tweet .emb-note{color:${D.ink3}}
+.tweet .emb-note,.emb-note{color:${D.ink3}}
 pre{background:${D.stage};color:#e6edf3;border:1px solid ${D.rule}}
 a{color:${D.link}}
 .dg{border-color:rgba(236,230,216,.12)}
