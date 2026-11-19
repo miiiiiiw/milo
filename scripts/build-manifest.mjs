@@ -7,6 +7,7 @@
 //   <meta name="description" content="一句話簡介">
 //   <meta name="keywords" content="infographic, 經濟, 實驗">   ← 變成標籤
 //   <meta name="date" content="2026-10-20">                     ← 覆蓋自動日期
+//   <meta name="category" content="build">                      ← 分類（key 需在 categories.json）
 // 都沒寫也沒關係：標題會用檔名，日期會用 git 第一次 commit 的時間。
 
 import { readdirSync, readFileSync, writeFileSync, statSync, existsSync } from "node:fs";
@@ -57,6 +58,7 @@ const files = walk(ROOT).map(({ full, rel, mtime }) => {
     title: decode(pick(html, /<title[^>]*>([\s\S]*?)<\/title>/i)) || undefined,
     description: decode(meta(html, "description")) || undefined,
     tags: kw ? kw.split(/[,，]/).map(s => s.trim()).filter(Boolean) : [],
+    category: meta(html, "category") || undefined,
     date
   };
 }).sort((a, b) => (b.date || "").localeCompare(a.date || ""));
@@ -68,5 +70,12 @@ if (existsSync("folders.json")) {
   catch (e) { console.error("folders.json 格式錯誤，已略過：" + e.message); }
 }
 
-writeFileSync("manifest.json", JSON.stringify({ generated: new Date().toISOString(), folders, files }, null, 2) + "\n");
+// categories.json：分類 key 與中文名稱，例如 { "build": "工程" }，書寫順序＝顯示順序
+let categories = {};
+if (existsSync("categories.json")) {
+  try { categories = JSON.parse(readFileSync("categories.json", "utf8")); }
+  catch (e) { console.error("categories.json 格式錯誤，已略過：" + e.message); }
+}
+
+writeFileSync("manifest.json", JSON.stringify({ generated: new Date().toISOString(), folders, categories, files }, null, 2) + "\n");
 console.log(`manifest.json: ${files.length} pages`);

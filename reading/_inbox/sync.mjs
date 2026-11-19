@@ -122,6 +122,12 @@ const THEME_JS =
   '<script>/* milo 暗色模式：跟隨導覽頁的明暗切換 */(function(){var r=document.documentElement;function a(){try{var t=JSON.parse(localStorage.getItem("cab:theme"));if(t==="dark"||t==="light")r.dataset.theme=t;else delete r.dataset.theme}catch(e){}}a();addEventListener("storage",function(e){if(e.key==="cab:theme")a()})})();</script>';
 
 const sources = fs.existsSync(SOURCES) ? JSON.parse(fs.readFileSync(SOURCES, "utf8")) : {};
+// 分類：合法的 key 在 repo 根目錄 categories.json；_inbox/category-map.json 是 Claude 維護的「檔名 → 分類」對照，
+// 用來補上舊頁面的分類，或更正交件時標的分類（對照表優先於頁面裡的 meta）。
+const CATEGORIES = fs.existsSync("categories.json") ? JSON.parse(fs.readFileSync("categories.json", "utf8")) : {};
+const CAT_MAP_FILE = `${DST}/_inbox/category-map.json`;
+const CAT_MAP = fs.existsSync(CAT_MAP_FILE) ? JSON.parse(fs.readFileSync(CAT_MAP_FILE, "utf8")) : {};
+const validCat = (k) => Object.prototype.hasOwnProperty.call(CATEGORIES, k);
 const taipeiDay = (d) => new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Taipei" }).format(d);
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 const metaOf = (html, name) => {
@@ -201,9 +207,13 @@ function dedupeChineseTitle(s) {
   return s;
 }
 
-function transform(html, { kicker, date }) {
+function transform(html, { kicker, date, category }) {
   let s = html;
   s = dedupeChineseTitle(s);
+  if (category) {
+    s = s.replace(/<meta\s+name=["']category["'][^>]*>\s*/i, "");
+    s = s.replace(/<\/title>/i, `</title><meta name="category" content="${category}">`);
+  }
   if (!metaOf(s, "date")) s = s.replace(/<\/title>/i, `</title><meta name="date" content="${date}">`);
   const kw = metaOf(s, "keywords");
   if (kw && !kw.split(/[,，]/).map((x) => x.trim()).includes(CATEGORY)) {
@@ -225,7 +235,7 @@ for (const f of files) {
   const src = path.join(inboxDir, f);
   const buf = fs.readFileSync(src);
   const sha = crypto.createHash("sha256").update(buf).digest("hex");
-  if (sources[slug]?.sha256 === sha && sources[slug]?.v === VERSION) continue; // 已同步過，沒有變動
+  if (sources[slug]?.sha256 === sha && sources[slug]?.v === VERSION && (sources[slug]?.cat ?? "") === (CAT_MAP[slug] ?? "")) continue; // 已同步過，沒有變動
 
   const dst = path.join(DST, f);
   const exists = fs.existsSync(dst);
@@ -237,6 +247,10 @@ for (const f of files) {
   const html = buf.toString("utf8");
   const { errors, warnings, title } = check(html);
   errs.push(...errors);
+  const metaCat = metaOf(html, "category");
+  if (metaCat && !validCat(metaCat))
+    errs.push(`\`category\` 寫成「${metaCat}」，只能是 ${Object.keys(CATEGORIES).map((k) => `\`${k}\`（${CATEGORIES[k]}）`).join("、")} 其中之一`);
+  const category = (validCat(CAT_MAP[slug]) && CAT_MAP[slug]) || metaCat || null;
 
   if (errs.length) {
     failed++;
@@ -248,12 +262,14 @@ for (const f of files) {
   // 更新既有頁面時保留原本的日期，網址與排序不變
   const keepDate = exists ? metaOf(fs.readFileSync(dst, "utf8"), "date") : null;
   const date = keepDate || inboxDate(src);
-  fs.writeFileSync(dst, transform(html, { kicker: metaOf(html, "kicker"), date }));
-  sources[slug] = { sha256: sha, v: VERSION, synced: taipeiDay(new Date()) };
+  fs.writeFileSync(dst, transform(html, { kicker: metaOf(html, "kicker"), date, category }));
+  sources[slug] = { sha256: sha, v: VERSION, synced: taipeiDay(new Date()), ...(CAT_MAP[slug] ? { cat: CAT_MAP[slug] } : {}) };
   changed++;
   const kind = !exists ? "新增" : formatOnly ? "格式重新套用" : "內容更新";
   rows.push(`| ✓ | \`${f}\` | ${title} | ${kind}（${date}） |`);
   for (const g of darkGaps(html)) notes.push(`- \`${f}\`：⚠️ ${g}。請 Claude 補暗色對照表（不影響上線，但暗色模式下可能看不清楚）`);
+  if (!category) notes.push(`- \`${f}\`：⚠️ 沒有標分類（\`<meta name="category">\`），網站上會放在「未分類」。請 Claude 補進 \`${CAT_MAP_FILE}\`，或請 Grok 補標後重推。`);
+  else if (metaCat && category !== metaCat) notes.push(`- \`${f}\`：分類依對照表改為 \`${category}\`（頁面標的是 \`${metaCat}\`）。`);
   if (exists && !tracked)
     notes.push(`- \`${f}\`：會覆蓋原本手動上架的同名頁面。`);
   for (const w of warnings) notes.push(`- \`${f}\`：${w}`);
