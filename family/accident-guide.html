@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>腳踏車事故家屬行動指引</title>
+<meta name="description" content="岳父腳踏車事故後的家屬行動指引：少年程序、補償金、民事求償、期限與待辦清單">
+<meta name="keywords" content="指南, 車禍, 少年事件, 犯罪被害補償金, 民事求償">
+<meta name="date" content="2026-11-19">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* 版面：單欄閱讀 + 頂部章節導覽；手機優先，圖表為窄版直式 */
+  --bg:#f3f5f6; --surface:#ffffff; --ink:#1c2830; --muted:#5a6a74; --line:#d6dee3; --line-strong:#9fb0ba;
+  --accent:#2b5b7a; --accent-soft:#e2ecf2;
+  --warn:#94570a; --warn-soft:#fbefd9; --crit:#a3302b; --crit-soft:#f7e2e0; --ok:#2e6a45; --ok-soft:#e1efe5;
+  --font-display:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --font-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#11181d; --surface:#1a232a; --ink:#e3e9ed; --muted:#9aabb5; --line:#2c3a43; --line-strong:#4f6370;
+    --accent:#86b6d6; --accent-soft:#1f3341;
+    --warn:#e8b25c; --warn-soft:#3a2c14; --crit:#f08a82; --crit-soft:#3d1f1d; --ok:#8fcfa3; --ok-soft:#1b3324;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11181d; --surface:#1a232a; --ink:#e3e9ed; --muted:#9aabb5; --line:#2c3a43; --line-strong:#4f6370;
+  --accent:#86b6d6; --accent-soft:#1f3341;
+  --warn:#e8b25c; --warn-soft:#3a2c14; --crit:#f08a82; --crit-soft:#3d1f1d; --ok:#8fcfa3; --ok-soft:#1b3324;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:64px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16.5px;line-height:1.75;-webkit-text-size-adjust:100%}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:780px;margin:0 auto;padding:0 18px}
+header.top{padding:56px 0 20px}
+@media (max-width:560px){header.top{padding-top:32px}}
+.eyebrow{color:var(--muted)}
+header.top h1{font-family:var(--font-display);font-size:clamp(1.7rem,5vw,2.3rem);line-height:1.3;margin:0 0 10px;text-wrap:balance}
+.meta{color:var(--muted);font-size:.92rem;margin:0}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-size:.93rem;color:var(--muted);margin-top:16px}
+nav.toc{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+nav.toc ul{list-style:none;margin:0 auto;padding:10px 18px;display:flex;gap:8px;overflow-x:auto;max-width:780px;scrollbar-width:thin}
+nav.toc a{display:block;white-space:nowrap;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:.88rem}
+nav.toc a:hover{border-color:var(--accent);color:var(--accent)}
+section{padding:30px 0 8px;border-top:1px solid var(--line)}
+section:first-of-type{border-top:0}
+h2{font-family:var(--font-display);font-size:1.45rem;line-height:1.4;margin:0 0 14px;text-wrap:balance;display:flex;gap:10px;align-items:baseline}
+h2 .no{font-family:var(--font-body);font-size:.85rem;font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:6px;padding:1px 8px;flex:none}
+h3{font-size:1.1rem;margin:24px 0 8px}
+p{margin:0 0 12px}
+ul,ol{padding-left:1.3em;margin:0 0 12px}
+li{margin:3px 0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.grid{display:grid;gap:12px}
+@media (min-width:640px){.grid.cols3{grid-template-columns:repeat(3,1fr)} .grid.cols2{grid-template-columns:repeat(2,1fr)}}
+.lead{font-size:1.02rem}
+.action{border-left:4px solid var(--accent)}
+.action .num{font-weight:700;color:var(--accent);font-size:.85rem;letter-spacing:.04em}
+.action h4{margin:2px 0 6px;font-size:1.02rem}
+.action p{margin:0;font-size:.95rem;color:var(--muted)}
+.date-card{border-left:4px solid var(--crit)}
+.date-card.soft{border-left-color:var(--warn)}
+.date-card.calm{border-left-color:var(--ok)}
+.date-card .d{font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums}
+.date-card .what{font-weight:700;margin:2px 0 4px}
+.date-card p{font-size:.92rem;color:var(--muted);margin:0}
+.count{display:inline-block;font-size:.8rem;font-weight:700;border-radius:999px;padding:1px 9px;margin-left:6px;vertical-align:middle;background:var(--crit-soft);color:var(--crit)}
+.soft .count{background:var(--warn-soft);color:var(--warn)}
+.calm .count{background:var(--ok-soft);color:var(--ok)}
+.callout{border-radius:10px;padding:12px 16px;margin:12px 0;font-size:.96rem}
+.callout.info{background:var(--accent-soft)}
+.callout.warn{background:var(--warn-soft)}
+.callout.crit{background:var(--crit-soft)}
+.callout.ok{background:var(--ok-soft)}
+.callout strong:first-child{display:block;margin-bottom:2px}
+.tbl{overflow-x:auto;margin:10px 0 16px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.93rem;min-width:520px}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:0}
+th{background:var(--accent-soft);font-weight:700;white-space:nowrap}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.fit{min-width:0}
+table.fit td:nth-child(2),table.fit th:nth-child(2){white-space:nowrap}
+table.fit td:first-child{width:30%}
+.tag{white-space:nowrap;margin-bottom:4px;display:inline-block;font-size:.78rem;font-weight:700;border-radius:5px;padding:0 7px;line-height:1.7}
+.tag.must{background:var(--crit-soft);color:var(--crit)}
+.tag.either{background:var(--ok-soft);color:var(--ok)}
+.tag.law{background:var(--accent-soft);color:var(--accent)}
+figure{margin:16px 0 20px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 12px 10px}
+figure svg{display:block;width:100%;max-width:520px;height:auto;margin:0 auto;color:var(--muted)}
+figcaption{font-size:.88rem;color:var(--muted);margin-top:8px;padding:0 6px}
+.dg text{fill:var(--ink);font-family:var(--font-body);font-size:12px}
+.dg text.h{font-weight:700;font-size:13px}
+.dg text.s{fill:var(--muted);font-size:11px}
+.dg text.c{fill:var(--crit);font-weight:700;font-size:11px}
+.dg text.a{fill:var(--accent);font-weight:700}
+.dg .box{fill:var(--surface);stroke:var(--line-strong);stroke-width:1.2}
+.dg .acc{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.4}
+.dg .ok{fill:var(--ok-soft);stroke:var(--ok);stroke-width:1.2}
+.dg .crit{fill:var(--crit-soft);stroke:var(--crit);stroke-width:1.2}
+.dg .warn{fill:var(--warn-soft);stroke:var(--warn);stroke-width:1.2}
+.dg .ln{stroke:currentColor;stroke-width:1.4;fill:none}
+.dg .ln-acc{stroke:var(--accent);stroke-width:1.6;fill:none;stroke-dasharray:5 4}
+.dg .mk{fill:currentColor}
+.dg .mk-acc{fill:var(--accent)}
+.dg .bar{fill:var(--accent);opacity:.8}
+.dg .bar2{fill:var(--ok);opacity:.75}
+.dg .grid{stroke:var(--line);stroke-width:1}
+/* 時間軸 */
+.tl{list-style:none;padding:0;margin:8px 0 0;position:relative}
+.tl::before{content:"";position:absolute;left:11px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tl li{position:relative;padding:0 0 16px 38px;margin:0}
+.tl li::before{content:"";position:absolute;left:4px;top:7px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--line-strong)}
+.tl li.past::before{background:var(--line-strong)}
+.tl li.past .t, .tl li.past .w{color:var(--muted)}
+.tl li.now::before{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.tl li.dead::before{border-color:var(--crit)}
+.tl .t{font-weight:700;font-variant-numeric:tabular-nums;font-size:.92rem}
+.tl .w{display:block}
+.tl .s{display:block;font-size:.88rem;color:var(--muted)}
+.tl .pill{font-size:.75rem;font-weight:700;border-radius:999px;padding:0 8px;margin-left:6px;background:var(--crit-soft);color:var(--crit);vertical-align:1px}
+.tl .pill.now{background:var(--accent);color:var(--surface)}
+.tl .pill.past{background:var(--line);color:var(--muted)}
+/* 對照卡 */
+.vs{display:grid;gap:12px}
+@media (min-width:600px){.vs{grid-template-columns:1fr 1fr}}
+.vs .card h4{margin:0 0 8px;font-size:1rem}
+.vs dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:.93rem}
+.vs dt{color:var(--muted)}
+.vs dd{margin:0}
+.vs .no-go{border-top:4px solid var(--crit)}
+.vs .go{border-top:4px solid var(--ok)}
+/* 步驟 */
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps > li{counter-increment:s;position:relative;padding:0 0 12px 40px;margin:0}
+.steps > li > ul{margin-top:6px;padding-left:1.2em}
+.steps > li > ul > li{padding:0;margin:4px 0}
+.steps > li::before{content:counter(s);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--surface);font-weight:700;font-size:.85rem;display:grid;place-items:center}
+/* 待辦清單 */
+.todo{list-style:none;padding:0;margin:0 0 8px}
+.todo li{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:8px;margin:2px 0}
+.todo li:hover{background:var(--accent-soft)}
+.todo input{width:20px;height:20px;margin-top:4px;flex:none;accent-color:var(--accent)}
+.todo label{cursor:pointer}
+.todo input:checked + label{color:var(--muted);text-decoration:line-through}
+.todo-group h3{display:flex;align-items:center;gap:8px}
+.todo-group h3 .prog{font-size:.8rem;font-weight:500;color:var(--muted)}
+.btn{font:inherit;font-size:.88rem;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:8px;padding:5px 12px;cursor:pointer}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.law-ref{font-size:.82rem;color:var(--muted)}
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0}
+summary{cursor:pointer;font-weight:700}
+footer{color:var(--muted);font-size:.86rem;padding:24px 0 48px;border-top:1px solid var(--line);margin-top:24px}
+.src li{word-break:break-all}
+@media print{nav.toc{display:none} body{background:#fff} figure,.card,.tbl{break-inside:avoid}}
+/* ── milo 頁首小標規範（見 README「頁首小標」），請勿個別調整 ── */
+.page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header class="top">
+  <p class="eyebrow page-kicker">家庭生活 · 事故行動指引</p>
+  <h1>爸爸腳踏車事故：家屬行動指引</h1>
+  <p class="meta">整理日期 2026/11/19 ・ 依據 2026/11/18 犯保協會法律諮詢錄音（四段）與查證過的法條、官方資料</p>
+  <div class="note">錄音裡聽不清楚的地方，凡是有法律或公開資料可以確認的，都已直接補上並註明依據；需要依個案判斷的，放在第 13 節「要問律師的問題」。本頁是家屬自用的整理，不是正式法律意見，重大決定前請再跟律師或協會確認。文中「犯保協會」或「協會」指財團法人犯罪被害人保護協會。</div>
+</header>
+</div>
+
+<nav class="toc" aria-label="章節導覽">
+  <ul>
+    <li><a href="#quick">一分鐘版</a></li>
+    <li><a href="#timeline">時間軸</a></li>
+    <li><a href="#facts">案件資料</a></li>
+    <li><a href="#map">整體地圖</a></li>
+    <li><a href="#juvenile">少年程序</a></li>
+    <li><a href="#appraisal">車禍鑑定</a></li>
+    <li><a href="#comp">補償金</a></li>
+    <li><a href="#civil">民事求償</a></li>
+    <li><a href="#assets">假扣押</a></li>
+    <li><a href="#lawyer">律師</a></li>
+    <li><a href="#todo">待辦清單</a></li>
+    <li><a href="#deadlines">期限表</a></li>
+    <li><a href="#money">金額費用</a></li>
+    <li><a href="#ask">要問律師</a></li>
+    <li><a href="#laws">法條速查</a></li>
+  </ul>
+</nav>
+
+<main class="wrap">
+
+<!-- 0 -->
+<section id="quick">
+  <h2><span class="no">0</span>先看這裡：一分鐘版</h2>
+  <p class="lead">對方是約 13 歲的少年。刑事部分會由少年法院用「少年保護事件」處理，<strong>不會判刑</strong>，所以不能走「刑事附帶民事訴訟」。要拿到賠償，有三條路：</p>
+  <ul>
+    <li><strong>調解／和解</strong>：任何階段都可以談。</li>
+    <li><strong>自己另提民事訴訟</strong>：最晚 2028/9/27。</li>
+    <li><strong>政府的犯罪被害補償金 180 萬</strong>：跟前兩者分開計算，不會互相扣除。</li>
+  </ul>
+
+  <h3>現在最要緊的三件事</h3>
+  <div class="grid cols3">
+    <div class="card action"><div class="num">第 1 件</div><h4>補償金申請書寄回協會</h4><p>四人簽名蓋章（見第 6 節）。愈早送愈好，送了只是先放著等結果，沒有任何損失。</p></div>
+    <div class="card action"><div class="num">第 2 件</div><h4>簽國稅局財產調查申請書</h4><p>請協會查對方少年和他父母的財產，作為假扣押、談賠償的依據。</p></div>
+    <div class="card action"><div class="num">第 3 件</div><h4>開始收集單據</h4><p>醫療、看護、喪葬、腳踏車等所有支出，正本保存、拍照備份。</p></div>
+  </div>
+
+  <h3>三個絕對不能錯過的日期</h3>
+  <div class="grid cols3">
+    <div class="card date-card soft"><div class="d" data-count="2027-03-28">2027/3/28</div><div class="what">自行申請車鑑的期限</div><p>事故後 6 個月內。但本案已在偵查中，實際上要請檢察官囑託，檢察官或法院囑託不受 6 個月限制。見第 5 節。</p></div>
+    <div class="card date-card"><div class="d" data-count="2028-09-27">2028/9/27</div><div class="what">民事求償最後安全日</div><p>過了這天，對方可以拒絕賠償。<strong>建議最晚 2028/6/30 前就起訴，不要壓線。</strong></p></div>
+    <div class="card date-card calm"><div class="d" data-count="2031-09-27">2031/9</div><div class="what">補償金法定申請期限</div><p>知道被害起 5 年。我們這個月就會送，不用擔心。</p></div>
+  </div>
+</section>
+
+<!-- 1 -->
+<section id="timeline">
+  <h2><span class="no">1</span>時間軸：已經發生的與接下來的</h2>
+  <p>灰點是已經過去的事，藍點是現在，紅框是期限。「預估」的日期以實際通知為準。</p>
+  <ol class="tl" id="tl">
+    <li data-date="2026-09-28"><span class="t">2026/9/28 早上 6:38</span><span class="w">古亭河濱自行車道事故</span><span class="s">6:39 民眾通報，7 點前送萬芳醫院</span></li>
+    <li data-date="2026-10-03"><span class="t">2026/10 初（第六天）</span><span class="w">爸爸離世</span><span class="s">死亡日期以相驗屍體證明書為準；檢察官相驗</span></li>
+    <li data-date="2026-10-16"><span class="t">2026/10 中</span><span class="w">家屬同意解剖</span><span class="s">家屬已向派出所提出過失致死告訴，案件由檢察官偵辦</span></li>
+    <li data-date="2026-11-18"><span class="t">2026/11/18</span><span class="w">犯保協會法律諮詢</span><span class="s">取得補償金申請書、財產調查申請書</span></li>
+    <li data-date="2026-11-30" data-now="1"><span class="t">2026/11 底（現在）</span><span class="w">寄回補償金申請書、簽財產調查申請書、寫陳報狀給檢察官</span><span class="s">見第 10 節待辦清單</span></li>
+    <li data-date="2027-01-15"><span class="t">2026 年底～2027 年初（預估）</span><span class="w">解剖報告出來，檢察官通知家屬</span><span class="s">檢察官問「還有沒有其他請求」時，要明確提出</span></li>
+    <li data-date="2027-03-28" class="dead"><span class="t">2027/3/28</span><span class="w">自行申請車鑑的 6 個月期限</span><span class="s">本案走檢察官囑託，不受此限</span></li>
+    <li data-date="2027-04-01"><span class="t">2027/3 以後（預估）</span><span class="w">少年法院可能開庭</span><span class="s">家屬可到庭陳述意見、表達調解意願</span></li>
+    <li data-date="2027-07-01"><span class="t">2027 年中以後（預估）</span><span class="w">少年法院做出決定</span><span class="s">不付審理，或保護處分</span></li>
+    <li data-date="2027-12-31"><span class="t">2027/12/31</span><span class="w">檢查調解進度</span><span class="s">若仍沒有進展，著手準備民事起訴</span></li>
+    <li data-date="2028-06-30" class="dead"><span class="t">2028/6/30</span><span class="w">民事起訴的建議最後期限</span><span class="s">保留緩衝，不要壓線</span></li>
+    <li data-date="2028-09-27" class="dead"><span class="t">2028/9/27</span><span class="w">民事求償法定最後安全日</span><span class="s">民法第 197 條，事故後 2 年</span></li>
+    <li data-date="2031-09-27"><span class="t">2031/9</span><span class="w">補償金法定申請期限</span><span class="s">我們已提前送件，不受影響</span></li>
+  </ol>
+</section>
+
+<!-- 2 -->
+<section id="facts">
+  <h2><span class="no">2</span>案件基本資料</h2>
+  <div class="tbl"><table>
+    <tbody>
+      <tr><th>被害人</th><td>爸爸，69 歲，已退休。家中經濟支柱，也負責照顧孫子。</td></tr>
+      <tr><th>時間地點</th><td>2026/9/28 早上約 6:38，古亭河濱自行車道（臺北市中正區，自來水博物館附近）。6:39 民眾通報，7 點前送醫（萬芳醫院）。</td></tr>
+      <tr><th>經過</th><td>兩輛一般腳踏車相撞。對方少年與幾位同學一起騎車，從後方撞上正在轉彎的爸爸。家屬看過的監視器畫面顯示，對方騎上坡沒有減速。</td></tr>
+      <tr><th>治療與過世</th><td>急診醫師說存活機率極低。家屬決定不做侵入性搶救，以呼吸器維持，第六天（約 10 月初）離世。死亡日期以相驗屍體證明書為準。</td></tr>
+      <tr><th>加害人</th><td>約 13 歲的少年。</td></tr>
+      <tr><th>已完成</th><td>已向派出所提出過失致死告訴（就是「提告」，家屬已是告訴人）；檢察官已相驗；家屬同意解剖（報告預計年底到明年初）；病歷已交給檢調；向交通隊申請初判表中。</td></tr>
+      <tr><th>證據</th><td>現場照片、現場圖、一支距離遠的舊監視器影片（已交檢調，家屬可到派出所觀看，但拿不到複本）。同行的其他少年可能是證人。</td></tr>
+      <tr><th>對方家長</th><td>傳訊息說「有保險」，沒說哪一種、額度多少。</td></tr>
+      <tr><th>補償金申請人</th><td>第一順位：媽媽、兩位女兒、兒子，共四人（爸爸的父母已不在）。女婿不是法定申請人，但可以協助處理、陪同。</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 3 -->
+<section id="map">
+  <h2><span class="no">3</span>三條線同時進行：整體地圖</h2>
+  <figure>
+    <svg class="dg" viewBox="0 0 396 400" role="img" aria-label="三條線同時進行：A 刑事少年線、B 補償金線、C 民事求償線；A 線的過失認定是 B 線核定與 C 線判決的證據">
+      <defs>
+        <marker id="m1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="m1a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk-acc" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+      <text class="h" x="63" y="26" text-anchor="middle">A 刑事／少年</text>
+      <text class="h" x="198" y="26" text-anchor="middle">B 政府補償金</text>
+      <text class="h" x="333" y="26" text-anchor="middle">C 民事求償</text>
+      <text class="s" x="63" y="42" text-anchor="middle">決定有沒有過失</text>
+      <text class="s" x="198" y="42" text-anchor="middle">國家給 180 萬</text>
+      <text class="s" x="333" y="42" text-anchor="middle">對方家庭負責</text>
+      <!-- A -->
+      <rect class="box" x="8" y="56" width="110" height="40" rx="6"/><text x="63" y="72" text-anchor="middle">檢察官</text><text class="s" x="63" y="88" text-anchor="middle">相驗・解剖</text>
+      <rect class="box" x="8" y="114" width="110" height="40" rx="6"/><text x="63" y="130" text-anchor="middle">移送</text><text class="s" x="63" y="146" text-anchor="middle">少年法院</text>
+      <rect class="box" x="8" y="172" width="110" height="40" rx="6"/><text x="63" y="188" text-anchor="middle">少年調查官</text><text class="s" x="63" y="204" text-anchor="middle">調查、寫報告</text>
+      <rect class="box" x="8" y="230" width="110" height="40" rx="6"/><text x="63" y="246" text-anchor="middle">少年法官開庭</text><text class="s" x="63" y="262" text-anchor="middle">家屬可陳述</text>
+      <rect class="box" x="8" y="288" width="110" height="40" rx="6"/><text x="63" y="304" text-anchor="middle">不付審理</text><text class="s" x="63" y="320" text-anchor="middle">或保護處分</text>
+      <path class="ln" d="M63,96 V112" marker-end="url(#m1)"/><path class="ln" d="M63,154 V170" marker-end="url(#m1)"/><path class="ln" d="M63,212 V228" marker-end="url(#m1)"/><path class="ln" d="M63,270 V286" marker-end="url(#m1)"/>
+      <!-- B -->
+      <rect class="acc" x="143" y="56" width="110" height="40" rx="6"/><text x="198" y="72" text-anchor="middle">現在送件</text><text class="s" x="198" y="88" text-anchor="middle">協會代送</text>
+      <rect class="box" x="143" y="114" width="110" height="40" rx="6"/><text x="198" y="130" text-anchor="middle">先放著</text><text class="s" x="198" y="146" text-anchor="middle">等 A 線結果</text>
+      <rect class="box" x="143" y="230" width="110" height="40" rx="6"/><text x="198" y="246" text-anchor="middle">審議會決定</text><text class="s" x="198" y="262" text-anchor="middle">核定 180 萬</text>
+      <rect class="box" x="143" y="288" width="110" height="40" rx="6"/><text x="198" y="304" text-anchor="middle">地檢署通知</text><text class="s" x="198" y="320" text-anchor="middle">提供帳戶領款</text>
+      <path class="ln" d="M198,96 V112" marker-end="url(#m1)"/><path class="ln" d="M198,154 V228" marker-end="url(#m1)"/><path class="ln" d="M198,270 V286" marker-end="url(#m1)"/>
+      <!-- C -->
+      <rect class="acc" x="278" y="56" width="110" height="40" rx="6"/><text x="333" y="72" text-anchor="middle">查財產</text><text class="s" x="333" y="88" text-anchor="middle">協會發函國稅局</text>
+      <rect class="box" x="278" y="114" width="110" height="40" rx="6"/><text x="333" y="130" text-anchor="middle">假扣押</text><text class="s" x="333" y="146" text-anchor="middle">查到財產才做</text>
+      <rect class="box" x="278" y="172" width="110" height="40" rx="6"/><text x="333" y="188" text-anchor="middle">調解・和解</text><text class="s" x="333" y="204" text-anchor="middle">任何階段都可談</text>
+      <rect class="crit" x="278" y="230" width="110" height="40" rx="6"/><text x="333" y="246" text-anchor="middle">談不成就起訴</text><text class="c" x="333" y="262" text-anchor="middle">2028/9/27 前</text>
+      <rect class="box" x="278" y="288" width="110" height="40" rx="6"/><text x="333" y="304" text-anchor="middle">判決或調解筆錄</text><text class="s" x="333" y="320" text-anchor="middle">→ 強制執行</text>
+      <path class="ln" d="M333,96 V112" marker-end="url(#m1)"/><path class="ln" d="M333,154 V170" marker-end="url(#m1)"/><path class="ln" d="M333,212 V228" marker-end="url(#m1)"/><path class="ln" d="M333,270 V286" marker-end="url(#m1)"/>
+      <!-- evidence band -->
+      <rect class="acc" x="8" y="352" width="380" height="38" rx="8"/>
+      <text class="a" x="198" y="376" text-anchor="middle">A 線認定「對方有過失」＝ B、C 兩線的關鍵證據</text>
+      <path class="ln-acc" d="M63,330 V350" marker-end="url(#m1a)"/>
+      <path class="ln-acc" d="M198,352 V332" marker-end="url(#m1a)"/>
+      <path class="ln-acc" d="M333,352 V332" marker-end="url(#m1a)"/>
+    </svg>
+    <figcaption>三條線同時進行。藍底是現在就能做的事，紅框是有期限的事。A 線的結果會流向 B、C 兩線。</figcaption>
+  </figure>
+  <h3>三條線的關係</h3>
+  <ul>
+    <li><strong>A 線決定「對方有沒有過失」。</strong>這是 B、C 兩線的重要證據，所以我們在 A 線要爭取的是「認定對方有過失、與死亡有因果關係」，不是加重處罰。</li>
+    <li><strong>B 線的 180 萬是國家給的</strong>，不會因為和解或判決而被扣掉（見第 6 節）。</li>
+    <li><strong>C 線是唯一能讓對方家庭實際負責的管道。</strong>不需要等 A 線結束才能開始，但法官通常會等 A 線的證據。</li>
+  </ul>
+</section>
+
+<!-- 4 -->
+<section id="juvenile">
+  <h2><span class="no">4</span>A 線：刑事／少年程序</h2>
+  <h3>4.1 會怎麼走</h3>
+  <figure>
+    <svg class="dg" viewBox="0 0 400 480" role="img" aria-label="少年程序流程：檢察官相驗解剖，移送少年法院，少年調查官調查，少年法官開庭，結果為不付審理或付審理後的保護處分，保護處分由輕到重為訓誡、保護管束、安置輔導、感化教育">
+      <defs><marker id="m2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+      <rect class="box" x="90" y="8" width="220" height="44" rx="6"/><text x="200" y="26" text-anchor="middle">① 檢察官（現在）</text><text class="s" x="200" y="43" text-anchor="middle">相驗、解剖、蒐證，開相驗屍體證明書</text>
+      <path class="ln" d="M200,52 V68" marker-end="url(#m2)"/>
+      <rect class="box" x="90" y="70" width="220" height="44" rx="6"/><text x="200" y="88" text-anchor="middle">② 移送少年法院</text><text class="s" x="200" y="105" text-anchor="middle">確認加害人是少年後移送</text>
+      <path class="ln" d="M200,114 V130" marker-end="url(#m2)"/>
+      <rect class="box" x="90" y="132" width="220" height="44" rx="6"/><text x="200" y="150" text-anchor="middle">③ 少年調查官調查</text><text class="s" x="200" y="167" text-anchor="middle">家庭、就學、生活史，寫報告（數個月）</text>
+      <path class="ln" d="M200,176 V192" marker-end="url(#m2)"/>
+      <rect class="acc" x="90" y="194" width="220" height="44" rx="6"/><text x="200" y="212" text-anchor="middle">④ 少年法官開庭（不公開）</text><text class="s" x="200" y="229" text-anchor="middle">家屬可到庭陳述、表達調解意願</text>
+      <path class="ln" d="M200,238 V252 H100 V268" marker-end="url(#m2)"/>
+      <path class="ln" d="M200,252 H300 V268" marker-end="url(#m2)"/>
+      <rect class="box" x="20" y="270" width="160" height="44" rx="6"/><text x="100" y="288" text-anchor="middle">不付審理</text><text class="s" x="100" y="305" text-anchor="middle">案件結束，不處分</text>
+      <path class="ln" d="M100,314 V330" marker-end="url(#m2)"/>
+      <rect class="warn" x="20" y="332" width="160" height="44" rx="6"/><text x="100" y="350" text-anchor="middle">不服：提起抗告</text><text class="s" x="100" y="367" text-anchor="middle">依公文寫的方式與期限</text>
+      <rect class="box" x="220" y="270" width="160" height="44" rx="6"/><text x="300" y="288" text-anchor="middle">付審理</text><text class="s" x="300" y="305" text-anchor="middle">→ 保護處分（擇一）</text>
+      <rect class="box" x="236" y="326" width="144" height="30" rx="5"/><text x="308" y="345" text-anchor="middle">訓誡（＋假日生活輔導）</text>
+      <rect class="box" x="236" y="362" width="144" height="30" rx="5"/><text x="308" y="381" text-anchor="middle">保護管束（＋勞動服務）</text>
+      <rect class="box" x="236" y="398" width="144" height="30" rx="5"/><text x="308" y="417" text-anchor="middle">安置輔導</text>
+      <rect class="box" x="236" y="434" width="144" height="30" rx="5"/><text x="308" y="453" text-anchor="middle">感化教育</text>
+      <path class="ln" d="M226,330 V460" marker-end="url(#m2)"/>
+      <text class="s" x="218" y="400" text-anchor="end">輕</text><text class="s" x="218" y="416" text-anchor="end">↓</text><text class="s" x="218" y="432" text-anchor="end">重</text>
+      <rect class="crit" x="20" y="400" width="160" height="64" rx="6"/>
+      <text class="c" x="100" y="422" text-anchor="middle">未滿 14 歲不罰</text>
+      <text x="100" y="440" text-anchor="middle">不會移送檢察官起訴</text>
+      <text x="100" y="456" text-anchor="middle">不會判刑</text>
+    </svg>
+    <figcaption>少年程序從檢察官到少年法院的流程。結果只有不付審理或保護處分兩種，最重是感化教育。</figcaption>
+  </figure>
+  <ol class="steps">
+    <li><strong>檢察官階段（現在）</strong>：檢察官負責相驗、解剖、蒐證。確認加害人是少年後，會把案件移送少年法院。相驗屍體證明書由檢察官開立（司法文書，和醫院開的死亡證明書不同）。</li>
+    <li><strong>少年法院</strong>：先由少年調查官調查少年的家庭、就學、生活狀況，寫成報告，再由少年法官開庭。開庭不公開。</li>
+    <li><strong>結果只有兩種</strong>：
+      <ul>
+        <li><strong>不付審理</strong>：案件結束，等於不處分。例如鑑定認為對方沒有過失。若不服，依法院公文寫的方式提起<strong>抗告</strong>。</li>
+        <li><strong>付審理 → 保護處分</strong>：訓誡（可附加假日生活輔導）、保護管束（可附加勞動服務）、安置輔導、感化教育。</li>
+      </ul>
+    </li>
+  </ol>
+  <div class="callout info"><strong>為什麼不會判刑</strong>少年未滿 14 歲，依刑法第 18 條不罰。少年法院也不能把案子移給檢察官起訴，因為少年事件處理法第 27 條只適用 14 歲以上，而且要重罪。所以這個案子一定留在少年法院，以保護處分為上限。</div>
+
+  <h3>4.2 家屬能做什麼</h3>
+  <ul>
+    <li><strong>到庭陳述意見</strong>：依 2023 年修正的少年事件處理法第 36 條之 1，少年法院原則上應傳喚被害人家屬到庭，給予陳述意見的機會。家屬也可以表示不願到場。</li>
+    <li><strong>陪同</strong>：到庭時可由親屬、社工、心理師或信賴的人（包括律師）陪同，並可陳述意見。律師在少年程序中能代理的範圍，請委任時跟律師確認。</li>
+    <li><strong>表達調解意願</strong>：少年法官通常會主動詢問雙方有沒有調解意願。建議說法：「如果對方有意願，我們也願意談。」不必過度積極。</li>
+    <li><strong>建議</strong>：第一次開庭可以先自己去聽，再決定少年程序要不要請律師。律師最有用的地方在調解和民事訴訟。</li>
+  </ul>
+
+  <h3>4.3 時間預估</h3>
+  <p>解剖報告約年底到明年初 → 移送少年法院 → 調查官調查與寫報告（通常數個月）→ 開庭。錄音中提到「明年三月」可能開庭，實際以法院通知為準。整個 A 線大概要到 2027 年中以後才有結果。</p>
+</section>
+
+<!-- 5 -->
+<section id="appraisal">
+  <h2><span class="no">5</span>車禍鑑定（車鑑）</h2>
+  <h3>5.1 規定：兩種申請方式</h3>
+  <p class="law-ref">依據：車輛行車事故鑑定及覆議作業辦法第 3 條</p>
+  <div class="vs">
+    <div class="card no-go">
+      <h4>家屬自己申請 <span class="tag must">本案不適用</span></h4>
+      <dl>
+        <dt>期限</dt><dd>事故後 6 個月內（2027/3/28 前）</dd>
+        <dt>本案</dt><dd>案件已在偵查中，鑑定會<strong>不受理</strong>當事人自己申請</dd>
+        <dt>費用</dt><dd>3,000 元</dd>
+      </dl>
+    </div>
+    <div class="card go">
+      <h4>請檢察官囑託 <span class="tag either">本案走這條</span></h4>
+      <dl>
+        <dt>期限</dt><dd><strong>不受 6 個月限制</strong></dd>
+        <dt>怎麼做</dt><dd>具狀請檢察官送鑑定，或在檢察官詢問時提出</dd>
+        <dt>費用</dt><dd>約 3,000 元，繳入公庫</dd>
+      </dl>
+    </div>
+  </div>
+  <ul style="margin-top:12px">
+    <li>鑑定只供司法參考，法院不受鑑定結果拘束。</li>
+    <li>鑑定報告寫的是肇事原因與責任，不會寫賠償比例。</li>
+    <li>鑑定會要排隊、開會（雙方到場說明），再等報告，整體要好幾個月。</li>
+  </ul>
+  <div class="callout ok"><strong>錄音裡兩種說法其實都對</strong>協會人員說「要經過檢察官」，律師說「沒有卡六個月」。自己申請有 6 個月期限，但我們本來就要透過檢察官，而檢察官囑託不受此限。</div>
+
+  <h3>5.2 要不要現在就請檢察官送鑑定？</h3>
+  <p>錄音中有兩種意見：</p>
+  <div class="tbl"><table>
+    <thead><tr><th></th><th>協會人員</th><th>律師</th></tr></thead>
+    <tbody>
+      <tr><th>建議</th><td>現在就具狀請檢察官送</td><td>不急，等解剖報告出來、檢察官問「還有沒有請求」時再提</td></tr>
+      <tr><th>理由</th><td>排隊加開會加出報告要好幾個月，早送早有結果</td><td>通常是劣勢方才主動申請；目前證據看起來對我們有利，鑑定結果若不如預期反而不好</td></tr>
+    </tbody>
+  </table></div>
+  <h3>建議做法（整理後）</h3>
+  <ol class="steps">
+    <li>現在先<strong>請協會律師協助寫一份陳報狀</strong>給檢察官，把我們看到的事實寫清楚：對方從後方撞上、上坡加速沒有減速、同行少年可作證、監視器畫面。並<strong>請求檢察官調查</strong>，包括傳喚同行少年作證。</li>
+    <li>送不送鑑定，由家屬跟協會律師再談一次後決定。如果決定要送，就在同一份書狀裡一起請求，不必等解剖報告。</li>
+    <li>不論選哪一個，<strong>檢察官最後問「有沒有其他請求」時，都要明確表態</strong>，不要只是口頭帶過。</li>
+  </ol>
+</section>
+
+<!-- 6 -->
+<section id="comp">
+  <h2><span class="no">6</span>B 線：犯罪被害補償金（180 萬）</h2>
+  <h3>6.1 確定的事</h3>
+  <div class="tbl"><table>
+    <tbody>
+      <tr><th>金額</th><td>因犯罪行為死亡的遺屬補償金一律 <strong>180 萬</strong>（犯罪被害人權益保障法第 57 條，2023/7/1 起適用）。錄音裡提到的「第二款第一項」就是指遺屬補償金這一類。</td></tr>
+      <tr><th>過失也適用</th><td>車禍過失致死屬於可以申請的犯罪類型。對方未滿 14 歲不罰，不影響申請。</td></tr>
+      <tr><th>腳踏車可申請</th><td>法律排除的是可以向「汽機車強制險」請求的案件。腳踏車沒有強制險，所以不受影響。</td></tr>
+      <tr><th>申請人</th><td>第一順位是父母、配偶、子女。本案是媽媽和三位子女共四人，共同申請、共同具領。四人若沒有協議，就平均分配。</td></tr>
+      <tr><th>不扣除</th><td>依新法，補償金不影響民事賠償，領了之後也不會再扣還。不論日後和解或判決拿到多少，這 180 萬都另外算。</td></tr>
+      <tr><th>期限</th><td>知道有犯罪被害起 5 年內（第 63 條）。</td></tr>
+      <tr><th>可能減少</th><td>被害人本身有故意或「重大過失」時，審議會可以不補償或酌減（第 59 條）。這也是鑑定結果重要的原因之一。</td></tr>
+      <tr><th>國家求償</th><td>國家付錢後，可以向加害人一方求償。這是國家與對方之間的事，不影響我們。</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>6.2 錢從哪裡來：補償金、賠償、保險的關係</h3>
+  <figure>
+    <svg class="dg" viewBox="0 0 400 320" role="img" aria-label="錢的流向：國家支付補償金 180 萬給家屬，另計不扣除；對方少年與父母連帶負責民事賠償；對方保險理賠算在賠償總額內；國家支付後可向對方求償">
+      <defs>
+        <marker id="m3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="m3a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk-acc" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+      <rect class="ok" x="10" y="14" width="130" height="50" rx="8"/><text class="h" x="75" y="35" text-anchor="middle">國家</text><text class="s" x="75" y="53" text-anchor="middle">地檢署審議會</text>
+      <rect class="box" x="250" y="14" width="140" height="50" rx="8"/><text class="h" x="320" y="35" text-anchor="middle">對方家庭</text><text class="s" x="320" y="53" text-anchor="middle">少年＋父母連帶負責</text>
+      <rect class="box" x="290" y="124" width="100" height="44" rx="8"/><text x="340" y="142" text-anchor="middle">對方保險</text><text class="s" x="340" y="159" text-anchor="middle">種類額度不明</text>
+      <rect class="acc" x="125" y="250" width="150" height="54" rx="8"/><text class="h" x="200" y="274" text-anchor="middle">家屬</text><text class="s" x="200" y="292" text-anchor="middle">媽媽＋三位子女</text>
+      <path class="ln-acc" d="M142,30 H248" marker-end="url(#m3a)"/>
+      <text class="a" x="195" y="22" text-anchor="middle" style="font-size:11px">支付後可向對方求償</text>
+      <path class="ln" d="M75,64 V200 L150,248" marker-end="url(#m3)"/>
+      <text x="18" y="120">補償金 180 萬</text><text class="s" x="18" y="137">另外計算</text><text class="s" x="18" y="153">不因賠償而扣除</text>
+      <path class="ln" d="M280,64 L240,248" marker-end="url(#m3)"/>
+      <text x="168" y="150" text-anchor="middle">民事賠償</text><text class="s" x="168" y="167" text-anchor="middle">調解或判決</text>
+      <path class="ln" d="M330,168 L262,248" marker-end="url(#m3)"/>
+      <text class="s" x="350" y="200" text-anchor="middle">理賠＝賠償</text><text class="s" x="350" y="215" text-anchor="middle">的一部分</text>
+    </svg>
+    <figcaption>180 萬來自國家，和對方的賠償分開計算；對方的保險理賠則是賠償總額的一部分，不是額外加的。</figcaption>
+  </figure>
+
+  <h3>6.3 怎麼填（協會已給表格）</h3>
+  <div class="tbl"><table class="fit">
+    <thead><tr><th>文件</th><th>誰要簽</th><th>簽法與備註</th></tr></thead>
+    <tbody>
+      <tr><td>申請書（含附表）</td><td>四人</td><td><span class="tag either">簽名或蓋章擇一</span><br>主要申請人寫第一頁，其他三人寫附表。基本資料可以代填，可用家裡的印章代蓋。<strong>日期先空白</strong>，協會檢查後補上。</td></tr>
+      <tr><td>協議共同具領同意書（決定錢怎麼分、要不要平均分）</td><td>四人</td><td><span class="tag must">親簽＋蓋章都要</span><br>必須本人同意。在日本、臺東的家人要自己簽，可以印出來簽好寄回。</td></tr>
+      <tr><td>權益告知書</td><td>四人</td><td><span class="tag must">紙本親簽</span><br>不接受電子簽章。</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>申請階段<strong>不需要提供帳戶</strong>，核准後地檢署會通知怎麼領款。</li>
+    <li>如果之後拿到新版的相驗屍體證明書，交給協會，送件前補上。</li>
+    <li>審議會會等檢察官和法院的調查結果再決定，所以送件後會放一段時間，這是正常的。</li>
+  </ul>
+</section>
+
+<!-- 7 -->
+<section id="civil">
+  <h2><span class="no">7</span>C 線：民事求償</h2>
+  <h3>7.1 可以向誰求償</h3>
+  <ul>
+    <li><strong>少年本人，以及他的父母（法定代理人）連帶負責</strong>（民法第 187 條）。實際上主要由父母負擔。</li>
+    <li><strong>對方的責任保險</strong>：保險理賠會算在賠償總額裡，不是額外加的。法官知道對方有保險時，通常會請保險公司出面。</li>
+    <li><strong>同行的其他少年</strong>：如果有競速、並排等共同行為，可能有共同侵權責任（民法第 185 條），請律師評估。</li>
+  </ul>
+
+  <h3>7.2 可以請求的項目</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>項目</th><th>依據</th><th>怎麼算／要準備什麼</th></tr></thead>
+    <tbody>
+      <tr><td>醫療費</td><td>民法 192 條</td><td>自費部分，依收據。健保給付的部分不能重複請求。</td></tr>
+      <tr><td>看護費</td><td>民法 192 條</td><td>家人自己看護也可以請求，比照看護行情，一天約 2,000～2,500 元 × 住院天數。</td></tr>
+      <tr><td>喪葬費</td><td>民法 192 條</td><td>依收據，法院會看是否必要、合理。錄音中沒有討論到，但這是常見而且重要的項目，請保留所有單據。</td></tr>
+      <tr><td>腳踏車損失</td><td>民法 196 條</td><td>購買證明、維修估價，會考慮折舊。</td></tr>
+      <tr><td>扶養費（媽媽）</td><td>民法 192 條第 2 項</td><td>用法院的霍夫曼計算法估算。但法律上受扶養要「不能維持生活」，媽媽有退休金，法院可能不判。<strong>調解時仍先列入。</strong></td></tr>
+      <tr><td>精神慰撫金</td><td>民法 194 條</td><td>配偶與子女各自可以請求。法院會整體衡量，人數多也不會無限往上加。</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>慰撫金的參考數字</h3>
+  <figure>
+    <svg class="dg" viewBox="0 0 400 190" role="img" aria-label="慰撫金參考範圍：法院判決參考，配偶 150 到 200 萬，子女每人 80 到 120 萬；律師調解習慣每人約 200 萬起談">
+      <g>
+        <line class="grid" x1="120" y1="30" x2="120" y2="140"/><line class="grid" x1="170" y1="30" x2="170" y2="140"/><line class="grid" x1="220" y1="30" x2="220" y2="140"/><line class="grid" x1="270" y1="30" x2="270" y2="140"/><line class="grid" x1="320" y1="30" x2="320" y2="140"/><line class="grid" x1="370" y1="30" x2="370" y2="140"/>
+        <text class="s" x="120" y="158" text-anchor="middle">0</text><text class="s" x="170" y="158" text-anchor="middle">50</text><text class="s" x="220" y="158" text-anchor="middle">100</text><text class="s" x="270" y="158" text-anchor="middle">150</text><text class="s" x="320" y="158" text-anchor="middle">200</text><text class="s" x="370" y="158" text-anchor="middle">250</text>
+        <text class="s" x="370" y="176" text-anchor="end">單位：萬元</text>
+      </g>
+      <text x="110" y="62" text-anchor="end">配偶</text><text class="s" x="110" y="77" text-anchor="end">法院參考</text>
+      <rect class="bar" x="270" y="52" width="50" height="22" rx="4"/>
+      <text class="s" x="295" y="92" text-anchor="middle">150～200</text>
+      <text x="110" y="112" text-anchor="end">子女每人</text><text class="s" x="110" y="127" text-anchor="end">法院參考</text>
+      <rect class="bar" x="200" y="102" width="40" height="22" rx="4"/>
+      <text class="s" x="220" y="142" text-anchor="middle">80～120</text>
+      <line class="ln-acc" x1="320" y1="22" x2="320" y2="140"/>
+      <text class="a" x="320" y="16" text-anchor="middle" style="font-size:11px">律師調解：每人約 200 萬起談</text>
+    </svg>
+    <figcaption>法院判決通常比調解開價保守。這些是談判起點的參考，不是保證。</figcaption>
+  </figure>
+  <ul>
+    <li><strong>律師的調解習慣</strong>：一人約 200 萬起談。</li>
+    <li><strong>法院判決</strong>通常較保守，參考值大約是配偶 150～200 萬、子女每人 80～120 萬（依個案）。</li>
+    <li>律師提到，這類案件<strong>總額常見在約 300～800 萬</strong>之間。</li>
+  </ul>
+  <div class="callout warn"><strong>提醒</strong>這些數字只是談判起點的參考，不是保證。正式金額請委託律師依單據計算。</div>
+
+  <h3>7.3 調解／和解</h3>
+  <ul>
+    <li><strong>任何階段都可以談</strong>：偵查中、少年法院、民事法院都可以，沒有時間限制、沒有次數限制。</li>
+    <li><strong>有強制執行效力的方式</strong>：
+      <ul>
+        <li>法院的調解筆錄、和解筆錄：等同確定判決。</li>
+        <li>區公所調解委員會（不屬於法院）成立的調解，<strong>送法院核定後</strong>，與民事確定判決有同一效力，可以直接強制執行（鄉鎮市調解條例第 27 條）。</li>
+        <li>只有雙方私下寫的和解書，就只是一般契約。對方不付錢時還要再告。要用這種方式，至少請律師看過或辦公證。</li>
+      </ul>
+    </li>
+    <li><strong>心態提醒</strong>：對方若只說「交給保險」，通常不夠。保險額度常只有一兩百萬，和實際損害落差大時，對方態度可能轉變，要有心理準備。</li>
+    <li>對方家長通常不會說出保險額度，可以問，但不要期待答案。</li>
+  </ul>
+
+  <h3>7.4 民事訴訟</h3>
+  <ul>
+    <li><strong>什麼時候提</strong>：可以現在提，也可以等少年程序有結果再提。現在提的話，法官可能會先等刑事證據。不論哪一種，<strong>最晚 2028/9/27</strong>。建議若到 <strong>2027 年底調解仍沒有進展，就著手準備起訴</strong>，最晚 2028/6/30 前送出。</li>
+    <li><strong>向哪裡提</strong>：臺灣臺北地方法院（事故地和對方住所都在臺北市）。</li>
+    <li><strong>裁判費</strong>：依請求金額計算，約 1%。</li>
+  </ul>
+  <div class="tbl"><table>
+    <thead><tr><th>請求金額</th><th class="n">一審裁判費（約）</th><th class="n">上訴二審（1.5 倍，約）</th></tr></thead>
+    <tbody>
+      <tr><td>400 萬</td><td class="n">40,600 元</td><td class="n">60,900 元</td></tr>
+      <tr><td>600 萬</td><td class="n">60,400 元</td><td class="n">90,600 元</td></tr>
+      <tr><td>800 萬</td><td class="n">80,200 元</td><td class="n">120,300 元</td></tr>
+    </tbody>
+  </table></div>
+  <p class="law-ref">依民事訴訟法第 77 條之 13 及高等法院加徵標準試算。調解成立可退部分裁判費。</p>
+  <ul>
+    <li><strong>書狀</strong>：協會可以免費協助撰寫，次數不限。</li>
+    <li><strong>打贏之後</strong>：判決只是「執行名義」。對方不付錢，要自己查財產、聲請強制執行。所以第 8 節的查財產、假扣押很重要。</li>
+  </ul>
+</section>
+
+<!-- 8 -->
+<section id="assets">
+  <h2><span class="no">8</span>查財產與假扣押</h2>
+  <figure>
+    <svg class="dg" viewBox="0 0 400 420" role="img" aria-label="查財產與假扣押流程：簽調查協助申請書，協會發函國稅局，查到值錢財產則用書狀聲請假扣押，法院命供擔保時可用犯保協會保證書代替，之後在期限內起訴；沒查到則保留紀錄日後再查">
+      <defs><marker id="m4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+      <rect class="acc" x="90" y="8" width="220" height="40" rx="6"/><text x="200" y="33" text-anchor="middle">簽「調查協助申請書」</text>
+      <path class="ln" d="M200,48 V64" marker-end="url(#m4)"/>
+      <rect class="box" x="90" y="66" width="220" height="44" rx="6"/><text x="200" y="84" text-anchor="middle">協會發函國稅局</text><text class="s" x="200" y="101" text-anchor="middle">查少年及父母的財產、所得</text>
+      <path class="ln" d="M200,110 V126" marker-end="url(#m4)"/>
+      <polygon class="warn" points="200,128 290,166 200,204 110,166"/><text x="200" y="163" text-anchor="middle">查到值錢</text><text x="200" y="179" text-anchor="middle">的財產？</text>
+      <path class="ln" d="M110,166 H60 V232" marker-end="url(#m4)"/><text class="s" x="84" y="158" text-anchor="middle">沒有</text>
+      <rect class="box" x="8" y="234" width="104" height="58" rx="6"/><text x="60" y="254" text-anchor="middle">保留紀錄</text><text class="s" x="60" y="270" text-anchor="middle">日後強制執行</text><text class="s" x="60" y="285" text-anchor="middle">時再查</text>
+      <path class="ln" d="M200,204 V232" marker-end="url(#m4)"/><text class="s" x="214" y="222">有</text>
+      <rect class="box" x="130" y="234" width="250" height="44" rx="6"/><text x="255" y="252" text-anchor="middle">用書狀向法院聲請假扣押</text><text class="s" x="255" y="269" text-anchor="middle">不必等開庭，起訴前也可以</text>
+      <path class="ln" d="M255,278 V294" marker-end="url(#m4)"/>
+      <rect class="box" x="130" y="296" width="250" height="44" rx="6"/><text x="255" y="314" text-anchor="middle">法院命我們提供擔保金</text><text class="s" x="255" y="331" text-anchor="middle">常見約請求金額的三分之一</text>
+      <path class="ln" d="M255,340 V356" marker-end="url(#m4)"/>
+      <rect class="ok" x="130" y="358" width="250" height="52" rx="6"/><text x="255" y="378" text-anchor="middle">犯保協會出具保證書代替擔保金</text><text class="s" x="255" y="397" text-anchor="middle">之後要在法院定的期限內起訴</text>
+    </svg>
+    <figcaption>查財產是第一步；查到值錢的財產，才值得聲請假扣押。擔保金可以請犯保協會出具保證書代替。</figcaption>
+  </figure>
+  <h3>8.1 查財產</h3>
+  <p>簽協會的「調查協助申請書」，由協會發函國稅局查對方少年及其父母的財產與所得。</p>
+  <ul>
+    <li>財產資料：查詢當下的最新登記（不動產、車輛、投資等）。</li>
+    <li>所得資料：一年申報一次，只能看到前一年度。</li>
+    <li>查詢之前已經移轉的財產，無法掌握。</li>
+  </ul>
+  <h3>8.2 假扣押：先凍結對方的財產，防止脫產</h3>
+  <ul>
+    <li>要先查到值錢的財產才有意義。</li>
+    <li>用書狀向法院聲請，<strong>不必等開庭</strong>，民事起訴前也可以聲請。法院准許後要在期限內起訴。</li>
+    <li>法院通常會要求我們提供<strong>擔保金</strong>（錄音中說的「預付一筆錢」就是這個，常見是請求金額的三分之一左右）。<strong>犯保協會可以出具保證書代替擔保金</strong>，所以不一定要自己拿現金出來。</li>
+    <li>要不要假扣押，等查到財產後跟律師討論。</li>
+  </ul>
+</section>
+
+<!-- 9 -->
+<section id="lawyer">
+  <h2><span class="no">9</span>律師</h2>
+  <div class="grid cols2">
+    <div class="card"><h3 style="margin-top:0">協會提供</h3><p>免費法律諮詢與寫書狀，次數不限。協會委任律師出庭主要協助經濟弱勢家庭，我們家可能不符合。</p></div>
+    <div class="card"><h3 style="margin-top:0">收費方式</h3><p>通常按「審級」或「程序」收費，每個階段分別簽約。錄音中的例子是一審約 10 萬；只委任刑事約 7 萬、刑事加民事約 15 萬。這些是個案舉例，不是行情。多數律師中途解約不退費。</p></div>
+  </div>
+  <h3>什麼時候需要</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>階段</th><th>建議</th></tr></thead>
+    <tbody>
+      <tr><td>少年法院程序</td><td>可以先自己去，視情況再決定。</td></tr>
+      <tr><td>調解、民事訴訟、計算求償金額</td><td><strong>建議請律師。</strong>看懂法院公文、在庭上攻防、應付對方突然改口，都有律師比較安心。</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>怎麼挑</strong>：可以請協會提供有車禍或少年案件經驗的律師名單。溝通順暢、彼此信任最重要。</p>
+</section>
+
+<!-- 10 -->
+<section id="todo">
+  <h2><span class="no">10</span>待辦清單（依先後排序）</h2>
+  <p class="law-ref">勾選狀態只存在你自己的手機或電腦上，其他家人看不到你的勾選。 <button class="btn" type="button" id="reset">清除我的勾選</button></p>
+
+  <div class="todo-group"><h3>本週到本月 <span class="prog"></span></h3>
+  <ul class="todo">
+    <li><input type="checkbox" id="t1"><label for="t1">補償金申請書、協議共同具領同意書、權益告知書：四人簽好寄回協會（見 6.3）。</label></li>
+    <li><input type="checkbox" id="t2"><label for="t2">簽國稅局調查協助申請書。</label></li>
+    <li><input type="checkbox" id="t3"><label for="t3">提供女婿的聯絡資料給協會（協會的家屬資料目前只有女兒、兒子）。</label></li>
+    <li><input type="checkbox" id="t4"><label for="t4">請協會律師協助寫陳報狀給檢察官（陳述事實、請求調查、傳喚同行少年），並決定要不要一併請求送鑑定（見 5.2）。</label></li>
+    <li><input type="checkbox" id="t5"><label for="t5">建立「單據資料夾」：醫療、看護、喪葬、腳踏車、交通費等，正本保存、拍照備份。</label></li>
+  </ul></div>
+
+  <div class="todo-group"><h3>接下來幾個月 <span class="prog"></span></h3>
+  <ul class="todo">
+    <li><input type="checkbox" id="t6"><label for="t6">跟交通隊追蹤初判表；申請現場圖、照片（交通大隊，臺北市愛國西路 26 號，臨櫃申請）。</label></li>
+    <li><input type="checkbox" id="t7"><label for="t7">協會查到財產後，與律師討論要不要假扣押。</label></li>
+    <li><input type="checkbox" id="t8"><label for="t8">決定是否委任律師；請協會提供律師名單。</label></li>
+    <li><input type="checkbox" id="t9"><label for="t9">請律師初步計算求償金額。</label></li>
+    <li><input type="checkbox" id="t10"><label for="t10">試著向對方家長了解保險種類與額度（可能問不到）。</label></li>
+  </ul></div>
+
+  <div class="todo-group"><h3>解剖報告出來、檢察官通知時 <span class="prog"></span></h3>
+  <ul class="todo">
+    <li><input type="checkbox" id="t11"><label for="t11">到場時，檢察官問「還有沒有其他請求」，明確提出（例如鑑定、調查證人）。</label></li>
+    <li><input type="checkbox" id="t12"><label for="t12">拿到新版相驗屍體證明書，交給協會。</label></li>
+  </ul></div>
+
+  <div class="todo-group"><h3>少年法院開庭時 <span class="prog"></span></h3>
+  <ul class="todo">
+    <li><input type="checkbox" id="t13"><label for="t13">決定誰出席陳述意見，事先寫好想說的重點。</label></li>
+    <li><input type="checkbox" id="t14"><label for="t14">表達「對方有意願，我們也願意調解」。</label></li>
+  </ul></div>
+
+  <div class="todo-group"><h3>長期提醒 <span class="prog"></span></h3>
+  <ul class="todo">
+    <li><input type="checkbox" id="t15"><label for="t15">手機設提醒：2027/12/31 檢查調解進度；2028/6/30 民事起訴的建議最後期限；2028/9/27 法定最後期限。</label></li>
+  </ul></div>
+
+  <div class="todo-group"><h3>照顧自己 <span class="prog"></span></h3>
+  <ul class="todo">
+    <li><input type="checkbox" id="t16"><label for="t16">協會有免費心理諮商，媽媽或任何家人都可以使用，隨時可以喊停。</label></li>
+  </ul></div>
+</section>
+
+<!-- 11 -->
+<section id="deadlines">
+  <h2><span class="no">11</span>期限總表</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>事項</th><th>期限</th><th>依據</th><th>備註</th></tr></thead>
+    <tbody>
+      <tr><td>自行申請車鑑</td><td class="n">2027/3/28</td><td>車輛行車事故鑑定及覆議作業辦法第 3 條</td><td>本案在偵查中，要由檢察官囑託，不受此限</td></tr>
+      <tr><td>民事求償</td><td class="n">2028/9/27</td><td>民法第 197 條（知道損害及賠償義務人起 2 年）</td><td>從事故日起算最保守；建議 2028/6/30 前起訴</td></tr>
+      <tr><td>補償金申請</td><td class="n">約 2031/9</td><td>犯罪被害人權益保障法第 63 條（知道被害起 5 年）</td><td>本月就送</td></tr>
+      <tr><td>刑事告訴</td><td>已提告</td><td>—</td><td>過失致死不是告訴乃論罪，沒有期限問題</td></tr>
+      <tr><td>解剖報告</td><td>2026 年底～2027 年初</td><td>—</td><td>預估</td></tr>
+      <tr><td>少年法院開庭</td><td>可能 2027/3 以後</td><td>—</td><td>以法院通知為準</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 12 -->
+<section id="money">
+  <h2><span class="no">12</span>金額與費用總表</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>項目</th><th>金額</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td>犯罪被害補償金</td><td>180 萬</td><td>國家給付，四人共同具領；不影響民事賠償</td></tr>
+      <tr><td>民事裁判費</td><td>約請求金額的 1%</td><td>400 萬約 4 萬多</td></tr>
+      <tr><td>車鑑費用</td><td>3,000 元</td><td>經檢察官囑託時繳入公庫</td></tr>
+      <tr><td>假扣押擔保金</td><td>法院酌定（常見約請求額三分之一）</td><td>犯保協會可出具保證書代替</td></tr>
+      <tr><td>親屬看護</td><td>約 2,000～2,500 元／天</td><td>依看護行情</td></tr>
+      <tr><td>慰撫金參考</td><td>調解起談每人約 200 萬；法院判決通常較低</td><td>見 7.2</td></tr>
+      <tr><td>求償總額參考</td><td>約 300～800 萬</td><td>律師經驗值，非保證</td></tr>
+      <tr><td>對方保險額度</td><td>不明</td><td>一般個人責任險常見一兩百萬</td></tr>
+      <tr><td>律師費（舉例）</td><td>一審約 10 萬</td><td>個案舉例，非行情</td></tr>
+      <tr><td>協會諮詢與寫狀</td><td>免費、不限次數</td><td>—</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 13 -->
+<section id="ask">
+  <h2><span class="no">13</span>下次要問律師或協會的問題</h2>
+  <p>逐字稿中聽不清楚、但查得到的部分都已補上。以下是需要依本案情況判斷的問題：</p>
+  <ol>
+    <li>要不要現在就請檢察官送車鑑？（第 5 節的兩種意見，請律師看過證據後給建議）</li>
+    <li>同行的其他少年及其家長，有沒有共同侵權責任？</li>
+    <li>對方的保險是哪一種（個人責任險、家庭綜合險）？額度多少？怎麼要求保險公司出面？</li>
+    <li>媽媽的扶養費要不要列入？列多少？</li>
+    <li>慰撫金與總額，具體開價多少比較合理？</li>
+    <li>民事要現在起訴，還是等少年法院有結果？</li>
+    <li>少年法院程序中，被害人律師能做到什麼程度（代理、閱卷）？</li>
+  </ol>
+</section>
+
+<!-- 14 -->
+<section id="laws">
+  <h2><span class="no">14</span>法條與資料速查</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>主題</th><th>條文</th></tr></thead>
+    <tbody>
+      <tr><td>未滿 14 歲不罰</td><td>刑法第 18 條</td></tr>
+      <tr><td>少年保護事件、移送檢察官的條件</td><td>少年事件處理法第 27 條</td></tr>
+      <tr><td>被害人到庭陳述意見</td><td>少年事件處理法第 36 條之 1</td></tr>
+      <tr><td>父母連帶賠償</td><td>民法第 187 條</td></tr>
+      <tr><td>共同侵權</td><td>民法第 185 條</td></tr>
+      <tr><td>醫療、喪葬、扶養費</td><td>民法第 192 條</td></tr>
+      <tr><td>精神慰撫金</td><td>民法第 194 條</td></tr>
+      <tr><td>民事 2 年時效</td><td>民法第 197 條</td></tr>
+      <tr><td>調解經法院核定的效力</td><td>鄉鎮市調解條例第 27 條</td></tr>
+      <tr><td>補償金申請資格</td><td>犯罪被害人權益保障法第 50 條</td></tr>
+      <tr><td>申請順序</td><td>犯罪被害人權益保障法第 53 條</td></tr>
+      <tr><td>遺屬補償金 180 萬</td><td>犯罪被害人權益保障法第 57 條</td></tr>
+      <tr><td>不補償或酌減</td><td>犯罪被害人權益保障法第 59 條</td></tr>
+      <tr><td>補償金 5 年時效</td><td>犯罪被害人權益保障法第 63 條</td></tr>
+      <tr><td>車鑑受理條件、6 個月期限</td><td>車輛行車事故鑑定及覆議作業辦法第 3 條</td></tr>
+      <tr><td>裁判費</td><td>民事訴訟法第 77 條之 13</td></tr>
+    </tbody>
+  </table></div>
+  <details>
+    <summary>參考資料連結</summary>
+    <ul class="src">
+      <li><a href="https://www.tph.moj.gov.tw/4421/4475/632364/1156943/post">臺灣高等檢察署〈犯罪被害補償金之申請〉</a></li>
+      <li><a href="https://www.moj.gov.tw/2204/2528/2634/2639/16923/">法務部〈如何申請犯罪被害補償金〉</a></li>
+      <li><a href="https://news.pts.org.tw/article/654004">公視新聞：法務部說明補償金不影響民事賠償</a></li>
+      <li><a href="https://www.twba.org.tw/upload/content/20250911/ac59a420fe9d42c19f131078e465c1db/ac59a420fe9d42c19f131078e465c1db.pdf">律師公會整理：少年事件處理法第 36 條之 1</a></li>
+      <li><a href="https://www.legis-pedia.com/template/car-driving/235">法律百科：車鑑申請條件</a></li>
+      <li><a href="https://www.tnc.moj.gov.tw/media/129779/46410441139.pdf">臺南地檢署：犯保協會出具保證書代替假扣押擔保金</a></li>
+      <li><a href="https://laws.gov.taipei/Law/Interpretation/RelatedLaw/FE219235">鄉鎮市調解條例第 27 條</a></li>
+    </ul>
+  </details>
+  <p>犯保協會免付費專線：<strong>0800-005-850</strong></p>
+</section>
+
+<footer>本指引根據諮詢錄音的自動逐字稿（辨識錯誤多）與公開法規資料整理，整理日期 2026/11/19。法律可能修正，個案也會有差異，重要決定請以律師或協會的意見為準。</footer>
+</main>
+
+<script>
+(function(){
+  var DAY=86400000;
+  var today=new Date(); today.setHours(0,0,0,0);
+  function parse(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  // 期限卡倒數
+  document.querySelectorAll('[data-count]').forEach(function(el){
+    var d=Math.round((parse(el.getAttribute('data-count'))-today)/DAY);
+    var c=document.createElement('span'); c.className='count';
+    c.textContent = d>0 ? '還有 '+d+' 天' : (d===0?'就是今天':'已過期');
+    el.appendChild(c);
+  });
+  // 時間軸狀態
+  var items=[].slice.call(document.querySelectorAll('#tl li'));
+  var nowSet=false;
+  items.forEach(function(li){
+    var d=parse(li.getAttribute('data-date'));
+    var t=li.querySelector('.t');
+    if(li.hasAttribute('data-now') && !nowSet && d>=today){
+      li.classList.add('now'); nowSet=true;
+      var p=document.createElement('span');p.className='pill now';p.textContent='現在';t.appendChild(p);
+      return;
+    }
+    if(d<today){ li.classList.add('past'); li.classList.remove('dead'); }
+    else if(li.classList.contains('dead')){
+      var n=Math.round((d-today)/DAY);
+      var q=document.createElement('span');q.className='pill';q.textContent='還有 '+n+' 天';t.appendChild(q);
+    }
+  });
+  // 待辦清單（只存在本機）
+  var KEY='bike-guide-todo-v1', state={};
+  try{ state=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ state={}; }
+  var boxes=[].slice.call(document.querySelectorAll('.todo input[type=checkbox]'));
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+  function progress(){
+    document.querySelectorAll('.todo-group').forEach(function(g){
+      var bs=g.querySelectorAll('input[type=checkbox]'), n=0;
+      bs.forEach(function(b){ if(b.checked) n++; });
+      g.querySelector('.prog').textContent = n+' / '+bs.length;
+    });
+  }
+  boxes.forEach(function(b){
+    b.checked=!!state[b.id];
+    b.addEventListener('change',function(){ state[b.id]=b.checked; save(); progress(); });
+  });
+  document.getElementById('reset').addEventListener('click',function(){
+    state={}; boxes.forEach(function(b){b.checked=false;}); save(); progress();
+  });
+  progress();
+})();
+</script>
+</body>
+</html>
