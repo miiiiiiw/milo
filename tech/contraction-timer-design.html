@@ -78,7 +78,10 @@ html{scroll-behavior:smooth}
 .strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(170px,1fr);gap:16px;align-items:start;
   overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}
 .strip .shot{width:auto;scroll-snap-align:start}
-.strip .shot figcaption{order:-1;min-height:4.9em}   /* 說明在上、對齊成一列，圖片高度不同也不會亂 */
+.strip{grid-template-rows:auto auto}
+.strip .shot{display:grid;grid-row:span 2;grid-template-rows:subgrid;gap:8px}   /* 說明列與圖片列各自對齊，說明換行也不會把圖推歪 */
+.strip .shot figcaption{order:-1;align-self:end}
+@supports not (grid-template-rows:subgrid){.strip .shot figcaption{min-height:4.9em}}
 @media (min-width:801px){.strip{grid-auto-columns:minmax(170px,calc((100% - (var(--n) - 1) * 16px) / var(--n)))}}
 @media (max-width:800px){.strip{grid-auto-columns:76%;margin-right:calc(-1 * max(16px, env(safe-area-inset-right, 0px)));padding-right:16px;scroll-padding-left:0}}
 /* 章節 */
@@ -236,11 +239,11 @@ figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
       <p class="eyebrow">實際畫面・依序</p>
       <span class="swipe">← 左右滑動看下一張 →</span>
       <div class="strip" style="--n:5">
-        <figure class="shot"><a href="img/contraction-timer-1-1-bag.webp" title="打開大圖"><img src="img/contraction-timer-1-1-bag.webp" width="390" height="519" loading="lazy" decoding="async" alt="入院要帶的東西清單，部分已勾選"></a><figcaption><span class="step">1</span><b>產前</b>入院要帶的東西，可以逐項勾選</figcaption></figure>
-        <figure class="shot"><a href="img/contraction-timer-1-2-contracting.webp" title="打開大圖"><img src="img/contraction-timer-1-2-contracting.webp" width="390" height="615" loading="lazy" decoding="async" alt="宮縮中，按鈕轉綠並顯示呼吸引導，周圍區塊變淡"></a><figcaption><span class="step">2</span><b>宮縮開始</b>按鈕轉綠、周圍淡下來，跟著呼吸</figcaption></figure>
-        <figure class="shot"><a href="img/contraction-timer-1-3-rhythm.webp" title="打開大圖"><img src="img/contraction-timer-1-3-rhythm.webp" width="390" height="453" loading="lazy" decoding="async" alt="最近的節奏：平均間隔、持續時間與間隔長條圖"></a><figcaption><span class="step">3</span><b>節奏變密</b>最近的節奏，橘色長條是 10 分鐘以內</figcaption></figure>
-        <figure class="shot"><a href="img/contraction-timer-1-4-clinic.webp" title="打開大圖"><img src="img/contraction-timer-1-4-clinic.webp" width="390" height="390" loading="lazy" decoding="async" alt="產房資訊卡，有撥打分機與地圖導航按鈕"></a><figcaption><span class="step">4</span><b>出發去醫院</b>一鍵撥打產房分機，或開地圖導航</figcaption></figure>
-        <figure class="shot"><a href="img/contraction-timer-1-5-symphony.webp" title="打開大圖"><img src="img/contraction-timer-1-5-symphony.webp" width="390" height="427" loading="lazy" decoding="async" alt="出生交響曲說明卡與試聽範例按鈕"></a><figcaption><span class="step">5</span><b>小寶出生後</b>出生交響曲，目前可以試聽範例</figcaption></figure>
+        <figure class="shot"><a href="img/contraction-timer-1-1-bag.webp" title="打開大圖"><img src="img/contraction-timer-1-1-bag.webp" width="390" height="519" loading="lazy" decoding="async" alt="入院要帶的東西清單，部分已勾選"></a><figcaption><span class="step">1</span><b>產前</b>可以逐項勾選</figcaption></figure>
+        <figure class="shot"><a href="img/contraction-timer-1-2-contracting.webp" title="打開大圖"><img src="img/contraction-timer-1-2-contracting.webp" width="390" height="615" loading="lazy" decoding="async" alt="宮縮中，按鈕轉綠並顯示呼吸引導，周圍區塊變淡"></a><figcaption><span class="step">2</span><b>宮縮開始</b>轉綠、跟著呼吸</figcaption></figure>
+        <figure class="shot"><a href="img/contraction-timer-1-3-rhythm.webp" title="打開大圖"><img src="img/contraction-timer-1-3-rhythm.webp" width="390" height="453" loading="lazy" decoding="async" alt="最近的節奏：平均間隔、持續時間與間隔長條圖"></a><figcaption><span class="step">3</span><b>節奏變密</b>橘色＝10 分鐘內</figcaption></figure>
+        <figure class="shot"><a href="img/contraction-timer-1-4-clinic.webp" title="打開大圖"><img src="img/contraction-timer-1-4-clinic.webp" width="390" height="390" loading="lazy" decoding="async" alt="產房資訊卡，有撥打分機與地圖導航按鈕"></a><figcaption><span class="step">4</span><b>出發去醫院</b>撥分機或開導航</figcaption></figure>
+        <figure class="shot"><a href="img/contraction-timer-1-5-symphony.webp" title="打開大圖"><img src="img/contraction-timer-1-5-symphony.webp" width="390" height="427" loading="lazy" decoding="async" alt="出生交響曲說明卡與試聽範例按鈕"></a><figcaption><span class="step">5</span><b>小寶出生後</b>目前可試聽範例</figcaption></figure>
       </div>
     </div>
   </section>
@@ -344,9 +347,9 @@ figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
       <span class="swipe">← 左右滑動看下一張 →</span>
       <div class="strip" style="--n:5">
         <figure class="shot"><a href="img/contraction-timer-2-1-watch.webp" title="打開大圖"><img src="img/contraction-timer-2-1-watch.webp" width="390" height="147" loading="lazy" decoding="async" alt="綠色的觀察中狀態卡"></a><figcaption><span class="step">1</span><b>觀察中</b>間隔還長，可以休息</figcaption></figure>
-        <figure class="shot"><a href="img/contraction-timer-2-2-prep.webp" title="打開大圖"><img src="img/contraction-timer-2-2-prep.webp" width="390" height="147" loading="lazy" decoding="async" alt="黃色的節奏越來越近了狀態卡"></a><figcaption><span class="step">2</span><b>準備中</b>第一次在 10 分鐘以內</figcaption></figure>
-        <figure class="shot"><a href="img/contraction-timer-2-3-go.webp" title="打開大圖"><img src="img/contraction-timer-2-3-go.webp" width="390" height="205" loading="lazy" decoding="async" alt="橘色的可以準備出發了狀態卡，下方有兩顆按鈕"></a><figcaption><span class="step">3</span><b>可以出發</b>連續 3 次 ≤ 10 分，出現兩顆按鈕</figcaption></figure>
-        <figure class="shot"><a href="img/contraction-timer-2-4-fast.webp" title="打開大圖"><img src="img/contraction-timer-2-4-fast.webp" width="390" height="228" loading="lazy" decoding="async" alt="橘色的請直接出發狀態卡"></a><figcaption><span class="step">4</span><b>請直接出發</b>連續 2 次 ≤ 5 分的快速規則</figcaption></figure>
+        <figure class="shot"><a href="img/contraction-timer-2-2-prep.webp" title="打開大圖"><img src="img/contraction-timer-2-2-prep.webp" width="390" height="147" loading="lazy" decoding="async" alt="黃色的節奏越來越近了狀態卡"></a><figcaption><span class="step">2</span><b>準備中</b>第一次 ≤ 10 分</figcaption></figure>
+        <figure class="shot"><a href="img/contraction-timer-2-3-go.webp" title="打開大圖"><img src="img/contraction-timer-2-3-go.webp" width="390" height="205" loading="lazy" decoding="async" alt="橘色的可以準備出發了狀態卡，下方有兩顆按鈕"></a><figcaption><span class="step">3</span><b>可以出發</b>連續 3 次 ≤ 10 分</figcaption></figure>
+        <figure class="shot"><a href="img/contraction-timer-2-4-fast.webp" title="打開大圖"><img src="img/contraction-timer-2-4-fast.webp" width="390" height="228" loading="lazy" decoding="async" alt="橘色的請直接出發狀態卡"></a><figcaption><span class="step">4</span><b>請直接出發</b>連續 2 次 ≤ 5 分</figcaption></figure>
         <figure class="shot"><a href="img/contraction-timer-2-5-rest.webp" title="打開大圖"><img src="img/contraction-timer-2-5-rest.webp" width="390" height="147" loading="lazy" decoding="async" alt="綠色的先休息一下狀態卡"></a><figcaption><span class="step">5</span><b>先休息</b>30 分鐘沒有宮縮</figcaption></figure>
       </div>
     </div>
@@ -473,9 +476,9 @@ figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
       <div class="strip" style="--n:5">
         <figure class="shot"><a href="img/contraction-timer-3-1-idle.webp" title="打開大圖"><img src="img/contraction-timer-3-1-idle.webp" width="390" height="419" loading="lazy" decoding="async" alt="待機時的宮縮開始按鈕"></a><figcaption><span class="step">1</span><b>待機</b>按一下開始</figcaption></figure>
         <figure class="shot"><a href="img/contraction-timer-3-2-contracting.webp" title="打開大圖"><img src="img/contraction-timer-3-2-contracting.webp" width="390" height="419" loading="lazy" decoding="async" alt="宮縮中，綠色按鈕與吸氣引導"></a><figcaption><span class="step">2</span><b>宮縮中</b>再按一下結束</figcaption></figure>
-        <figure class="shot"><a href="img/contraction-timer-3-3-cheer.webp" title="打開大圖"><img src="img/contraction-timer-3-3-cheer.webp" width="390" height="419" loading="lazy" decoding="async" alt="按鈕回到橘色，下方出現鼓勵的話"></a><figcaption><span class="step">3</span><b>持續 ≥ 5 秒</b>記下一筆，出現鼓勵的話</figcaption></figure>
-        <figure class="shot"><a href="img/contraction-timer-3-4-too-short.webp" title="打開大圖"><img src="img/contraction-timer-3-4-too-short.webp" width="390" height="499" loading="lazy" decoding="async" alt="畫面下方出現不到 5 秒這次先不記錄的提示"></a><figcaption><span class="step">4</span><b>不到 5 秒</b>不記錄，跳出提示</figcaption></figure>
-        <figure class="shot"><a href="img/contraction-timer-3-5-forgot.webp" title="打開大圖"><img src="img/contraction-timer-3-5-forgot.webp" width="390" height="494" loading="lazy" decoding="async" alt="宮縮中 3 分 25 秒，出現補記與取消兩個按鈕"></a><figcaption><span class="step">5</span><b>超過 3 分鐘</b>補記為約 1 分鐘，或這次不算</figcaption></figure>
+        <figure class="shot"><a href="img/contraction-timer-3-3-cheer.webp" title="打開大圖"><img src="img/contraction-timer-3-3-cheer.webp" width="390" height="419" loading="lazy" decoding="async" alt="按鈕回到橘色，下方出現鼓勵的話"></a><figcaption><span class="step">3</span><b>持續 ≥ 5 秒</b>記一筆＋鼓勵的話</figcaption></figure>
+        <figure class="shot"><a href="img/contraction-timer-3-4-too-short.webp" title="打開大圖"><img src="img/contraction-timer-3-4-too-short.webp" width="390" height="499" loading="lazy" decoding="async" alt="畫面下方出現不到 5 秒這次先不記錄的提示"></a><figcaption><span class="step">4</span><b>不到 5 秒</b>不記錄，只提示</figcaption></figure>
+        <figure class="shot"><a href="img/contraction-timer-3-5-forgot.webp" title="打開大圖"><img src="img/contraction-timer-3-5-forgot.webp" width="390" height="494" loading="lazy" decoding="async" alt="宮縮中 3 分 25 秒，出現補記與取消兩個按鈕"></a><figcaption><span class="step">5</span><b>超過 3 分鐘</b>補記或這次不算</figcaption></figure>
       </div>
     </div>
   </section>
@@ -705,9 +708,9 @@ figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
       <p class="eyebrow">實際畫面・依序</p>
       <span class="swipe">← 左右滑動看下一張 →</span>
       <div class="strip" style="--n:3">
-        <figure class="shot"><a href="img/contraction-timer-5-1-log.webp" title="打開大圖"><img src="img/contraction-timer-5-1-log.webp" width="390" height="749" loading="lazy" decoding="async" alt="紀錄列表，時間精確到秒，前一晚的紀錄用上一段分隔"></a><figcaption><span class="step">1</span><b>紀錄列表</b>時間到秒，前一晚自成「上一段」</figcaption></figure>
-        <figure class="shot"><a href="img/contraction-timer-5-2-clear.webp" title="打開大圖"><img src="img/contraction-timer-5-2-clear.webp" width="390" height="366" loading="lazy" decoding="async" alt="清除全部的確認視窗，說明清除前會自動封存"></a><figcaption><span class="step">2</span><b>清除全部</b>先確認，並自動封存一份</figcaption></figure>
-        <figure class="shot"><a href="img/contraction-timer-5-3-backup.webp" title="打開大圖"><img src="img/contraction-timer-5-3-backup.webp" width="390" height="238" loading="lazy" decoding="async" alt="設定中的匯出備份、匯入備份與還原按鈕"></a><figcaption><span class="step">3</span><b>可以救回</b>設定裡出現還原，也能匯出／匯入</figcaption></figure>
+        <figure class="shot"><a href="img/contraction-timer-5-1-log.webp" title="打開大圖"><img src="img/contraction-timer-5-1-log.webp" width="390" height="749" loading="lazy" decoding="async" alt="紀錄列表，時間精確到秒，前一晚的紀錄用上一段分隔"></a><figcaption><span class="step">1</span><b>紀錄列表</b>時間到秒、自動分段</figcaption></figure>
+        <figure class="shot"><a href="img/contraction-timer-5-2-clear.webp" title="打開大圖"><img src="img/contraction-timer-5-2-clear.webp" width="390" height="366" loading="lazy" decoding="async" alt="清除全部的確認視窗，說明清除前會自動封存"></a><figcaption><span class="step">2</span><b>清除全部</b>確認並自動封存</figcaption></figure>
+        <figure class="shot"><a href="img/contraction-timer-5-3-backup.webp" title="打開大圖"><img src="img/contraction-timer-5-3-backup.webp" width="390" height="238" loading="lazy" decoding="async" alt="設定中的匯出備份、匯入備份與還原按鈕"></a><figcaption><span class="step">3</span><b>可以救回</b>還原或匯入備份</figcaption></figure>
       </div>
     </div>
   </section>
