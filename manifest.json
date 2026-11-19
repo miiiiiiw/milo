@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-19T06:51:34.017Z",
+  "generated": "2026-11-19T06:52:40.322Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -39,6 +39,7 @@
         "AI 學習",
         "jexchan"
       ],
+      "category": "mind",
       "date": "2026-11-19"
     },
     {
@@ -53,6 +54,7 @@
         "Renoise",
         "Lonely"
       ],
+      "category": "reach",
       "date": "2026-11-19"
     },
     {
@@ -66,6 +68,7 @@
         "AI 影片",
         "Lonely"
       ],
+      "category": "reach",
       "date": "2026-11-19"
     },
     {
@@ -81,6 +84,7 @@
         "poteto",
         "lauren"
       ],
+      "category": "build",
       "date": "2026-11-19"
     },
     {
@@ -95,6 +99,7 @@
         "Boris",
         "GoldenSpiderAI"
       ],
+      "category": "build",
       "date": "2026-11-19"
     },
     {
@@ -109,6 +114,7 @@
         "Matt Pocock",
         "GoldenSpiderAI"
       ],
+      "category": "build",
       "date": "2026-11-19"
     },
     {
@@ -123,6 +129,7 @@
         "James C. Davis",
         "jexchan"
       ],
+      "category": "build",
       "date": "2026-11-18"
     },
     {
@@ -138,6 +145,7 @@
         "Matt Palmer",
         "Lauren Tan"
       ],
+      "category": "build",
       "date": "2026-11-18"
     },
     {
@@ -151,6 +159,7 @@
         "編導思維",
         "阿哲Phil"
       ],
+      "category": "motion",
       "date": "2026-11-18"
     },
     {
@@ -165,6 +174,7 @@
         "Claude Code",
         "RandomAI"
       ],
+      "category": "motion",
       "date": "2026-11-18"
     },
     {
@@ -178,6 +188,7 @@
         "AI 代理",
         "题叶"
       ],
+      "category": "build",
       "date": "2026-11-18"
     },
     {
@@ -191,6 +202,7 @@
         "AI 代理",
         "题叶"
       ],
+      "category": "build",
       "date": "2026-11-18"
     },
     {
@@ -204,6 +216,7 @@
         "AI 浪潮",
         "题叶"
       ],
+      "category": "design",
       "date": "2026-11-18"
     },
     {
@@ -218,6 +231,7 @@
         "Electron",
         "题叶"
       ],
+      "category": "design",
       "date": "2026-11-18"
     },
     {
@@ -244,6 +258,7 @@
         "AI 代理",
         "Addy Osmani"
       ],
+      "category": "build",
       "date": "2026-11-17"
     },
     {
@@ -289,6 +304,7 @@
         "驗證",
         "軟體工廠"
       ],
+      "category": "build",
       "date": "2026-11-17"
     },
     {
@@ -302,6 +318,7 @@
         "剪輯",
         "Adrian Punk"
       ],
+      "category": "motion",
       "date": "2026-11-16"
     },
     {
@@ -315,6 +332,7 @@
         "畫面連續性",
         "Adrian Punk"
       ],
+      "category": "motion",
       "date": "2026-11-16"
     },
     {
@@ -328,6 +346,7 @@
         "聲音字幕",
         "Adrian Punk"
       ],
+      "category": "motion",
       "date": "2026-11-16"
     },
     {
@@ -341,6 +360,7 @@
         "Anthropic",
         "AYi"
       ],
+      "category": "build",
       "date": "2026-11-15"
     },
     {
@@ -354,6 +374,7 @@
         "子代理",
         "Addy Osmani"
       ],
+      "category": "build",
       "date": "2026-11-15"
     },
     {
@@ -367,6 +388,7 @@
         "內容創作",
         "Dan Koe"
       ],
+      "category": "mind",
       "date": "2026-11-15"
     },
     {
@@ -381,6 +403,7 @@
         "Lauren Tan",
         "AI Engineer"
       ],
+      "category": "build",
       "date": "2026-11-15"
     },
     {
@@ -407,6 +430,7 @@
         "AI 代理",
         "Addy Osmani"
       ],
+      "category": "build",
       "date": "2026-11-14"
     },
     {
@@ -420,6 +444,7 @@
         "個人 IP",
         "Adrian Punk"
       ],
+      "category": "design",
       "date": "2026-11-14"
     },
     {
@@ -433,6 +458,7 @@
         "迴圈工程",
         "Mr. Buzzoni"
       ],
+      "category": "build",
       "date": "2026-11-14"
     },
     {
@@ -446,6 +472,7 @@
         "AI 工作方法",
         "Felix Rieseberg"
       ],
+      "category": "mind",
       "date": "2026-11-14"
     },
     {
@@ -460,6 +487,7 @@
         "Lauren Tan",
         "Gary_Chen"
       ],
+      "category": "build",
       "date": "2026-11-14"
     },
     {
@@ -488,6 +516,7 @@
         "GitHub Pages",
         "Adrian Punk"
       ],
+      "category": "design",
       "date": "2026-11-13"
     },
     {
@@ -501,6 +530,7 @@
         "提示詞",
         "Adrian Punk"
       ],
+      "category": "design",
       "date": "2026-11-13"
     },
     {
@@ -516,6 +546,7 @@
         "提示詞",
         "Adrian Punk"
       ],
+      "category": "design",
       "date": "2026-11-13"
     },
     {
@@ -529,6 +560,7 @@
         "Skill",
         "muon"
       ],
+      "category": "build",
       "date": "2026-11-13"
     },
     {
@@ -543,6 +575,7 @@
         "Midjourney",
         "PAPAYA 電腦教室"
       ],
+      "category": "motion",
       "date": "2026-11-13"
     },
     {
@@ -556,6 +589,7 @@
         "提示詞",
         "Ringo"
       ],
+      "category": "design",
       "date": "2026-11-12"
     },
     {
@@ -569,6 +603,7 @@
         "AI 代理",
         "奔跑的大毛腿"
       ],
+      "category": "build",
       "date": "2026-11-12"
     },
     {
@@ -582,6 +617,7 @@
         "AI 代理",
         "奔跑的大毛腿"
       ],
+      "category": "build",
       "date": "2026-11-12"
     },
     {
@@ -599,6 +635,7 @@
         "AI 代理",
         "Gary_Chen"
       ],
+      "category": "build",
       "date": "2026-11-12"
     },
     {
@@ -616,6 +653,7 @@
         "HBR",
         "Gary_Chen"
       ],
+      "category": "build",
       "date": "2026-11-12"
     },
     {
@@ -633,6 +671,7 @@
         "human-in-the-loop",
         "Gary_Chen"
       ],
+      "category": "build",
       "date": "2026-11-12"
     },
     {
@@ -648,6 +687,7 @@
         "認知負荷",
         "题叶"
       ],
+      "category": "design",
       "date": "2026-11-12"
     },
     {
@@ -664,6 +704,7 @@
         "WCAG",
         "题叶"
       ],
+      "category": "design",
       "date": "2026-11-12"
     },
     {
@@ -676,6 +717,7 @@
         "記憶",
         "Anthropic"
       ],
+      "category": "build",
       "date": "2026-11-11"
     },
     {
@@ -688,6 +730,7 @@
         "個人品牌",
         "Dan Koe"
       ],
+      "category": "reach",
       "date": "2026-11-11"
     },
     {
@@ -700,6 +743,7 @@
         "個人發展",
         "Dan Koe"
       ],
+      "category": "mind",
       "date": "2026-11-11"
     },
     {
@@ -712,6 +756,7 @@
         "生產力",
         "Dan Koe"
       ],
+      "category": "mind",
       "date": "2026-11-11"
     },
     {
@@ -724,6 +769,7 @@
         "個人品牌",
         "Dan Koe"
       ],
+      "category": "mind",
       "date": "2026-11-11"
     },
     {
@@ -737,6 +783,7 @@
         "ChatSEO",
         "Nicholas Dulait"
       ],
+      "category": "reach",
       "date": "2026-11-11"
     },
     {
@@ -750,6 +797,7 @@
         "Eian",
         "Yooee"
       ],
+      "category": "reach",
       "date": "2026-11-11"
     },
     {
@@ -762,6 +810,7 @@
         "內容營運",
         "Yooee"
       ],
+      "category": "reach",
       "date": "2026-11-11"
     },
     {
@@ -775,6 +824,7 @@
         "Gary_Chen",
         "防護欄"
       ],
+      "category": "build",
       "date": "2026-11-11"
     },
     {
@@ -788,6 +838,7 @@
         "Gary_Chen",
         "Context Engineering"
       ],
+      "category": "build",
       "date": "2026-11-11"
     },
     {
@@ -800,6 +851,7 @@
         "AI 代理",
         "言說新事"
       ],
+      "category": "motion",
       "date": "2026-11-11"
     },
     {
@@ -812,6 +864,7 @@
         "Skill",
         "言說新事"
       ],
+      "category": "motion",
       "date": "2026-11-11"
     },
     {
@@ -825,6 +878,7 @@
         "儀繪士BY",
         "AI 剪輯"
       ],
+      "category": "motion",
       "date": "2026-11-11"
     },
     {
@@ -837,6 +891,7 @@
         "AI 剪輯",
         "儀繪士BY"
       ],
+      "category": "motion",
       "date": "2026-11-11"
     },
     {
@@ -850,6 +905,7 @@
         "儀繪士BY",
         "MG 動畫"
       ],
+      "category": "motion",
       "date": "2026-11-11"
     },
     {
@@ -866,6 +922,7 @@
         "豆包",
         "子墨说AI"
       ],
+      "category": "reach",
       "date": "2026-11-11"
     },
     {
@@ -880,6 +937,7 @@
         "社交媒體",
         "子墨说AI"
       ],
+      "category": "build",
       "date": "2026-11-11"
     },
     {
@@ -894,6 +952,7 @@
         "動態圖形設計",
         "子墨说AI"
       ],
+      "category": "motion",
       "date": "2026-11-11"
     },
     {
@@ -907,6 +966,7 @@
         "HyperFrames",
         "子墨说AI"
       ],
+      "category": "motion",
       "date": "2026-11-11"
     },
     {
@@ -919,6 +979,7 @@
         "Coding Agent",
         "Addy Osmani"
       ],
+      "category": "build",
       "date": "2026-11-10"
     },
     {
@@ -931,6 +992,7 @@
         "批判性思考",
         "Addy Osmani"
       ],
+      "category": "build",
       "date": "2026-11-10"
     },
     {
@@ -943,6 +1005,7 @@
         "內容創作",
         "Creators"
       ],
+      "category": "build",
       "date": "2026-11-10"
     },
     {
@@ -956,6 +1019,7 @@
         "用量",
         "vartekx"
       ],
+      "category": "build",
       "date": "2026-11-10"
     },
     {
@@ -969,6 +1033,7 @@
         "Kyle_13",
         "poteto"
       ],
+      "category": "build",
       "date": "2026-11-10"
     },
     {
@@ -981,6 +1046,7 @@
         "AI 代理",
         "Gary_Chen"
       ],
+      "category": "build",
       "date": "2026-11-10"
     },
     {
@@ -993,6 +1059,7 @@
         "AI 代理",
         "Gary_Chen"
       ],
+      "category": "build",
       "date": "2026-11-10"
     },
     {
