@@ -33,6 +33,8 @@ def c(start, dur): return {'start': start, 'end': start + dur * 1000}
 EARLY = [c(at(1, 50, 12), 38), c(at(2, 12, 40), 42), c(at(2, 31, 5), 45)]                 # 間隔 22、18 分 → 觀察中
 LATER = EARLY + [c(at(2, 48, 20), 52), c(at(2, 58, 2), 55), c(at(3, 7, 15), 61), c(at(3, 15, 40), 58)]   # 連續 3 次 ≤ 10 分 → 可以出發
 YESTERDAY = [c(at(21, 2, 10, -1), 35), c(at(21, 17, 45, -1), 40), c(at(21, 35, 30, -1), 37)]   # 前一晚的假宮縮（另一段）
+PREP = EARLY + [c(at(2, 48, 20), 52), c(at(2, 58, 2), 55)]                                  # 第一次 ≤ 10 分 → 準備中
+FAST = PREP + [c(at(3, 7, 15), 61), c(at(3, 11, 40), 58), c(at(3, 15, 50), 63)]                # 連續 2 次 ≤ 5 分 → 請直接出發
 ARCHIVE = [{'at': at(22, 40, 0, -2), 'list': [c(at(22, 1, 0, -2), 30), c(at(22, 14, 0, -2), 34), c(at(22, 26, 0, -2), 31), c(at(22, 33, 0, -2), 36)]}]
 
 def state(lst, active=None, archive=None):
@@ -69,7 +71,7 @@ def open_page(b, data, now_ms):
     ctx = b.new_context(viewport={'width': W, 'height': H}, device_scale_factor=SCALE, locale='zh-TW',
                         timezone_id='Asia/Taipei', color_scheme='light', reduced_motion='no-preference')
     route_fonts(ctx)
-    ctx.add_init_script(f"localStorage.setItem('{KEY}', {json.dumps(json.dumps(data))});")
+    ctx.add_init_script(f"localStorage.setItem('{KEY}', {json.dumps(json.dumps(data))}); Math.random = () => 0;")
     pg = ctx.new_page()
     pg.clock.install(time=now_ms / 1000)
     pg.clock.pause_at(now_ms / 1000)
@@ -107,34 +109,63 @@ OUT.mkdir(parents=True, exist_ok=True)
 with sync_playwright() as p:
     b = p.chromium.launch()
 
-    print('1 待機（觀察中）')
-    ctx, pg = open_page(b, state(EARLY), at(2, 37, 30))
-    freeze(pg, 2000)
-    shot(pg, box(pg, '.page-kicker', '#stage', pad=0) | {'y': 0, 'height': pg.locator('#stage').bounding_box()['y'] + pg.locator('#stage').bounding_box()['height'] + 16}, '1-idle')
-    ctx.close()
+    def card(pg, sel, name, pad=16):
+        scroll_to(pg, sel, 60)
+        return shot(pg, box(pg, sel, pad=pad), name)
 
-    print('2 可以出發')
-    ctx, pg = open_page(b, state(LATER), at(3, 19, 10))
-    freeze(pg, 3000)
-    shot(pg, box(pg, '#statusWrap', '#stage', pad=16), '2-go')
+    print('1 使用旅程：各階段用到的區塊')
+    ctx, pg = open_page(b, state(LATER), at(3, 19, 10)); freeze(pg, 3000)
+    card(pg, '#bag', '1-1-bag')
+    card(pg, 'section.card:has(#barsBox)', '1-3-rhythm')
+    card(pg, 'section.clinic', '1-4-clinic')
+    card(pg, 'section.symph', '1-5-symphony')
     ctx.close()
-
-    print('3 忘了按結束')
-    ctx, pg = open_page(b, state(LATER, active=at(3, 24, 10)), at(3, 27, 35))
+    ctx, pg = open_page(b, state(LATER[:-1], active=at(3, 16, 30)), at(3, 16, 53, ))
     freeze(pg, 3500)
-    shot(pg, box(pg, '#stage', pad=16), '3-forgot')
+    shot(pg, box(pg, '#statusWrap', '#stage', pad=16), '1-2-contracting')
     ctx.close()
+
+    print('2 出發判斷：五種狀態')
+    for name, data, now in [('2-1-watch', EARLY, at(2, 37, 30)), ('2-2-prep', PREP, at(3, 1, 0)), ('2-3-go', LATER, at(3, 19, 10)),
+                            ('2-4-fast', FAST, at(3, 17, 30)), ('2-5-rest', EARLY, at(3, 20, 0))]:
+        ctx, pg = open_page(b, state(data), now); freeze(pg, 3000)
+        shot(pg, box(pg, '#statusWrap', pad=16), name)
+        ctx.close()
+
+    print('3 按下按鈕：一次操作的前後')
+    ctx, pg = open_page(b, state(EARLY), at(2, 37, 30)); freeze(pg, 2000)
+    shot(pg, box(pg, '#stage', pad=16), '3-1-idle'); ctx.close()
+    ctx, pg = open_page(b, state(EARLY, active=at(2, 40, 0)), at(2, 40, 23)); freeze(pg, 3500)
+    shot(pg, box(pg, '#stage', pad=16), '3-2-contracting'); ctx.close()
+    ctx, pg = open_page(b, state(EARLY, active=at(2, 40, 0)), at(2, 40, 54))
+    pg.locator('#mainBtn').click(force=True); pg.clock.run_for(1200); freeze(pg, 2000)
+    shot(pg, box(pg, '#stage', pad=16), '3-3-cheer'); ctx.close()
+    ctx, pg = open_page(b, state(EARLY, active=at(2, 40, 0)), at(2, 40, 2))
+    st = pg.locator('#stage').bounding_box()
+    pg.set_viewport_size({'width': W, 'height': int(st['height'] + 112)})
+    pg.evaluate(f"window.scrollTo(0, {st['y'] - 16})")
+    pg.evaluate("let n = document.getElementById('stage').nextElementSibling; while (n) { n.style.visibility = 'hidden'; n = n.nextElementSibling; }")   # 只留按鈕區和提示
+    pg.locator('#mainBtn').click(force=True); pg.clock.run_for(600); freeze(pg, 2000)
+    shot(pg, {'x': 0, 'y': 0, 'width': W, 'height': int(st['height'] + 112)}, '3-4-too-short'); ctx.close()
+    ctx, pg = open_page(b, state(LATER, active=at(3, 24, 10)), at(3, 27, 35)); freeze(pg, 3500)
+    shot(pg, box(pg, '#stage', pad=16), '3-5-forgot'); ctx.close()
 
     print('5 紀錄列表與備份')
     ctx, pg = open_page(b, state(YESTERDAY + LATER, archive=ARCHIVE), at(3, 19, 10))
     freeze(pg, 3000)
     log_card = 'section.card:has(#log)'
     scroll_to(pg, log_card)
-    shot(pg, box(pg, log_card, pad=16), '5-log')
+    shot(pg, box(pg, log_card, pad=16), '5-1-log')
     backup_h2 = 'h2:text("備份紀錄")'
     scroll_to(pg, backup_h2, 80)
     bb = box(pg, backup_h2, '#restoreBtn', pad=20, left_sel='section.card:has(#exportBtn)')
-    shot(pg, bb, '5-backup')
+    shot(pg, bb, '5-3-backup')
+    ctx.close()
+    ctx, pg = open_page(b, state(YESTERDAY + LATER), at(3, 19, 10))
+    scroll_to(pg, 'section.card:has(#log)', 8)   # 背景是準備清掉的紀錄
+    pg.locator('#clearBtn').click(force=True); pg.clock.run_for(300); freeze(pg, 3000)
+    sh = pg.locator('#sheet .card').bounding_box()
+    shot(pg, {'x': 0, 'y': max(0, sh['y'] - 200), 'width': W, 'height': H - max(0, sh['y'] - 200)}, '5-2-clear')
     ctx.close()
 
     print('6 宮縮中的呼吸短片')
