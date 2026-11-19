@@ -63,6 +63,15 @@ ul.points{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
+/* 實際畫面 */
+.shots{display:flex;flex-direction:column;gap:12px;margin-top:4px}
+.shot-row{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}
+.shot{margin:0;display:flex;flex-direction:column;gap:8px;width:min(100%,280px)}
+.shot img,.shot video{display:block;width:100%;height:auto;border:1px solid var(--rule-solid);border-radius:18px;background:#fbf5ec}
+.shot figcaption{font-size:.85rem;color:var(--soft)}
+.msg{margin:0;font-family:var(--sans);font-size:.92rem;line-height:1.7;white-space:pre-wrap;background:var(--node);color:var(--ink);border:1px solid var(--rule-solid);border-radius:14px;padding:16px 18px}
+.shot:has(.msg){width:min(100%,340px)}
+
 /* 章節 */
 .panel{display:flex;flex-direction:column;gap:16px;scroll-margin-top:24px}
 .panel+.panel{border-top:1px solid var(--rule);padding-top:32px;margin-top:16px}
@@ -214,6 +223,12 @@ figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
       </div>
       <figcaption>情緒曲線是推估的情境，不是量測值。第五階段的播放功能還沒做，會在小寶出生後加上。</figcaption>
     </figure>
+    <div class="shots">
+      <p class="eyebrow">實際畫面</p>
+      <div class="shot-row">
+      <figure class="shot"><img src="img/contraction-timer-1-idle.webp" width="390" height="712" loading="lazy" decoding="async" alt="宮縮計時待機畫面：觀察中狀態卡與大按鈕"><figcaption>待機時：狀態卡顯示「觀察中」，右上是聲音與夜間開關，大按鈕微微起伏。</figcaption></figure>
+      </div>
+    </div>
   </section>
 
   <!-- 02 出發判斷 -->
@@ -310,6 +325,12 @@ figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
       </div>
       <figcaption>「10 分」是設定裡的出發門檻（可在 3–20 分之間調整），「15 分」是門檻的 1.5 倍；「30 分鐘」取 30 分鐘與 3 倍門檻中較長的那個。「連續 2 次 ≤ 5 分」是固定的快速規則，進入出發狀態時手機會震動。</figcaption>
     </figure>
+    <div class="shots">
+      <p class="eyebrow">實際畫面</p>
+      <div class="shot-row">
+      <figure class="shot"><img src="img/contraction-timer-2-go.webp" width="390" height="615" loading="lazy" decoding="async" alt="可以準備出發了的橘色狀態卡，下方有打給產房與通知家人按鈕"><figcaption>連續 3 次在 10 分鐘內：卡片轉成暖橘色，下方自動出現「打給產房」和「通知家人」。</figcaption></figure>
+      </div>
+    </div>
   </section>
 
   <!-- 03 按下按鈕 -->
@@ -427,6 +448,12 @@ figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
       </div>
       <figcaption>記下一筆後會立刻重算上一張圖的狀態，並顯示一句鼓勵的話。「記為約 1 分鐘」把結束時間設成開始時間加 60 秒，間隔資料就不會斷掉。</figcaption>
     </figure>
+    <div class="shots">
+      <p class="eyebrow">實際畫面</p>
+      <div class="shot-row">
+      <figure class="shot"><img src="img/contraction-timer-3-forgot.webp" width="390" height="494" loading="lazy" decoding="async" alt="宮縮中 3 分 25 秒，按鈕下方出現記為約 1 分鐘與這次不算"><figcaption>宮縮已經 3 分 25 秒還沒按結束：按鈕下方出現補記和取消兩個選項。</figcaption></figure>
+      </div>
+    </div>
   </section>
 
   <!-- 04 誰做什麼 -->
@@ -523,6 +550,20 @@ figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
       </div>
       <figcaption>摘要只放判斷需要的資訊（狀態、平均間隔、每次持續、近一小時次數、最近幾次的時間），時間精確到分；給護理師的完整紀錄則精確到秒。撥號會先打總機，停頓後自動撥分機。</figcaption>
     </figure>
+    <div class="shots">
+      <p class="eyebrow">實際畫面</p>
+      <div class="shot-row">
+        <figure class="shot"><pre class="msg">宮縮紀錄｜03:19
+準備出發，已連續 3 次間隔在 10 分鐘內
+
+平均間隔 9.1 分鐘
+每次持續 約 54 秒
+近一小時 5 次
+上一次 4 分鐘前
+
+最近：03:15・03:07・02:58・02:48</pre><figcaption>按下「通知家人」後，分享選單裡帶入的訊息（與上方截圖同一份假資料）。</figcaption></figure>
+      </div>
+    </div>
   </section>
 
   <!-- 05 紀錄去向 -->
@@ -636,6 +677,13 @@ figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
       </div>
       <figcaption>同一個 localStorage 物件裡還存著門檻、聲音、夜間模式和待產包勾選，圖上省略。匯入時會略過開始時間重複的紀錄，錯誤的檔案會被擋下。從 LINE 內建瀏覽器打開時，紀錄可能被清掉，頁面會提醒改用手機瀏覽器開啟。</figcaption>
     </figure>
+    <div class="shots">
+      <p class="eyebrow">實際畫面</p>
+      <div class="shot-row">
+      <figure class="shot"><img src="img/contraction-timer-5-log.webp" width="390" height="749" loading="lazy" decoding="async" alt="紀錄列表，時間精確到秒，前一晚的紀錄用上一段分隔"><figcaption>紀錄列表：時間精確到秒，門檻內的間隔標成橘色，前一晚的紀錄被「上一段」隔開。</figcaption></figure>
+      <figure class="shot"><img src="img/contraction-timer-5-backup.webp" width="390" height="238" loading="lazy" decoding="async" alt="設定中的匯出備份、匯入備份與還原按鈕"><figcaption>設定裡的備份：清除全部之後，會出現還原按鈕。</figcaption></figure>
+      </div>
+    </div>
   </section>
 
   <!-- 06 呼吸節奏 -->
@@ -706,10 +754,28 @@ figcaption{font-size:.85rem;color:var(--soft);max-width:65ch}
       </div>
       <figcaption>按鈕和伴奏都用 <code>cubic-bezier(.37, 0, .63, 1)</code> 的緩動，在最大和最小時自然停頓。光暈跟按鈕同一個節奏，範圍是 78% ↔ 130%。手機開啟「減少動態效果」時，動畫會自動關閉。</figcaption>
     </figure>
+    <div class="shots">
+      <p class="eyebrow">實際畫面</p>
+      <div class="shot-row">
+        <figure class="shot"><video class="breath-video" width="390" height="615" poster="img/contraction-timer-6-breathing-poster.webp" muted loop playsinline preload="none" controls aria-label="宮縮中的呼吸畫面：按鈕轉綠並跟著呼吸放大縮小"><source src="img/contraction-timer-6-breathing.mp4" type="video/mp4"></video><figcaption>宮縮中：按鈕轉綠，跟著吸 4 秒、吐 6 秒起伏，周圍區塊淡下來。短片是一個 10 秒循環。</figcaption></figure>
+      </div>
+    </div>
   </section>
 
-  <p class="foot">依據 <code>family/contraction-timer.html</code> 2026-11-17 的版本繪製。改了判斷規則或流程時，記得同步更新這份圖解，並執行 <code>python3 scripts/test-contraction-timer.py</code>。</p>
+  <p class="foot">圖依據 <code>family/contraction-timer.html</code> 2026-11-17 的版本繪製；實際畫面是 2026-11-19 用假資料拍攝，介面改了之後執行 <code>python3 scripts/capture-contraction-timer.py</code> 就能重拍。改了判斷規則或流程時，記得同步更新這份圖解，並執行 <code>python3 scripts/test-contraction-timer.py</code>。</p>
 </div>
 
+<script>
+// 呼吸短片：沒開「減少動態效果」時，捲到附近才靜音循環播放；開了就只顯示封面和播放鈕
+(() => {
+  const v = document.querySelector('video.breath-video');
+  if (!v || matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+  v.removeAttribute('controls'); v.muted = true;
+  new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { v.preload = 'auto'; v.play().catch(() => v.setAttribute('controls', '')); }
+    else v.pause();
+  }), { rootMargin: '200px' }).observe(v);
+})();
+</script>
 </body>
 </html>
