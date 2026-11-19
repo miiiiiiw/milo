@@ -1,229 +1,235 @@
 {
   "addy-agents-manager": {
     "sha256": "3f9ed1e69b029c4d391c1f2b0c366a76adcbffbc9bb775912c3d0ddf0250993d",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "build"
   },
   "addy-critical-thinking": {
     "sha256": "7e94194acfb901b7612ae38dd27c602fa21f8dfe27e5a5d8f184b21d2dd2b30b",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "build"
   },
   "grokbot-creator-guide": {
     "sha256": "d817a80a634e9043bd8a2a6a074ad58c5a7148fb3604e738436f76c9a3e57dcf",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "build"
   },
   "grokbot-token-usage": {
     "sha256": "97332d8b8bacd0685bbcb9c41940e56cda5998b89625e8958b4f62c70f5b6e31",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "build"
   },
   "poteto-grokbot-method": {
     "sha256": "c96aff20cb181f6ffe420c7f570f6de1179e612ad7d9b8dfe005f852dea0ef7a",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "build"
   },
   "nicholas-fable-seo": {
     "sha256": "6a5751ea6e4ca8ebc27c228f974a2869d514931bb0a99426c4f8277405e2397b",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "reach"
   },
   "agent-memory-dreaming": {
     "sha256": "5873491c923ae383e8de9b427005a81b8bf7b2e538ba95b303f9f4852e475b5b",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "build"
   },
   "yooee-longform-framework": {
     "sha256": "b2f83e45850687b9472fe6b1f5bea8dae664eb6576e9157fd7866fb608da71f3",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "reach"
   },
   "yooee-longform-growth": {
     "sha256": "310cfe05e877afc42f9dffcc979683998a287005c4ecde646dafd0e1f0e27e31",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "reach"
   },
   "dankoe-ai-business": {
     "sha256": "87da01e5dd48b4fc186c7afef0fa71bc85acc251704b74614a4e30078ee02196",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "reach"
   },
   "dankoe-one-day": {
     "sha256": "3424857a6856014ebb40244d92e4a6082729a0e444f1cb4ffa1db235ab7ef0d9",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "mind"
   },
   "dankoe-survive-ai": {
     "sha256": "baa4b1b1a03b1c50ae2f11d7609ab7b7f9a899d7235adc98ad28a5dd2b327c45",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "mind"
   },
   "dankoe-human-30": {
     "sha256": "16e26626a28719515b149df28a2fcba69e2cd1dfdcf940d086cf45b423a5c180",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "mind"
   },
   "ringo-claude-aesthetics": {
     "sha256": "dcd3c6c94fe471b0221e122ddbff357be80adadeedf636575ecbdeb800c536f8",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "design"
   },
   "runmaotui-ai-pm": {
     "sha256": "61f5320f9ff4fac247af67ff24d3854ce811533f7671a7f813760707888ec99c",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "build"
   },
   "runmaotui-pm-handbook": {
     "sha256": "2cd4e0126eea9f3b944e87efb847c87d86c9c8c0aeff1c3d13bfcd73fa652e25",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "build"
   },
   "adrian-html-agent-homepage": {
     "sha256": "afc0370e276b9a9834183f2c6509f7a57f29699a0e645473bcd8e0234df9f9b5",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "design"
   },
   "adrian-vibe-dictionary-1": {
     "sha256": "c09f996fa9367a5d6f431f3e9aec8182da2a51c7a81338eff708a415a806d0af",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "design"
   },
   "adrian-vibe-dictionary-2": {
     "sha256": "e815f390828dcfd319619c67d6a49ab6def7d9addfc4abbd25f7f0bc9ac5979b",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "design"
   },
   "arito-grokbot-image-api": {
     "sha256": "c4eab8dbad802f7594d5b61cc405c2339f9d4d4fbc9cbde9a4f9c37207657469",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "build"
   },
   "felix-more-ambitious": {
     "sha256": "d636996f64ead9f5fc4680094306bc911ffbba4894d6eba42daab4b1ca4be77c",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "mind"
   },
   "addy-claude-code-review": {
     "sha256": "4fc928ab4d2ee07ae0e30a2c2bdff67f71c0b15ea78ede501c263874d9c40635",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "build"
   },
   "adrian-ip-illustration": {
     "sha256": "6eabb2451e7d4a3d0da6b6a20ab1d0a735941bb1bb2ab2859a6c8758301e49e6",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "design"
   },
   "ayi-always-on-agents": {
     "sha256": "99d8e39bd31860882cdf6834ac9b6cfde88e0fbd6e5d4a90066c664baff027d2",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "build"
   },
   "buzzoni-jev-engineering": {
     "sha256": "90c564561a5e6a0289376c652f74a2d6258bb6e82f30d76888df7b682f7ec87f",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "build"
   },
   "claude-model-choice": {
     "sha256": "85f30048a933384f7be5be47e0e3a813b2c8eb40c63c90b50a5acab4bb227c28",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "build"
   },
   "dankoe-multiple-interests": {
     "sha256": "2cc460af0364f6c4abc732f9e9dc174e9e1708244d2c2c746e7dce78861dc9f4",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "mind"
   },
   "adrian-ai-video-basics-1": {
     "sha256": "47cdc2092fea69a16cecba97b4339410f6f9773434f9ad13b0436cd99fc17c80",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "motion"
   },
   "adrian-ai-video-basics-2": {
     "sha256": "02c8ab91c693e0e5a068d73642dc56917257ae18a26fda7209a3002d00d8620e",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "motion"
   },
   "adrian-ai-video-basics-3": {
     "sha256": "b2d836e5fa6eba0002a07715b4549235320720a18d1aab7628f7b856cfbbaed5",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "motion"
   },
   "addy-claude-code-verification": {
     "sha256": "24d2cc80040b08fe23dd893bc22344f34bcd61f5d837d87156984391078d27cf",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "build"
   },
   "maiyang-grokbot-qa": {
     "sha256": "ff4c3d2e9dc6b957077a7c6f0bd686e3d2332e4375c0602ea7cec2368ce45dd8",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "build"
   },
   "jexchan-se-handbook": {
     "sha256": "9c989312bc3d23e70e9a5966a9786e2f0d0c7dd8ca89886e2d29aadc73831cb1",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "build"
   },
   "phil-ai-ad-film-1": {
     "sha256": "8d9083f0d802169e4658cc3b91702df40a567a295b9969acd68b410f3f821577",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "motion"
   },
   "jexchan-learn-to-learn": {
     "sha256": "2b7eee829cabd3a33df5bfd9d09baac1a66609a6e5ad306cb58fd1f5111afab4",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "mind"
   },
   "lonely-digital-human": {
     "sha256": "d6e82c32ab19a2f4ef146d027a0d4fed52c47c31aff93cbaf1fe9a46a8970fde",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "reach"
   },
   "lonely-zimeiti-qihao": {
     "sha256": "4049fed6a5b62583d5d9d4265a0e8c5849a48003533add52cf90da4a0189f29a",
-    "v": 16,
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "reach"
   },
   "poteto-automate-grok-bot": {
     "sha256": "b69d4e32beda3af8ef5252a76133244f17453d86aebd1a520543722f3d066611",
-    "v": 16,
+    "v": 17,
+    "synced": "2026-11-19",
+    "cat": "build"
+  },
+  "wquguru-poteto-supervise-smarter": {
+    "sha256": "2c2a756064e6696312fa69028ca1e4b10aa63ed59bea2d91ebf8e0a8d06796a2",
+    "v": 17,
     "synced": "2026-11-19",
     "cat": "build"
   }
