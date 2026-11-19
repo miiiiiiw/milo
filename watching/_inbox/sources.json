@@ -133,5 +133,15 @@
     "sha256": "d3658cb13d5c0e34d01cefcf85d9934787c2090669a3ccabd1604212b1c0a8c3",
     "v": 7,
     "synced": "2026-11-19"
+  },
+  "boris-claude-code-agents": {
+    "sha256": "98f1ebf0f74ba81f387ce5dba84649e5dfaa54d0cb7432d29b8c0c454455b999",
+    "v": 7,
+    "synced": "2026-11-19"
+  },
+  "matt-pocock-skills-feature": {
+    "sha256": "b8d9078ca836e00ffb91ab2fbfd0e52f82add6eb1bed3e1598c2760681fd9bc8",
+    "v": 7,
+    "synced": "2026-11-19"
   }
 }
