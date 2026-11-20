@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>催生或等待：39 週決策參考</title>
+<meta name="description" content="第二胎 39 週產檢後，評估等待或催生，以及催生日期的互動參考">
+<meta name="keywords" content="催生, 產檢, 第二胎, 決策">
+<meta name="date" content="2026-11-20">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;700&display=swap" rel="stylesheet">
+<style id="css">
+:root{
+  --bg:#f7f3ee;--card:#fffdfa;--ink:#2d2a26;--muted:#7a736b;--line:#e8e1d7;
+  --accent:#a8664f;--accent-soft:#f3e4dc;--sage:#6f8571;--sage-soft:#e6ede4;
+  --dad:#5f7fa8;--dad-soft:#e3eaf3;--mom:#b9787a;--mom-soft:#f5e6e6;
+  --warn:#b4553f;--weekend:#efe8de;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.75 "Noto Sans TC",-apple-system,"PingFang TC",sans-serif}
+.wrap{max-width:680px;margin:0 auto;padding:56px 20px 80px}
+@media (max-width:560px){.wrap{padding-top:32px}}
+.eyebrow{color:var(--muted)}
+h1,h2,h3{font-family:"Noto Serif TC",serif;font-weight:700;line-height:1.35;margin:0}
+h1{font-size:26px;letter-spacing:.02em}
+h2{font-size:20px;margin-bottom:12px}
+h3{font-size:16px}
+p{margin:0 0 10px}
+.meta{color:var(--muted);font-size:14px;margin-top:6px}
+section,details{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-top:16px}
+details>summary{list-style:none;cursor:pointer;font-family:"Noto Serif TC",serif;font-weight:700;font-size:18px;display:flex;justify-content:space-between;align-items:center}
+details>summary::-webkit-details-marker{display:none}
+details>summary::after{content:"＋";color:var(--muted);font-family:"Noto Sans TC";font-weight:400}
+details[open]>summary::after{content:"－"}
+details[open]>summary{margin-bottom:12px}
+ul,ol{margin:0;padding-left:1.2em}
+li{margin:4px 0}
+.lead{font-size:17px;font-weight:500;background:var(--accent-soft);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.lead b{color:var(--accent)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:500}
+.tablebox{overflow-x:auto;margin:4px -4px 10px}
+.note{color:var(--muted);font-size:14px}
+.warn li::marker{color:var(--warn)}
+a{color:var(--accent)}
+
+/* ---------- 哪一天 ---------- */
+.today{font-size:14px;color:var(--muted);margin:-4px 0 14px}
+.toolbar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.btn{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 14px;font:inherit;font-size:14px;cursor:pointer}
+.btn.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.dad{border-color:var(--dad);color:var(--dad)}
+.btn.mom{border-color:var(--mom);color:var(--mom)}
+.btn.solid{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn:disabled{opacity:.5}
+.cards{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 10px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.card{flex:0 0 112px;scroll-snap-align:start;border:1.5px solid var(--line);border-radius:16px;background:#fff;padding:12px 10px;text-align:center;cursor:pointer;position:relative;transition:transform .15s,border-color .15s}
+.card:active{transform:scale(.97)}
+.card.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.card.cmp{border-color:var(--sage);box-shadow:0 0 0 3px var(--sage-soft)}
+.card.gap{margin-left:14px}
+.card .d{font-family:"Noto Serif TC",serif;font-size:22px;font-weight:700}
+.card .w{font-size:13px;color:var(--muted)}
+.card .ga{font-size:14px;font-weight:500;margin-top:2px}
+.tags{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:8px;min-height:20px}
+.tag{font-size:11px;padding:1px 7px;border-radius:999px;background:var(--sage-soft);color:var(--sage);white-space:nowrap}
+.tag.rec{background:var(--accent-soft);color:var(--accent)}
+.tag.doc{background:#ece9e4;color:var(--muted)}
+.votes{position:absolute;top:6px;right:8px;font-size:13px;letter-spacing:-2px}
+.hint{font-size:13px;color:var(--muted);text-align:center;margin:2px 0 0}
+
+.panel{border-top:1px dashed var(--line);margin-top:10px;padding-top:16px;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.facts{display:flex;gap:10px;margin:10px 0 14px}
+.fact{flex:1;background:var(--bg);border-radius:12px;padding:8px 10px;text-align:center}
+.fact b{display:block;font-size:18px;font-family:"Noto Serif TC",serif}
+.fact span{font-size:12px;color:var(--muted)}
+.pc{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;font-size:15px;margin-bottom:14px}
+.pc .k{font-size:13px;color:var(--muted);padding-top:2px;white-space:nowrap}
+
+.sim h3{font-size:14px;font-family:"Noto Sans TC";font-weight:500;color:var(--muted);margin-bottom:6px}
+.strip{display:grid;grid-template-columns:repeat(10,1fr);gap:3px}
+.day{border-radius:8px;padding:6px 0 5px;text-align:center;font-size:12px;background:#f3efe9;color:var(--muted);position:relative}
+.day.we{background:var(--weekend)}
+.day .n{display:block;font-size:13px;color:var(--ink)}
+.day.start{background:var(--accent);color:#fff}
+.day.start .n{color:#fff}
+.day.maybe{background:var(--accent-soft);color:var(--accent)}
+.day.maybe .n{color:var(--accent)}
+.day.maybe.we{background:#f1d3c8;outline:2px solid var(--warn);outline-offset:-2px}
+.day.edd::after{content:"";position:absolute;left:50%;bottom:-7px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--ink)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:12px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.simmsg{font-size:14px;margin-top:8px;padding:8px 12px;border-radius:10px;background:var(--sage-soft);color:var(--sage)}
+.simmsg.bad{background:#f6e2db;color:var(--warn)}
+
+.vote{margin-top:16px;border-top:1px dashed var(--line);padding-top:14px}
+.vote .row{display:flex;gap:8px;flex-wrap:wrap}
+.reason{margin-top:10px;display:none}
+.reason.show{display:block}
+textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px;font:inherit;font-size:15px;resize:vertical;min-height:64px;background:#fff}
+.reason .row{margin-top:8px}
+
+.summary{background:var(--bg);border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:15px}
+.who{display:flex;gap:8px;align-items:baseline;margin:3px 0}
+.who .dot{font-size:14px}
+.who q{color:var(--muted);font-size:14px;quotes:"「" "」"}
+.match{margin-top:8px;font-weight:500;color:var(--accent)}
+.status{font-size:12px;color:var(--muted);margin-top:8px}
+
+.cmpgrid{display:grid;grid-template-columns:72px 1fr 1fr;gap:0;font-size:14px;margin-top:6px}
+.cmpgrid>div{padding:8px 6px;border-bottom:1px solid var(--line)}
+.cmpgrid .h{font-family:"Noto Serif TC",serif;font-weight:700;font-size:16px}
+.cmpgrid .k{color:var(--muted);font-size:13px}
+.empty{color:var(--muted);font-size:14px;text-align:center;padding:12px 0}
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}
+/* ── milo 頁首小標規範（見 README「頁首小標」），請勿個別調整 ── */
+.page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
+</style>
+</head>
+<body>
+<template id="tpl-body">
+<div class="wrap">
+  <header>
+    <p class="eyebrow page-kicker">家庭生活 · 催生日期評估</p>
+    <h1>催生或等待：39 週決策參考</h1>
+    <div class="meta">2026-11-20 · 預產期 11/27 · 第二胎（第一胎 38 週自然產）</div>
+  </header>
+
+  <section>
+    <h2>結論</h2>
+    <p class="lead">下週一到週三催生，或等到 11/30，兩種都合理。如果想避免產程太快來不及到醫院，或想方便安排老大，選 <b>11/24（二）</b> 或 <b>11/25（三）</b>。</p>
+    <ul>
+      <li>第一胎 38 週自然產，產程大約 8 小時。這是最有利的條件：自然產成功率高，催生通常也比較快。</li>
+      <li>研究顯示，曾經自然產的孕婦在 39 週催生，剖腹產率和媽媽的併發症都比較低，寶寶的風險沒有增加。</li>
+      <li>第二胎的產程常比第一胎更快。最需要規劃的是<b>來不來得及到醫院</b>。</li>
+      <li>寶寶各項指標正常，子宮頸條件仍然值得問醫師。</li>
+    </ul>
+  </section>
+
+  <section id="pick">
+    <h2>哪一天？</h2>
+    <p class="today">今天 11/20 · 39w0d　點選卡片查看詳情</p>
+    <div id="summary"></div>
+    <div class="toolbar">
+      <button class="btn" id="cmpBtn">比較兩天</button>
+    </div>
+    <div class="cards" id="cards"></div>
+    <p class="hint" id="hint">← 左右滑動 →</p>
+    <div id="detail"></div>
+  </section>
+
+  <section>
+    <h2>兩個選項</h2>
+    <div class="tablebox"><table>
+      <tr><th></th><th>下週催生<br>39w3d–39w6d</th><th>等到 11/30<br>40w3d</th></tr>
+      <tr><th>自然產機會</th><td>很高；研究顯示經產婦的剖腹率略低</td><td>很高</td></tr>
+      <tr><th>寶寶風險</th><td>沒有增加</td><td>仍低，但會隨週數緩慢上升</td></tr>
+      <tr><th>產程</th><td>經產婦催生通常較快，多半當天生</td><td>可能隨時自然發動，而且可能很快</td></tr>
+      <tr><th>來不及到醫院</th><td>不用擔心，已經在醫院</td><td>需事先規劃交通和老大的照顧</td></tr>
+      <tr><th>適合</th><td>想要確定性、方便安排家庭</td><td>希望自然發動，而且交通方便</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>決定前先問醫師</h2>
+    <ol>
+      <li>內診結果如何？子宮頸開了嗎？</li>
+      <li>第一胎大約 8 小時就生了，這胎什麼時候該出發去醫院？</li>
+      <li>以我們的狀況，建議哪一天催生？週二或週三可以安排嗎？</li>
+      <li>經產婦催生大概需要多久？會用什麼方式？</li>
+      <li>臍帶繞頸在產程中會怎麼監測？</li>
+      <li>如果決定等待，11/27 前需要再做胎心監測或檢查羊水嗎？</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>出現以下狀況請直接就醫</h2>
+    <p>第二胎的產程可能很快，請事先安排好老大的照顧和交通。</p>
+    <ul class="warn">
+      <li><b>規律宮縮就出發</b>：不要等到每 5 分鐘一次、持續一小時。上一胎約 8 小時就生，這胎可能更快。什麼時候出發，請先跟醫師確認。</li>
+      <li><b>胎動明顯變少</b>：有臍帶繞頸時特別重要。</li>
+      <li><b>破水</b>：不論量多少；羊水帶綠色或褐色要更快就醫。</li>
+      <li><b>陰道出血</b>：量像月經一樣或更多。</li>
+      <li><b>媽媽不適</b>：劇烈頭痛、視線模糊、上腹痛、突然水腫。</li>
+    </ul>
+  </section>
+
+  <details>
+    <summary>目前狀況與超音波數據</summary>
+    <div class="tablebox"><table>
+      <tr><th>項目</th><th>11/13</th><th>11/20</th><th>解讀</th></tr>
+      <tr><td>估計體重</td><td>2861 g</td><td>3138 g</td><td>約 39 週中位數</td></tr>
+      <tr><td>頭橫徑 BPD</td><td>9.26 cm</td><td>9.41 cm</td><td>略超前；OOR 是超出公式範圍，非異常</td></tr>
+      <tr><td>腹圍 AC</td><td>31.14 cm</td><td>32.41 cm</td><td>正常</td></tr>
+      <tr><td>股骨長 FL</td><td>6.75 cm</td><td>6.83 cm</td><td>正常</td></tr>
+    </table></div>
+    <p class="note">超音波估重有 ±10–15% 誤差。</p>
+    <ul>
+      <li><b>第二胎</b>：第一胎 38 週自然產，產程約 8 小時。</li>
+      <li><b>羊水</b>：充足。</li>
+      <li><b>胎盤</b>：輕微鈣化，屬足月的正常老化，整體健康。</li>
+      <li><b>臍帶</b>：鬆鬆繞頸。約每 4–5 個寶寶就有 1 個，多數能順利自然產，產程中會持續監測胎心。</li>
+      <li><b>醫師安排</b>：11/27 仍無產兆就催生，週末不排，最快 11/30。</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>會不會越晚越難生？</summary>
+    <p>單看大小，多等一週影響不大。第一胎已經順利自然產，代表產道已經成功讓寶寶通過一次。</p>
+    <ul>
+      <li><b>體重</b>：足月後每週約增加 150–200 g，到 11/30 估計 3300–3400 g。會明顯增加難產風險的通常是 4000 g 以上。可以對照老大的出生體重，如果差不多，就更可以放心。</li>
+      <li><b>頭圍</b>：只是略大於平均。寶寶頭骨會在產道中塑形，頭的角度和方向影響更大。</li>
+      <li><b>頭還沒下降</b>：第二胎很常見，很多寶寶要到產程開始才會下降。</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>若催生：讓過程更順利</summary>
+    <ul>
+      <li><b>速度</b>：經產婦催生通常比第一胎快，常常當天就完成。</li>
+      <li><b>多走動、換姿勢</b>：有助寶寶的頭下降、轉到好的方向。</li>
+      <li><b>減痛分娩</b>：第二胎產程快，如果想打，要提早告訴醫護人員。</li>
+      <li><b>陪產者</b>：持續陪伴、補充水分、協助換姿勢。</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>依據與說明</summary>
+    <p>主要依據是一項針對 2 萬多名曾經自然產孕婦的分析（Wagner 2022）。在 39 週催生的剖腹產率是 2.4%，等待組是 4.6%；媽媽的併發症也比較低，寶寶的結果沒有差異。這是觀察性研究，不是隨機試驗。ARRIVE 試驗（2018）只納入第一胎，只能當參考。</p>
+    <p class="note">本頁整理自產檢報告與醫師說明，撰寫者並非醫師。最終決定請與產檢醫師共同討論。</p>
+    <ul class="note">
+      <li><a href="https://www.thieme-connect.de/products/ejournals/html/10.1055/s-0040-1716711">Wagner et al., Am J Perinatol 2022（經產婦 39 週催生）</a></li>
+      <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6186292/">Grobman et al., NEJM 2018（ARRIVE，第一胎）</a></li>
+    </ul>
+  </details>
+
+  <footer>祝順利平安 🤍</footer>
+</div>
+</template>
+
+<script id="app">
+(function(){
+  var DATES=[
+    {id:"1123",m:11,d:23,wd:"一",ga:"39w3d",days:3,tags:[],
+     pro:"最早，確定性最高，可以提早安排老大的照顧。",con:"自然發動的機會最少。"},
+    {id:"1124",m:11,d:24,wd:"二",ga:"39w4d",days:4,tags:[["建議","rec"]],
+     pro:"多一天自然發動的機會，時間也充裕。",con:"這幾天如果自然發動，記得規律宮縮就出發。"},
+    {id:"1125",m:11,d:25,wd:"三",ga:"39w5d",days:5,tags:[["建議","rec"]],
+     pro:"多兩天自然發動的機會，仍然在週末前。",con:"等待期間要留意產兆，交通和老大的照顧要先安排好。"},
+    {id:"1126",m:11,d:26,wd:"四",ga:"39w6d",days:6,tags:[],
+     pro:"在 40 週前，自然發動的機會最多。",con:"經產婦催生多半當天完成，但如果拖長，可能碰到週五晚上。"},
+    {id:"1130",m:11,d:30,wd:"一",ga:"40w3d",days:10,tags:[["醫師預設","doc"]],
+     pro:"給身體最多時間自然發動，有第一胎的經驗，自然發動也可能很順。",con:"這 10 天要注意胎動，也要隨時準備快速出發；超過 40 週後，醫師會比較擔心羊水和胎盤。"}
+  ];
+  // strip: 11/23 .. 12/02
+  var STRIP=[];
+  (function(){var wds=["一","二","三","四","五","六","日"];var md=[[11,23],[11,24],[11,25],[11,26],[11,27],[11,28],[11,29],[11,30],[12,1],[12,2]];
+    for(var i=0;i<md.length;i++){STRIP.push({m:md[i][0],d:md[i][1],wd:wds[i%7],we:(i%7)>=5,edd:(md[i][0]===11&&md[i][1]===27)})}})();
+
+  var KEY="induction-votes";
+  var state={dad:null,mom:null,updated:null},canStore=true;
+  try{var ls=localStorage.getItem(KEY);if(ls){var o=JSON.parse(ls);if(o&&typeof o==="object")state=o}}catch(e){canStore=false}
+
+  var tplBody=document.getElementById("tpl-body");
+  document.body.insertBefore(tplBody.content.cloneNode(true),tplBody);
+
+  var sel=null,cmpMode=false,cmpSel=[],openReason=null;
+
+  function $(id){return document.getElementById(id)}
+  function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+  function byId(id){for(var i=0;i<DATES.length;i++)if(DATES[i].id===id)return DATES[i];return null}
+  function label(x){return x.m+"/"+x.d+"（"+x.wd+"）"}
+
+  function renderCards(){
+    var h="";
+    DATES.forEach(function(x,i){
+      var cls="card"+(x.id==="1130"?" gap":"")+(!cmpMode&&sel===x.id?" sel":"")+(cmpMode&&cmpSel.indexOf(x.id)>-1?" cmp":"");
+      var v=(state.dad&&state.dad.date===x.id?"💙":"")+(state.mom&&state.mom.date===x.id?"🤍":"");
+      h+='<div class="'+cls+'" data-id="'+x.id+'" role="button" tabindex="0">'+
+        (v?'<span class="votes">'+v+'</span>':'')+
+        '<div class="d">'+x.m+'/'+x.d+'</div><div class="w">週'+x.wd+'</div><div class="ga">'+x.ga+'</div>'+
+        '<div class="tags">'+x.tags.map(function(t){return '<span class="tag '+t[1]+'">'+t[0]+'</span>'}).join("")+'</div></div>';
+    });
+    $("cards").innerHTML=h;
+    $("hint").textContent=cmpMode?"點選兩張卡片進行比較":"← 左右滑動，點選卡片 →";
+  }
+
+  function willHitWeekend(x){
+    var idx=-1;for(var i=0;i<STRIP.length;i++)if(STRIP[i].m===x.m&&STRIP[i].d===x.d)idx=i;
+    for(var j=idx+1;j<=idx+1&&j<STRIP.length;j++)if(STRIP[j].we)return true;return false;
+  }
+
+  function simHTML(x){
+    var idx=-1;for(var i=0;i<STRIP.length;i++)if(STRIP[i].m===x.m&&STRIP[i].d===x.d)idx=i;
+    var h='<div class="sim"><h3>催生時間模擬（11/23–12/2）</h3><div class="strip">';
+    STRIP.forEach(function(s,i){
+      var c="day"+(s.we?" we":"")+(s.edd?" edd":"")+(i===idx?" start":(i>idx&&i<=idx+1?" maybe":""));
+      h+='<div class="'+c+'">'+s.wd+'<span class="n">'+s.d+'</span></div>';
+    });
+    h+='</div><div class="legend"><span><i style="background:var(--accent)"></i>開始催生</span><span><i style="background:var(--accent-soft)"></i>可能延續到隔天</span><span><i style="background:var(--weekend)"></i>週末</span><span>• 預產期</span></div>';
+    var bad=willHitWeekend(x);
+    h+='<div class="simmsg'+(bad?" bad":"")+'">'+(bad?"如果延續到隔天，會碰到週末。":"經產婦催生多半當天完成；即使延續到隔天，也在週末前。")+'</div></div>';
+    return h;
+  }
+
+  function voteHTML(x){
+    var dadOn=state.dad&&state.dad.date===x.id, momOn=state.mom&&state.mom.date===x.id;
+    var h='<div class="vote"><h3>投給這一天</h3><div class="row" style="margin-top:8px">'+
+      '<button class="btn dad'+(dadOn?' on':'')+'" data-vote="dad">'+(dadOn?'爸爸已選這天 💙':'爸爸選這天 💙')+'</button>'+
+      '<button class="btn mom'+(momOn?' on':'')+'" data-vote="mom">'+(momOn?'媽媽已選這天 🤍':'媽媽選這天 🤍')+'</button></div>';
+    if(openReason){
+      var who=openReason, prev=(state[who]&&state[who].date===x.id)?state[who].reason:"";
+      h+='<div class="reason show"><textarea id="reasonInput" placeholder="'+(who==="dad"?"爸爸":"媽媽")+'的理由（選填），例如：方便安排老大">'+esc(prev)+'</textarea>'+
+        '<div class="row"><button class="btn solid" data-save="'+who+'">送出</button><button class="btn" data-cancel="1">取消</button></div></div>';
+    }
+    return h+'</div>';
+  }
+
+  function renderDetail(){
+    var el=$("detail");
+    if(cmpMode){
+      if(cmpSel.length<2){el.innerHTML='<div class="panel"><p class="empty">已選 '+cmpSel.length+' / 2 天</p></div>';return}
+      var a=byId(cmpSel[0]),b=byId(cmpSel[1]);
+      var rows=[["週數",a.ga,b.ga],["距今",a.days+" 天",b.days+" 天"],
+        ["週末風險",willHitWeekend(a)?"可能延續到週末":"不會",willHitWeekend(b)?"可能延續到週末":"不會"],
+        ["優點",a.pro,b.pro],["考量",a.con,b.con]];
+      var h='<div class="panel"><div class="cmpgrid"><div></div><div class="h">'+label(a)+'</div><div class="h">'+label(b)+'</div>';
+      rows.forEach(function(r){h+='<div class="k">'+r[0]+'</div><div>'+r[1]+'</div><div>'+r[2]+'</div>'});
+      el.innerHTML=h+'</div></div>';return;
+    }
+    if(!sel){el.innerHTML="";return}
+    var x=byId(sel);
+    el.innerHTML='<div class="panel"><h3>'+label(x)+'</h3>'+
+      '<div class="facts"><div class="fact"><b>'+x.ga+'</b><span>週數</span></div><div class="fact"><b>'+x.days+' 天</b><span>距今</span></div></div>'+
+      '<div class="pc"><span class="k">優點</span><span>'+x.pro+'</span><span class="k">考量</span><span>'+x.con+'</span></div>'+
+      simHTML(x)+voteHTML(x)+'</div>';
+    var t=$("reasonInput");if(t)t.focus();
+  }
+
+  function renderSummary(){
+    var h='<div class="summary">';
+    ["dad","mom"].forEach(function(w){var v=state[w];var n=w==="dad"?"爸爸 💙":"媽媽 🤍";
+      h+='<div class="who"><span class="dot">'+n+'</span><span>'+(v?'<b>'+label(byId(v.date))+'</b>':'<span class="note">尚未投票</span>')+'</span>'+(v&&v.reason?'<q>'+esc(v.reason)+'</q>':'')+'</div>'});
+    if(state.dad&&state.mom){h+=state.dad.date===state.mom.date?'<div class="match">你們選了同一天 ✨</div>':'<div class="note" style="margin-top:6px">兩人選了不同天，可以看看彼此的理由。</div>'}
+    var st=canStore?"投票記錄在這支手機的瀏覽器裡，下次打開還會在。":"這個瀏覽器無法儲存，關閉頁面後投票會消失。";
+    h+=((state.dad||state.mom)?'<div style="margin-top:10px"><button class="btn" id="resetBtn">清除投票</button></div>':'')+
+      '<div class="status">'+st+'</div></div>';
+    $("summary").innerHTML=h;
+  }
+
+  function renderAll(){renderSummary();renderCards();renderDetail()}
+
+  function commit(){
+    state.updated=new Date().toISOString();
+    try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){canStore=false}
+    renderAll();
+  }
+
+  document.addEventListener("click",function(e){
+    var t=e.target.closest("[data-id],[data-vote],[data-save],[data-cancel],#cmpBtn,#resetBtn");
+    if(!t)return;
+    if(t.id==="cmpBtn"){cmpMode=!cmpMode;cmpSel=[];openReason=null;t.classList.toggle("on",cmpMode);t.textContent=cmpMode?"結束比較":"比較兩天";renderCards();renderDetail();return}
+    if(t.id==="resetBtn"){
+      if(t.dataset.confirm){state.dad=null;state.mom=null;openReason=null;commit()}else{t.dataset.confirm="1";t.textContent="再按一次確認清除"}return}
+    if(t.dataset.id){var id=t.dataset.id;
+      if(cmpMode){var k=cmpSel.indexOf(id);if(k>-1)cmpSel.splice(k,1);else{if(cmpSel.length>=2)cmpSel.shift();cmpSel.push(id)}}
+      else{sel=(sel===id?null:id);openReason=null}
+      renderCards();renderDetail();return}
+    if(t.dataset.vote){openReason=(openReason===t.dataset.vote?null:t.dataset.vote);renderDetail();return}
+    if(t.dataset.cancel){openReason=null;renderDetail();return}
+    if(t.dataset.save){var who=t.dataset.save,r=($("reasonInput")||{}).value||"";
+      state[who]={date:sel,reason:r.trim().slice(0,80)};openReason=null;commit();return}
+  });
+  document.addEventListener("keydown",function(e){if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("card")){e.preventDefault();e.target.click()}});
+
+  sel="1124";
+  renderAll();
+})();
+</script>
+</body>
+</html>
