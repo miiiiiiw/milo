@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-19T14:57:43.457Z",
+  "generated": "2026-11-20T03:06:06.411Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -15,6 +15,18 @@
     "mind": "心智"
   },
   "files": [
+    {
+      "path": "family/induction-plan.html",
+      "title": "催生或等待：39 週決策參考",
+      "description": "第二胎 39 週產檢後，評估等待或催生，以及催生日期的互動參考",
+      "tags": [
+        "催生",
+        "產檢",
+        "第二胎",
+        "決策"
+      ],
+      "date": "2026-11-20"
+    },
     {
       "path": "family/accident-guide.html",
       "title": "腳踏車事故家屬行動指引",
