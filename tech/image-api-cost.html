@@ -275,7 +275,7 @@ header.top h1 { margin-top: 0; }
     <p class="eyebrow page-kicker">技術筆記 · 生圖 API 成本</p>
     <h1>生圖要不要外接 API</h1>
     <p class="lede prose">每月 20 篇文章、160 張圖。升級訂閱、另訂一個方案，還是按張付費？把每條路攤開來算過一次，留給之後回頭對照的自己。</p>
-    <div class="stamp" style="margin-top:14px">決策紀錄 · 2026-11-17 · 價格皆為當日查到的美元牌價</div>
+    <div class="stamp" style="margin-top:14px">決策紀錄 · 2026-11-17 · 11-20 補上 $20 產量試算 · 價格皆為查詢當日的美元牌價</div>
   </div>
 </header>
 
@@ -414,6 +414,85 @@ header.top h1 { margin-top: 0; }
       </table>
     </div>
     <p class="small prose">「修改一次」與「參考圖一次」是估計值，沒有實測。Grok 三項以 xAI 直連計算，不含 OpenRouter 的 5.5% 儲值手續費。</p>
+  </div>
+</section>
+
+<section id="budget">
+  <div class="prose">
+    <h2>同樣花 $20，API 能產幾張</h2>
+    <p>Plus 是固定月費，API 是用多少付多少，兩邊還是很難直接比。換個問法比較清楚：把 Plus 的 20 美元拿去刷 API，能換到多少張圖？</p>
+    <p>刷進 OpenRouter 要先扣 5.5% 手續費，實際可用約 18.96 美元。沿用上面的配置，連重生、修改和參考圖都分攤進去，每張成品約 0.054 美元。</p>
+  </div>
+  <div class="tiles">
+    <div class="tile pick">
+      <div class="big">約 350 張</div>
+      <div class="cap">$20 換到的成品圖，是目前每月 160 張的 2.2 倍</div>
+    </div>
+    <div class="tile">
+      <div class="big">約 44 篇</div>
+      <div class="cap">以每篇 8 張換算。超過這個量，Plus 才開始比較划算</div>
+    </div>
+    <div class="tile">
+      <div class="big">約 510 次</div>
+      <div class="cap">換算成生成次數，含重生、修改與參考圖輸入</div>
+    </div>
+  </div>
+
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr><th>計算單位</th><th class="r">單價（不含手續費）</th><th class="r">$18.96 能買到</th></tr>
+      </thead>
+      <tbody>
+        <tr class="pick"><th>每張成品（含重生與修改的分攤）</th><td class="r">約 $0.054</td><td class="r">約 350 張</td></tr>
+        <tr><th>每次生成（含參考圖）</th><td class="r">約 $0.037</td><td class="r">約 510 次</td></tr>
+        <tr><th>換算文章數（每篇 8 張）</th><td class="r">約 $0.43／篇</td><td class="r">約 44 篇</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prose">
+    <h3>只用單一畫質的理論上限</h3>
+    <p>不重生、不附參考圖時的張數。實務上一定會有這兩項，所以這只是天花板，估算時以上面的 350 張為準。</p>
+  </div>
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr><th>畫質</th><th class="r">單張</th><th class="r">$18.96 能產出</th></tr>
+      </thead>
+      <tbody>
+        <tr><th>Flare low</th><td class="r">$0.020</td><td class="r">約 950 張</td></tr>
+        <tr><th>Flare medium</th><td class="r">$0.034</td><td class="r">約 560 張</td></tr>
+        <tr><th>Sunburst high</th><td class="r">$0.041</td><td class="r">約 460 張</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prose">
+    <h3>和 ChatGPT Plus 擺在一起</h3>
+  </div>
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr><th>比較項目</th><th>API（$20）</th><th>Plus 搭 Codex CLI（$20）</th></tr>
+      </thead>
+      <tbody>
+        <tr><th>產量</th><td>約 350 張成品，確定</td><td>沒有公布張數，與 Codex 其他用途共用額度</td></tr>
+        <tr><th>每月 160 張</th><td>只要約 $9，省下 $11</td><td>固定 $20</td></tr>
+        <tr><th>一年</th><td>約 $110</td><td>$240</td></tr>
+        <tr><th>用不完的部分</th><td>留到下個月繼續用</td><td>不能累積</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prose">
+    <h3>分界線在哪</h3>
+    <ul class="tight" style="margin-bottom:14px">
+      <li>每月少於 44 篇（約 350 張）：API 比較便宜。照現在的 20 篇，一年約省 130 美元。</li>
+      <li>每月超過 44 篇：Plus 開始划算，前提是 Codex 的額度撐得住。有人回報 Plus 一次跑約 20 張就吃緊，這個前提並不穩。</li>
+      <li>用量起伏大的月份：API 的優勢更明顯，少用就少付；Plus 用多用少都是 20 美元。</li>
+    </ul>
+    <p>以現在的量，API 只花 Plus 的一半左右。要等文章量翻倍以上，才需要回頭重算這一題。上方試算區拉動篇數時，底下那行說明也會跟著算出 $20 能換到的張數。</p>
   </div>
 </section>
 
@@ -588,7 +667,7 @@ header.top h1 { margin-top: 0; }
     <h2>如果又翻到這一頁</h2>
     <p>大概是用量變了，或者價格變了。先對照下面幾個門檻，哪一條被跨過，就重算那一條。</p>
     <ul class="tight" style="margin-bottom:18px">
-      <li>每月生成次數接近 500 次：ChatGPT Plus 搭 Codex CLI 開始追平 API，值得重新比較。</li>
+      <li>每月成品超過約 350 張（約 44 篇），或生成次數接近 500 次：ChatGPT Plus 搭 Codex CLI 開始追平 API，值得重新比較。</li>
       <li>Premium 的用量常在週中見底，而且吃掉額度的是聊天和 Bot：這時升級才有道理，生圖只是順便受惠。</li>
       <li>繁體錯字率居高不下：改成模型只出底圖與角色，文字事後疊上。</li>
       <li>出現新模型或調價：回到試算區，把單價換掉再看排序。</li>
@@ -754,8 +833,14 @@ header.top h1 { margin-top: 0; }
       var cmp = pick.total >= PLUS
         ? '這個用量下 GPT Image 2.6 已經達到或超過 ChatGPT Plus 的 $20，Codex CLI 那條路值得重新比較。'
         : '要到每月約 ' + breakeven + ' 次生成才會追上 ChatGPT Plus 的 $20，目前是 ' + Math.round(gens) + ' 次。';
+      var perArticle = a.t + a.c + a.i;
+      var budgetImgs = finished > 0 ? Math.round(PLUS * finished / pick.total) : 0;
+      var budgetLine = finished > 0
+        ? '把 $20 全部拿去刷 API，約可產出 ' + budgetImgs + ' 張成品' +
+          (perArticle > 0 ? '（約 ' + Math.round(budgetImgs / perArticle) + ' 篇）' : '') + '。'
+        : '';
       out.textContent = '照這組假設，GPT Image 2.6 每月 ' + money(pick.total, 1) +
-        '，平均每次生成 ' + money(avg, 3) + '。' + cmp;
+        '，平均每次生成 ' + money(avg, 3) + '。' + cmp + budgetLine;
     }
   }
 
