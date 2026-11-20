@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-20T03:52:34.739Z",
+  "generated": "2026-11-20T07:38:18.041Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -24,6 +24,18 @@
         "產檢",
         "第二胎",
         "決策"
+      ],
+      "date": "2026-11-20"
+    },
+    {
+      "path": "product/grok-bot-guide.html",
+      "title": "GrokBot 學習導航",
+      "description": "八個學習主題、132 篇 X 長文的收藏榜與作者排行，依學習路線由淺入深",
+      "tags": [
+        "Grok Bot",
+        "AI",
+        "學習導航",
+        "收藏榜"
       ],
       "date": "2026-11-20"
     },
@@ -530,18 +542,6 @@
       ],
       "category": "build",
       "date": "2026-11-14"
-    },
-    {
-      "path": "product/grok-bot-guide.html",
-      "title": "GrokBot 學習導航",
-      "description": "八個學習主題、132 篇 X 長文的收藏榜與作者排行，依學習路線由淺入深",
-      "tags": [
-        "Grok Bot",
-        "AI",
-        "學習導航",
-        "收藏榜"
-      ],
-      "date": "2026-11-13"
     },
     {
       "path": "reading/adrian-html-agent-homepage.html",
