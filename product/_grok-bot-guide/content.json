@@ -3,7 +3,7 @@
   "dataset": {
     "title": "GrokBot 學習導航",
     "subtitle": "每主題收藏榜",
-    "updated_at": "2026-11-13T10:15:00+08:00",
+    "updated_at": "2026-11-20T10:30:00+08:00",
     "migrated_at": "2026-11-08",
     "display_per_topic": 20,
     "intro": "{topics_zh}個學習主題，每卷依收藏排出前 {per_topic} 篇精選，同收藏再比轉推與讚；資料持續累積，排名之後的篇目可在各卷底部展開。中英日文章混合分類，不按編輯閱讀順序排列。",
@@ -11,15 +11,15 @@
     "sort_note": "排序：收藏 ↓ → 轉推 ↓ → 讚 ↓；數字為不同時間的快照，不是即時排行榜，也不是全網或全部候選的主題 Top {per_topic}。這是已選入文章的主題內排序。",
     "author_note": "範圍限定本頁已分類且確認 Article 的文章；不是全部候選或全 X 的作者榜。先按貼文 ID 去重，再彙總作者；跨主題文章在全選集榜只算一次。",
     "candidate_pool": {
-      "total": 1516,
-      "zh": 440,
-      "en": 893,
-      "ja": 183
+      "total": 1847,
+      "zh": 537,
+      "en": 1077,
+      "ja": 233
     },
     "sources": [
       "全部收錄均有原始 Article 欄位，不把一般長貼文、轉推或額外翻譯算成新文章。分類依實際標題、保存的預覽／摘要，以及可讀取正文的相關段落核對；未逐篇完整通讀，分類與難度仍為暫定。",
-      "來源為既有 ranked_v4 中文候選、foreign_v1 英文與日文候選，以及歷次暫緩清單與關鍵字新蒐集。每次更新將暫緩清單中重新評估後收藏達 10、且符合 4.1 的文章，以及上次更新之後新蒐集、確認為 Article、與 Grok Bot 相關且收藏達 10 以上的文章納入資料庫；已排除或需人工確認的文章不補收。候選庫規模：中文 {pool_zh}、英文 {pool_en}、日文 {pool_ja} 篇。",
-      "全部既有 active 文章的收藏／轉推／讚於 2026-11-13 09:59–10:01（台北時間）以貼文 ID 重新抓取；本輪新收錄文章於 10:01–10:04（台北時間）抓取。數字為本輪快照，收藏可能下降，排序只代表本頁採用的快照。",
+      "來源為既有 ranked_v4 中文候選、foreign_v1 英文與日文候選，以及歷次暫緩清單與關鍵字新蒐集。每次更新將暫緩清單中重新評估後收藏達 10、且符合 4.1 的文章，以及上次更新之後新蒐集、確認為 Article、與 Grok Bot 相關且收藏達 10 以上的文章納入資料庫；已排除的文章不補收，需人工確認的文章待使用者核准後才補收。候選庫規模：中文 {pool_zh}、英文 {pool_en}、日文 {pool_ja} 篇。",
+      "全部既有 active 文章的收藏／轉推／讚於 2026-11-20 10:00–10:02（台北時間）以貼文 ID 重新抓取；本輪新蒐集收錄的文章於 10:07（台北時間）抓取。數字為本輪快照，收藏可能下降，排序只代表本頁採用的快照。",
       "各卷精選前 {per_topic} 篇，資料庫目前共 {active} 篇，並非 {pool_total} 篇中英日候選的全量分類。部分文章跨領域，收藏為零的文章也照實保留；沒有以交易收益或節費倍率作推薦依據。產品政策、費用、權限、登入方式、使用額度及成效敘述須另核對當前官方說明，作者標題不代表已驗證事實；交易相關文章不是投資建議。"
     ]
   },
@@ -128,10 +128,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 9539,
-        "retweets": 1016,
-        "likes": 5039,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 9511,
+        "retweets": 1011,
+        "likes": 5029,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -150,10 +150,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 4972,
-        "retweets": 357,
-        "likes": 2334,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 5035,
+        "retweets": 360,
+        "likes": 2369,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -173,10 +173,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 4459,
-        "retweets": 476,
-        "likes": 2550,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 5084,
+        "retweets": 514,
+        "likes": 2792,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -195,10 +195,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 4595,
-        "retweets": 439,
-        "likes": 2284,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 4987,
+        "retweets": 472,
+        "likes": 2517,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -217,10 +217,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 2314,
-        "retweets": 167,
-        "likes": 1054,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 2358,
+        "retweets": 170,
+        "likes": 1078,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -239,10 +239,10 @@
         "setup"
       ],
       "metrics": {
-        "bookmarks": 1578,
+        "bookmarks": 1632,
         "retweets": 170,
-        "likes": 916,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 933,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -261,10 +261,10 @@
         "ops"
       ],
       "metrics": {
-        "bookmarks": 1376,
+        "bookmarks": 1391,
         "retweets": 75,
-        "likes": 590,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 594,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -283,10 +283,10 @@
         "setup"
       ],
       "metrics": {
-        "bookmarks": 932,
-        "retweets": 92,
-        "likes": 512,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 942,
+        "retweets": 91,
+        "likes": 514,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -305,10 +305,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 953,
+        "bookmarks": 1000,
         "retweets": 81,
-        "likes": 545,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 565,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -328,10 +328,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 823,
+        "bookmarks": 820,
         "retweets": 53,
-        "likes": 383,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 385,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -350,10 +350,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 1011,
-        "retweets": 62,
-        "likes": 355,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 1008,
+        "retweets": 61,
+        "likes": 353,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -375,7 +375,7 @@
         "bookmarks": 687,
         "retweets": 37,
         "likes": 343,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -394,10 +394,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 609,
+        "bookmarks": 605,
         "retweets": 52,
-        "likes": 210,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 211,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -416,10 +416,10 @@
         "ops"
       ],
       "metrics": {
-        "bookmarks": 600,
+        "bookmarks": 599,
         "retweets": 58,
-        "likes": 348,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 347,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -438,10 +438,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 588,
-        "retweets": 62,
-        "likes": 305,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 585,
+        "retweets": 63,
+        "likes": 304,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -460,10 +460,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 560,
+        "bookmarks": 557,
         "retweets": 43,
         "likes": 216,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -482,10 +482,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 567,
+        "bookmarks": 579,
         "retweets": 41,
-        "likes": 300,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 310,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -505,10 +505,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 525,
+        "bookmarks": 522,
         "retweets": 39,
-        "likes": 229,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 228,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -528,10 +528,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 525,
+        "bookmarks": 526,
         "retweets": 28,
-        "likes": 232,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 235,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -550,10 +550,10 @@
         "setup"
       ],
       "metrics": {
-        "bookmarks": 499,
+        "bookmarks": 497,
         "retweets": 36,
         "likes": 229,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -572,10 +572,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 484,
-        "retweets": 34,
-        "likes": 280,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 485,
+        "retweets": 35,
+        "likes": 281,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -594,10 +594,10 @@
         "setup"
       ],
       "metrics": {
-        "bookmarks": 416,
+        "bookmarks": 415,
         "retweets": 26,
-        "likes": 220,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 219,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -616,10 +616,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 420,
-        "retweets": 42,
-        "likes": 227,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 419,
+        "retweets": 43,
+        "likes": 228,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -639,10 +639,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 412,
-        "retweets": 47,
-        "likes": 258,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 468,
+        "retweets": 49,
+        "likes": 273,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -663,8 +663,8 @@
       "metrics": {
         "bookmarks": 539,
         "retweets": 31,
-        "likes": 264,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 268,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -686,10 +686,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 362,
+        "bookmarks": 360,
         "retweets": 23,
         "likes": 167,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -708,10 +708,10 @@
         "setup"
       ],
       "metrics": {
-        "bookmarks": 346,
+        "bookmarks": 344,
         "retweets": 48,
         "likes": 206,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -733,8 +733,8 @@
       "metrics": {
         "bookmarks": 332,
         "retweets": 38,
-        "likes": 180,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 179,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -753,10 +753,10 @@
         "ops"
       ],
       "metrics": {
-        "bookmarks": 336,
-        "retweets": 21,
-        "likes": 185,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 361,
+        "retweets": 19,
+        "likes": 200,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -779,7 +779,7 @@
         "bookmarks": 272,
         "retweets": 12,
         "likes": 158,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -798,10 +798,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 269,
+        "bookmarks": 267,
         "retweets": 31,
         "likes": 155,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -820,10 +820,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 244,
+        "bookmarks": 245,
         "retweets": 32,
         "likes": 177,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -843,10 +843,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 217,
+        "bookmarks": 218,
         "retweets": 36,
-        "likes": 171,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 170,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -869,7 +869,7 @@
         "bookmarks": 218,
         "retweets": 14,
         "likes": 116,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -891,7 +891,7 @@
         "bookmarks": 219,
         "retweets": 23,
         "likes": 102,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -914,7 +914,7 @@
         "bookmarks": 199,
         "retweets": 4,
         "likes": 99,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -933,10 +933,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 196,
+        "bookmarks": 195,
         "retweets": 21,
-        "likes": 118,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 116,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -955,10 +955,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 183,
+        "bookmarks": 180,
         "retweets": 41,
         "likes": 142,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -977,10 +977,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 174,
+        "bookmarks": 173,
         "retweets": 14,
-        "likes": 107,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 108,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1000,10 +1000,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 178,
+        "bookmarks": 179,
         "retweets": 16,
-        "likes": 99,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 100,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1025,7 +1025,7 @@
         "bookmarks": 164,
         "retweets": 14,
         "likes": 98,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1045,10 +1045,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 164,
+        "bookmarks": 163,
         "retweets": 6,
         "likes": 71,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1067,10 +1067,10 @@
         "ops"
       ],
       "metrics": {
-        "bookmarks": 153,
+        "bookmarks": 154,
         "retweets": 8,
         "likes": 83,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1089,10 +1089,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 355,
+        "bookmarks": 358,
         "retweets": 30,
-        "likes": 180,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 186,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1115,7 +1115,7 @@
         "bookmarks": 139,
         "retweets": 14,
         "likes": 108,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1134,10 +1134,10 @@
         "setup"
       ],
       "metrics": {
-        "bookmarks": 138,
+        "bookmarks": 139,
         "retweets": 10,
-        "likes": 71,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 72,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1157,10 +1157,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 134,
+        "bookmarks": 135,
         "retweets": 5,
-        "likes": 94,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 95,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1180,10 +1180,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 129,
+        "bookmarks": 128,
         "retweets": 13,
         "likes": 97,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1202,10 +1202,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 128,
+        "bookmarks": 131,
         "retweets": 11,
-        "likes": 84,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 83,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1227,7 +1227,7 @@
         "bookmarks": 105,
         "retweets": 4,
         "likes": 39,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1249,7 +1249,7 @@
         "bookmarks": 101,
         "retweets": 8,
         "likes": 73,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1270,8 +1270,8 @@
       "metrics": {
         "bookmarks": 99,
         "retweets": 4,
-        "likes": 58,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 59,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1291,10 +1291,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 93,
+        "bookmarks": 95,
         "retweets": 10,
-        "likes": 51,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 53,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1316,7 +1316,7 @@
         "bookmarks": 91,
         "retweets": 6,
         "likes": 55,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1335,10 +1335,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 81,
+        "bookmarks": 82,
         "retweets": 3,
         "likes": 37,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1358,10 +1358,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 2331,
-        "retweets": 187,
-        "likes": 1034,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 2329,
+        "retweets": 184,
+        "likes": 1037,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1383,7 +1383,7 @@
         "bookmarks": 75,
         "retweets": 6,
         "likes": 70,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1403,10 +1403,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 74,
+        "bookmarks": 73,
         "retweets": 9,
-        "likes": 45,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 44,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1427,8 +1427,8 @@
       "metrics": {
         "bookmarks": 71,
         "retweets": 6,
-        "likes": 47,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 46,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1450,7 +1450,7 @@
         "bookmarks": 68,
         "retweets": 9,
         "likes": 46,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1470,10 +1470,10 @@
         "ops"
       ],
       "metrics": {
-        "bookmarks": 68,
+        "bookmarks": 67,
         "retweets": 19,
         "likes": 59,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1496,7 +1496,7 @@
         "bookmarks": 65,
         "retweets": 11,
         "likes": 59,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1518,7 +1518,7 @@
         "bookmarks": 65,
         "retweets": 9,
         "likes": 41,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1540,7 +1540,7 @@
         "bookmarks": 60,
         "retweets": 7,
         "likes": 40,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1559,10 +1559,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 54,
+        "bookmarks": 56,
         "retweets": 2,
         "likes": 35,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1584,7 +1584,7 @@
         "bookmarks": 40,
         "retweets": 5,
         "likes": 41,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1606,7 +1606,7 @@
         "bookmarks": 36,
         "retweets": 2,
         "likes": 30,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1626,10 +1626,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 35,
+        "bookmarks": 36,
         "retweets": 4,
         "likes": 26,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1649,10 +1649,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 34,
+        "bookmarks": 36,
         "retweets": 2,
-        "likes": 32,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 34,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1671,10 +1671,10 @@
         "ops"
       ],
       "metrics": {
-        "bookmarks": 38,
+        "bookmarks": 40,
         "retweets": 2,
-        "likes": 23,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 31,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1696,7 +1696,7 @@
         "bookmarks": 31,
         "retweets": 6,
         "likes": 65,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1715,10 +1715,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 26,
+        "bookmarks": 27,
         "retweets": 3,
         "likes": 12,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1741,7 +1741,7 @@
         "bookmarks": 19,
         "retweets": 0,
         "likes": 31,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1761,10 +1761,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 16,
+        "bookmarks": 17,
         "retweets": 0,
         "likes": 7,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1786,7 +1786,7 @@
         "bookmarks": 14,
         "retweets": 2,
         "likes": 12,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1808,7 +1808,7 @@
         "bookmarks": 10,
         "retweets": 1,
         "likes": 15,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1827,10 +1827,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 11,
+        "bookmarks": 12,
         "retweets": 5,
-        "likes": 73,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 74,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1852,7 +1852,7 @@
         "bookmarks": 9,
         "retweets": 0,
         "likes": 6,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1874,7 +1874,7 @@
         "bookmarks": 3,
         "retweets": 0,
         "likes": 8,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1896,7 +1896,7 @@
         "bookmarks": 3,
         "retweets": 0,
         "likes": 6,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1918,7 +1918,7 @@
         "bookmarks": 2,
         "retweets": 0,
         "likes": 4,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1940,7 +1940,7 @@
         "bookmarks": 2,
         "retweets": 0,
         "likes": 0,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -1965,9 +1965,9 @@
         "captured_at": "2026-11-13T10:00:00+08:00"
       },
       "added_at": null,
-      "status": "active",
+      "status": "unavailable",
       "source_batch": "ranked_v4",
-      "note": null
+      "note": "2026-11-20 刷新時 X 回傳 Not Found（重試一次仍相同；作者帳號 @trise981 仍公開），判定原文已刪除。"
     },
     {
       "post_id": "2117249600247472631",
@@ -1984,7 +1984,7 @@
         "bookmarks": 0,
         "retweets": 0,
         "likes": 1,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2006,7 +2006,7 @@
         "bookmarks": 0,
         "retweets": 0,
         "likes": 1,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2028,7 +2028,7 @@
         "bookmarks": 0,
         "retweets": 0,
         "likes": 0,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2050,7 +2050,7 @@
         "bookmarks": 0,
         "retweets": 0,
         "likes": 0,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2072,7 +2072,7 @@
         "bookmarks": 0,
         "retweets": 0,
         "likes": 0,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2092,10 +2092,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 17823,
-        "retweets": 621,
-        "likes": 4533,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 17790,
+        "retweets": 622,
+        "likes": 4523,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2115,9 +2115,9 @@
       ],
       "metrics": {
         "bookmarks": 7721,
-        "retweets": 425,
-        "likes": 4756,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "retweets": 424,
+        "likes": 4758,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2136,10 +2136,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 5969,
-        "retweets": 189,
-        "likes": 1397,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 6057,
+        "retweets": 191,
+        "likes": 1411,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2158,10 +2158,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 3874,
+        "bookmarks": 3865,
         "retweets": 146,
-        "likes": 1105,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 1088,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2180,10 +2180,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 4975,
-        "retweets": 371,
-        "likes": 3243,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 5084,
+        "retweets": 412,
+        "likes": 3428,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2202,10 +2202,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 3304,
-        "retweets": 97,
-        "likes": 882,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 3375,
+        "retweets": 101,
+        "likes": 906,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2224,10 +2224,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 3319,
-        "retweets": 108,
-        "likes": 900,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 3318,
+        "retweets": 109,
+        "likes": 890,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2246,10 +2246,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 2778,
-        "retweets": 118,
-        "likes": 873,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 2780,
+        "retweets": 117,
+        "likes": 870,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2268,10 +2268,10 @@
         "setup"
       ],
       "metrics": {
-        "bookmarks": 2601,
-        "retweets": 102,
-        "likes": 719,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 2811,
+        "retweets": 109,
+        "likes": 776,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2290,10 +2290,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 2764,
+        "bookmarks": 2828,
         "retweets": 84,
-        "likes": 675,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 686,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2312,10 +2312,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 2300,
-        "retweets": 94,
-        "likes": 662,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 2298,
+        "retweets": 93,
+        "likes": 650,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2334,10 +2334,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 2643,
-        "retweets": 102,
-        "likes": 742,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 3193,
+        "retweets": 122,
+        "likes": 885,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2356,10 +2356,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 2101,
+        "bookmarks": 2097,
         "retweets": 93,
         "likes": 808,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2378,10 +2378,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 1516,
-        "retweets": 62,
-        "likes": 380,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 1727,
+        "retweets": 69,
+        "likes": 427,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2400,10 +2400,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 1384,
+        "bookmarks": 1382,
         "retweets": 67,
-        "likes": 507,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 490,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2422,10 +2422,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 1350,
+        "bookmarks": 1348,
         "retweets": 37,
         "likes": 330,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2444,10 +2444,10 @@
         "setup"
       ],
       "metrics": {
-        "bookmarks": 883,
+        "bookmarks": 887,
         "retweets": 20,
-        "likes": 468,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 470,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2466,10 +2466,10 @@
         "setup"
       ],
       "metrics": {
-        "bookmarks": 1103,
+        "bookmarks": 1123,
         "retweets": 52,
-        "likes": 358,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 362,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2488,10 +2488,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 649,
+        "bookmarks": 650,
         "retweets": 26,
         "likes": 231,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2513,7 +2513,7 @@
         "bookmarks": 569,
         "retweets": 31,
         "likes": 188,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2532,10 +2532,10 @@
         "ops"
       ],
       "metrics": {
-        "bookmarks": 555,
+        "bookmarks": 558,
         "retweets": 18,
-        "likes": 193,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 194,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2554,10 +2554,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 525,
+        "bookmarks": 523,
         "retweets": 26,
-        "likes": 254,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 252,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2576,10 +2576,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 431,
+        "bookmarks": 430,
         "retweets": 29,
         "likes": 146,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2598,10 +2598,10 @@
         "ops"
       ],
       "metrics": {
-        "bookmarks": 464,
-        "retweets": 20,
-        "likes": 141,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 583,
+        "retweets": 21,
+        "likes": 179,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2620,10 +2620,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 257,
-        "retweets": 10,
-        "likes": 109,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 258,
+        "retweets": 11,
+        "likes": 111,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2645,7 +2645,7 @@
         "bookmarks": 187,
         "retweets": 3,
         "likes": 98,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2664,10 +2664,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 184,
+        "bookmarks": 183,
         "retweets": 9,
-        "likes": 72,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 71,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2686,10 +2686,10 @@
         "ops"
       ],
       "metrics": {
-        "bookmarks": 144,
-        "retweets": 3,
-        "likes": 108,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 148,
+        "retweets": 2,
+        "likes": 109,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2708,10 +2708,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 63,
-        "retweets": 12,
-        "likes": 64,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 79,
+        "retweets": 14,
+        "likes": 72,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2732,8 +2732,8 @@
       "metrics": {
         "bookmarks": 55,
         "retweets": 6,
-        "likes": 35,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 34,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2755,7 +2755,7 @@
         "bookmarks": 33,
         "retweets": 15,
         "likes": 36,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2777,7 +2777,7 @@
         "bookmarks": 14,
         "retweets": 0,
         "likes": 22,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2799,7 +2799,7 @@
         "bookmarks": 12,
         "retweets": 11,
         "likes": 25,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2810,7 +2810,7 @@
       "post_id": "2111711182256279633",
       "title": "stop giving your grok bots memory",
       "author": {
-        "handle": "0xxenonicle"
+        "handle": "thaiji"
       },
       "lang": "en",
       "level": "中階",
@@ -2821,7 +2821,7 @@
         "bookmarks": 5,
         "retweets": 2,
         "likes": 17,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2843,7 +2843,7 @@
         "bookmarks": 5,
         "retweets": 1,
         "likes": 8,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2865,7 +2865,7 @@
         "bookmarks": 4,
         "retweets": 0,
         "likes": 1,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2887,7 +2887,7 @@
         "bookmarks": 3,
         "retweets": 1,
         "likes": 3,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2909,7 +2909,7 @@
         "bookmarks": 3,
         "retweets": 0,
         "likes": 6,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2931,7 +2931,7 @@
         "bookmarks": 3,
         "retweets": 0,
         "likes": 2,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2953,7 +2953,7 @@
         "bookmarks": 2,
         "retweets": 1,
         "likes": 8,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2975,7 +2975,7 @@
         "bookmarks": 0,
         "retweets": 0,
         "likes": 3,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -2997,7 +2997,7 @@
         "bookmarks": 0,
         "retweets": 0,
         "likes": 2,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -3019,7 +3019,7 @@
         "bookmarks": 0,
         "retweets": 0,
         "likes": 2,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -3041,7 +3041,7 @@
         "bookmarks": 0,
         "retweets": 0,
         "likes": 2,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": null,
       "status": "active",
@@ -3060,10 +3060,10 @@
         "setup"
       ],
       "metrics": {
-        "bookmarks": 1526,
-        "retweets": 121,
-        "likes": 725,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 1534,
+        "retweets": 122,
+        "likes": 726,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3083,10 +3083,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 1539,
-        "retweets": 96,
-        "likes": 798,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 1626,
+        "retweets": 102,
+        "likes": 853,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3106,10 +3106,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 1190,
+        "bookmarks": 1185,
         "retweets": 93,
-        "likes": 479,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 478,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3129,10 +3129,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 372,
+        "bookmarks": 374,
         "retweets": 29,
         "likes": 166,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3152,10 +3152,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 237,
-        "retweets": 20,
-        "likes": 121,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 255,
+        "retweets": 21,
+        "likes": 135,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3175,10 +3175,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 179,
-        "retweets": 13,
+        "bookmarks": 177,
+        "retweets": 14,
         "likes": 82,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3197,10 +3197,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 163,
+        "bookmarks": 161,
         "retweets": 9,
-        "likes": 64,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 65,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3220,10 +3220,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 149,
-        "retweets": 11,
+        "bookmarks": 152,
+        "retweets": 12,
         "likes": 86,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3243,10 +3243,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 56,
+        "bookmarks": 55,
         "retweets": 10,
         "likes": 54,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3269,7 +3269,7 @@
         "bookmarks": 47,
         "retweets": 5,
         "likes": 39,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3289,10 +3289,10 @@
         "ops"
       ],
       "metrics": {
-        "bookmarks": 38,
+        "bookmarks": 37,
         "retweets": 5,
         "likes": 25,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3339,7 +3339,7 @@
         "bookmarks": 34,
         "retweets": 4,
         "likes": 26,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3361,7 +3361,7 @@
         "bookmarks": 32,
         "retweets": 5,
         "likes": 17,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3383,7 +3383,7 @@
         "bookmarks": 31,
         "retweets": 3,
         "likes": 39,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3406,7 +3406,7 @@
         "bookmarks": 29,
         "retweets": 1,
         "likes": 24,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3429,7 +3429,7 @@
         "bookmarks": 28,
         "retweets": 0,
         "likes": 16,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3452,7 +3452,7 @@
         "bookmarks": 28,
         "retweets": 0,
         "likes": 16,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3472,10 +3472,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 19,
+        "bookmarks": 20,
         "retweets": 1,
         "likes": 9,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3495,10 +3495,10 @@
         "setup"
       ],
       "metrics": {
-        "bookmarks": 31,
+        "bookmarks": 33,
         "retweets": 0,
         "likes": 20,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3520,7 +3520,7 @@
         "bookmarks": 17,
         "retweets": 2,
         "likes": 14,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3544,7 +3544,7 @@
         "bookmarks": 14,
         "retweets": 0,
         "likes": 65,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3566,7 +3566,7 @@
         "bookmarks": 13,
         "retweets": 0,
         "likes": 11,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3589,7 +3589,7 @@
         "bookmarks": 13,
         "retweets": 0,
         "likes": 3,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3611,7 +3611,7 @@
         "bookmarks": 11,
         "retweets": 0,
         "likes": 13,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3634,7 +3634,7 @@
         "bookmarks": 10,
         "retweets": 0,
         "likes": 5,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3654,10 +3654,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 48,
+        "bookmarks": 53,
         "retweets": 6,
-        "likes": 48,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 58,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3679,7 +3679,7 @@
         "bookmarks": 24,
         "retweets": 3,
         "likes": 22,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3698,10 +3698,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 3708,
+        "bookmarks": 3707,
         "retweets": 119,
-        "likes": 951,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 950,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3721,10 +3721,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 3671,
-        "retweets": 156,
-        "likes": 1227,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 3903,
+        "retweets": 168,
+        "likes": 1301,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3744,10 +3744,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 3128,
+        "bookmarks": 3120,
         "retweets": 54,
-        "likes": 1092,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 1087,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3767,10 +3767,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 2278,
-        "retweets": 93,
-        "likes": 655,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 2276,
+        "retweets": 92,
+        "likes": 652,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3790,10 +3790,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 2211,
+        "bookmarks": 2203,
         "retweets": 51,
-        "likes": 727,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 725,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3813,10 +3813,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 2179,
+        "bookmarks": 2203,
         "retweets": 92,
-        "likes": 712,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 714,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3836,10 +3836,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 1622,
-        "retweets": 68,
+        "bookmarks": 1617,
+        "retweets": 67,
         "likes": 487,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3861,8 +3861,8 @@
       "metrics": {
         "bookmarks": 1218,
         "retweets": 25,
-        "likes": 464,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 462,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3882,10 +3882,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 1177,
-        "retweets": 116,
-        "likes": 544,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 1178,
+        "retweets": 115,
+        "likes": 541,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3904,10 +3904,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 1125,
-        "retweets": 24,
-        "likes": 622,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 1124,
+        "retweets": 23,
+        "likes": 392,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3926,10 +3926,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 1106,
+        "bookmarks": 1104,
         "retweets": 53,
         "likes": 705,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3949,10 +3949,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 1005,
-        "retweets": 41,
-        "likes": 446,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 1017,
+        "retweets": 43,
+        "likes": 451,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3971,10 +3971,10 @@
         "ops"
       ],
       "metrics": {
-        "bookmarks": 823,
+        "bookmarks": 820,
         "retweets": 30,
-        "likes": 255,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 254,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -3994,10 +3994,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 820,
+        "bookmarks": 817,
         "retweets": 69,
-        "likes": 982,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 979,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4017,10 +4017,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 720,
+        "bookmarks": 721,
         "retweets": 22,
         "likes": 268,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4041,10 +4041,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 711,
+        "bookmarks": 713,
         "retweets": 33,
-        "likes": 249,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 247,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4064,10 +4064,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 674,
-        "retweets": 26,
-        "likes": 196,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 676,
+        "retweets": 27,
+        "likes": 194,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4090,7 +4090,7 @@
         "bookmarks": 669,
         "retweets": 4,
         "likes": 169,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4113,7 +4113,7 @@
         "bookmarks": 659,
         "retweets": 42,
         "likes": 289,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4136,7 +4136,7 @@
         "bookmarks": 640,
         "retweets": 27,
         "likes": 203,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4155,10 +4155,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 533,
+        "bookmarks": 532,
         "retweets": 18,
-        "likes": 308,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 306,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4178,10 +4178,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 508,
+        "bookmarks": 507,
         "retweets": 23,
-        "likes": 148,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 147,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4204,7 +4204,7 @@
         "bookmarks": 497,
         "retweets": 8,
         "likes": 96,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4226,7 +4226,7 @@
         "bookmarks": 488,
         "retweets": 29,
         "likes": 206,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4246,10 +4246,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 483,
+        "bookmarks": 482,
         "retweets": 16,
         "likes": 154,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4270,10 +4270,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 474,
+        "bookmarks": 471,
         "retweets": 15,
-        "likes": 129,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 127,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4295,8 +4295,8 @@
       "metrics": {
         "bookmarks": 470,
         "retweets": 17,
-        "likes": 282,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 281,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4317,10 +4317,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 444,
+        "bookmarks": 446,
         "retweets": 23,
         "likes": 144,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4339,10 +4339,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 414,
+        "bookmarks": 418,
         "retweets": 8,
         "likes": 129,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4362,10 +4362,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 389,
+        "bookmarks": 387,
         "retweets": 21,
-        "likes": 167,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 168,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4386,10 +4386,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 388,
+        "bookmarks": 385,
         "retweets": 14,
-        "likes": 164,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 163,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4410,10 +4410,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 383,
+        "bookmarks": 382,
         "retweets": 20,
         "likes": 147,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4433,10 +4433,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 342,
+        "bookmarks": 341,
         "retweets": 21,
-        "likes": 128,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 127,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4456,10 +4456,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 435,
-        "retweets": 12,
-        "likes": 185,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 453,
+        "retweets": 13,
+        "likes": 191,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4479,10 +4479,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 291,
+        "bookmarks": 288,
         "retweets": 9,
         "likes": 123,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4505,7 +4505,7 @@
         "bookmarks": 313,
         "retweets": 14,
         "likes": 155,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4528,7 +4528,7 @@
         "bookmarks": 280,
         "retweets": 8,
         "likes": 143,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4549,10 +4549,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 271,
+        "bookmarks": 270,
         "retweets": 15,
         "likes": 119,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4574,8 +4574,8 @@
       "metrics": {
         "bookmarks": 255,
         "retweets": 4,
-        "likes": 89,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 90,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4595,10 +4595,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 254,
+        "bookmarks": 253,
         "retweets": 6,
-        "likes": 91,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 84,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4618,10 +4618,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 281,
-        "retweets": 30,
-        "likes": 188,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 566,
+        "retweets": 44,
+        "likes": 263,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4641,10 +4641,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 252,
+        "bookmarks": 253,
         "retweets": 33,
-        "likes": 195,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 196,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4667,7 +4667,7 @@
         "bookmarks": 232,
         "retweets": 7,
         "likes": 55,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4687,10 +4687,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 218,
+        "bookmarks": 217,
         "retweets": 18,
-        "likes": 214,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 215,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4712,7 +4712,7 @@
         "bookmarks": 195,
         "retweets": 21,
         "likes": 207,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4732,10 +4732,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 190,
+        "bookmarks": 192,
         "retweets": 13,
-        "likes": 83,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 85,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4759,7 +4759,7 @@
         "bookmarks": 190,
         "retweets": 18,
         "likes": 104,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4781,8 +4781,8 @@
       "metrics": {
         "bookmarks": 175,
         "retweets": 3,
-        "likes": 109,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 107,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4804,7 +4804,7 @@
         "bookmarks": 172,
         "retweets": 9,
         "likes": 108,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4826,7 +4826,7 @@
         "bookmarks": 164,
         "retweets": 7,
         "likes": 88,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4846,10 +4846,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 162,
+        "bookmarks": 163,
         "retweets": 2,
-        "likes": 85,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 84,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4869,10 +4869,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 167,
-        "retweets": 10,
+        "bookmarks": 170,
+        "retweets": 9,
         "likes": 103,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4892,10 +4892,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 151,
+        "bookmarks": 150,
         "retweets": 4,
         "likes": 76,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4915,10 +4915,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 147,
+        "bookmarks": 146,
         "retweets": 23,
         "likes": 81,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4941,7 +4941,7 @@
         "bookmarks": 142,
         "retweets": 8,
         "likes": 61,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4963,8 +4963,8 @@
       "metrics": {
         "bookmarks": 125,
         "retweets": 11,
-        "likes": 78,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 77,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -4986,8 +4986,8 @@
       "metrics": {
         "bookmarks": 125,
         "retweets": 8,
-        "likes": 98,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 99,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5010,7 +5010,7 @@
         "bookmarks": 123,
         "retweets": 3,
         "likes": 91,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5033,7 +5033,7 @@
         "bookmarks": 111,
         "retweets": 6,
         "likes": 68,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5056,7 +5056,7 @@
         "bookmarks": 110,
         "retweets": 12,
         "likes": 54,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5078,7 +5078,7 @@
         "bookmarks": 107,
         "retweets": 8,
         "likes": 47,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5098,10 +5098,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 106,
+        "bookmarks": 107,
         "retweets": 4,
         "likes": 56,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5120,10 +5120,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 103,
+        "bookmarks": 104,
         "retweets": 1,
-        "likes": 41,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 42,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5144,10 +5144,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 107,
-        "retweets": 4,
-        "likes": 101,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 137,
+        "retweets": 5,
+        "likes": 106,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5170,7 +5170,7 @@
         "bookmarks": 97,
         "retweets": 2,
         "likes": 55,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5193,7 +5193,7 @@
         "bookmarks": 92,
         "retweets": 4,
         "likes": 63,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5217,7 +5217,7 @@
         "bookmarks": 88,
         "retweets": 3,
         "likes": 36,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5237,10 +5237,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 104,
+        "bookmarks": 106,
         "retweets": 5,
-        "likes": 38,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 39,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5260,10 +5260,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 86,
+        "bookmarks": 85,
         "retweets": 14,
         "likes": 48,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5283,10 +5283,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 83,
+        "bookmarks": 84,
         "retweets": 6,
-        "likes": 39,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 40,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5305,10 +5305,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 82,
+        "bookmarks": 81,
         "retweets": 1,
         "likes": 60,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5331,7 +5331,7 @@
         "bookmarks": 80,
         "retweets": 26,
         "likes": 101,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5352,8 +5352,8 @@
       "metrics": {
         "bookmarks": 72,
         "retweets": 7,
-        "likes": 52,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 51,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5372,10 +5372,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 88,
+        "bookmarks": 96,
         "retweets": 6,
-        "likes": 100,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 106,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5395,10 +5395,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 72,
+        "bookmarks": 71,
         "retweets": 5,
         "likes": 25,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5417,10 +5417,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 921,
-        "retweets": 17,
-        "likes": 218,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 931,
+        "retweets": 16,
+        "likes": 223,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5439,10 +5439,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 72,
+        "bookmarks": 73,
         "retweets": 1,
-        "likes": 33,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 34,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5464,7 +5464,7 @@
         "bookmarks": 71,
         "retweets": 7,
         "likes": 54,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5484,10 +5484,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 70,
+        "bookmarks": 74,
         "retweets": 2,
-        "likes": 23,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 25,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5506,10 +5506,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 68,
-        "retweets": 15,
-        "likes": 147,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 69,
+        "retweets": 14,
+        "likes": 137,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5530,8 +5530,8 @@
       "metrics": {
         "bookmarks": 67,
         "retweets": 5,
-        "likes": 36,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 38,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5551,10 +5551,10 @@
         "setup"
       ],
       "metrics": {
-        "bookmarks": 65,
+        "bookmarks": 64,
         "retweets": 7,
         "likes": 48,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5577,7 +5577,7 @@
         "bookmarks": 65,
         "retweets": 0,
         "likes": 18,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5600,7 +5600,7 @@
         "bookmarks": 63,
         "retweets": 3,
         "likes": 84,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5623,8 +5623,8 @@
       "metrics": {
         "bookmarks": 63,
         "retweets": 7,
-        "likes": 44,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 43,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5643,10 +5643,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 63,
+        "bookmarks": 64,
         "retweets": 1,
-        "likes": 43,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 44,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5668,8 +5668,8 @@
       "metrics": {
         "bookmarks": 62,
         "retweets": 4,
-        "likes": 40,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 39,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5691,7 +5691,7 @@
         "bookmarks": 58,
         "retweets": 5,
         "likes": 52,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5711,10 +5711,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 55,
+        "bookmarks": 54,
         "retweets": 3,
         "likes": 55,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5737,7 +5737,7 @@
         "bookmarks": 55,
         "retweets": 1,
         "likes": 19,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5757,10 +5757,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 51,
+        "bookmarks": 53,
         "retweets": 3,
-        "likes": 24,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 23,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5782,7 +5782,7 @@
         "bookmarks": 49,
         "retweets": 2,
         "likes": 61,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5805,7 +5805,7 @@
         "bookmarks": 50,
         "retweets": 2,
         "likes": 22,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5828,7 +5828,7 @@
         "bookmarks": 47,
         "retweets": 2,
         "likes": 41,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5851,7 +5851,7 @@
         "bookmarks": 56,
         "retweets": 1,
         "likes": 16,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5873,7 +5873,7 @@
         "bookmarks": 43,
         "retweets": 2,
         "likes": 18,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5893,10 +5893,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 41,
+        "bookmarks": 42,
         "retweets": 4,
         "likes": 27,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5919,7 +5919,7 @@
         "bookmarks": 40,
         "retweets": 5,
         "likes": 48,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5942,7 +5942,7 @@
         "bookmarks": 39,
         "retweets": 4,
         "likes": 38,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5963,8 +5963,8 @@
       "metrics": {
         "bookmarks": 38,
         "retweets": 0,
-        "likes": 21,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 20,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -5984,10 +5984,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 40,
+        "bookmarks": 41,
         "retweets": 4,
-        "likes": 30,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 31,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6007,10 +6007,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 38,
+        "bookmarks": 39,
         "retweets": 3,
         "likes": 14,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6030,10 +6030,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 42,
+        "bookmarks": 52,
         "retweets": 2,
-        "likes": 49,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 55,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6055,8 +6055,8 @@
       "metrics": {
         "bookmarks": 37,
         "retweets": 1,
-        "likes": 31,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 30,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6078,7 +6078,7 @@
         "bookmarks": 37,
         "retweets": 6,
         "likes": 30,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6098,10 +6098,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 35,
+        "bookmarks": 36,
         "retweets": 1,
         "likes": 30,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6122,10 +6122,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 34,
+        "bookmarks": 35,
         "retweets": 9,
         "likes": 44,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6146,8 +6146,8 @@
       "metrics": {
         "bookmarks": 33,
         "retweets": 6,
-        "likes": 109,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 108,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6166,10 +6166,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 33,
+        "bookmarks": 32,
         "retweets": 2,
         "likes": 31,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6190,10 +6190,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 44,
+        "bookmarks": 91,
         "retweets": 12,
-        "likes": 114,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 134,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6214,8 +6214,8 @@
       "metrics": {
         "bookmarks": 32,
         "retweets": 1,
-        "likes": 29,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 30,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6238,7 +6238,7 @@
         "bookmarks": 32,
         "retweets": 1,
         "likes": 23,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6260,7 +6260,7 @@
         "bookmarks": 33,
         "retweets": 2,
         "likes": 16,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6280,10 +6280,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 63,
+        "bookmarks": 73,
         "retweets": 3,
-        "likes": 99,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 117,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6303,10 +6303,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 31,
+        "bookmarks": 32,
         "retweets": 2,
         "likes": 28,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6326,10 +6326,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 29,
+        "bookmarks": 30,
         "retweets": 13,
         "likes": 34,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6351,7 +6351,7 @@
         "bookmarks": 30,
         "retweets": 4,
         "likes": 20,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6374,7 +6374,7 @@
         "bookmarks": 29,
         "retweets": 1,
         "likes": 22,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6394,10 +6394,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 29,
+        "bookmarks": 30,
         "retweets": 0,
-        "likes": 38,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 39,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6418,8 +6418,8 @@
       "metrics": {
         "bookmarks": 28,
         "retweets": 63,
-        "likes": 200,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 202,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6440,8 +6440,8 @@
       "metrics": {
         "bookmarks": 66,
         "retweets": 0,
-        "likes": 41,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 40,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6464,7 +6464,7 @@
         "bookmarks": 26,
         "retweets": 4,
         "likes": 17,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6486,7 +6486,7 @@
         "bookmarks": 25,
         "retweets": 3,
         "likes": 26,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6509,7 +6509,7 @@
         "bookmarks": 26,
         "retweets": 1,
         "likes": 28,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6531,7 +6531,7 @@
         "bookmarks": 25,
         "retweets": 2,
         "likes": 39,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6554,7 +6554,7 @@
         "bookmarks": 25,
         "retweets": 2,
         "likes": 26,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6574,10 +6574,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 91,
+        "bookmarks": 123,
         "retweets": 2,
-        "likes": 52,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 58,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6623,7 +6623,7 @@
         "bookmarks": 22,
         "retweets": 0,
         "likes": 18,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6644,10 +6644,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 26,
+        "bookmarks": 27,
         "retweets": 0,
-        "likes": 19,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 18,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6669,7 +6669,7 @@
         "bookmarks": 20,
         "retweets": 2,
         "likes": 24,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6689,10 +6689,10 @@
         "ops"
       ],
       "metrics": {
-        "bookmarks": 50,
+        "bookmarks": 55,
         "retweets": 2,
-        "likes": 29,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 33,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6714,8 +6714,8 @@
       "metrics": {
         "bookmarks": 19,
         "retweets": 3,
-        "likes": 25,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 24,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6738,7 +6738,7 @@
         "bookmarks": 19,
         "retweets": 0,
         "likes": 19,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6761,7 +6761,7 @@
         "bookmarks": 18,
         "retweets": 2,
         "likes": 47,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6783,8 +6783,8 @@
       "metrics": {
         "bookmarks": 18,
         "retweets": 2,
-        "likes": 23,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 24,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6807,7 +6807,7 @@
         "bookmarks": 18,
         "retweets": 1,
         "likes": 30,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6830,7 +6830,7 @@
         "bookmarks": 18,
         "retweets": 1,
         "likes": 10,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6852,7 +6852,7 @@
         "bookmarks": 19,
         "retweets": 0,
         "likes": 22,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6874,7 +6874,7 @@
         "bookmarks": 17,
         "retweets": 1,
         "likes": 19,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6894,10 +6894,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 54,
+        "bookmarks": 53,
         "retweets": 3,
         "likes": 30,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6920,7 +6920,7 @@
         "bookmarks": 17,
         "retweets": 0,
         "likes": 25,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6943,7 +6943,7 @@
         "bookmarks": 16,
         "retweets": 11,
         "likes": 27,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6965,7 +6965,7 @@
         "bookmarks": 16,
         "retweets": 3,
         "likes": 29,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -6988,7 +6988,7 @@
         "bookmarks": 16,
         "retweets": 2,
         "likes": 36,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7011,7 +7011,7 @@
         "bookmarks": 16,
         "retweets": 2,
         "likes": 11,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7033,7 +7033,7 @@
         "bookmarks": 16,
         "retweets": 0,
         "likes": 27,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7055,7 +7055,7 @@
         "bookmarks": 23,
         "retweets": 13,
         "likes": 38,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7081,9 +7081,9 @@
         "captured_at": "2026-11-13T10:00:00+08:00"
       },
       "added_at": "2026-11-10",
-      "status": "active",
+      "status": "unavailable",
       "source_batch": "foreign_v1",
-      "note": null
+      "note": "2026-11-20 刷新時 X 回傳 Not Found（重試一次仍相同；作者帳號 @vansh22b 也查無此帳號），判定原文已刪除或帳號已停用。"
     },
     {
       "post_id": "2118326977375732171",
@@ -7100,7 +7100,7 @@
         "bookmarks": 15,
         "retweets": 2,
         "likes": 21,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7122,7 +7122,7 @@
         "bookmarks": 14,
         "retweets": 1,
         "likes": 14,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7142,10 +7142,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 25,
+        "bookmarks": 24,
         "retweets": 3,
         "likes": 14,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7164,10 +7164,10 @@
         "ops"
       ],
       "metrics": {
-        "bookmarks": 14,
+        "bookmarks": 15,
         "retweets": 1,
-        "likes": 18,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 19,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7187,10 +7187,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 45,
+        "bookmarks": 48,
         "retweets": 0,
-        "likes": 21,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 22,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7212,8 +7212,8 @@
       "metrics": {
         "bookmarks": 14,
         "retweets": 0,
-        "likes": 7,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 8,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7233,10 +7233,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 13,
+        "bookmarks": 12,
         "retweets": 3,
         "likes": 20,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7255,10 +7255,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 15,
+        "bookmarks": 16,
         "retweets": 2,
         "likes": 13,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7280,7 +7280,7 @@
         "bookmarks": 13,
         "retweets": 1,
         "likes": 6,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7303,7 +7303,7 @@
         "bookmarks": 13,
         "retweets": 0,
         "likes": 34,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7326,7 +7326,7 @@
         "bookmarks": 13,
         "retweets": 0,
         "likes": 22,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7349,7 +7349,7 @@
         "bookmarks": 12,
         "retweets": 7,
         "likes": 53,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7371,7 +7371,7 @@
         "bookmarks": 12,
         "retweets": 1,
         "likes": 18,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7391,10 +7391,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 24,
+        "bookmarks": 25,
         "retweets": 2,
-        "likes": 18,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 19,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7416,7 +7416,7 @@
         "bookmarks": 12,
         "retweets": 0,
         "likes": 11,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7438,7 +7438,7 @@
         "bookmarks": 11,
         "retweets": 3,
         "likes": 8,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7457,10 +7457,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 11,
+        "bookmarks": 10,
         "retweets": 1,
         "likes": 14,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7483,7 +7483,7 @@
         "bookmarks": 26,
         "retweets": 0,
         "likes": 16,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7505,8 +7505,8 @@
       "metrics": {
         "bookmarks": 10,
         "retweets": 4,
-        "likes": 27,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 26,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7526,10 +7526,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 10,
+        "bookmarks": 11,
         "retweets": 1,
-        "likes": 28,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 30,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7551,7 +7551,7 @@
         "bookmarks": 10,
         "retweets": 1,
         "likes": 22,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7574,7 +7574,7 @@
         "bookmarks": 10,
         "retweets": 1,
         "likes": 20,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7596,7 +7596,7 @@
         "bookmarks": 10,
         "retweets": 0,
         "likes": 26,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7619,7 +7619,7 @@
         "bookmarks": 10,
         "retweets": 0,
         "likes": 13,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7642,7 +7642,7 @@
         "bookmarks": 10,
         "retweets": 0,
         "likes": 10,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7665,7 +7665,7 @@
         "bookmarks": 22,
         "retweets": 0,
         "likes": 13,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7687,7 +7687,7 @@
         "bookmarks": 14,
         "retweets": 2,
         "likes": 37,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7707,10 +7707,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 14,
+        "bookmarks": 16,
         "retweets": 2,
         "likes": 9,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7732,8 +7732,8 @@
       "metrics": {
         "bookmarks": 13,
         "retweets": 2,
-        "likes": 16,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 15,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-10",
       "status": "active",
@@ -7752,10 +7752,10 @@
         "ops"
       ],
       "metrics": {
-        "bookmarks": 824,
-        "retweets": 25,
-        "likes": 209,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 868,
+        "retweets": 26,
+        "likes": 218,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -7774,10 +7774,10 @@
         "setup"
       ],
       "metrics": {
-        "bookmarks": 658,
-        "retweets": 30,
-        "likes": 302,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 898,
+        "retweets": 39,
+        "likes": 355,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -7797,10 +7797,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 352,
-        "retweets": 17,
-        "likes": 146,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 710,
+        "retweets": 26,
+        "likes": 268,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -7819,10 +7819,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 253,
-        "retweets": 25,
-        "likes": 159,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 303,
+        "retweets": 29,
+        "likes": 188,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -7841,10 +7841,10 @@
         "ops"
       ],
       "metrics": {
-        "bookmarks": 578,
-        "retweets": 12,
-        "likes": 145,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 1008,
+        "retweets": 24,
+        "likes": 216,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -7863,10 +7863,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 182,
-        "retweets": 8,
+        "bookmarks": 184,
+        "retweets": 7,
         "likes": 58,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -7886,10 +7886,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 173,
+        "bookmarks": 237,
         "retweets": 11,
-        "likes": 108,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 141,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -7912,7 +7912,7 @@
         "bookmarks": 132,
         "retweets": 8,
         "likes": 48,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -7933,8 +7933,8 @@
       "metrics": {
         "bookmarks": 118,
         "retweets": 1,
-        "likes": 27,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 26,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -7954,9 +7954,9 @@
       ],
       "metrics": {
         "bookmarks": 101,
-        "retweets": 2,
-        "likes": 54,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "retweets": 3,
+        "likes": 55,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -7976,10 +7976,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 101,
+        "bookmarks": 113,
         "retweets": 6,
-        "likes": 54,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 56,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -7999,10 +7999,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 60,
-        "retweets": 7,
-        "likes": 47,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 59,
+        "retweets": 8,
+        "likes": 49,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -8022,10 +8022,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 55,
+        "bookmarks": 61,
         "retweets": 4,
-        "likes": 47,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 50,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -8045,9 +8045,9 @@
       ],
       "metrics": {
         "bookmarks": 55,
-        "retweets": 22,
-        "likes": 62,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "retweets": 23,
+        "likes": 61,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -8066,10 +8066,10 @@
         "knowledge"
       ],
       "metrics": {
-        "bookmarks": 38,
-        "retweets": 2,
-        "likes": 55,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 50,
+        "retweets": 4,
+        "likes": 60,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -8088,10 +8088,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 45,
-        "retweets": 1,
-        "likes": 45,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 117,
+        "retweets": 10,
+        "likes": 69,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -8111,10 +8111,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 32,
+        "bookmarks": 33,
         "retweets": 3,
-        "likes": 110,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 111,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -8137,7 +8137,7 @@
         "bookmarks": 27,
         "retweets": 2,
         "likes": 31,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -8157,10 +8157,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 23,
+        "bookmarks": 24,
         "retweets": 4,
         "likes": 9,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -8180,10 +8180,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 31,
+        "bookmarks": 36,
         "retweets": 2,
-        "likes": 16,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 21,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -8202,10 +8202,10 @@
         "setup"
       ],
       "metrics": {
-        "bookmarks": 20,
+        "bookmarks": 21,
         "retweets": 6,
         "likes": 29,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -8226,8 +8226,8 @@
       "metrics": {
         "bookmarks": 15,
         "retweets": 3,
-        "likes": 18,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "likes": 17,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -8247,10 +8247,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 146,
-        "retweets": 12,
-        "likes": 162,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 236,
+        "retweets": 16,
+        "likes": 210,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -8269,10 +8269,10 @@
         "ops"
       ],
       "metrics": {
-        "bookmarks": 113,
-        "retweets": 9,
-        "likes": 59,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 145,
+        "retweets": 11,
+        "likes": 67,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -8291,10 +8291,10 @@
         "setup"
       ],
       "metrics": {
-        "bookmarks": 17,
-        "retweets": 0,
-        "likes": 19,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 18,
+        "retweets": 1,
+        "likes": 20,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -8314,10 +8314,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 25,
-        "retweets": 1,
-        "likes": 19,
-        "captured_at": "2026-11-13T10:00:00+08:00"
+        "bookmarks": 583,
+        "retweets": 35,
+        "likes": 239,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-11",
       "status": "active",
@@ -8337,10 +8337,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 44,
+        "bookmarks": 42,
         "retweets": 4,
-        "likes": 33,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "likes": 34,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8360,10 +8360,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 25,
+        "bookmarks": 28,
         "retweets": 9,
         "likes": 30,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8383,10 +8383,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 10,
+        "bookmarks": 13,
         "retweets": 1,
-        "likes": 11,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "likes": 14,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8406,10 +8406,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 10,
+        "bookmarks": 11,
         "retweets": 0,
         "likes": 11,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8429,10 +8429,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 10,
-        "retweets": 1,
-        "likes": 13,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "bookmarks": 73,
+        "retweets": 2,
+        "likes": 28,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8452,10 +8452,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 727,
-        "retweets": 53,
-        "likes": 365,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "bookmarks": 790,
+        "retweets": 57,
+        "likes": 395,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8475,10 +8475,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 166,
-        "retweets": 61,
-        "likes": 268,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "bookmarks": 222,
+        "retweets": 62,
+        "likes": 262,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8497,10 +8497,10 @@
         "build"
       ],
       "metrics": {
-        "bookmarks": 144,
-        "retweets": 10,
-        "likes": 69,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "bookmarks": 431,
+        "retweets": 37,
+        "likes": 218,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8522,8 +8522,8 @@
       "metrics": {
         "bookmarks": 67,
         "retweets": 5,
-        "likes": 33,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "likes": 32,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8543,10 +8543,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 47,
-        "retweets": 8,
-        "likes": 31,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "bookmarks": 100,
+        "retweets": 15,
+        "likes": 70,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8566,10 +8566,10 @@
         "skills"
       ],
       "metrics": {
-        "bookmarks": 46,
+        "bookmarks": 77,
         "retweets": 10,
-        "likes": 107,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "likes": 207,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8589,10 +8589,10 @@
         "connect"
       ],
       "metrics": {
-        "bookmarks": 45,
-        "retweets": 7,
-        "likes": 77,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "bookmarks": 58,
+        "retweets": 11,
+        "likes": 97,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8611,10 +8611,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 24,
+        "bookmarks": 36,
         "retweets": 1,
-        "likes": 29,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "likes": 32,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8634,10 +8634,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 24,
+        "bookmarks": 35,
         "retweets": 0,
-        "likes": 19,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "likes": 20,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8657,10 +8657,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 17,
+        "bookmarks": 18,
         "retweets": 1,
-        "likes": 20,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "likes": 26,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8679,10 +8679,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 15,
+        "bookmarks": 19,
         "retweets": 3,
-        "likes": 14,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "likes": 16,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8705,7 +8705,7 @@
         "bookmarks": 15,
         "retweets": 1,
         "likes": 24,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8724,10 +8724,10 @@
         "delegation"
       ],
       "metrics": {
-        "bookmarks": 13,
+        "bookmarks": 15,
         "retweets": 4,
-        "likes": 7,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "likes": 9,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8750,7 +8750,7 @@
         "bookmarks": 12,
         "retweets": 0,
         "likes": 20,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8769,10 +8769,10 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 11,
+        "bookmarks": 12,
         "retweets": 4,
-        "likes": 28,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "likes": 29,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
@@ -8791,15 +8791,1175 @@
         "multi-bot"
       ],
       "metrics": {
-        "bookmarks": 11,
+        "bookmarks": 13,
         "retweets": 0,
-        "likes": 15,
-        "captured_at": "2026-11-13T10:04:00+08:00"
+        "likes": 17,
+        "captured_at": "2026-11-20T10:02:00+08:00"
       },
       "added_at": "2026-11-13",
       "status": "active",
       "source_batch": "r4_20261113",
       "note": "2026-11-11 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2120881911593574643",
+      "title": "How to build a digital business with Grok Bot",
+      "author": {
+        "handle": "achxvi"
+      },
+      "lang": "en",
+      "level": "中階",
+      "topics": [
+        "delegation",
+        "build"
+      ],
+      "metrics": {
+        "bookmarks": 10,
+        "retweets": 0,
+        "likes": 12,
+        "captured_at": "2026-11-20T10:02:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "暫緩清單重評後收錄"
+    },
+    {
+      "post_id": "2120985057435566487",
+      "title": "Grok Botが会議に出る「同僚」になった。botを13体1人で回す僕が、最初に変える5つ",
+      "author": {
+        "handle": "dansyu_callenge"
+      },
+      "lang": "ja",
+      "level": "中階",
+      "topics": [
+        "multi-bot",
+        "delegation"
+      ],
+      "metrics": {
+        "bookmarks": 15,
+        "retweets": 1,
+        "likes": 24,
+        "captured_at": "2026-11-20T10:02:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "暫緩清單重評後收錄"
+    },
+    {
+      "post_id": "2120682798071877905",
+      "title": "靠 YouTube 切片做号搞流量：如何用 Grok Bot + ChatCut 对话式剪出爆款短视频？",
+      "author": {
+        "handle": "Pluvio9yte"
+      },
+      "lang": "zh",
+      "level": "中階",
+      "topics": [
+        "build",
+        "connect"
+      ],
+      "metrics": {
+        "bookmarks": 284,
+        "retweets": 20,
+        "likes": 150,
+        "captured_at": "2026-11-20T10:02:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "使用者核准收錄（2026-11-14，r4 需人工確認）"
+    },
+    {
+      "post_id": "2120769549679386878",
+      "title": "Deepseek Harness 保姆级教程：从读第一份文件，到做一个结合 Grok Bot 读评论找选题的小插件",
+      "author": {
+        "handle": "0xlangeai"
+      },
+      "lang": "zh",
+      "level": "進階",
+      "topics": [
+        "build",
+        "skills"
+      ],
+      "metrics": {
+        "bookmarks": 720,
+        "retweets": 69,
+        "likes": 500,
+        "captured_at": "2026-11-20T10:02:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "使用者核准收錄（2026-11-14，r4 需人工確認）"
+    },
+    {
+      "post_id": "2120868920542236677",
+      "title": "How My Three AI Platforms Work as One Team",
+      "author": {
+        "handle": "zaneccampbell"
+      },
+      "lang": "en",
+      "level": "中階",
+      "topics": [
+        "multi-bot"
+      ],
+      "metrics": {
+        "bookmarks": 25,
+        "retweets": 4,
+        "likes": 15,
+        "captured_at": "2026-11-20T10:02:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "使用者核准收錄（2026-11-14，r4 需人工確認）"
+    },
+    {
+      "post_id": "2123159537016533493",
+      "title": "Automate Anything with Grok Bot",
+      "author": {
+        "handle": "poteto"
+      },
+      "lang": "en",
+      "level": "入門",
+      "topics": [
+        "delegation",
+        "skills"
+      ],
+      "metrics": {
+        "bookmarks": 29150,
+        "retweets": 1680,
+        "likes": 15844,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2122362101926662255",
+      "title": "How to Clone Yourself With Grok Bot",
+      "author": {
+        "handle": "liam_fallen"
+      },
+      "lang": "en",
+      "level": "中階",
+      "topics": [
+        "knowledge",
+        "delegation"
+      ],
+      "metrics": {
+        "bookmarks": 1418,
+        "retweets": 32,
+        "likes": 466,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2123108268415263058",
+      "title": "Make Grok Bot Clone Your Paid Software",
+      "author": {
+        "handle": "liam_fallen"
+      },
+      "lang": "en",
+      "level": "進階",
+      "topics": [
+        "build"
+      ],
+      "metrics": {
+        "bookmarks": 776,
+        "retweets": 34,
+        "likes": 409,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121271551823933622",
+      "title": "Grok Bot for Real Estate Investors: 15 Incredible Features",
+      "author": {
+        "handle": "BeardyBrandon"
+      },
+      "lang": "en",
+      "level": "入門",
+      "topics": [
+        "delegation",
+        "connect"
+      ],
+      "metrics": {
+        "bookmarks": 733,
+        "retweets": 15,
+        "likes": 228,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2122747899511534005",
+      "title": "How to Run X and LinkedIn With Grok Bot (Full Guide)",
+      "author": {
+        "handle": "LoganTGott"
+      },
+      "lang": "en",
+      "level": "中階",
+      "topics": [
+        "delegation",
+        "skills"
+      ],
+      "metrics": {
+        "bookmarks": 576,
+        "retweets": 15,
+        "likes": 228,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2122905845755265359",
+      "title": "普通人用 Grok Bot 搞钱的 11 种玩法（附可直接复制的提示词）",
+      "author": {
+        "handle": "Timojoy713"
+      },
+      "lang": "zh",
+      "level": "中階",
+      "topics": [
+        "delegation",
+        "skills"
+      ],
+      "metrics": {
+        "bookmarks": 460,
+        "retweets": 27,
+        "likes": 209,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121792697547497739",
+      "title": "I own an HVAC and plumbing company. Here's how I actually use Grok Bot.",
+      "author": {
+        "handle": "TylerGriffin"
+      },
+      "lang": "en",
+      "level": "入門",
+      "topics": [
+        "delegation"
+      ],
+      "metrics": {
+        "bookmarks": 437,
+        "retweets": 8,
+        "likes": 228,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121203253568475561",
+      "title": "我用 Grok Bot + ChatCut 搞定 AI 视频剪辑，附详细教程",
+      "author": {
+        "handle": "liyue_ai"
+      },
+      "lang": "zh",
+      "level": "中階",
+      "topics": [
+        "build",
+        "connect"
+      ],
+      "metrics": {
+        "bookmarks": 279,
+        "retweets": 12,
+        "likes": 164,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121929065569620020",
+      "title": "【值得学习】 Matt Palmer 和 Lauren Tan 回答了 Grok Bot 近 50 个问题，从会议、额度讲到 Cloud Agents",
+      "author": {
+        "handle": "MaiYangAI"
+      },
+      "lang": "zh",
+      "level": "入門",
+      "topics": [
+        "setup",
+        "ops"
+      ],
+      "metrics": {
+        "bookmarks": 237,
+        "retweets": 16,
+        "likes": 91,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2122860541907743010",
+      "title": "11 月最新 Grok Bot 额度节省保姆级教程",
+      "author": {
+        "handle": "cgnot996"
+      },
+      "lang": "zh",
+      "level": "入門",
+      "topics": [
+        "ops"
+      ],
+      "metrics": {
+        "bookmarks": 136,
+        "retweets": 6,
+        "likes": 106,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121548072480301202",
+      "title": "「我看谁不学 Grok Bot」系列第 4 课:后台数据、微信群聊、Bot 的记忆，两个插件全交给 Grok Bot",
+      "author": {
+        "handle": "czzzzzzJ_"
+      },
+      "lang": "zh",
+      "level": "中階",
+      "topics": [
+        "connect",
+        "knowledge"
+      ],
+      "metrics": {
+        "bookmarks": 135,
+        "retweets": 14,
+        "likes": 70,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121629595703087585",
+      "title": "Build Your Own Workflow Intelligence System With Grok Bot",
+      "author": {
+        "handle": "liam_fallen"
+      },
+      "lang": "en",
+      "level": "進階",
+      "topics": [
+        "delegation",
+        "skills"
+      ],
+      "metrics": {
+        "bookmarks": 133,
+        "retweets": 3,
+        "likes": 53,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2122703423854281141",
+      "title": "Grok Bot Inc: build your agent harness in 10 steps",
+      "author": {
+        "handle": "0xMorlex"
+      },
+      "lang": "en",
+      "level": "進階",
+      "topics": [
+        "multi-bot",
+        "build"
+      ],
+      "metrics": {
+        "bookmarks": 117,
+        "retweets": 3,
+        "likes": 72,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121741391323959323",
+      "title": "Grok Bot 额度烧得快？先查这10处，附8段可复制的中文提示词（建议先收藏）",
+      "author": {
+        "handle": "alanchen"
+      },
+      "lang": "zh",
+      "level": "入門",
+      "topics": [
+        "ops"
+      ],
+      "metrics": {
+        "bookmarks": 76,
+        "retweets": 7,
+        "likes": 43,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2123166397102711122",
+      "title": "I Built a Grok Bot That Makes GTA 6 YouTube Guides in My Own Voice",
+      "author": {
+        "handle": "ziwenxu_"
+      },
+      "lang": "en",
+      "level": "進階",
+      "topics": [
+        "build",
+        "connect"
+      ],
+      "metrics": {
+        "bookmarks": 70,
+        "retweets": 3,
+        "likes": 52,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2122690984517787929",
+      "title": "A Beginner’s Guide to Grok Bot: Marketers",
+      "author": {
+        "handle": "HeyYoGB"
+      },
+      "lang": "en",
+      "level": "入門",
+      "topics": [
+        "setup",
+        "delegation"
+      ],
+      "metrics": {
+        "bookmarks": 65,
+        "retweets": 9,
+        "likes": 64,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121273962818678837",
+      "title": "How I Manage My Health through Grok Bot",
+      "author": {
+        "handle": "mikepat711"
+      },
+      "lang": "en",
+      "level": "入門",
+      "topics": [
+        "knowledge",
+        "delegation"
+      ],
+      "metrics": {
+        "bookmarks": 64,
+        "retweets": 1,
+        "likes": 52,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121221904774078553",
+      "title": "Grok Bot 1.0: How to Hire Your First AI Department (The Full Guide)",
+      "author": {
+        "handle": "0xShoopy"
+      },
+      "lang": "en",
+      "level": "中階",
+      "topics": [
+        "multi-bot"
+      ],
+      "metrics": {
+        "bookmarks": 59,
+        "retweets": 6,
+        "likes": 57,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2122404596760940997",
+      "title": "How to run 11 AI agents with one shared playbook on Grok Bot (full guide)",
+      "author": {
+        "handle": "netrovertHQ"
+      },
+      "lang": "en",
+      "level": "中階",
+      "topics": [
+        "multi-bot",
+        "knowledge"
+      ],
+      "metrics": {
+        "bookmarks": 51,
+        "retweets": 30,
+        "likes": 102,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121290274773086428",
+      "title": "Grok Bot for Beginners: The Pen that Never Forgets",
+      "author": {
+        "handle": "marygrace"
+      },
+      "lang": "en",
+      "level": "入門",
+      "topics": [
+        "setup"
+      ],
+      "metrics": {
+        "bookmarks": 49,
+        "retweets": 6,
+        "likes": 26,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121971284863336890",
+      "title": "Grok Bot  给我最大的改变，还真不是回答问题",
+      "author": {
+        "handle": "ai_goge"
+      },
+      "lang": "zh",
+      "level": "入門",
+      "topics": [
+        "setup",
+        "delegation"
+      ],
+      "metrics": {
+        "bookmarks": 47,
+        "retweets": 4,
+        "likes": 45,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2123413655425294695",
+      "title": "how static astro sites replaced wordpress for 40 client sites (using grok bot & hermes)",
+      "author": {
+        "handle": "webjuice_ie"
+      },
+      "lang": "en",
+      "level": "進階",
+      "topics": [
+        "build"
+      ],
+      "metrics": {
+        "bookmarks": 42,
+        "retweets": 0,
+        "likes": 16,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121210352901775383",
+      "title": "Best 10 Grok Bot Prompts for Designers (Copy & Paste)",
+      "author": {
+        "handle": "0x_rody"
+      },
+      "lang": "en",
+      "level": "入門",
+      "topics": [
+        "skills",
+        "delegation"
+      ],
+      "metrics": {
+        "bookmarks": 38,
+        "retweets": 1,
+        "likes": 34,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2122073581131890811",
+      "title": "How to Use Grok  Bot to Run an Affiliate Website While you Sleep (Here’s the Exact Setup)",
+      "author": {
+        "handle": "2whazzuup"
+      },
+      "lang": "en",
+      "level": "中階",
+      "topics": [
+        "build",
+        "delegation"
+      ],
+      "metrics": {
+        "bookmarks": 36,
+        "retweets": 2,
+        "likes": 17,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2123103792040456664",
+      "title": "How to Split Your Company's Work Between Claude Code and Grok Bot",
+      "author": {
+        "handle": "MichLieben"
+      },
+      "lang": "en",
+      "level": "中階",
+      "topics": [
+        "delegation",
+        "multi-bot"
+      ],
+      "metrics": {
+        "bookmarks": 34,
+        "retweets": 4,
+        "likes": 18,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2122631538370351328",
+      "title": "【労働ゼロ】Muse・Claude Code・GrokBotで最強のAIエージェント会社を構築する裏手法（プロンプト付き）",
+      "author": {
+        "handle": "Maruo_0314"
+      },
+      "lang": "ja",
+      "level": "中階",
+      "topics": [
+        "multi-bot"
+      ],
+      "metrics": {
+        "bookmarks": 34,
+        "retweets": 2,
+        "likes": 32,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2122398536444834187",
+      "title": "I Built Agents That Find Money-Making Ideas While I Sleep (Claude Code, Grok Bot, or Both)",
+      "author": {
+        "handle": "0xAIlabs"
+      },
+      "lang": "en",
+      "level": "中階",
+      "topics": [
+        "skills",
+        "delegation"
+      ],
+      "metrics": {
+        "bookmarks": 32,
+        "retweets": 2,
+        "likes": 41,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2123505937474322792",
+      "title": "I Turned Grok Bot Into a 24/7 GTA 6 Clipping Machine",
+      "author": {
+        "handle": "nateherk"
+      },
+      "lang": "en",
+      "level": "進階",
+      "topics": [
+        "build",
+        "connect"
+      ],
+      "metrics": {
+        "bookmarks": 26,
+        "retweets": 2,
+        "likes": 25,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2122108077071872129",
+      "title": "The poteto Principles for Grok Bot",
+      "author": {
+        "handle": "rae1101x"
+      },
+      "lang": "en",
+      "level": "進階",
+      "topics": [
+        "delegation",
+        "multi-bot"
+      ],
+      "metrics": {
+        "bookmarks": 25,
+        "retweets": 11,
+        "likes": 31,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2122269192313528744",
+      "title": "GrokBot完全攻略 ゼロから上級者への全ロードマップ",
+      "author": {
+        "handle": "lucky_note_lab"
+      },
+      "lang": "ja",
+      "level": "入門",
+      "topics": [
+        "setup",
+        "skills"
+      ],
+      "metrics": {
+        "bookmarks": 25,
+        "retweets": 5,
+        "likes": 23,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2122360231279640861",
+      "title": "What’s new in Grok Bot, November 16, 2026, broken down",
+      "author": {
+        "handle": "alexmichael"
+      },
+      "lang": "en",
+      "level": "入門",
+      "topics": [
+        "setup"
+      ],
+      "metrics": {
+        "bookmarks": 24,
+        "retweets": 2,
+        "likes": 35,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2123041200076976598",
+      "title": "杀鸡也可用牛刀：为了高质量陪伴孩子，我做了个脑筋急转弯的 Grok Bot",
+      "author": {
+        "handle": "longhaiqwe123"
+      },
+      "lang": "zh",
+      "level": "入門",
+      "topics": [
+        "skills"
+      ],
+      "metrics": {
+        "bookmarks": 24,
+        "retweets": 2,
+        "likes": 30,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2122993312240193689",
+      "title": "Grok Bot 101: from a first Bot to a team of Bots",
+      "author": {
+        "handle": "tibor_tee"
+      },
+      "lang": "en",
+      "level": "入門",
+      "topics": [
+        "setup",
+        "multi-bot"
+      ],
+      "metrics": {
+        "bookmarks": 23,
+        "retweets": 3,
+        "likes": 21,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2122444614309490772",
+      "title": "Grok Botがすごい！国内外のユーザーの衝撃活用法10選",
+      "author": {
+        "handle": "asahi_ai_x"
+      },
+      "lang": "ja",
+      "level": "入門",
+      "topics": [
+        "setup",
+        "delegation"
+      ],
+      "metrics": {
+        "bookmarks": 22,
+        "retweets": 10,
+        "likes": 32,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121630371636715684",
+      "title": "You're Using Grok Bot Wrong: 12 Jobs to Hand It Today (No Code, Copy-Paste Prompts)",
+      "author": {
+        "handle": "Mortid_X"
+      },
+      "lang": "en",
+      "level": "入門",
+      "topics": [
+        "delegation",
+        "skills"
+      ],
+      "metrics": {
+        "bookmarks": 20,
+        "retweets": 3,
+        "likes": 27,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121080802994004418",
+      "title": "【Grok Bot如何使用131个免费的阿里云百炼大模型？ -经验分享】",
+      "author": {
+        "handle": "Benjieming1Q84"
+      },
+      "lang": "zh",
+      "level": "中階",
+      "topics": [
+        "ops",
+        "connect"
+      ],
+      "metrics": {
+        "bookmarks": 16,
+        "retweets": 2,
+        "likes": 15,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121455150045028556",
+      "title": "How to Get Backlinks on Autopilot With Grok Bot",
+      "author": {
+        "handle": "2whazzuup"
+      },
+      "lang": "en",
+      "level": "中階",
+      "topics": [
+        "delegation",
+        "skills"
+      ],
+      "metrics": {
+        "bookmarks": 15,
+        "retweets": 0,
+        "likes": 6,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121994765033935104",
+      "title": "8 People, 32 AI Bots, Under Three Months: How We Run Miller Auto with Grok Bot",
+      "author": {
+        "handle": "milleratr"
+      },
+      "lang": "en",
+      "level": "中階",
+      "topics": [
+        "multi-bot",
+        "delegation"
+      ],
+      "metrics": {
+        "bookmarks": 13,
+        "retweets": 1,
+        "likes": 18,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2122361955448947195",
+      "title": "Grok Bot 1.0: How to Set Up One AI Teammate for Your Whole Team",
+      "author": {
+        "handle": "0xsdy"
+      },
+      "lang": "en",
+      "level": "中階",
+      "topics": [
+        "multi-bot",
+        "delegation"
+      ],
+      "metrics": {
+        "bookmarks": 12,
+        "retweets": 0,
+        "likes": 8,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121664876737401240",
+      "title": "The Hidden Potential of SpaceXSI Grok Bots: How to Use Them at 100% [Full Guide]",
+      "author": {
+        "handle": "alpha404ai"
+      },
+      "lang": "en",
+      "level": "入門",
+      "topics": [
+        "setup",
+        "delegation"
+      ],
+      "metrics": {
+        "bookmarks": 11,
+        "retweets": 0,
+        "likes": 17,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121547181500854372",
+      "title": "Grok Bot: AI agents that work while you sleep",
+      "author": {
+        "handle": "Ownerthoughts"
+      },
+      "lang": "en",
+      "level": "入門",
+      "topics": [
+        "setup"
+      ],
+      "metrics": {
+        "bookmarks": 10,
+        "retweets": 55,
+        "likes": 61,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121085649004708084",
+      "title": "Grok Bot 系列教程 2-9 复盘 Bot 交结论，选题 Bot 出计划",
+      "author": {
+        "handle": "ai_goge"
+      },
+      "lang": "zh",
+      "level": "中階",
+      "topics": [
+        "multi-bot",
+        "knowledge"
+      ],
+      "metrics": {
+        "bookmarks": 10,
+        "retweets": 1,
+        "likes": 5,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2122482620496019514",
+      "title": "My Agentic Conservatorship",
+      "author": {
+        "handle": "chowtato"
+      },
+      "lang": "en",
+      "level": "中階",
+      "topics": [
+        "delegation",
+        "connect"
+      ],
+      "metrics": {
+        "bookmarks": 29,
+        "retweets": 1,
+        "likes": 91,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2121255249637720096",
+      "title": "How I Gave 50 AI Bots One Shared Memory",
+      "author": {
+        "handle": "zaneccampbell"
+      },
+      "lang": "en",
+      "level": "中階",
+      "topics": [
+        "multi-bot",
+        "knowledge"
+      ],
+      "metrics": {
+        "bookmarks": 47,
+        "retweets": 2,
+        "likes": 13,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2122074929751298069",
+      "title": "Full Tutorial Guide: Grok AGENTS",
+      "author": {
+        "handle": "TarasOnChain"
+      },
+      "lang": "en",
+      "level": "入門",
+      "topics": [
+        "setup"
+      ],
+      "metrics": {
+        "bookmarks": 10,
+        "retweets": 1,
+        "likes": 5,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
+    },
+    {
+      "post_id": "2123357160167940525",
+      "title": "SpaceX Hired 5 Bots as Accountants. Here's the Onboarding Playbook.",
+      "author": {
+        "handle": "mistm1st"
+      },
+      "lang": "en",
+      "level": "入門",
+      "topics": [
+        "delegation",
+        "multi-bot"
+      ],
+      "metrics": {
+        "bookmarks": 11,
+        "retweets": 0,
+        "likes": 12,
+        "captured_at": "2026-11-20T10:07:00+08:00"
+      },
+      "added_at": "2026-11-20",
+      "status": "active",
+      "source_batch": "r5_20261120",
+      "note": "2026-11-13 之後關鍵字新蒐集"
     }
   ]
 }
