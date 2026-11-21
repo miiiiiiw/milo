@@ -175,3 +175,4 @@ push 任何 `.html` 後，GitHub Action「Build manifest」會執行 `scripts/bu
 - 2026-11-14：約定新增頁面的處理方式：對話中已確認的直接推送；想先試用的推 `_` 開頭草稿；含個人資訊或無人在場時產生的開 PR（見「與 Claude 協作」）。
 - 2026-11-19：原文學習訂定字型規範：英數用 Saira、中文用系統黑體，內文 16／28 細體，字級用偶數、行高用 4 的倍數；由收件匣同步自動套用（`reading/_inbox/sync.mjs` 的 `TYPE_CSS`）。
 - 2026-11-19：影片學習（`watching/`）也套用同一套字型規範；字型設定移到兩邊共用的 `scripts/page-enhance.mjs`。
+- 2026-11-21：原文學習與影片學習加上閱讀進度條（流光漸層、章節刻度、流蘇前緣、讀完慶祝），定義在 `scripts/page-enhance.mjs`。
