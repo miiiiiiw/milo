@@ -54,6 +54,7 @@ export const TYPE_CSS =
 // ── 閱讀進度條（2026-11-21 與使用者確認）：流光漸層＋章節刻度＋流蘇前緣＋讀完慶祝 ──
 // 結構：#milo-rp > .fill（寬度＝進度）> .body（流光本體，往前多延伸一段，用遮罩裁出尾端淡出與五縷流蘇）
 // 流蘇就是本體的一部分，顏色與流光會一路延續；波浪擺動由腳本逐格改變遮罩長度（Safari 不會播放遮罩的 CSS 動畫，所以不用 @keyframes）。
+// 收尾：最後 4% 的進度裡，流蘇與淡出區由腳本逐漸收回，讀到底時剛好填滿到邊；金色以淡入疊上，不是瞬間換色。
 // 捲動時加 .moving：前端變亮、流蘇擺動加快；讀過一半加 .half：亮一下並浮出打氣提示；讀到底加 .done：整條轉金色並浮出提示。
 export const PROGRESS_CSS =
   "\n" +
@@ -65,7 +66,9 @@ export const PROGRESS_CSS =
   "#milo-rp.moving .body::after{opacity:1}\n" +
   "@keyframes milo-rp-flow{to{background-position:-200% 0}}\n" +
   "#milo-rp .tick{position:absolute;top:0;width:2px;height:100%;background:rgba(255,255,255,.85)}\n" +
-  "#milo-rp.done .body{right:0;background:linear-gradient(90deg,#ffc23d,#ffd86b);-webkit-mask-image:none;mask-image:none;animation:milo-rp-done 1.2s ease-out 1}\n" +
+  "#milo-rp .body::before{content:\"\";position:absolute;inset:0;background:linear-gradient(90deg,#ffc23d,#ffd86b);opacity:0;transition:opacity .6s ease}\n" +
+  "#milo-rp.done .body::before{opacity:1}\n" +
+  "#milo-rp.done .body{animation:milo-rp-flow 3s linear infinite,milo-rp-done 1.2s ease-out 1}\n" +
   "#milo-rp.done .body::after{opacity:0}\n" +
   "#milo-rp.half .fill{animation:milo-rp-half 1.2s ease-out 1}\n" +
   "@keyframes milo-rp-half{30%{filter:drop-shadow(0 0 4px rgba(255,120,70,.45)) brightness(1.3)}100%{filter:drop-shadow(0 0 4px rgba(255,120,70,.45)) brightness(1)}}\n" +
@@ -83,16 +86,19 @@ export const PROGRESS_JS =
   'var toast=document.createElement("div");toast.id="milo-rp-toast";' +
   'document.body.appendChild(bar);document.body.appendChild(toast);var fill=bar.firstChild,done=false,half=false,last=-1,raf=0,mt=0,tt=0;'+
   'function say(s){toast.textContent=s;toast.classList.add("show");clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove("show")},2200)}' +
-  'var BD=fill.firstChild,RW=[12,9,15,8,11],S=18,ph=0,lt=0,RM=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;' +
-  'function wave(ts){var dt=lt?Math.min(.1,(ts-lt)/1000):0;lt=ts;if(!document.hidden&&!done){ph+=dt*2*Math.PI/(bar.classList.contains("moving")?.8:1.8);' +
-  'var sz="100% 100%",ps="0 0";for(var i=0;i<5;i++){var w=Math.max(6,Math.min(S,Math.round(RW[i]+3*Math.sin(ph+i*1.2))));sz+=","+w+"px 1px";ps+=",right "+(S-w)+"px top "+i+"px"}' +
-  'BD.style.webkitMaskSize=sz;BD.style.maskSize=sz;BD.style.webkitMaskPosition=ps;BD.style.maskPosition=ps}requestAnimationFrame(wave)}' +
-  'if(!RM)requestAnimationFrame(wave);' +
+  'var BD=fill.firstChild,RW=[12,9,15,8,11],S=18,EXT=4,ph=0,lt=0,cf=0,RM=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;' +
+  'var ST="linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%)";' +
+  'function shape(){var k=Math.max(0,Math.min(1,(1-cf)/.04));if(k<=0){BD.style.right="0";BD.style.webkitMaskImage=BD.style.maskImage="none";return}' +
+  'var s=S*k,x=EXT*k,img="linear-gradient(90deg,#000 0,#000 calc(100% - "+(s+4*k)+"px),rgba(0,0,0,.7) calc(100% - "+(s-4*k)+"px),rgba(0,0,0,.3) calc(100% - "+(x+4*k)+"px),transparent calc(100% - "+x+"px))",sz="100% 100%",ps="0 0";' +
+  'for(var i=0;i<5;i++){var w=Math.max(0,Math.min(s,(RW[i]+3*Math.sin(ph+i*1.2))*k));img+=","+ST;sz+=","+w.toFixed(1)+"px 1px";ps+=",right "+(s-w).toFixed(1)+"px top "+i+"px"}' +
+  'BD.style.right=(-x)+"px";BD.style.webkitMaskImage=BD.style.maskImage=img;BD.style.webkitMaskSize=BD.style.maskSize=sz;BD.style.webkitMaskPosition=BD.style.maskPosition=ps}' +
+  'function wave(ts){var dt=lt?Math.min(.1,(ts-lt)/1000):0;lt=ts;if(!document.hidden){ph+=dt*2*Math.PI/(bar.classList.contains("moving")?.8:1.8);shape()}requestAnimationFrame(wave)}' +
+'if(!RM)requestAnimationFrame(wave);' +
   'function panel(){var ps=document.querySelectorAll(\'[id^="panel-"]\');for(var i=0;i<ps.length;i++){if(ps[i].offsetParent!==null)return ps[i]}return document.querySelector("main")||document.body}' +
   'function len(p){var top=p.getBoundingClientRect().top+scrollY,end=document.documentElement.scrollHeight-innerHeight-top;return Math.max(1,Math.min(p.offsetHeight-innerHeight*.6,end))}' +
   'function ticks(){var old=bar.querySelectorAll(".tick");for(var i=0;i<old.length;i++)old[i].remove();var p=panel(),top=p.getBoundingClientRect().top+scrollY,L=len(p),hs=p.querySelectorAll("h2");' +
   'for(var j=0;j<hs.length;j++){var f=(hs[j].getBoundingClientRect().top+scrollY-top)/L;if(f>.02&&f<.98){var t=document.createElement("i");t.className="tick";t.style.left=(f*100)+"%";bar.appendChild(t)}}}' +
-  'function upd(){raf=0;var p=panel(),f=Math.min(1,Math.max(0,-p.getBoundingClientRect().top/len(p)));fill.style.width=(f*100)+"%";' +
+  'function upd(){raf=0;var p=panel(),f=Math.min(1,Math.max(0,-p.getBoundingClientRect().top/len(p)));fill.style.width=(f*100)+"%";cf=f;if(RM)shape();' +
   'if(last>=0&&last<.5&&f>=.5&&f<.995&&!half){half=true;say("過半了，繼續加油 ✦");bar.classList.add("half");setTimeout(function(){bar.classList.remove("half")},1200)}' +
   'if(f<.45)half=false;' +
   'if(f>=.995&&!done){done=true;bar.classList.add("done");say("讀完了，辛苦了 ✦")}' +

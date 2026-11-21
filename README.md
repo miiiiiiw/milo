@@ -177,3 +177,4 @@ push 任何 `.html` 後，GitHub Action「Build manifest」會執行 `scripts/bu
 - 2026-11-19：影片學習（`watching/`）也套用同一套字型規範；字型設定移到兩邊共用的 `scripts/page-enhance.mjs`。
 - 2026-11-21：原文學習與影片學習加上閱讀進度條（流光漸層、章節刻度、流蘇前緣、讀完慶祝），定義在 `scripts/page-enhance.mjs`。
 - 2026-11-21：閱讀進度條加上過半提醒；流蘇縮短為精簡版（8～15px），波浪改由腳本驅動以支援 iPhone Safari。
+- 2026-11-21：閱讀進度條收尾改為平順：流蘇在最後一段逐漸收回，金色用淡入。
