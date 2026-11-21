@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Claude Code 最佳實踐（Best practices for Claude Code）</title><meta name="date" content="2026-11-20"><meta name="category" content="build">
+<meta name="description" content="Claude Code 官方最佳實踐：只寫它看不見的事、給它檢查，不能破例的規則做成設定">
+<meta name="keywords" content="原文學習, Claude Code, CLAUDE.md, hook, 驗證, Anthropic">
+<meta name="kicker" content="Anthropic">
+<style>
+body{margin:0;background:#fafafa;color:#1a1a1a;font-family:'Noto Sans CJK TC','Noto Sans TC','PingFang TC',sans-serif;line-height:1.85;font-size:17px}
+main{max-width:760px;margin:0 auto;padding:40px 22px 80px;background:#fff}
+h1{font-size:30px;line-height:1.35;margin:0 0 4px}.en-title{font-size:19px;color:#555;margin:0 0 18px;font-weight:500}
+.meta{font-size:14.5px;color:#555;border-left:3px solid #1d9bf0;padding:6px 12px;background:#f3f8fc;margin-bottom:26px}.meta p{margin:2px 0}
+h2{font-size:23px;margin:46px 0 12px;padding-top:12px;border-top:1px solid #eee}h2 .en{display:block;font-size:16px;color:#777;font-weight:500}
+h3{font-size:19px;margin:28px 0 10px}h3 .en{display:block;font-size:14.5px;color:#777;font-weight:500}
+figure{margin:22px 0}figure img{width:100%;height:auto;border-radius:10px;display:block}
+figcaption{font-size:14px;color:#555;background:#f5f5f5;padding:8px 12px;border-radius:0 0 8px 8px;margin-top:6px}
+a{color:#1d6fb8}li{margin:6px 0}
+pre,code{font-family:'SFMono-Regular',Menlo,Consolas,monospace}pre{background:#0f1720;color:#e6edf3;padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.6}
+footer{font-size:13px;color:#888;margin-top:50px;border-top:1px solid #eee;padding-top:12px}
+.tabs{position:sticky;top:0;z-index:5;display:flex;gap:6px;background:#fff;padding:10px 0;margin:0 0 8px;border-bottom:1px solid #e5e5e5}
+.tab-r{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.tabs label{flex:1;text-align:center;color:#555;font-size:16px;font-weight:600;padding:12px 8px;min-height:44px;box-sizing:border-box;border-radius:10px;background:#f2f2f2;cursor:pointer;-webkit-tap-highlight-color:transparent;display:block}
+.tabs label .s{display:block;font-size:12px;font-weight:500;opacity:.75}
+#r-tl:checked~.tabs .tl,#r-tk:checked~.tabs .tk{background:#1d9bf0;color:#fff}
+#panel-takeaways{display:none}#r-tk:checked~#panel-takeaways{display:block}#r-tk:checked~#panel-translation{display:none}
+.meta a[href*="/status/"]{word-break:break-all}
+.note{font-size:13px;color:#888;margin:14px 0 6px}
+.tk h2{border-top:none;margin-top:34px}
+.tk .lead{font-size:18px}
+.pt{border-left:3px solid #1d9bf0;padding:2px 0 2px 14px;margin:22px 0}
+.pt h3{font-size:18.5px;margin:0 0 4px}.pt p{margin:6px 0}
+.eg{color:#555;font-size:15.5px}
+.tk ol li{margin:10px 0}
+.dg-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.dg{box-sizing:border-box;display:block;width:100%;min-width:300px;max-width:520px;height:auto;margin:0 auto;border:1px solid rgba(45,49,66,.12);border-radius:8px}
+.dgf{margin:16px 0 6px}.dgf figcaption{max-width:496px;margin:6px auto 0;border-radius:6px}
+@media print{.dg{min-width:0}}
+blockquote{margin:16px 0;padding:8px 14px;border-left:3px solid #1d9bf0;background:#f3f8fc;color:#1a1a1a}
+blockquote p{margin:6px 0}
+blockquote .src{font-size:14px;color:#666}
+.cta{background:#f3f8fc;border-left:3px solid #1d9bf0;padding:12px 14px;margin:22px 0;font-size:16px}
+.code{margin:16px 0}.code-lab{font-size:12.5px;color:#5a6580;margin:0 0 4px;font-weight:600}.code pre{margin:0;white-space:pre-wrap;word-break:break-word}
+p code,li code{background:#f0f2f5;padding:1px 5px;border-radius:4px;font-size:.88em}
+h4{font-size:17px;margin:22px 0 8px}h4 .en{display:block;font-size:13.5px;color:#777;font-weight:500}
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:16px 0}
+.tbl{border-collapse:collapse;width:100%;font-size:14.5px;line-height:1.6}.tbl{table-layout:fixed}.tbl th:nth-child(1){width:26%}.tbl th:nth-child(2){width:37%}.tbl td{overflow-wrap:anywhere}
+.tbl th,.tbl td{border:1px solid #e3e6ea;padding:7px 8px;text-align:left;vertical-align:top}
+.tbl th{background:#f3f8fc;font-weight:600}
+.tbl tr:nth-child(even) td{background:#fafbfc}
+.flow{background:#f3f8fc;border-radius:6px;padding:10px 12px;font-size:15px;line-height:1.7;color:#1d3a5c}
+figure img.img-sm{width:auto;max-width:100%;margin:0 auto}
+.zh-note{background:#f3f8fc;border-radius:6px;padding:8px 12px;margin:12px 0;font-size:15px}.zh-note summary{cursor:pointer;font-weight:600;color:#1d3a5c}
+.tn{font-size:14.5px;color:#5a6580;background:#fafbfc;border-left:3px solid #c9d3de;padding:6px 10px;margin:12px 0}
+.fit{font-size:15px;color:#3a4a5c;margin:4px 0 8px}
+.orig{display:block;font-size:14.5px;color:#666;margin-top:4px;font-style:italic}
+.tbl.t4{min-width:600px;table-layout:auto}.tbl.t4 th{width:auto!important}
+.lead{font-size:18px}
+
+main{padding-top:56px}@media (max-width:560px){main{padding-top:32px}}.eyebrow{color:#555}
+/* ── milo 頁首小標規範（見 README「頁首小標」），請勿個別調整 ── */
+.page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
+h1+.meta{margin-top:18px}
+
+/* ── milo 字型規範（原文學習、影片學習共用，收件匣同步自動加入，請勿手改） ── */
+body{font-family:'Saira','PingFang TC','Noto Sans TC','Noto Sans CJK TC','Microsoft JhengHei',sans-serif;font-size:16px;line-height:1.75;font-weight:300;letter-spacing:.5px}
+strong,b{font-weight:700}
+h1{font-size:28px;line-height:36px;font-weight:600}
+h2{font-size:22px;line-height:32px;font-weight:600}
+h3,h4,.pt h3{font-size:18px;line-height:28px;font-weight:600}
+.en-title{font-size:16px;line-height:24px}
+h2 .en{font-size:14px;line-height:20px}
+h3 .en,h4 .en{font-size:12px;line-height:20px}
+.lead,.tk .lead{font-size:16px;line-height:28px;font-weight:400}
+.meta,.tn,.orig,.eg,.flow,.zh-note,.fit,.tweet .who,blockquote .src{font-size:14px;line-height:24px}
+.tbl{font-size:14px;line-height:22px}
+pre{font-size:14px;line-height:22px}
+blockquote{line-height:24px}
+blockquote p{margin:4px 0}
+figcaption{font-size:12px;line-height:18px}
+.note,footer,.tweet .when,.emb-note,.zh-note .orig,.code-lab,.tweet .tr-lbl,.tabs label .s{font-size:12px;line-height:20px}
+@media (max-width:560px){h1{font-size:24px;line-height:32px}h2{font-size:20px;line-height:28px}}
+
+/* ── milo 暗色模式（原文學習收件匣同步自動加入，請勿手改） ── */
+:root{color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark}:root:not([data-theme="light"]) body{background:#16150f;color:#ece6d8}:root:not([data-theme="light"]) main{background:#1e1c16}:root:not([data-theme="light"]) .en-title,:root:not([data-theme="light"]) .zh-title,:root:not([data-theme="light"]) .eg,:root:not([data-theme="light"]) .eyebrow,:root:not([data-theme="light"]) figcaption,:root:not([data-theme="light"]) h2 .en,:root:not([data-theme="light"]) h3 .en,:root:not([data-theme="light"]) h4 .en,:root:not([data-theme="light"]) blockquote .src,:root:not([data-theme="light"]) .tabs a,:root:not([data-theme="light"]) .tabs label,:root:not([data-theme="light"]) .meta,:root:not([data-theme="light"]) .prompt-lbl,:root:not([data-theme="light"]) blockquote.q .src,:root:not([data-theme="light"]) .tweet .tr-lbl{color:#a9a291}:root:not([data-theme="light"]) .note,:root:not([data-theme="light"]) footer,:root:not([data-theme="light"]) .tweet .when,:root:not([data-theme="light"]) .pair .lbl{color:#8a8373}:root:not([data-theme="light"]) .code-lab{color:#a9a291}:root:not([data-theme="light"]) h2,:root:not([data-theme="light"]) footer,:root:not([data-theme="light"]) hr{border-color:#2f2c23}:root:not([data-theme="light"]) .tabs{background:#1e1c16;border-color:#2f2c23}:root:not([data-theme="light"]) .tabs a,:root:not([data-theme="light"]) .tabs label{background:#26231c}:root:not([data-theme="light"]) #r-tl:checked~.tabs .tl,:root:not([data-theme="light"]) #r-tk:checked~.tabs .tk,:root:not([data-theme="light"]) .tabs a[aria-selected="true"]{background:#1d9bf0;color:#fff}:root:not([data-theme="light"]) .meta,:root:not([data-theme="light"]) .cta{background:rgba(29,155,240,.10)}:root:not([data-theme="light"]) figcaption,:root:not([data-theme="light"]) .lbl{background:#26231c}:root:not([data-theme="light"]) .tweet{background:#26231c;border-color:#2f2c23}:root:not([data-theme="light"]) .tweet .tr{border-color:#2f2c23}:root:not([data-theme="light"]) code,:root:not([data-theme="light"]) p code,:root:not([data-theme="light"]) li code{background:#2c2921}:root:not([data-theme="light"]) pre code{background:none}:root:not([data-theme="light"]) .tn{background:#26231c;border-left-color:#5a5446;color:#a9a291}:root:not([data-theme="light"]) .fit{color:#a9a291}:root:not([data-theme="light"]) .orig{color:#8a8373}:root:not([data-theme="light"]) .qa-sub{color:#a9a291}:root:not([data-theme="light"]) .tweet .emb-note,:root:not([data-theme="light"]) .emb-note{color:#8a8373}:root:not([data-theme="light"]) pre{background:#0f0e0a;color:#e6edf3;border:1px solid #2f2c23}:root:not([data-theme="light"]) a{color:#7db4e6}:root:not([data-theme="light"]) .dg{border-color:rgba(236,230,216,.12)}:root:not([data-theme="light"]) img{filter:brightness(.88)}:root:not([data-theme="light"]) blockquote{background:rgba(29,155,240,.10);color:#ece6d8}:root:not([data-theme="light"]) blockquote.q{background:#26231c}:root:not([data-theme="light"]) th,:root:not([data-theme="light"]) td{border-color:#2f2c23}:root:not([data-theme="light"]) .tbl th,:root:not([data-theme="light"]) .tbl td{border-color:#2f2c23}:root:not([data-theme="light"]) .tbl th{background:rgba(29,155,240,.10)}:root:not([data-theme="light"]) .tbl tr:nth-child(even) td{background:#26231c}:root:not([data-theme="light"]) .flow,:root:not([data-theme="light"]) .zh-note{background:rgba(29,155,240,.10)}:root:not([data-theme="light"]) .flow,:root:not([data-theme="light"]) .zh-note summary{color:#cfe0f2}:root:not([data-theme="light"]) th{background:rgba(29,155,240,.10)}:root:not([data-theme="light"]) .xpost{background:#26231c;border-color:#2f2c23}:root:not([data-theme="light"]) .xpost .who{color:#a9a291}:root:not([data-theme="light"]) .callout,:root:not([data-theme="light"]) .callout.pin{background:rgba(29,155,240,.10)}:root:not([data-theme="light"]) .callout.warn{background:rgba(201,122,44,.14);border-left-color:#e0a060}:root:not([data-theme="light"]) .callout.ok{background:rgba(47,125,74,.18);border-left-color:#5fbf80}:root:not([data-theme="light"]) svg [fill="#ffffff" i]{fill:#26231c}:root:not([data-theme="light"]) svg [stroke="#ffffff" i]{stroke:#26231c}:root:not([data-theme="light"]) svg [fill="#fff" i]{fill:#26231c}:root:not([data-theme="light"]) svg [stroke="#fff" i]{stroke:#26231c}:root:not([data-theme="light"]) svg [fill="#f5f5f5" i]{fill:#1a1813}:root:not([data-theme="light"]) svg [stroke="#f5f5f5" i]{stroke:#1a1813}:root:not([data-theme="light"]) svg [fill="#ececec" i]{fill:#2c2921}:root:not([data-theme="light"]) svg [stroke="#ececec" i]{stroke:#2c2921}:root:not([data-theme="light"]) svg [fill="#2d3142" i]{fill:#ece6d8}:root:not([data-theme="light"]) svg [stroke="#2d3142" i]{stroke:#ece6d8}:root:not([data-theme="light"]) svg [fill="#4f5d75" i]{fill:#a9a291}:root:not([data-theme="light"]) svg [stroke="#4f5d75" i]{stroke:#a9a291}:root:not([data-theme="light"]) svg [fill="#5a6580" i]{fill:#a9a291}:root:not([data-theme="light"]) svg [stroke="#5a6580" i]{stroke:#a9a291}:root:not([data-theme="light"]) svg [fill="#1d6fb8" i]{fill:#6fb1ec}:root:not([data-theme="light"]) svg [stroke="#1d6fb8" i]{stroke:#6fb1ec}:root:not([data-theme="light"]) svg [fill="#c43c2c" i]{fill:#ff7a63}:root:not([data-theme="light"]) svg [stroke="#c43c2c" i]{stroke:#ff7a63}:root:not([data-theme="light"]) svg [fill="#b42318" i]{fill:#ff8a75}:root:not([data-theme="light"]) svg [stroke="#b42318" i]{stroke:#ff8a75}:root:not([data-theme="light"]) svg [fill="rgba(45,:root:not([data-theme="light"]) 49,:root:not([data-theme="light"]) 66,:root:not([data-theme="light"]) 0.45)" i]{fill:rgba(236,230,216,.35)}:root:not([data-theme="light"]) svg [stroke="rgba(45,:root:not([data-theme="light"]) 49,:root:not([data-theme="light"]) 66,:root:not([data-theme="light"]) 0.45)" i]{stroke:rgba(236,230,216,.35)}:root:not([data-theme="light"]) svg [fill="rgba(45,:root:not([data-theme="light"]) 49,:root:not([data-theme="light"]) 66,:root:not([data-theme="light"]) 0.35)" i]{fill:rgba(236,230,216,.28)}:root:not([data-theme="light"]) svg [stroke="rgba(45,:root:not([data-theme="light"]) 49,:root:not([data-theme="light"]) 66,:root:not([data-theme="light"]) 0.35)" i]{stroke:rgba(236,230,216,.28)}:root:not([data-theme="light"]) svg [fill="rgba(45,:root:not([data-theme="light"]) 49,:root:not([data-theme="light"]) 66,:root:not([data-theme="light"]) 0.16)" i]{fill:rgba(236,230,216,.14)}:root:not([data-theme="light"]) svg [stroke="rgba(45,:root:not([data-theme="light"]) 49,:root:not([data-theme="light"]) 66,:root:not([data-theme="light"]) 0.16)" i]{stroke:rgba(236,230,216,.14)}:root:not([data-theme="light"]) svg [fill="#c0392b" i]{fill:#ff7a63}:root:not([data-theme="light"]) svg [stroke="#c0392b" i]{stroke:#ff7a63}:root:not([data-theme="light"]) svg [fill="rgba(29,:root:not([data-theme="light"]) 111,:root:not([data-theme="light"]) 184,:root:not([data-theme="light"]) 0.09)" i]{fill:rgba(111,177,236,.14)}:root:not([data-theme="light"]) svg [stroke="rgba(29,:root:not([data-theme="light"]) 111,:root:not([data-theme="light"]) 184,:root:not([data-theme="light"]) 0.09)" i]{stroke:rgba(111,177,236,.14)}:root:not([data-theme="light"]) svg [fill="rgba(29,:root:not([data-theme="light"]) 111,:root:not([data-theme="light"]) 184,:root:not([data-theme="light"]) 0.18)" i]{fill:rgba(111,177,236,.24)}:root:not([data-theme="light"]) svg [stroke="rgba(29,:root:not([data-theme="light"]) 111,:root:not([data-theme="light"]) 184,:root:not([data-theme="light"]) 0.18)" i]{stroke:rgba(111,177,236,.24)}:root:not([data-theme="light"]) svg [fill="#aab4c3" i]{fill:rgba(236,230,216,.30)}:root:not([data-theme="light"]) svg [stroke="#aab4c3" i]{stroke:rgba(236,230,216,.30)}:root:not([data-theme="light"]) svg [fill="#cfd6df" i]{fill:rgba(236,230,216,.22)}:root:not([data-theme="light"]) svg [stroke="#cfd6df" i]{stroke:rgba(236,230,216,.22)}:root:not([data-theme="light"]) svg [fill="rgba(45,:root:not([data-theme="light"]) 49,:root:not([data-theme="light"]) 66,:root:not([data-theme="light"]) 0.3)" i]{fill:rgba(236,230,216,.25)}:root:not([data-theme="light"]) svg [stroke="rgba(45,:root:not([data-theme="light"]) 49,:root:not([data-theme="light"]) 66,:root:not([data-theme="light"]) 0.3)" i]{stroke:rgba(236,230,216,.25)}:root:not([data-theme="light"]) svg [fill="rgba(45,:root:not([data-theme="light"]) 49,:root:not([data-theme="light"]) 66,:root:not([data-theme="light"]) 0.08)" i]{fill:rgba(236,230,216,.06)}:root:not([data-theme="light"]) svg [stroke="rgba(45,:root:not([data-theme="light"]) 49,:root:not([data-theme="light"]) 66,:root:not([data-theme="light"]) 0.08)" i]{stroke:rgba(236,230,216,.06)}:root:not([data-theme="light"]) svg [fill="#161615" i]{fill:rgba(236,230,216,.4)}:root:not([data-theme="light"]) svg [stroke="#161615" i]{stroke:rgba(236,230,216,.4)}:root:not([data-theme="light"]) svg [fill="#c9d3de" i]{fill:#5a5446}:root:not([data-theme="light"]) svg [stroke="#c9d3de" i]{stroke:#5a5446}:root:not([data-theme="light"]) svg [fill="#e8f1fa" i]{fill:rgba(111,177,236,.16)}:root:not([data-theme="light"]) svg [stroke="#e8f1fa" i]{stroke:rgba(111,177,236,.16)}}
+:root[data-theme="dark"]{color-scheme:dark}:root[data-theme="dark"] body{background:#16150f;color:#ece6d8}:root[data-theme="dark"] main{background:#1e1c16}:root[data-theme="dark"] .en-title,:root[data-theme="dark"] .zh-title,:root[data-theme="dark"] .eg,:root[data-theme="dark"] .eyebrow,:root[data-theme="dark"] figcaption,:root[data-theme="dark"] h2 .en,:root[data-theme="dark"] h3 .en,:root[data-theme="dark"] h4 .en,:root[data-theme="dark"] blockquote .src,:root[data-theme="dark"] .tabs a,:root[data-theme="dark"] .tabs label,:root[data-theme="dark"] .meta,:root[data-theme="dark"] .prompt-lbl,:root[data-theme="dark"] blockquote.q .src,:root[data-theme="dark"] .tweet .tr-lbl{color:#a9a291}:root[data-theme="dark"] .note,:root[data-theme="dark"] footer,:root[data-theme="dark"] .tweet .when,:root[data-theme="dark"] .pair .lbl{color:#8a8373}:root[data-theme="dark"] .code-lab{color:#a9a291}:root[data-theme="dark"] h2,:root[data-theme="dark"] footer,:root[data-theme="dark"] hr{border-color:#2f2c23}:root[data-theme="dark"] .tabs{background:#1e1c16;border-color:#2f2c23}:root[data-theme="dark"] .tabs a,:root[data-theme="dark"] .tabs label{background:#26231c}:root[data-theme="dark"] #r-tl:checked~.tabs .tl,:root[data-theme="dark"] #r-tk:checked~.tabs .tk,:root[data-theme="dark"] .tabs a[aria-selected="true"]{background:#1d9bf0;color:#fff}:root[data-theme="dark"] .meta,:root[data-theme="dark"] .cta{background:rgba(29,155,240,.10)}:root[data-theme="dark"] figcaption,:root[data-theme="dark"] .lbl{background:#26231c}:root[data-theme="dark"] .tweet{background:#26231c;border-color:#2f2c23}:root[data-theme="dark"] .tweet .tr{border-color:#2f2c23}:root[data-theme="dark"] code,:root[data-theme="dark"] p code,:root[data-theme="dark"] li code{background:#2c2921}:root[data-theme="dark"] pre code{background:none}:root[data-theme="dark"] .tn{background:#26231c;border-left-color:#5a5446;color:#a9a291}:root[data-theme="dark"] .fit{color:#a9a291}:root[data-theme="dark"] .orig{color:#8a8373}:root[data-theme="dark"] .qa-sub{color:#a9a291}:root[data-theme="dark"] .tweet .emb-note,:root[data-theme="dark"] .emb-note{color:#8a8373}:root[data-theme="dark"] pre{background:#0f0e0a;color:#e6edf3;border:1px solid #2f2c23}:root[data-theme="dark"] a{color:#7db4e6}:root[data-theme="dark"] .dg{border-color:rgba(236,230,216,.12)}:root[data-theme="dark"] img{filter:brightness(.88)}:root[data-theme="dark"] blockquote{background:rgba(29,155,240,.10);color:#ece6d8}:root[data-theme="dark"] blockquote.q{background:#26231c}:root[data-theme="dark"] th,:root[data-theme="dark"] td{border-color:#2f2c23}:root[data-theme="dark"] .tbl th,:root[data-theme="dark"] .tbl td{border-color:#2f2c23}:root[data-theme="dark"] .tbl th{background:rgba(29,155,240,.10)}:root[data-theme="dark"] .tbl tr:nth-child(even) td{background:#26231c}:root[data-theme="dark"] .flow,:root[data-theme="dark"] .zh-note{background:rgba(29,155,240,.10)}:root[data-theme="dark"] .flow,:root[data-theme="dark"] .zh-note summary{color:#cfe0f2}:root[data-theme="dark"] th{background:rgba(29,155,240,.10)}:root[data-theme="dark"] .xpost{background:#26231c;border-color:#2f2c23}:root[data-theme="dark"] .xpost .who{color:#a9a291}:root[data-theme="dark"] .callout,:root[data-theme="dark"] .callout.pin{background:rgba(29,155,240,.10)}:root[data-theme="dark"] .callout.warn{background:rgba(201,122,44,.14);border-left-color:#e0a060}:root[data-theme="dark"] .callout.ok{background:rgba(47,125,74,.18);border-left-color:#5fbf80}:root[data-theme="dark"] svg [fill="#ffffff" i]{fill:#26231c}:root[data-theme="dark"] svg [stroke="#ffffff" i]{stroke:#26231c}:root[data-theme="dark"] svg [fill="#fff" i]{fill:#26231c}:root[data-theme="dark"] svg [stroke="#fff" i]{stroke:#26231c}:root[data-theme="dark"] svg [fill="#f5f5f5" i]{fill:#1a1813}:root[data-theme="dark"] svg [stroke="#f5f5f5" i]{stroke:#1a1813}:root[data-theme="dark"] svg [fill="#ececec" i]{fill:#2c2921}:root[data-theme="dark"] svg [stroke="#ececec" i]{stroke:#2c2921}:root[data-theme="dark"] svg [fill="#2d3142" i]{fill:#ece6d8}:root[data-theme="dark"] svg [stroke="#2d3142" i]{stroke:#ece6d8}:root[data-theme="dark"] svg [fill="#4f5d75" i]{fill:#a9a291}:root[data-theme="dark"] svg [stroke="#4f5d75" i]{stroke:#a9a291}:root[data-theme="dark"] svg [fill="#5a6580" i]{fill:#a9a291}:root[data-theme="dark"] svg [stroke="#5a6580" i]{stroke:#a9a291}:root[data-theme="dark"] svg [fill="#1d6fb8" i]{fill:#6fb1ec}:root[data-theme="dark"] svg [stroke="#1d6fb8" i]{stroke:#6fb1ec}:root[data-theme="dark"] svg [fill="#c43c2c" i]{fill:#ff7a63}:root[data-theme="dark"] svg [stroke="#c43c2c" i]{stroke:#ff7a63}:root[data-theme="dark"] svg [fill="#b42318" i]{fill:#ff8a75}:root[data-theme="dark"] svg [stroke="#b42318" i]{stroke:#ff8a75}:root[data-theme="dark"] svg [fill="rgba(45,:root[data-theme="dark"] 49,:root[data-theme="dark"] 66,:root[data-theme="dark"] 0.45)" i]{fill:rgba(236,230,216,.35)}:root[data-theme="dark"] svg [stroke="rgba(45,:root[data-theme="dark"] 49,:root[data-theme="dark"] 66,:root[data-theme="dark"] 0.45)" i]{stroke:rgba(236,230,216,.35)}:root[data-theme="dark"] svg [fill="rgba(45,:root[data-theme="dark"] 49,:root[data-theme="dark"] 66,:root[data-theme="dark"] 0.35)" i]{fill:rgba(236,230,216,.28)}:root[data-theme="dark"] svg [stroke="rgba(45,:root[data-theme="dark"] 49,:root[data-theme="dark"] 66,:root[data-theme="dark"] 0.35)" i]{stroke:rgba(236,230,216,.28)}:root[data-theme="dark"] svg [fill="rgba(45,:root[data-theme="dark"] 49,:root[data-theme="dark"] 66,:root[data-theme="dark"] 0.16)" i]{fill:rgba(236,230,216,.14)}:root[data-theme="dark"] svg [stroke="rgba(45,:root[data-theme="dark"] 49,:root[data-theme="dark"] 66,:root[data-theme="dark"] 0.16)" i]{stroke:rgba(236,230,216,.14)}:root[data-theme="dark"] svg [fill="#c0392b" i]{fill:#ff7a63}:root[data-theme="dark"] svg [stroke="#c0392b" i]{stroke:#ff7a63}:root[data-theme="dark"] svg [fill="rgba(29,:root[data-theme="dark"] 111,:root[data-theme="dark"] 184,:root[data-theme="dark"] 0.09)" i]{fill:rgba(111,177,236,.14)}:root[data-theme="dark"] svg [stroke="rgba(29,:root[data-theme="dark"] 111,:root[data-theme="dark"] 184,:root[data-theme="dark"] 0.09)" i]{stroke:rgba(111,177,236,.14)}:root[data-theme="dark"] svg [fill="rgba(29,:root[data-theme="dark"] 111,:root[data-theme="dark"] 184,:root[data-theme="dark"] 0.18)" i]{fill:rgba(111,177,236,.24)}:root[data-theme="dark"] svg [stroke="rgba(29,:root[data-theme="dark"] 111,:root[data-theme="dark"] 184,:root[data-theme="dark"] 0.18)" i]{stroke:rgba(111,177,236,.24)}:root[data-theme="dark"] svg [fill="#aab4c3" i]{fill:rgba(236,230,216,.30)}:root[data-theme="dark"] svg [stroke="#aab4c3" i]{stroke:rgba(236,230,216,.30)}:root[data-theme="dark"] svg [fill="#cfd6df" i]{fill:rgba(236,230,216,.22)}:root[data-theme="dark"] svg [stroke="#cfd6df" i]{stroke:rgba(236,230,216,.22)}:root[data-theme="dark"] svg [fill="rgba(45,:root[data-theme="dark"] 49,:root[data-theme="dark"] 66,:root[data-theme="dark"] 0.3)" i]{fill:rgba(236,230,216,.25)}:root[data-theme="dark"] svg [stroke="rgba(45,:root[data-theme="dark"] 49,:root[data-theme="dark"] 66,:root[data-theme="dark"] 0.3)" i]{stroke:rgba(236,230,216,.25)}:root[data-theme="dark"] svg [fill="rgba(45,:root[data-theme="dark"] 49,:root[data-theme="dark"] 66,:root[data-theme="dark"] 0.08)" i]{fill:rgba(236,230,216,.06)}:root[data-theme="dark"] svg [stroke="rgba(45,:root[data-theme="dark"] 49,:root[data-theme="dark"] 66,:root[data-theme="dark"] 0.08)" i]{stroke:rgba(236,230,216,.06)}:root[data-theme="dark"] svg [fill="#161615" i]{fill:rgba(236,230,216,.4)}:root[data-theme="dark"] svg [stroke="#161615" i]{stroke:rgba(236,230,216,.4)}:root[data-theme="dark"] svg [fill="#c9d3de" i]{fill:#5a5446}:root[data-theme="dark"] svg [stroke="#c9d3de" i]{stroke:#5a5446}:root[data-theme="dark"] svg [fill="#e8f1fa" i]{fill:rgba(111,177,236,.16)}:root[data-theme="dark"] svg [stroke="#e8f1fa" i]{stroke:rgba(111,177,236,.16)}
+
+/* ── milo 分頁置頂縮小（收件匣同步自動加入，請勿手改） ── */
+.tabs.stuck{padding:6px 0}
+.tabs.stuck label,.tabs.stuck a{font-size:0;padding:8px;min-height:0;border-radius:8px}
+.tabs.stuck label .s,.tabs.stuck a .s{font-size:13.5px;font-weight:600;opacity:1;letter-spacing:.02em;line-height:1.3}
+
+/* ── milo 閱讀進度條（收件匣同步自動加入，請勿手改） ── */
+#milo-rp{position:fixed;top:0;left:0;right:0;height:5px;z-index:50;pointer-events:none;background:rgba(255,140,90,.14)}
+#milo-rp .fill{position:relative;height:100%;width:0;filter:drop-shadow(0 0 4px rgba(255,120,70,.45))}
+#milo-rp .body{position:absolute;top:0;bottom:0;left:0;right:-4px;background:linear-gradient(90deg,#ff5f6d,#ff8a4c,#ffc23d,#ff8a4c,#ff5f6d);background-size:200% 100%;animation:milo-rp-flow 3s linear infinite;-webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 22px),rgba(0,0,0,.7) calc(100% - 14px),rgba(0,0,0,.3) calc(100% - 8px),transparent calc(100% - 4px)),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%);mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 22px),rgba(0,0,0,.7) calc(100% - 14px),rgba(0,0,0,.3) calc(100% - 8px),transparent calc(100% - 4px)),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:0 0,right 6px top 0px,right 9px top 1px,right 3px top 2px,right 10px top 3px,right 7px top 4px;mask-position:0 0,right 6px top 0px,right 9px top 1px,right 3px top 2px,right 10px top 3px,right 7px top 4px;-webkit-mask-size:100% 100%,12px 1px,9px 1px,15px 1px,8px 1px,11px 1px;mask-size:100% 100%,12px 1px,9px 1px,15px 1px,8px 1px,11px 1px}
+#milo-rp .body::after{content:"";position:absolute;top:0;right:0;width:72px;height:100%;background:linear-gradient(90deg,rgba(255,244,214,0),rgba(255,244,214,.85) 60%,rgba(255,244,214,.85));opacity:.4;transition:opacity .3s}
+#milo-rp.moving .body::after{opacity:1}
+@keyframes milo-rp-flow{to{background-position:-200% 0}}
+#milo-rp .tick{position:absolute;top:0;width:2px;height:100%;background:rgba(255,255,255,.85);transition:background .4s,box-shadow .4s}
+#milo-rp .tick.lit{background:#fff6d8;box-shadow:0 0 5px 1px rgba(255,196,80,.95)}
+#milo-rp .sweep{position:absolute;top:0;left:0;width:140px;height:100%;background:linear-gradient(90deg,rgba(255,240,200,0),rgba(255,236,170,.75) 40%,#fff 55%,rgba(255,236,170,.75) 70%,rgba(255,240,200,0));opacity:0;z-index:1}
+#milo-rp .fill{transition:filter .4s}
+#milo-rp.charging .fill{filter:drop-shadow(0 0 12px rgba(255,170,50,1)) drop-shadow(0 0 3px rgba(255,245,210,1))}
+#milo-rp-aura{position:fixed;left:0;right:0;top:0;height:90px;z-index:48;pointer-events:none;background:linear-gradient(180deg,rgba(255,186,80,.42),rgba(255,186,80,.12) 45%,rgba(255,186,80,0));opacity:0}
+#milo-rp.charged .body{animation:milo-rp-flow 3s linear infinite,milo-rp-charged 1.2s ease-out 1}
+@keyframes milo-rp-charged{0%{filter:brightness(1)}15%{filter:brightness(2) saturate(1.3)}40%{filter:brightness(1.5) saturate(1.15)}100%{filter:brightness(1)}}
+#milo-rp.charged .tick.lit{animation:milo-rp-twinkle 1.2s ease-out 1}
+@keyframes milo-rp-twinkle{20%{box-shadow:0 0 14px 5px rgba(255,210,100,1);background:#fff}50%{box-shadow:0 0 8px 2px rgba(255,210,100,.9)}}
+#milo-rp .body::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#ffc23d,#ffd86b);opacity:0;transition:opacity .6s ease}
+#milo-rp.done .body::before{opacity:1}
+#milo-rp.done .body{animation:milo-rp-flow 3s linear infinite,milo-rp-done 1.2s ease-out 1}
+#milo-rp.done .body::after{opacity:0}
+@keyframes milo-rp-done{30%{filter:brightness(1.35)}100%{filter:brightness(1)}}
+#milo-rp-toast{position:fixed;top:12px;left:50%;transform:translate(-50%,-8px);z-index:51;font:600 13px/20px 'Saira','PingFang TC',sans-serif;letter-spacing:.5px;color:#7a3b00;background:#fff3d6;border:1px solid #ffd27a;border-radius:999px;padding:4px 14px;box-shadow:0 4px 14px rgba(255,150,50,.25);opacity:0;transition:opacity .35s,transform .35s;pointer-events:none;white-space:nowrap}
+#milo-rp-toast.show{opacity:1;transform:translate(-50%,0)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) #milo-rp-toast{color:#ffe2ad;background:#3a2a12;border-color:#7a5520}}
+:root[data-theme=dark] #milo-rp-toast{color:#ffe2ad;background:#3a2a12;border-color:#7a5520}
+@media (prefers-reduced-motion:reduce){#milo-rp .body{animation:none}#milo-rp-toast{transition:none}}
+#milo-rp-confetti{position:fixed;inset:0;z-index:49;pointer-events:none;overflow:hidden}
+#milo-rp-confetti i{position:absolute;top:-14px;border-radius:1px;will-change:transform,opacity}
+#milo-rp-spark{position:fixed;left:0;top:0;width:0;height:0;z-index:52;pointer-events:none}
+#milo-rp-spark b{position:absolute;left:0;top:0;font:400 10px/1 sans-serif;margin:-5px 0 0 -5px;text-shadow:0 0 6px rgba(255,190,80,.9);will-change:transform,opacity}
+@media print{#milo-rp,#milo-rp-toast,#milo-rp-confetti,#milo-rp-spark,#milo-rp-aura{display:none}}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;600;700&display=swap" rel="stylesheet"><script>/* milo 暗色模式：跟隨導覽頁的明暗切換 */(function(){var r=document.documentElement;function a(){try{var t=JSON.parse(localStorage.getItem("cab:theme"));if(t==="dark"||t==="light")r.dataset.theme=t;else delete r.dataset.theme}catch(e){}}a();addEventListener("storage",function(e){if(e.key==="cab:theme")a()})})();</script><script>/* milo 分頁置頂縮小 */(function(){function init(){var t=document.querySelector(".tabs");if(!t||!("IntersectionObserver" in window))return;var s=document.createElement("div");s.setAttribute("aria-hidden","true");s.style.cssText="height:1px;margin-top:-1px";t.parentNode.insertBefore(s,t);var base=parseFloat(getComputedStyle(t).marginBottom)||0;function nx(){var p=t.nextElementSibling;while(p&&!p.offsetHeight)p=p.nextElementSibling;return p}function set(on){if(on===t.classList.contains("stuck"))return;var n=nx(),Y=function(){return n.getBoundingClientRect().top+window.pageYOffset},a=n?Y():0;t.classList.toggle("stuck",on);t.style.marginBottom="";if(!on||!n)return;var m=base;for(var i=0;i<3;i++){var d=a-Y();if(Math.abs(d)<.5)break;m+=d;t.style.marginBottom=m+"px"}}new IntersectionObserver(function(e){var r=e[0];set(!r.isIntersecting&&r.boundingClientRect.top<0)}).observe(s);document.querySelectorAll("input.tab-r").forEach(function(r){r.addEventListener("change",function(){if(!t.classList.contains("stuck"))return;var p=nx();if(p)window.scrollTo(0,p.getBoundingClientRect().top+window.pageYOffset-t.offsetHeight-base)})})}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init()})();</script><script>/* milo 閱讀進度條 */(function(){function init(){var bar=document.createElement("div");bar.id="milo-rp";bar.innerHTML='<div class="fill"><i class="body"><i class="sweep"></i></i></div>';var toast=document.createElement("div");toast.id="milo-rp-toast";document.body.appendChild(bar);document.body.appendChild(toast);var fill=bar.firstChild,done=false,half=false,last=-1,raf=0,mt=0,tt=0,TK=[],lit={};function say(s){toast.textContent=s;toast.classList.add("show");clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove("show")},2200)}var BD=fill.firstChild,RW=[12,9,15,8,11],S=18,EXT=4,ph=0,lt=0,cf=0,RM=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;var ST="linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%)";function shape(){var k=Math.max(0,Math.min(1,(1-cf)/.04));if(k<=0){BD.style.right="0";BD.style.webkitMaskImage=BD.style.maskImage="none";return}var s=S*k,x=EXT*k,img="linear-gradient(90deg,#000 0,#000 calc(100% - "+(s+4*k)+"px),rgba(0,0,0,.7) calc(100% - "+(s-4*k)+"px),rgba(0,0,0,.3) calc(100% - "+(x+4*k)+"px),transparent calc(100% - "+x+"px))",sz="100% 100%",ps="0 0";for(var i=0;i<5;i++){var w=Math.max(0,Math.min(s,(RW[i]+3*Math.sin(ph+i*1.2))*k));img+=","+ST;sz+=","+w.toFixed(1)+"px 1px";ps+=",right "+(s-w).toFixed(1)+"px top "+i+"px"}BD.style.right=(-x)+"px";BD.style.webkitMaskImage=BD.style.maskImage=img;BD.style.webkitMaskSize=BD.style.maskSize=sz;BD.style.webkitMaskPosition=BD.style.maskPosition=ps}function wave(ts){var dt=lt?Math.min(.1,(ts-lt)/1000):0;lt=ts;if(!document.hidden){ph+=dt*2*Math.PI/(bar.classList.contains("moving")?.8:1.8);shape()}requestAnimationFrame(wave)}if(!RM)requestAnimationFrame(wave);function confetti(){if(RM||!document.body.animate)return;var c=document.createElement("div");c.id="milo-rp-confetti";document.body.appendChild(c);var C=["#ff6f61","#ff9a4c","#ffc23d","#ffe0a3","#ff8a7a"],H=innerHeight,W=innerWidth,n=W<600?40:64;for(var i=0;i<n;i++){var e=document.createElement("i"),lg=Math.random()<.25,w=lg?3:4+Math.random()*3,h=lg?14+Math.random()*8:8+Math.random()*6,x=Math.random()*W,dx=(Math.random()-.5)*160,r=Math.random()*360,sp=(Math.random()<.5?-1:1)*(180+Math.random()*360);e.style.cssText="left:"+x+"px;width:"+w+"px;height:"+h+"px;background:"+C[i%C.length];c.appendChild(e);e.animate([{transform:"translate(0,0) rotate("+r+"deg) rotateX(0deg)",opacity:0},{opacity:1,offset:.08},{transform:"translate("+dx*.6+"px,"+H*.55+"px) rotate("+(r+sp*.6)+"deg) rotateX(360deg)",opacity:1,offset:.55},{transform:"translate("+dx+"px,"+H*1.02+"px) rotate("+(r+sp)+"deg) rotateX(540deg)",opacity:0}],{duration:2600+Math.random()*1400,delay:(i%2?500:0)+Math.random()*500,easing:"cubic-bezier(.25,.6,.45,1)",fill:"forwards"})}setTimeout(function(){c.remove()},5400)}function spark(n,m){n=n||8;m=m||1;if(RM||!document.body.animate)return;var r=fill.getBoundingClientRect(),x=Math.max(16,Math.min(innerWidth-16,r.right)),c=document.createElement("div");c.id="milo-rp-spark";c.style.left=x+"px";c.style.top="3px";document.body.appendChild(c);var C=["#ffc23d","#ffe0a3","#ff9a4c","#fff3d6"];for(var i=0;i<n;i++){var e=document.createElement("b"),a=(15+i*150/(n-1)+(Math.random()-.5)*14)*Math.PI/180,d=(34+Math.random()*40)*m,s=(.7+Math.random()*.7)*m;e.textContent="✦";e.style.color=C[i%C.length];e.style.fontSize=(8+Math.random()*6)+"px";c.appendChild(e);e.animate([{transform:"translate(0,0) scale(.2) rotate(0deg)",opacity:0},{transform:"translate("+Math.cos(a)*d*.55+"px,"+Math.sin(a)*d*.55+"px) scale("+s+") rotate(45deg)",opacity:1,offset:.35},{transform:"translate("+Math.cos(a)*d+"px,"+(Math.sin(a)*d+8)+"px) scale("+s*.5+") rotate(90deg)",opacity:0}],{duration:(900+Math.random()*400)*(m<1?.75:1),delay:Math.random()*120,easing:"cubic-bezier(.2,.7,.3,1)",fill:"forwards"})}setTimeout(function(){c.remove()},1800)}function sweep(){var sw=BD.firstChild,w=BD.getBoundingClientRect().width;if(RM||!sw.animate){say("過半了，繼續加油 ✦");return}bar.classList.add("charging");var K=[{transform:"translateX(-140px)",opacity:0},{opacity:1,offset:.12},{opacity:1,offset:.88},{transform:"translateX("+(w-60)+"px)",opacity:0}];sw.animate(K,{duration:1300,easing:"cubic-bezier(.5,0,.2,1)"});var s2=sw.cloneNode();BD.appendChild(s2);s2.animate(K,{duration:1300,delay:220,easing:"cubic-bezier(.5,0,.2,1)"});setTimeout(function(){s2.remove()},1700);var au=document.createElement("div");au.id="milo-rp-aura";document.body.appendChild(au);au.animate([{opacity:0},{opacity:.45,offset:.5},{opacity:.45,offset:.72},{opacity:1,offset:.8},{opacity:0}],{duration:2700,easing:"ease-out",fill:"forwards"});setTimeout(function(){au.remove()},2800);setTimeout(function(){bar.classList.remove("charging");bar.classList.add("charged");say("過半了，繼續加油 ✦");setTimeout(function(){bar.classList.remove("charged")},1250)},1350)}function panel(){var ps=document.querySelectorAll('[id^="panel-"]');for(var i=0;i<ps.length;i++){if(ps[i].offsetParent!==null)return ps[i]}return document.querySelector("main")||document.body}function len(p){var top=p.getBoundingClientRect().top+scrollY,end=document.documentElement.scrollHeight-innerHeight-top;return Math.max(1,Math.min(p.offsetHeight-innerHeight*.6,end))}function ticks(){TK=[];var old=bar.querySelectorAll(".tick");for(var i=0;i<old.length;i++)old[i].remove();var p=panel(),top=p.getBoundingClientRect().top+scrollY,L=len(p),hs=p.querySelectorAll("h2");for(var j=0;j<hs.length;j++){var f=(hs[j].getBoundingClientRect().top+scrollY-top)/L;if(f>.02&&f<.98){var t=document.createElement("i");t.className="tick"+(lit[TK.length]?" lit":"");t.style.left=(f*100)+"%";bar.appendChild(t);TK.push({f:f,el:t})}}}function upd(){raf=0;var p=panel(),f=Math.min(1,Math.max(0,-p.getBoundingClientRect().top/len(p)));fill.style.width=(f*100)+"%";cf=f;if(RM)shape();if(last>=0&&last<.5&&f>=.5&&f<.995&&!half){half=true;sweep()}if(f<.45)half=false;if(last>=0)for(var q=0;q<TK.length;q++){var tf=TK[q].f;if(!lit[q]&&last<tf&&f>=tf){lit[q]=1;TK[q].el.classList.add("lit");if(Math.abs(tf-.5)>.04&&f<.98)spark(5,.7)}}if(f>=.995&&!done){done=true;bar.classList.add("done");say("讀完了，辛苦了 ✦");confetti()}else if(f<.97&&done){done=false;bar.classList.remove("done")}last=f}function req(){if(!raf)raf=requestAnimationFrame(upd)}addEventListener("scroll",function(){req();bar.classList.add("moving");clearTimeout(mt);mt=setTimeout(function(){bar.classList.remove("moving")},500)},{passive:true});addEventListener("resize",function(){ticks();req()});addEventListener("load",function(){ticks();req()});var rs=document.querySelectorAll(".tab-r");for(var k=0;k<rs.length;k++)rs[k].addEventListener("change",function(){done=false;half=false;last=-1;lit={};bar.classList.remove("done");setTimeout(function(){ticks();upd()},50)});ticks();upd()}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init()})();</script></head>
+<body>
+<main>
+<p class="eyebrow page-kicker">原文學習 · Anthropic</p><h1>Claude Code 最佳實踐</h1>
+<p class="en-title">原文標題：Best practices for Claude Code</p>
+<div class="meta">
+<p><strong>作者：</strong>Anthropic（Claude Code 官方文件）</p>
+<p><strong>原文：</strong><a href="https://code.claude.com/docs/en/best-practices">https://code.claude.com/docs/en/best-practices</a></p>
+<p><strong>日期：</strong>2026-11-20（頁面最後修改時間，取自頁面中繼資料：台北時間 06:47，UTC 2026-11-19 22:47；原頁面沒有顯示日期）</p>
+<p><strong>備註：</strong>原文為英文技術文件，頁面無圖片與影片。原文的 NOTE／TIP／WARNING 提示框，譯為「註／提示／警告」。程式碼與設定檔保留英文，其中含文字說明的另附繁體中文對照。繁體中文翻譯，僅供個人閱讀。</p>
+</div>
+<input type="radio" name="tab" id="r-tl" class="tab-r" checked>
+<input type="radio" name="tab" id="r-tk" class="tab-r">
+<nav class="tabs">
+<label for="r-tl" class="tl">原文翻譯<span class="s">Translation</span></label>
+<label for="r-tk" class="tk">學習重點<span class="s">Takeaways</span></label>
+</nav>
+<section class="panel" id="panel-translation" role="tabpanel">
+<p class="lead">讓 Claude Code 發揮更大效用：告訴 Claude 它看不見的東西、給它一個可以執行的檢查，並強制執行不能有例外的規則。</p>
+
+<p>Claude Code 的設計，讓你在全新的工作階段（session）裡下的第一個一般提示詞（prompt），在大多數情況下就已經能做對事，你不需要做任何設定。</p>
+
+<p>例如：</p>
+<ul>
+<li>為了讓指令不必由你逐一核准就能執行，新的終端機和 VS Code 工作階段都從<a href="https://code.claude.com/docs/en/permission-modes#eliminate-prompts-with-auto-mode">自動模式（auto mode）</a>開始。</li>
+<li>為了讓你的主要對話保持專注，同時讓彼此獨立的工作平行進行，Claude 會把工作委派給子代理（subagent），只有在必要時才回來向你報告。</li>
+<li>為了讓長時間的工作階段不必靠你管理也能繼續下去，你的對話會在脈絡視窗（context window）填滿之前自動壓縮（compact）。</li>
+</ul>
+
+<p>這一頁談的，是預設值不夠用的時候該怎麼辦。這通常發生在你的專案有一些 Claude 光看程式碼看不出來的知識、規則或限制：</p>
+<ul>
+<li>只存在於某個人腦袋裡的部署流程</li>
+<li>一個絕對不能被讀取的檔案</li>
+<li>一項必須通過才算完成的檢查</li>
+<li>一筆你必須控制在額度內的預算</li>
+</ul>
+
+<p>沒有任何預設值能知道你專案的這些事，所以這正是你在自己這邊做一點設定就會有回報的地方。</p>
+
+<p>當工作階段沒有照你預期的方向走，幾乎都是下面這幾種情況之一：</p>
+<ul>
+<li>Claude 做出來的東西和你心裡想的不一樣，或者每次工作階段一開始，它都得重新摸索同一件事。它缺少無法靠讀儲存庫（repo）取得的資訊。請看<a href="https://code.claude.com/docs/en/best-practices#tell-claude-what-it-cant-see">告訴 Claude 它看不見的東西（Tell Claude what it can't see）</a>。</li>
+<li>Claude 說它做完了，但其實沒有完全做完，通常是因為它沒有辦法檢查自己的工作。請看<a href="https://code.claude.com/docs/en/best-practices#give-claude-a-check-to-run">給 Claude 一個可以執行的檢查（Give Claude a check to run）</a>。</li>
+<li>Claude 做了這個儲存庫（repo）裡絕對不能發生的事，或跳過了一個一定要做的步驟。光靠提示詞（prompt）無法保證這兩件事。請看<a href="https://code.claude.com/docs/en/best-practices#enforce-the-rules-that-cant-have-exceptions">強制執行不能有例外的規則（Enforce the rules that can't have exceptions）</a>。</li>
+<li>Claude 做對了，但花的時間、令牌（token）或權限提示，比這項任務值得的還多。請看<a href="https://code.claude.com/docs/en/best-practices#change-a-default">調整預設值（Change a default）</a>。</li>
+</ul>
+
+<p><a href="https://code.claude.com/docs/en/best-practices#let-claude-run-without-you">讓 Claude 在沒有你的情況下執行（Let Claude run without you）</a>會把同樣這四點套用到無人看管的執行上，而<a href="https://code.claude.com/docs/en/best-practices#what-you-can-stop-doing">你可以不用再做的事（What you can stop doing）</a>則列出了現在的模型已讓它變得不必要的建議。</p>
+
+<blockquote>
+<p><strong>註（Note）</strong></p>
+<p>整個團隊的設定在另一頁：<a href="https://code.claude.com/docs/en/admin-setup">為你的組織設定 Claude Code（Set up Claude Code for your organization）</a>。</p>
+</blockquote>
+
+<h2>確定性與非確定性的指示<span class="en">Deterministic and non-deterministic instructions</span></h2>
+
+<p>你給 Claude Code 的每一則指示，都屬於下面兩種之一：</p>
+<ol>
+<li>非確定性（non-deterministic）：由你寫下指示，由 Claude（模型）來讀。這可以是你的提示詞（prompt）、<code>CLAUDE.md</code>，或技能（skill）。接著由模型決定要怎麼運用這些資訊。它通常會照你的指令做，而且現在的模型很擅長在不需要太多脈絡的情況下理解你的意圖，但<em>無法保證</em>它一定會照你的指示做。它仍然可能決定不做，或去做別的事。</li>
+<li>確定性（deterministic）：由你設定指示，由 Claude Code（工作環境〔harness〕）<em>必須</em>執行。這可以是 hook、拒絕規則（deny rule）或受管設定（managed setting）。不論模型當時決定怎麼做，Claude Code 每一次都會套用。</li>
+</ol>
+
+<p>Claude Code 裡的大部分東西，兩種形式都有：</p>
+
+<p class="tn">表格共三欄，手機上可左右滑動查看。</p>
+<div class="tbl-wrap"><table class="tbl t4">
+<thead><tr><th></th><th>非確定性（Non-deterministic）：由 Claude 決定（Claude decides）</th><th>確定性（Deterministic）：由 Claude Code 強制執行（Claude Code enforces）</th></tr></thead>
+<tbody>
+<tr><td>做什麼（What to do）</td><td>你的提示詞（prompt）、<code>CLAUDE.md</code>、Claude 自己會取用的技能（skills）</td><td>hook，以及只有你能啟動的技能（skills）</td></tr>
+<tr><td>能碰什麼（What it can touch）</td><td>自動模式（auto mode）的分類器（classifier）</td><td>拒絕規則（deny rules）、<a href="https://code.claude.com/docs/en/sandboxing#turn-off-the-retry-with-strict-sandbox-mode">嚴格模式（strict mode）</a>下的沙箱（sandbox）、受管設定（managed settings）</td></tr>
+<tr><td>何時算完成（When it's done）</td><td>要求提出證據、<code>/goal</code>、<code>/code-review</code></td><td>測試、型別檢查（typecheck）、<code>Stop</code> hook、CI</td></tr>
+<tr><td>花多少（How much it spends）</td><td>費力等級（effort level）、Claude 自己的步調</td><td>搭配 <code>-p</code> 的 <code>--max-turns</code> 或 <a href="https://code.claude.com/docs/en/cli-reference"><code>--max-budget-usd</code></a>、你設定的<a href="https://code.claude.com/docs/en/costs">花費上限（spend limit）</a></td></tr>
+<tr><td>誰有最後決定權（Who has the last word）</td><td>Claude 對自己做了什麼的摘要</td><td>分支保護（branch protection）、核准合併的人</td></tr>
+</tbody></table></div>
+
+<p>大部分時候，你會希望由 Claude 來決定。幾乎每一條準則都有例外，而現在的模型很擅長閱讀眼前的程式碼，並判斷一條準則是否適用於當下的情況。面對實際的程式碼，Claude 通常比你事先寫好的規則，更適合做出這個判斷。</p>
+
+<p>確定性（deterministic）的那一種，是用在你想確保某些事<em>一定</em>會發生（或絕對不會發生），不論模型怎麼決定。這不必是什麼大事。自動模式（auto mode）已經會<a href="https://code.claude.com/docs/en/permission-modes#what-the-classifier-blocks-by-default">擋下那些重大的事</a>，像是正式環境的部署，或是強制推送（force push）蓋掉別人的工作。它通常是針對<em>你的</em>專案的某個具體規定，可以細到你想要的程度：</p>
+<ul>
+<li>絕不編輯 <code>src/gen/</code> 裡自動產生的用戶端程式碼</li>
+<li>建立檔案之後，一律執行授權標頭（license-header）腳本</li>
+</ul>
+
+<p>這兩條你都可以寫成 <code>CLAUDE.md</code> 或提示詞（prompt）裡的一行，Claude 幾乎每次都會照做。但不論你把措辭寫得多強烈，Claude 在某一輪是否照那一行去做，終究還是由 Claude 決定。</p>
+
+<blockquote>
+<p><strong>提示（Tip）</strong></p>
+<p>如果你一直在 <code>CLAUDE.md</code> 的某一行加重強調，Claude 還是漏掉，那就表示這一行該放進 hook。反過來也成立：如果你為了只是偏好的事設了 hook，就把它們刪掉，讓 Claude 自己決定。</p>
+</blockquote>
+
+<h2>告訴 Claude 它看不見的東西<span class="en">Tell Claude what it can't see</span></h2>
+
+<blockquote>
+<p><strong>提示（Tip）</strong></p>
+<p>只寫下 Claude 讀儲存庫（repo）找不到的東西，或是它否則每個工作階段都得花時間重新摸索的東西。</p>
+</blockquote>
+
+<p>Claude 每個任務一開始都會先讀你的程式碼，而現在的模型在這件事上<em>非常</em>厲害。它們會找出你的檔案結構、慣例、測試框架，以及現有元件是怎麼建的，通常比你解釋的速度還快。這表示你可能忍不住想寫給它的東西，Claude 大多早就知道了。</p>
+
+<p>它找不到的，是那些從來不在儲存庫（repo）裡的資訊：</p>
+<ul>
+<li>你的團隊在某次會議上做的決定</li>
+<li>只存在於某個人腦袋裡的部署流程</li>
+<li>整合測試需要的環境變數</li>
+</ul>
+
+<p>另外還有一種資訊，<em>確實</em>在儲存庫（repo）裡，但要花幾分鐘挖掘才找得到，而 Claude 每個工作階段一開始都得重新挖一次。</p>
+
+<p>在你為 Claude 寫下任何東西之前，可以先做一個好用的測試：</p>
+<ol>
+<li>它能不能靠讀程式碼找到這件事？</li>
+<li>它會不會真的去找？</li>
+</ol>
+
+<p>如果兩個答案都是「會」，就不要寫。</p>
+
+<h3>寫一個具體的提示詞<span class="en">Write a specific prompt</span></h3>
+
+<p>具體的提示詞之所以有幫助，是同樣的道理：它給了 Claude 它原本沒有的資訊。如果你一開始就指名檔案、描述症狀，並說明「修好」是什麼樣子，通常就能省下之後一輪的修正。</p>
+
+<p>兩種合理做法之間的偏好也一樣：Claude 無法從程式碼讀出這一點，所以如果你在意它選哪一個，就一開始說清楚。</p>
+
+<div class="tbl-wrap"><table class="tbl">
+<thead><tr><th>不要這樣（Instead of）</th><th>改試這樣（Try）</th></tr></thead>
+<tbody>
+<tr><td><em>"fix the login bug"</em><br>「修好登入的錯誤」</td><td><em>"users report login fails after the session times out. look at token refresh in src/auth/, write a failing test that reproduces it, then fix it"</em><br>「使用者回報工作階段逾時後登入會失敗。去看 src/auth/ 裡的令牌（token）重新整理，寫一個會失敗的測試來重現它，然後修好它」</td></tr>
+<tr><td><em>"add a calendar widget"</em><br>「加一個日曆小工具」</td><td><em>"follow the pattern in HotDogWidget.php and build a calendar widget that lets you pick a month and page between years. no new libraries"</em><br>「照著 HotDogWidget.php 的寫法，做一個日曆小工具，讓人可以選月份，並在不同年份之間翻頁。不要用新的函式庫」</td></tr>
+</tbody></table></div>
+
+<p>如果你手上已經有 Claude 需要的東西，就直接交給它，不要用描述的：</p>
+<ul>
+<li>檔案：輸入 <code>@</code> 和路徑，把<a href="https://code.claude.com/docs/en/common-workflows#reference-files-and-directories">檔案內容放進</a>你的訊息。</li>
+<li>圖片：把設計稿或錯誤的截圖貼進提示詞（prompt）。</li>
+<li>指令輸出：用 <code>cat error.log | claude -p "what's going on here"</code>，從你的 shell 以管線（pipe）傳進去。</li>
+</ul>
+
+<p><code>think step by step</code> 或 <code>be thorough</code> 這類片語，是普通的提示詞（prompt）文字，不是關鍵字。控制 Claude 思考多用力的主要方式，是<a href="https://code.claude.com/docs/en/model-config#adjust-effort-level">費力等級（effort level）</a>，這部分在<a href="https://code.claude.com/docs/en/best-practices#change-the-model-and-effort">更換模型與費力等級（Change the model and effort）</a>裡談。這類措辭仍然可以在 Claude 的費力設定（effort setting）範圍內輕推它一下，但無法把它推到超過那個設定。</p>
+
+<p>有一句話確實仍然有用：<code>be ambitious</code>。Claude 傾向保守地解讀請求，只做出剛好滿足請求的最小東西，因為它看不出你原本期待多少。當你想要比較完整的版本，把邊界情況處理好、連自然的後續也一併做進去時，就明說：</p>
+
+<div class="code">
+<p class="code-lab">範例提示詞（英文原文）</p>
+<pre><code>build the settings page from the mockup. be ambitious: empty and error states, the save flow wired up, keyboard navigation, not just the layout</code></pre>
+</div>
+<div class="code">
+<p class="code-lab">繁體中文對照</p>
+<pre><code>照著模擬稿（mockup）做出設定頁面。要有野心：包含空白狀態和錯誤狀態、把儲存流程接起來、鍵盤操作，而不只是版面</code></pre>
+</div>
+
+<p>這是在告訴 Claude 範圍，只有你知道的事，而不是要它思考多用力。</p>
+
+<p>而當你是在探索，而不是修正某個特定的問題時，像 <code>what would you improve in this file?</code> 這樣模糊的提示詞（prompt）完全沒問題。你會一路多修正一些，而這就是取捨。</p>
+
+<h3>先和 Claude 腦力激盪<span class="en">Brainstorm with Claude first</span></h3>
+
+<p>當你還不確定自己到底要什麼，你不必先全部想清楚才下提示詞（prompt）。可以改請 Claude 來訪談你：</p>
+
+<div class="code">
+<p class="code-lab">範例提示詞（英文原文）</p>
+<pre><code>I want to add rate limiting to the public API but haven't thought it through yet. Interview me until you could write the spec, then write it to SPEC.md.</code></pre>
+</div>
+<div class="code">
+<p class="code-lab">繁體中文對照</p>
+<pre><code>我想替公開的 API 加上速率限制，但還沒有想清楚。請訪談我，直到你能寫出規格文件（spec），然後把它寫進 SPEC.md。</code></pre>
+</div>
+
+<p>Claude 會回來問你選擇題，針對你還沒定下來的部分：每位使用者各自限制，還是每把金鑰各自限制、超過限制的請求會怎麼處理、哪些不在範圍內。它會一直問，直到答案湊成一份規格文件（spec）。</p>
+
+<p><code>SPEC.md</code> 一旦存在，就開一個新的工作階段來照它建置，讓建置從乾淨的脈絡和一份寫好的完成定義（definition of done）開始。之後在<a href="https://code.claude.com/docs/en/best-practices#give-claude-a-check-to-run">給 Claude 一個可以執行的檢查（Give Claude a check to run）</a>裡，你要把審查者指向的也是這個檔案。</p>
+
+<h3>讓 CLAUDE.md 保持簡短<span class="en">Keep CLAUDE.md short</span></h3>
+
+<p>Claude Code 會把 <a href="https://code.claude.com/docs/en/memory"><code>CLAUDE.md</code></a> 載入每一個工作階段，這表示它裡面的每一行，在<em>每一個</em>任務上都會佔用 Claude 一點注意力，不論相不相關。這就是為什麼這個檔案只放 Claude 光看程式碼推不出來的東西時效果最好：</p>
+<ul>
+<li>如何確認這個儲存庫（repo）裡的工作：確切的測試、型別檢查（typecheck）和 lint 指令，以及如何只跑單一個測試檔</li>
+<li>程式碼會誤導人的地方：到處都是、但新程式碼絕不能照抄的舊寫法，或是一個看起來沒在用、其實有在用的目錄</li>
+<li>不在儲存庫（repo）裡的決定：團隊選定了哪個錯誤處理輔助函式、部署怎麼運作、哪些東西需要經過遷移審查</li>
+<li>任何你已經糾正過兩次的事</li>
+</ul>
+
+<p>通過這個測試的 <code>CLAUDE.md</code> 會保持簡短：</p>
+
+<div class="code">
+<p class="code-lab">CLAUDE.md（英文原文）</p>
+<pre><code># Commands
+- Install: pnpm install
+- Run one test file: pnpm vitest run path/to/file.test.ts
+- Typecheck: pnpm tsc --noEmit
+
+# Conventions
+- Use the error helpers in src/lib/errors.ts, never throw raw strings
+- src/legacy/ is still live but don't copy its patterns into new code
+
+# Gotchas
+- Integration tests need DATABASE_URL set, see .env.example</code></pre>
+</div>
+<div class="code">
+<p class="code-lab">繁體中文對照（指令、檔名與變數名稱不變，只翻譯文字說明）</p>
+<pre><code># 指令（Commands）
+- 安裝：pnpm install
+- 執行單一測試檔：pnpm vitest run path/to/file.test.ts
+- 型別檢查：pnpm tsc --noEmit
+
+# 慣例（Conventions）
+- 使用 src/lib/errors.ts 裡的錯誤輔助函式，絕不要直接丟出原始字串
+- src/legacy/ 仍在使用，但不要把它的寫法複製進新程式碼
+
+# 陷阱（Gotchas）
+- 整合測試需要設定 DATABASE_URL，請看 .env.example</code></pre>
+</div>
+
+<p>在工作階段裡，執行 <a href="https://code.claude.com/docs/en/commands#all-commands"><code>/context all</code></a>，確認 Claude 已載入這個檔案。</p>
+
+<p>請注意，型別檢查（typecheck）那一行只有指令。Claude 需要知道這個指令，才能邊做邊檢查自己的工作。如果你還希望由 Claude Code <em>強制</em>在 Claude 結束前通過型別檢查，那是 <a href="https://code.claude.com/docs/en/best-practices#enforce-the-check-with-a-stop-hook"><code>Stop</code> hook</a> 的工作。在這個檔案裡寫一句像 <code>Always typecheck before you finish</code>（結束前一律做型別檢查）的話，大部分時候有效，但不是每次都有效。</p>
+
+<p>你不必從頭寫這個檔案：</p>
+<ul>
+<li><code>/init</code> 會根據你的程式碼庫產生一個起始版本。從那裡開始，工作大多是刪行。<a href="https://code.claude.com/docs/en/memory#write-effective-instructions">記憶指南（memory guide）</a>建議控制在 200 行以內。</li>
+<li><code>/doctor</code> 會建議刪掉任何 Claude 本來就<a href="https://code.claude.com/docs/en/memory#my-claude-md-is-too-large">能從程式碼推出來</a>的內容。</li>
+<li><code>/doctor prompt-audit</code> 會標出那些為舊模型寫的指示、指向已不存在檔案的指示，或是<a href="https://code.claude.com/docs/en/memory#audit-your-instruction-files">互相矛盾</a>的指示。</li>
+</ul>
+
+<p>你的個人偏好放在 <code>CLAUDE.local.md</code>，而不是 <code>CLAUDE.md</code>，並把那個檔案加進 <code>.gitignore</code>，讓它不進入儲存庫（repo）。</p>
+
+<blockquote>
+<p><strong>註（Note）</strong></p>
+<p>如果 Claude 一直忽略<em>確實</em>寫在 <code>CLAUDE.md</code> 裡的某一行，加上 IMPORTANT 大概也沒用。不是這個檔案已經長到那一行被淹沒了，就是那一行是一條不能有例外的規則，這種情況下它該放進 <a href="https://code.claude.com/docs/en/best-practices#enforce-the-rules-that-cant-have-exceptions">hook</a>。</p>
+</blockquote>
+
+<h3>把規則限定在程式碼庫的某一部分<span class="en">Scope rules to one part of the codebase</span></h3>
+
+<p>如果某條規則只在程式碼庫的某一部分有意義，就把它放進 <a href="https://code.claude.com/docs/en/memory#path-specific-rules"><code>.claude/rules/</code></a>，並加上 <code>paths:</code> 篩選條件，讓它只在 Claude 真的在那裡工作時才載入。例如，這個 <code>.claude/rules/api.md</code> 會在處理 <code>src/api/</code> 底下的 TypeScript 檔案時載入：</p>
+
+<div class="code">
+<p class="code-lab">.claude/rules/api.md（英文原文）</p>
+<pre><code>---
+paths:
+  - "src/api/**/*.ts"
+---
+- Validate request bodies with the zod schemas in src/api/schemas/, don't hand-roll checks
+- Every new endpoint needs an entry in openapi.yaml, CI fails without it</code></pre>
+</div>
+<div class="code">
+<p class="code-lab">繁體中文對照（欄位名稱、路徑與檔名不變，只翻譯文字說明）</p>
+<pre><code>---
+paths:
+  - "src/api/**/*.ts"
+---
+- 請求內容（request body）用 src/api/schemas/ 裡的 zod 結構描述（schema）驗證，不要自己手寫檢查
+- 每個新的端點（endpoint）都要在 openapi.yaml 裡加一筆，沒有的話 CI 會失敗</code></pre>
+</div>
+
+<h3>把團隊的作業流程放進技能（skills）<span class="en">Put team procedures in skills</span></h3>
+
+<p>更強的模型懂更多工程知識，但不知道<em>你的</em>團隊怎麼做發布、你的事故處理手冊（incident runbook）寫了什麼，或你希望 API 文件怎麼寫。這類知識要放進<a href="https://code.claude.com/docs/en/skills">技能（skill）</a>：一份存在 <code>.claude/skills/&lt;name&gt;/SKILL.md</code> 的作業流程，或一份團隊知識。</p>
+
+<p>這類東西放在技能（skill）裡，佔用的脈絡也比 <code>CLAUDE.md</code> 少。對於 Claude 能自己啟動的技能（skill），它在每個工作階段都會看到名稱和說明，但只有在任務需要時，才會<a href="https://code.claude.com/docs/en/skills#skill-content-lifecycle">讀完整個檔案</a>。一份很長的發布流程放在技能（skill）裡，不會像放在 <code>CLAUDE.md</code> 那樣，拖累你無關的錯誤修正。</p>
+
+<blockquote>
+<p><strong>註（Note）</strong></p>
+<p><code>CLAUDE.md</code> 的規則同樣適用於技能（skills）：只寫下 Claude 自己找不到的東西。</p>
+</blockquote>
+
+<p>對於有副作用的工作流程（workflow），像是真的去切出那次發布，就加上 <code>disable-model-invocation: true</code>。這樣 Claude <a href="https://code.claude.com/docs/en/skills#control-who-invokes-a-skill">就不能自己啟動這個技能（skill）</a>，只有在你自己輸入 <code>/release</code> 時才會執行。把它存成 <code>.claude/skills/release/SKILL.md</code>，看起來可以像這樣：</p>
+
+<div class="code">
+<p class="code-lab">.claude/skills/release/SKILL.md（英文原文）</p>
+<pre><code>---
+name: release
+description: Cut a new release. Bumps the version, writes the changelog entry, tags it and pushes the tag so CI can publish.
+disable-model-invocation: true
+---
+1. Make sure you're on main with a clean tree. If not, stop and ask.
+2. Run `pnpm changeset version` and commit the result.
+3. Summarize the PRs merged since the last tag into CHANGELOG.md, one line each, user-facing changes only.
+4. Tag `v&lt;new version&gt;` and push the tag. CI publishes from there, never publish from your machine.</code></pre>
+</div>
+<div class="code">
+<p class="code-lab">繁體中文對照（欄位名稱、指令與檔名不變，只翻譯文字說明）</p>
+<pre><code>---
+name: release
+description: 切出新的發布版本。更新版本號、寫下變更紀錄（changelog）條目、打上標籤，並推送標籤，讓 CI 可以發布。
+disable-model-invocation: true
+---
+1. 確認你在 main 分支上，而且工作目錄（working tree）是乾淨的。如果不是，就停下來詢問。
+2. 執行 `pnpm changeset version`，並提交（commit）結果。
+3. 把上一個標籤之後合併的合併請求（PR）整理進 CHANGELOG.md，每個一行，只寫使用者看得到的變更。
+4. 為 `v&lt;new version&gt;` 打上標籤並推送標籤。CI 會從那裡發布，絕不要從你自己的機器上發布。</code></pre>
+</div>
+
+<h3>連接 Claude 需要的工具<span class="en">Connect the tools Claude needs</span></h3>
+
+<p>Claude 看不見的東西，有些完全存在另一個系統裡，例如你的問題追蹤系統（issue tracker）或錯誤儀表板。如果那個系統有 CLI，通常那就是最容易的入口。例如，裝好並登入 <code>gh</code> 之後，Claude 不需要你任何說明，就會開合併請求（PR）並讀審查留言。對於它沒看過的 CLI，指向 <code>--help</code> 就夠了。</p>
+
+<p>對於沒有 CLI 的系統，有 <a href="https://code.claude.com/docs/en/mcp">MCP</a>。你從 shell 加入一個伺服器：</p>
+
+<div class="code">
+<p class="code-lab">指令（程式碼，不需翻譯）</p>
+<pre><code>claude mcp add --transport http notion https://mcp.notion.com/mcp</code></pre>
+</div>
+
+<p>這個伺服器接著會出現在工作階段裡的 <code>/mcp</code> 底下。已連接的伺服器，即使你沒在用，也會把它們的工具名稱和說明加進脈絡，所以值得在那裡<a href="https://code.claude.com/docs/en/mcp#disable-a-server-without-removing-it">把不需要的關掉</a>。</p>
+
+<p>而如果你用的是有型別的語言，<a href="https://code.claude.com/docs/en/plugins/code-intelligence">程式碼智慧外掛（code intelligence plugin）</a>能讓 Claude 直接跳到定義，不必讀過許多檔案才找到它。</p>
+
+<h2>給 Claude 一個可以執行的檢查<span class="en">Give Claude a check to run</span></h2>
+
+<p>Claude 在工作看起來完成時就會停下來。如果它沒有任何可以執行、能告訴它工作是不是<em>真的</em>完成的東西，它能依據的就只有「看起來完成了」。實務上，這會讓你變成測試套件（test suite），而每一個錯誤都會待在那裡，直到你碰巧注意到。</p>
+
+<p>如果你給它一個會回報通過或失敗的東西，Claude 就能自己把迴圈閉起來。它做出修改、執行檢查，如果有東西壞了，就讀輸出並修好它，然後再執行一次檢查。</p>
+
+<blockquote>
+<p><strong>提示（Tip）</strong></p>
+<p>給 Claude 一個它能執行、會回報通過或失敗的東西。一旦有了這個，它就能自己繼續做下去，你不必盯著。</p>
+</blockquote>
+
+<p>檢查幾乎可以是任何東西，只要 Claude 讀得到結果：</p>
+<ul>
+<li>一個測試檔</li>
+<li>建置（build）的結束代碼（exit code）</li>
+<li>一個 linter</li>
+<li>一個把輸出和測試資料檔（fixture）做比對（diff）的腳本</li>
+<li>和模擬稿（mockup）並排的<a href="https://code.claude.com/docs/en/chrome">瀏覽器截圖</a></li>
+</ul>
+
+<p>如果你的儲存庫（repo）已經有其中一種，那麼你的 <code>CLAUDE.md</code> 裡最有用的一行，就是執行它的指令。</p>
+
+<p>檢查要多嚴格，由你決定。選項從「由 Claude 自己決定」一路到「由 Claude Code 強制執行」：</p>
+<ul>
+<li>在提示詞（prompt）裡：<code>run the auth tests after, and keep going until they pass</code>（做完後執行認證測試，一直做到通過為止）。Claude 自己決定什麼時候滿意。這對任何任務、今天就能用，不需要設定。</li>
+<li>當作目標（goal）：<a href="https://code.claude.com/docs/en/goal"><code>/goal all tests in tests/auth pass and lint is clean</code></a>（tests/auth 裡的所有測試通過，而且 lint 乾淨）會設定一個條件，由另一個模型在每一輪之後對照對話來檢查，Claude 會一直做到條件達成為止。你在工作階段裡很少需要這個。它對長時間的背景執行很重要，因為 Claude 有時會在還有項目未完成時，以一份進度摘要結束一輪，而目標會把它送回去。</li>
+<li>當作 Stop hook：<a href="https://code.claude.com/docs/en/hooks#stop"><code>Stop</code> hook</a> 會在 Claude 嘗試結束它這一輪時執行你的腳本，如果腳本以代碼 2 結束，就把 Claude 送回去工作。這一種由 Claude Code（工作環境〔harness〕）強制執行，所以這一輪要到型別檢查（typecheck）通過，或達到<a href="https://code.claude.com/docs/en/hooks#stop-input">阻擋上限（block limit）</a>才會結束。<a href="https://code.claude.com/docs/en/best-practices#enforce-the-check-with-a-stop-hook">後面有一個範例</a>。</li>
+<li>由沒有寫這份程式碼的人：在終端機裡，<a href="https://code.claude.com/docs/en/code-review-local"><code>/code-review</code></a> 會在一個從未看過你對話的全新子代理（subagent）裡審查差異（diff）。它不會被產生這份程式碼的推理所左右。</li>
+</ul>
+
+<p>不論你用哪一種，都要向 Claude 要求<em>證據</em>：它執行的指令和輸出，或是截圖。光是一句「所有測試都通過」，告訴你的東西很少，而讀輸出比自己重跑一次檢查更快。對於你沒有在旁邊看的工作階段，這也是你唯一擁有的證據。</p>
+
+<blockquote>
+<p><strong>提示（Tip）</strong></p>
+<p>Claude 說它做完之後，你也可以在工作階段裡執行 <a href="https://code.claude.com/docs/en/skills#run-and-verify-your-app"><code>/verify</code></a>，讓 Claude 建置並執行應用程式，然後看結果。這能抓到測試和型別檢查（typecheck）漏掉的那類問題。</p>
+</blockquote>
+
+<h3>對照你的規格審查<span class="en">Review against your spec</span></h3>
+
+<p>如果你想讓審查是對照你的計畫來檢查工作，而不是泛泛地找錯誤，就自己寫審查的提示詞（prompt）：</p>
+
+<div class="code">
+<p class="code-lab">範例提示詞（英文原文）</p>
+<pre><code>use a subagent to review the rate limiter diff against SPEC.md, check every requirement is implemented and the listed edge cases have tests, report gaps that affect correctness and skip style</code></pre>
+</div>
+<div class="code">
+<p class="code-lab">繁體中文對照</p>
+<pre><code>用一個子代理（subagent）對照 SPEC.md 審查速率限制器的差異（diff），檢查每項要求都已實作、列出的邊界情況（edge cases）都有測試，回報會影響正確性的缺口，並略過風格（style）</code></pre>
+</div>
+
+<blockquote>
+<p><strong>註（Note）</strong></p>
+<p>不要拿掉那個提示詞（prompt）裡的 <code>skip style</code>。被要求找問題的審查者，一定會找到<em>一些東西</em>。如果你把每一項發現都修掉，最後就會多出一堆抽象層，還有為不可能發生的情況寫的測試。</p>
+</blockquote>
+
+<h3>用 Stop hook 強制執行檢查<span class="en">Enforce the check with a Stop hook</span></h3>
+
+<p>型別檢查（typecheck）規則的 <code>Stop</code> hook 版本，是 <code>.claude/settings.json</code> 裡的幾行。阻止停下來的是結束代碼 2。指令往 stderr 印出的任何內容，都會被送回 Claude，當作它還不能結束的理由，所以編譯器的輸出才會被重新導向到那裡：</p>
+
+<div class="code">
+<p class="code-lab">.claude/settings.json（設定，不需翻譯）</p>
+<pre><code>{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "pnpm tsc --noEmit 1&gt;&amp;2 || exit 2" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+</div>
+
+<p>想看它運作，就請 Claude 做一個會弄壞型別的修改：它不會結束，而是會收到編譯器的錯誤，一直做到 <code>tsc</code> 通過為止。如果 hook 連續<a href="https://code.claude.com/docs/en/hooks#stop-input">八次阻止停下</a>，而且中間沒有任何工具呼叫，Claude Code 會推翻下一次阻擋，並結束這一輪。要調高上限，請設定 <a href="https://code.claude.com/docs/en/env-vars"><code>CLAUDE_CODE_STOP_HOOK_BLOCK_CAP</code></a>。</p>
+
+<h2>強制執行不能有例外的規則<span class="en">Enforce the rules that can't have exceptions</span></h2>
+
+<blockquote>
+<p><strong>提示（Tip）</strong></p>
+<p>如果某件事每一次都必須發生，就把它做成 hook、拒絕規則（deny rule）或受管設定（managed setting）。<code>CLAUDE.md</code> 是給準則用的，而 Claude 可以決定某條準則不適用。</p>
+</blockquote>
+
+<p>以你今天可能放在 <code>CLAUDE.md</code> 裡的三條規則為例：<code>Never read .env</code>（絕不讀取 .env）、<code>Always run the formatter after editing</code>（編輯後一律執行格式化工具）、<code>Don't touch the migrations folder</code>（不要動 migrations 資料夾）。Claude 幾乎每次都會遵守這些。對於那少數「幾乎」不夠好的規則，就把它們從 <code>CLAUDE.md</code> 搬出來，放進由 Claude Code（工作環境〔harness〕）自己套用的設定裡。從那之後，結果就不再取決於模型記得什麼或決定什麼。</p>
+
+<h3>用 hook 強制執行步驟<span class="en">Enforce steps with hooks</span></h3>
+
+<p><a href="https://code.claude.com/docs/en/hooks-guide">Hook</a> 會在 Claude 迴圈（loop）裡的固定時間點，執行你的某樣東西：工具呼叫之前或之後、Claude 嘗試停止時、工作階段開始時，等等。這個「某樣東西」可以是：</p>
+<ul>
+<li>一個 shell 指令（最常見的情況）</li>
+<li>對某個 HTTP 端點的 POST</li>
+<li>對你其中一個 MCP 伺服器的工具呼叫</li>
+<li>一個 <a href="https://code.claude.com/docs/en/hooks#hook-handler-fields"><code>prompt</code> 或 <code>agent</code> hook</a>，由模型來決定</li>
+</ul>
+
+<p><code>prompt</code> 或 <code>agent</code> hook 是請<em>另一個模型</em>來決定，所以它也不是確定性（deterministic）的。要真正強制執行，請用 <code>command</code>、<code>http</code> 或 <code>mcp_tool</code> hook；如果在 hook 本身當掉或逾時時，也應該停止該動作，就加上 <a href="https://code.claude.com/docs/en/hooks#block-the-action-when-a-hook-fails"><code>onFailure: "block"</code></a>。比如一個掃描提交（commit）有沒有密鑰的 hook，你寧可擋下提交，也不想在掃描器停擺時讓未掃描的提交通過。</p>
+
+<p>這是格式化工具規則寫成 <code>PostToolUse</code> hook 的樣子。它在每次 <code>Edit</code> 或 <code>Write</code> 之後執行，而 Claude 記不記得這條規則已經不重要，因為執行它的不是 Claude：</p>
+
+<div class="code">
+<p class="code-lab">.claude/settings.json（設定，不需翻譯）</p>
+<pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          { "type": "command", "command": "f=$(jq -r '.tool_input.file_path') &amp;&amp; npx prettier --write --ignore-unknown \"$f\"" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+</div>
+
+<p>要檢查這個 hook，請 Claude 在一個 Prettier 會格式化的檔案裡，加一行縮排很糟的內容。儲存後的檔案回來時，縮排已經被修好了。</p>
+
+<p>migrations 規則會變成一個 <a href="https://code.claude.com/docs/en/hooks-guide#block-edits-to-protected-files"><code>PreToolUse</code> hook</a>，對 <code>migrations/</code> 底下的任何路徑，以代碼 2 結束。你不必自己寫：<code>write a hook that blocks edits to the migrations folder</code>（寫一個擋下 migrations 資料夾編輯的 hook）這樣當提示詞（prompt）就行，而 <code>/hooks</code> 會顯示結果。不過不要做過頭：hook 是給<em>零</em>例外的規則用的，而 <code>Prefer named exports</code>（偏好具名匯出）有很多例外，所以那一條留在 <code>CLAUDE.md</code>。</p>
+
+<h3>用權限規則和沙箱限制存取<span class="en">Limit access with permission rules and the sandbox</span></h3>
+
+<p><a href="https://code.claude.com/docs/en/permissions">權限規則（Permission rules）</a>決定 Claude 被允許執行、讀取和擷取什麼。<code>deny</code> 規則在每一種權限模式下都有效，包括自動模式（auto mode）和 <code>bypassPermissions</code>，這正是 <code>.env</code> 規則該放在這裡的原因：</p>
+
+<div class="code">
+<p class="code-lab">.claude/settings.json（設定，不需翻譯）</p>
+<pre><code>{
+  "permissions": {
+    "allow": ["Bash(pnpm tsc --noEmit)"],
+    "ask": ["Bash(git push *)"],
+    "deny": ["Read(./.env)", "Read(./.env.local)", "Read(./secrets/**)"]
+  }
+}</code></pre>
+</div>
+
+<p>存好這個之後，問 Claude <code>.env</code> 裡有什麼，會失敗，不論是透過 <code>Read</code> 工具，還是 <code>cat .env</code>，都一樣。</p>
+
+<p>規則比對的是工具呼叫，而不是意圖，所以值得知道它的邊界在哪裡：</p>
+<ul>
+<li><code>Read</code> 規則<em>確實</em>會擋下 <code>cat .env</code>，因為 Claude Code 認得<a href="https://code.claude.com/docs/en/permissions#read-and-edit">常見的讀檔指令</a>。</li>
+<li>它擋不住一個會打開該檔案的腳本。</li>
+<li>針對某個網域的 <code>WebFetch</code> 拒絕規則，對同一個網域的 <code>curl</code> 沒有任何作用，除非沙箱（sandbox）是開著的。</li>
+</ul>
+
+<p>如果要在作業系統層級限制檔案系統或網路存取，請在工作階段裡用 <code>/sandbox</code> 開啟<a href="https://code.claude.com/docs/en/sandboxing">沙箱（sandbox）</a>。它會把 Claude 的 shell 指令限制在 macOS、Linux 和 WSL2 上，也會<a href="https://code.claude.com/docs/en/sandboxing#permission-rules">套用你的 <code>Read</code> 拒絕規則和 <code>WebFetch(domain:...)</code> 規則</a>，所以只要是和安全有關的事，兩者你都會想要。</p>
+
+<p>預設情況下，Claude 仍然可以請求在沙箱（sandbox）之外重試一個被擋下的指令，而那個請求會走一般的權限流程。<a href="https://code.claude.com/docs/en/sandboxing#turn-off-the-retry-with-strict-sandbox-mode">嚴格沙箱模式（Strict sandbox mode）</a>，位於 <code>/sandbox</code> 的 <strong>Overrides</strong>（覆寫）分頁，會把那個重試關掉。</p>
+
+<blockquote>
+<p><strong>警告（Warning）</strong></p>
+<p>自動模式（auto mode）是一個分類器模型在判斷每個動作，而不是一條硬性規則。它很擅長這件事，但和任何判斷一樣，也可能出錯。你也可以調整它把什麼視為有風險，你的組織也可以把它整個關掉，所以你的「絕不」規則應該放在拒絕規則（deny rules）或 hook 裡。</p>
+</blockquote>
+
+<h3>選擇規則適用於誰<span class="en">Choose who a rule applies to</span></h3>
+
+<p>規則放在哪裡，決定它適用於誰：</p>
+<ul>
+<li><code>.claude/settings.local.json</code> 和 <code>~/.claude/settings.json</code> 只屬於你自己。當你對某個指令選擇 <strong>Yes, and don't ask again</strong>（是，而且不要再問）時，Claude Code 會把那條規則存進本機檔案。</li>
+<li><code>.claude/settings.json</code> 和其中的 hook 屬於儲存庫（repo）。一旦你把它們提交（commit），它們就適用於每個在這個儲存庫（repo）工作的人。它的拒絕規則會立刻生效。它的 <code>allow</code> 規則要等每個人接受該資料夾的<a href="https://code.claude.com/docs/en/permissions#what-runs-before-you-trust-a-folder">信任對話框（trust dialog）</a>後才生效，而<a href="https://code.claude.com/docs/en/hooks#workspace-trust">工作區信任（workspace trust）</a>也決定它的 hook 何時開始在他們的機器上執行。</li>
+<li><a href="https://code.claude.com/docs/en/managed-settings">受管設定（Managed settings）</a>屬於組織。它們來自管理主控台（admin console）、MDM，或一個 <code>managed-settings.json</code> 檔案，沒有任何個人設定檔能覆寫它們，這讓它們成為資安團隊政策唯一的歸宿。如果你是設定它們的人，請看<a href="https://code.claude.com/docs/en/admin-setup">為你的組織設定 Claude Code（Set up Claude Code for your organization）</a>。</li>
+</ul>
+
+<p>不論是哪個範圍，都要讓強制執行的那一組保持少量。每一個 hook 和拒絕規則偶爾都會在不該觸發時觸發，而且每一個都需要有人維護。如果你發現自己有四十個，其中大多數大概只是 Claude 自己就能權衡的偏好。</p>
+
+<h2>調整預設值<span class="en">Change a default</span></h2>
+
+<blockquote>
+<p><strong>提示（Tip）</strong></p>
+<p>預設值已經夠好，在某項任務花的時間、令牌（token）或打斷次數超出應有的程度之前，都可以不去動它。發生這種情況時，在工作階段裡執行 <code>/usage</code>，看看花到哪裡去了。</p>
+</blockquote>
+
+<p>新的工作階段已經替你做了幾個決定：</p>
+<ul>
+<li>互動式的終端機和 VS Code 工作階段從自動模式（auto mode）開始。</li>
+<li>在大多數方案和供應商上，它以 <a href="https://code.claude.com/docs/en/model-config#default-model-setting"><code>medium</code> 費力等級（effort）執行 Claude Opus 5.5</a>。</li>
+<li>它看到有理由時，會把工作委派給子代理（subagent）。</li>
+<li>隨著對話變長，它會壓縮（compact）對話。</li>
+</ul>
+
+<p>大部分時候你根本不會想到這些。當某項任務的花費確實超出應有的程度，原因通常是這四項之一。</p>
+
+<h3>更換權限模式<span class="en">Change the permission mode</span></h3>
+
+<p>權限範圍的兩端都有代價：</p>
+<ul>
+<li><strong>手動模式（Manual mode）</strong>：每一個編輯，以及每一個不是唯讀的指令，都由你自己核准。安全，但到了第十次提示之後，你就會開始不看內容直接核准，而且你離開鍵盤時，什麼都不會動。</li>
+<li><strong><code>bypassPermissions</code></strong>：核准你的拒絕規則和詢問規則沒有涵蓋的所有事情，這只有在用完即丟的容器裡才合理。</li>
+</ul>
+
+<p><a href="https://code.claude.com/docs/en/permission-modes#eliminate-prompts-with-auto-mode">自動模式（Auto mode）</a>介於兩者之間，也是互動式終端機和 VS Code 工作階段<a href="https://code.claude.com/docs/en/permission-modes#which-mode-a-session-starts-in">開始時使用</a>的模式。Claude 不會為例行的核准停下來，而是一個獨立的分類器（classifier）模型，在動作執行前，依<a href="https://code.claude.com/docs/en/permission-modes#how-the-classifier-evaluates-actions">固定的順序</a>檢查這些動作。它專注在<a href="https://code.claude.com/docs/en/permission-modes#what-the-classifier-blocks-by-default">你會希望有人去攔下的事</a>：</p>
+<ul>
+<li><code>curl | bash</code></li>
+<li>正式環境的部署與遷移（migrations）</li>
+<li>強制推送（force push）蓋掉別人的工作</li>
+<li>把敏感資料送到外部端點</li>
+<li>看起來是由 Claude 讀到的內容、而不是由你所驅動的動作</li>
+</ul>
+
+<p>當自動模式（auto mode）擋下一個動作，你會收到通知，這個動作也會出現在 <code>/permissions</code> 的 <strong>Recently blocked</strong>（最近被擋下）底下，你可以在那裡<a href="https://code.claude.com/docs/en/auto-mode-config#review-denials">核准這個動作，讓 Claude 重試</a>。在<a href="https://code.claude.com/docs/en/permission-modes#when-auto-mode-falls-back">連續三次被擋</a>（或總共二十次）之後，自動模式（auto mode）會暫停，並回頭來問你。</p>
+
+<p>這一切都不會取代你的確定性（deterministic）控制，因為它是在那些控制<em>之後</em>才執行。拒絕規則、詢問規則和 <code>PreToolUse</code> hook 在分類器（classifier）看到任何東西之前就已經套用，所以拒絕規則在自動模式（auto mode）下擋下的方式，和在其他地方完全一樣。沙箱（sandbox）仍然會限制<a href="https://code.claude.com/docs/en/sandboxing#what-runs-outside-the-sandbox">它所包住的 shell 指令</a>。</p>
+
+<blockquote>
+<p><strong>註（Note）</strong></p>
+<p>你也可以在對話中說 <code>don't push until I've reviewed</code>（我審查完之前不要推送），分類器（classifier）會<a href="https://code.claude.com/docs/en/permission-modes#boundaries-you-state-in-conversation">把它當作阻擋訊號</a>。但它終究是一個模型在讀對話紀錄，而這句話可能在對話被壓縮（compact）時遺失，所以任何重要的事都該放進拒絕規則（deny rule）。</p>
+</blockquote>
+
+<p>相反的問題是，分類器（classifier）一再攔下在你的環境中屬於例行的事。與其每次都手動核准，不如把它加進 <code>autoMode.allow</code>，或在<a href="https://code.claude.com/docs/en/auto-mode-config">自動模式設定（auto mode configuration）</a>裡描述你信任的基礎設施。它用的是白話英文，而不是比對模式，而且 <a href="https://code.claude.com/docs/en/auto-mode-config#generate-environment-entries"><code>/auto-mode-setup</code></a> 可以根據你的專案和最近的工作階段，替你起草 <code>environment</code> 的部分：</p>
+
+<div class="code">
+<p class="code-lab">~/.claude/settings.json（英文原文）</p>
+<pre><code>{
+  "autoMode": {
+    "environment": [
+      "$defaults",
+      "Source control: github.com/example-org and every repo under it",
+      "Trusted internal domains: *.internal.example.com"
+    ],
+    "allow": [
+      "$defaults",
+      "Deploying to the staging namespace is fine, it's isolated from production and resets nightly"
+    ]
+  }
+}</code></pre>
+</div>
+<div class="code">
+<p class="code-lab">繁體中文對照（欄位名稱與 $defaults 不變，只翻譯文字說明）</p>
+<pre><code>{
+  "autoMode": {
+    "environment": [
+      "$defaults",
+      "原始碼控制：github.com/example-org 和它底下的每一個儲存庫",
+      "受信任的內部網域：*.internal.example.com"
+    ],
+    "allow": [
+      "$defaults",
+      "部署到 staging 命名空間沒問題，它和正式環境隔離，而且每晚都會重置"
+    ]
+  }
+}</code></pre>
+</div>
+
+<blockquote>
+<p><strong>警告（Warning）</strong></p>
+<p>在你設定的每一份清單裡都要保留 <code>"$defaults"</code>，因為沒有它的話，你的項目<a href="https://code.claude.com/docs/en/auto-mode-config#override-the-block-and-allow-rules">可能會取代</a>那份清單的內建規則，而不是加在它們之上。你可能會失去 <code>environment</code> 裡內建的脈絡、<code>allow</code> 裡的例外，以及 <code>soft_deny</code> 裡對強制推送和正式環境部署的阻擋。</p>
+<p><code>autoMode</code> 區塊也必須放在 <code>~/.claude/settings.json</code>，而不是專案裡，因為分類器（classifier）會忽略專案設定裡的 <code>autoMode</code>。</p>
+</blockquote>
+
+<p>如果你寧可在每個編輯和指令發生之前都看過，在工作階段裡按 <code>Shift+Tab</code> 會在各個權限模式之間循環，包括手動模式（Manual），或是從你的 shell 用 <code>claude --permission-mode manual</code> 開始。而如果手動模式問得太頻繁，<code>/fewer-permission-prompts</code> 會掃描你最近的對話紀錄（transcripts）中常見的唯讀 Bash 和 MCP 呼叫，並把它們加進 <code>.claude/settings.json</code> 裡的允許清單（allowlist）。</p>
+
+<h3>更換模型與費力等級<span class="en">Change the model and effort</span></h3>
+
+<p><a href="https://code.claude.com/docs/en/model-config#adjust-effort-level">費力等級（Effort）</a>是控制 Claude 思考多久的主要方式，它取代了人們過去用提示詞（prompt）措辭做的大部分事情。Claude Fable 5.2、Opus 5.5、Sonnet 5.5 和 Haiku 5.5 預設為 <code>medium</code>，對範圍明確的日常功能開發來說綽綽有餘。你會想調整它的時機，在工作階段裡用 <code>/effort</code> 調：</p>
+<ul>
+<li>當做對取決於容易被忽略的情況時，用 <code>/effort high</code> 或 <code>/effort xhigh</code> 調高。例如在不是你寫的程式碼裡找錯誤、一個不穩定的測試（flaky test），或是 Claude 得找出舊結構每一個讀取者的結構描述（schema）變更。這時 Claude 會檢查更多邊界情況，並在回答前驗證更多自己的工作，額外的時間和令牌（token）就花在這裡。</li>
+<li>當你正在快速來回，而且反正每個結果都會自己審查時，用 <code>/effort low</code> 調低：腦力激盪、第一版草稿、跨幾個檔案的改名。Claude 會更快給你一個起點，而且因為每一步都由你在掌舵，多出來的深思除了等待之外，不會改變太多東西。</li>
+<li>把 <code>max</code> 留給你想讓 Claude 在沒有你的情況下去解的困難問題，例如找資安漏洞。在一般任務上，它容易想太多，所以你多付了錢，換來的答案可能不會比 <code>high</code> 給你的更好。</li>
+<li>當只有下一則訊息需要時，例如在一堆例行工作中間有一個棘手的問題，就把 <a href="https://code.claude.com/docs/en/model-config#use-ultrathink-for-one-off-deep-reasoning"><code>ultrathink</code></a> 放進那則提示詞（prompt），而不是更改設定。</li>
+</ul>
+
+<p>至於模型本身，預設的 Opus 5.5 能處理大多數的程式開發，而 Sonnet 在例行工作上比較省。要使用 <a href="https://code.claude.com/docs/en/model-config#work-with-fable">Claude Fable 5.2</a>，請執行 <code>/model fable</code>。Haiku 很適合用在做簡單工作的子代理（subagents）。<a href="https://code.claude.com/docs/en/model-config">模型設定（Model configuration）</a>有各方案和供應商的完整清單。</p>
+
+<h3>了解子代理的成本<span class="en">Know what subagents cost</span></h3>
+
+<p>Claude 會自己委派給<a href="https://code.claude.com/docs/en/sub-agents">子代理（subagents）</a>：</p>
+<ul>
+<li>大範圍的程式碼庫搜尋，交給內建的 Explore AI 代理。</li>
+<li>只要分叉模式（fork mode）開著（預設如此），旁支的任務會被<a href="https://code.claude.com/docs/en/sub-agents#fork-the-current-conversation">分叉（fork）</a>出去。</li>
+<li>它啟動的子代理（subagents）預設在背景執行，所以你的主要對話可以繼續進行。</li>
+</ul>
+
+<p>這些你很少需要要求，但知道自己得到什麼、要付出什麼成本，是有幫助的。</p>
+
+<p>子代理（subagents）在這些情況下划算：</p>
+<ul>
+<li>同時執行彼此獨立的工作，讓整項任務更快完成</li>
+<li>把很長的輸出（像是完整的測試執行結果或大範圍搜尋）留在你的主要對話之外，否則它會在接下來整個工作階段裡一直跟著走</li>
+<li>取得一位沒看過程式碼是怎麼寫出來的審查者</li>
+<li>給任務比主要工作階段更少的工具，例如一位能讀、但不能編輯的審查者</li>
+</ul>
+
+<p>它們讓你付出的成本，主要是令牌（token），因為每個子代理（subagent）都會送出自己的請求，而且它們和你的主要對話算在同一份用量裡。有時也會花時間：全新的子代理（subagent）得先收集你的對話原本就有的脈絡，所以它可能比直接在你這邊做那項任務<em>更慢</em>。</p>
+
+<p>而且預設情況下，它是在同一項任務上使用同一個模型（或更小的模型）。你從中得到的是平行處理，或一雙全新的眼睛，但不是更聰明的答案。</p>
+
+<p>要少花一點在它們身上：</p>
+<ul>
+<li>如果子代理（subagent）的工作很簡單，例如收集匯入某個模組的檔案，或檢查文件裡的連結，就在它的定義裡設定 <a href="https://code.claude.com/docs/en/sub-agents#choose-a-model"><code>model: haiku</code></a>。這類工作不需要較大的模型，而 Haiku 每個請求便宜很多。</li>
+<li>要求它們回傳簡短的摘要，這樣二十個結果才不會還是塞滿你的脈絡。</li>
+<li>查看 <code>/usage</code>，了解每種子代理（subagent）類型佔你用量的比例，這樣你就能分辨哪些物有所值。</li>
+<li>在 <code>.claude/agents/</code> 裡，給自訂的子代理（subagent）只設 <code>tools: Read, Grep, Glob</code>。這樣它就是一位什麼都不能編輯的審查者，而且這個限制是由 Claude Code 強制執行，而不是用提示詞（prompt）去請求。</li>
+</ul>
+
+<p>那位審查者就是一個很短的檔案，<code>.claude/agents/reviewer.md</code>：</p>
+
+<div class="code">
+<p class="code-lab">.claude/agents/reviewer.md（英文原文）</p>
+<pre><code>---
+name: reviewer
+description: Reviews changed files against the spec they were built from. Use after implementing a feature, before opening the PR.
+tools: Read, Grep, Glob
+---
+You're reviewing code you didn't write. Compare the changed files against the spec you're given,
+check that every requirement is implemented and the listed edge cases have tests,
+and report only the gaps that affect correctness. Skip style.</code></pre>
+</div>
+<div class="code">
+<p class="code-lab">繁體中文對照（欄位名稱與工具名稱不變，只翻譯文字說明）</p>
+<pre><code>---
+name: reviewer
+description: 對照變更檔案原本依據的規格文件（spec）來審查它們。在實作完功能之後、開合併請求（PR）之前使用。
+tools: Read, Grep, Glob
+---
+你正在審查不是你寫的程式碼。把變更的檔案拿來和你拿到的規格文件（spec）比對，
+檢查每項要求都已實作、列出的邊界情況（edge cases）都有測試，
+並且只回報會影響正確性的缺口。略過風格（style）。</code></pre>
+</div>
+
+<p>請 Claude <code>have the reviewer compare the rate limiter against SPEC.md</code>（讓審查者把速率限制器和 SPEC.md 做比對），缺口就會回到你的工作階段，讓 Claude 去修。</p>
+
+<h3>壓低成本與脈絡<span class="en">Keep cost and context down</span></h3>
+
+<p>現在大多數模型都有 100 萬令牌（token）的視窗，而壓縮（compaction）發生在接近上限的地方，所以你很少會用完脈絡。不過，你仍然可能<em>花錢</em>在你不需要的脈絡上。每個請求都會送出整段對話，所以一個累積了三項無關任務的工作階段，在第四項任務的每一輪，都會重讀這三項。這在<a href="https://code.claude.com/docs/en/costs#why-usage-climbs-in-a-long-session">快取（cache）還熱的時候有折扣</a>，一旦過期就是全價。</p>
+
+<p><a href="https://code.claude.com/docs/en/costs"><code>/usage</code></a> 是第一個該看的地方。在 Pro、Max、Ultra、Team 和 Enterprise 方案上，它會依技能（skill）、子代理（subagent）、外掛（plugin）和 MCP 伺服器拆解你的用量。一旦長脈絡或頻繁的快取未命中（cache miss）這類模式之一超過你用量的 10%，它也會標示出來。從那裡開始，常見的修正方法是：</p>
+<ul>
+<li>在無關的任務之間用 <code>/clear</code>。它不花任何成本，而且讓下一項任務不必繼續為上一項任務的歷史付費。<code>/clear oauth-migration</code> 會為你要離開的工作階段命名，讓你之後可以回到它。</li>
+<li>用帶有重點的 <code>/compact</code>，像是 <code>/compact keep the API changes and the test commands</code>（保留 API 的變更和測試指令）。在長的工作階段上，<code>/compact</code> 本身就是一個很大的請求，因為它要讀完整段對話才能做摘要，快取（cache）過期之後更是如此。</li>
+<li>留意背景工作：<code>/loop</code>、每一輪之後的目標（goal）檢查，以及 Claude 自己的子代理（subagents），在你沒有打字的時候，都會持續送出請求。</li>
+</ul>
+
+<blockquote>
+<p><strong>註（Note）</strong></p>
+<p><a href="https://code.claude.com/docs/en/prompt-caching">提示詞快取（prompt cache）</a>在訂閱方案上大約持續一小時，在應用程式介面金鑰（API key）、雲端供應商或用量額度（usage credits）上是五分鐘。子代理（subagents）預設是五分鐘，除非你更改。</p>
+<p>在一小時的快取（cache）上，一個超過約 20 萬令牌（token）、而且閒置的工作階段，會在快取（cache）過期前不久被壓縮（compact），所以午餐後你是從一份摘要繼續。如果你完全不需要那段歷史，全新的工作階段還是比較省。</p>
+</blockquote>
+
+<h2>引導工作階段<span class="en">Steer the session</span></h2>
+
+<blockquote>
+<p><strong>提示（Tip）</strong></p>
+<p>看著最開始的那一分鐘，Claude 一偏離就按 <code>Esc</code>，而在兩次修正失敗之後，就執行 <code>/clear</code>，改寫一個更好的提示詞（prompt），而不是做第三次修正。</p>
+</blockquote>
+
+<p>再多的設定，也無法取代看著最開始的那一分鐘，並在 Claude 朝你不想去的方向走時介入。能做到這點的控制只有少數幾個，值得背起來：</p>
+<ul>
+<li><code>Esc</code> 會在 Claude 動作到一半時停下它，並保留到那個時間點為止的一切，所以你可以改變方向而不丟掉工作。</li>
+<li><code>/rewind</code>，或在空白的提示上按兩次 <code>Esc</code>，會打開<a href="https://code.claude.com/docs/en/checkpointing#rewind-and-summarize">回溯選單（rewind menu）</a>，你可以在那裡把程式碼、對話，或兩者一起，退回到較早的某個提示。這讓你可以低風險地先試比較大膽的做法，不行再回溯。同一個選單在對話變得過時時，也能摘要對話的一部分。</li>
+<li><code>/clear</code> 會重新開始。如果你同一件事糾正了兩次，結果還是不對，第三次糾正主要只是讓一段已經包含兩次失敗嘗試的對話變得更長，讓 Claude 一再重讀。<code>/clear</code> 加上一個把你學到的東西融入其中的新提示詞（prompt），幾乎每次都更有效。</li>
+</ul>
+
+<blockquote>
+<p><strong>警告（Warning）</strong></p>
+<p>檢查點（Checkpoints）涵蓋的是 Claude 在你的主要對話裡用自己的檔案工具編輯過的檔案，所以只被 Bash 指令碰過的檔案<a href="https://code.claude.com/docs/en/checkpointing#bash-command-changes-not-tracked">不會被還原</a>。它們是和 git 搭配運作，而不是取代它。</p>
+</blockquote>
+
+<p>另外兩個較小的：<a href="https://code.claude.com/docs/en/interactive-mode#side-questions-with-%2Fbtw"><code>/btw</code></a> 回答一個快速的問題，而不會在歷史紀錄裡加入任何東西。而對於橫跨好幾天的工作，在工作階段裡用 <code>/rename oauth-migration</code> 替它命名，這樣之後從你的 shell 執行 <a href="https://code.claude.com/docs/en/sessions#resume-by-session-id-or-name"><code>claude --resume oauth-migration</code></a> 就能把它接回來，連檢查點（checkpoints）也在內。<code>claude --continue</code> 則接續最近的一個。</p>
+
+<h2>讓 Claude 在沒有你的情況下執行<span class="en">Let Claude run without you</span></h2>
+
+<blockquote>
+<p><strong>提示（Tip）</strong></p>
+<p>在一次執行變成無人看管之前，確認它知道完成長什麼樣子、能檢查自己的工作，而且只能碰它該碰的東西。給它回合數或花費的上限，並讓人在最後核准結果。</p>
+</blockquote>
+
+<p>這一頁的一切，在你不在場、無法抓出錯誤時，都變得更重要一點。當你在看著的時候，Claude 缺了某一塊脈絡不是什麼大事：你一兩則訊息之內就會注意到並告訴它。在你睡前啟動的一次執行裡，沒有人告訴它，你隔天早上才發現它整晚都在錯誤的假設上建構。</p>
+
+<p>在你讓一項任務自己跑之前，值得針對那項特定任務，過一遍這五個問題：</p>
+<ol>
+<li>它知道完成長什麼樣子嗎？一個目標條件（goal condition）、一份規格檔，或一個它必須讓其轉綠的失敗測試。</li>
+<li>它能檢查自己的工作嗎？測試套件（test suite）、<code>Stop</code> hook，某種審查步驟。</li>
+<li>它被允許碰什麼？權限規則、<code>dontAsk</code>、沙箱（sandbox）、一個工作樹（worktree）、它唯一可以推送的那個分支。</li>
+<li>什麼會讓它停下來？<code>--max-turns</code>、<code>--max-budget-usd</code>、花費上限（spend limit）。</li>
+<li>結果送到哪裡，由誰簽核？一個合併請求（PR）、一則留言，或一份摘要，然後由一個人核准合併、部署，或任何其他你無法收回的事。</li>
+</ol>
+
+<p>一旦開始跑，Claude 自己就會把一項長任務做完。仍然留在你手上的部分，是啟動它、決定這一次「完成」的意思，以及在最後核准合併。</p>
+
+<h3>從腳本執行 Claude<span class="en">Run Claude from a script</span></h3>
+
+<p><a href="https://code.claude.com/docs/en/headless"><code>claude -p "prompt"</code></a> 會執行一次後結束，這就是 Claude Code 會出現在 CI 工作、git hook 和 shell 迴圈裡的方式。</p>
+
+<p>在腳本裡，你幾乎一定會想要再多幾個旗標（flag）：</p>
+<ul>
+<li><a href="https://code.claude.com/docs/en/headless#start-faster-with-bare-mode"><code>--bare</code></a> 會跳過你的 hook、技能（skills）、外掛（plugins）、MCP 伺服器，以及儲存庫和你家目錄裡的 <code>CLAUDE.md</code> 檔案。它也不使用你的 claude.ai 登入：認證來自 <code>ANTHROPIC_API_KEY</code>、你用 <code>--settings</code> 傳入的檔案裡的 <code>apiKeyHelper</code>，或你的雲端供應商的憑證。</li>
+<li><code>--append-system-prompt</code>、<code>--mcp-config</code> 和 <code>--settings</code> 會明確傳入這次執行<em>確實</em>需要的東西。你用 <code>--settings</code> 傳入的 hook <a href="https://code.claude.com/docs/en/headless#start-faster-with-bare-mode">在 <code>--bare</code> 之下不會執行</a>，所以需要它們的執行就不要用 <code>--bare</code>。</li>
+<li><code>--allowedTools</code> 會預先核准它的工具，而 <a href="https://code.claude.com/docs/en/permission-modes#allow-only-pre-approved-tools-with-dontask-mode"><code>--permission-mode dontAsk</code></a> 會拒絕任何其他本來會跳出提示的事。</li>
+<li><code>--output-format json</code> 給你一個單一的結果物件可以解析，而搭配 <code>--verbose</code> 的 <code>stream-json</code> 則會在事件發生時即時串流輸出。</li>
+</ul>
+
+<p>放在一起，看起來像這樣：</p>
+
+<div class="code">
+<p class="code-lab">shell 腳本（英文原文）</p>
+<pre><code>for file in $(cat files.txt); do
+  claude --bare -p "Migrate $file to the new logger API and commit. Reply OK or FAIL." \
+    --allowedTools "Read,Edit,Bash(git add *),Bash(git commit *)" \
+    --permission-mode dontAsk \
+    --max-turns 20
+done</code></pre>
+</div>
+<div class="code">
+<p class="code-lab">繁體中文對照（指令與旗標不變，只翻譯提示詞字串）</p>
+<pre><code>for file in $(cat files.txt); do
+  claude --bare -p "把 $file 遷移到新的 logger API 並提交（commit）。回覆 OK 或 FAIL。" \
+    --allowedTools "Read,Edit,Bash(git add *),Bash(git commit *)" \
+    --permission-mode dontAsk \
+    --max-turns 20
+done</code></pre>
+</div>
+
+<p>一次執行結束時，Claude 會回覆 <code>OK</code> 或 <code>FAIL</code>，而碰到回合數上限的執行，會以錯誤結束。先用三個檔案試試看，看哪裡出問題，修好提示詞（prompt），再跑剩下的。</p>
+
+<p>如果你傳入 <code>--permission-mode auto</code>，自動模式（auto mode）也能搭配 <code>-p</code> 使用。在非互動式的執行裡，分類器（classifier）的一次阻擋會拒絕那一個動作，Claude 則繼續往下做，而重複的阻擋不會像在終端機裡那樣讓執行暫停。在你仰賴它之前，請先讀<a href="https://code.claude.com/docs/en/permission-modes#repeated-block-thresholds">門檻在那裡如何適用</a>。</p>
+
+<h3>依排程或事件啟動執行<span class="en">Start runs on a schedule or an event</span></h3>
+
+<p>一次執行開始之後，其餘的 Claude 可以自己處理。它唯一無法做的事，是決定要<em>開始</em>，所以得有東西來做：你、一個計時器，或是像 CI 檢查失敗或新的合併請求（PR）這樣的事件。</p>
+
+<p>在一個開著的工作階段裡，就是 <a href="https://code.claude.com/docs/en/scheduled-tasks#run-a-prompt-repeatedly-with-%2Floop"><code>/loop</code></a>，它會每隔一段時間重複一個提示詞（prompt）：</p>
+
+<div class="code">
+<p class="code-lab">範例（英文原文）</p>
+<pre><code>/loop 15m check CI on this branch, and if it's red pull the failing job's log, fix it and push</code></pre>
+</div>
+<div class="code">
+<p class="code-lab">繁體中文對照</p>
+<pre><code>/loop 15m 檢查這個分支上的 CI，如果是紅燈，就拉下失敗工作的紀錄、修好它並推送</code></pre>
+</div>
+
+<p>每一次執行都是同一個工作階段裡的另一輪，所以不要在一段很長的對話裡讓它一直跑。對於任何應該在你的筆電闔上時發生的事，<a href="https://code.claude.com/docs/en/routines#create-from-the-cli"><code>/schedule</code></a> 會設定一個依計時器執行的<a href="https://code.claude.com/docs/en/routines">雲端定時任務（cloud scheduled task）</a>。它需要的是 claude.ai 登入，而不是應用程式介面金鑰（API key）。你可以請 Claude 加上一個 GitHub 事件的觸發條件，或在 <a href="https://claude.ai/code/routines">claude.ai/code/routines</a> 加上一個應用程式介面（API）觸發條件。</p>
+
+<blockquote>
+<p><strong>警告（Warning）</strong></p>
+<p>在你讓雲端定時任務（cloud scheduled task）一直跑之前，先用<a href="https://code.claude.com/docs/en/routines#repositories-and-branch-permissions">任務無法繞過的 GitHub 分支規則</a>保護 <code>main</code>。而且在信任任何新東西無人看管地執行之前，先看它最初的幾次執行。</p>
+</blockquote>
+
+<h3>平行執行工作階段<span class="en">Run sessions in parallel</span></h3>
+
+<p>當你有各自獨立的工作同時進行時，給每一個自己的簽出（checkout），這樣編輯才不會互相衝突。<a href="https://code.claude.com/docs/en/worktrees#start-claude-in-a-worktree"><code>claude -w feature-auth</code></a> 會在新的工作樹（worktree）裡啟動一個工作階段，<a href="https://code.claude.com/docs/en/desktop#work-in-parallel-with-sessions">桌面應用程式（desktop app）</a>可以並排執行好幾個這樣的工作階段，而<a href="https://code.claude.com/docs/en/claude-code-on-the-web">雲端工作階段（cloud sessions）</a>則是在雲端而不是你的機器上執行它們。</p>
+
+<p>工作樹（worktree）是一份全新的簽出（checkout），這表示像 <code>.env</code> 這種被 gitignore 排除的檔案不在那裡，相依套件也沒有安裝。對於第一個問題，把你需要的、被 gitignore 排除的檔案，列在儲存庫根目錄的 <a href="https://code.claude.com/docs/en/worktrees#copy-gitignored-files-into-worktrees"><code>.worktreeinclude</code></a>（語法和 <code>.gitignore</code> 相同），Claude Code 就會把它們複製進它建立的每一個工作樹（worktree）：</p>
+
+<div class="code">
+<p class="code-lab">.worktreeinclude（檔案內容，不需翻譯）</p>
+<pre><code>.env
+.env.local
+config/dev-credentials.json</code></pre>
+</div>
+
+<p>只放小檔案：它是複製而不是連結，所以把 <code>node_modules</code> 放進去，就表示每個工作樹（worktree）都要完整複製一份。對於大型目錄，有 <a href="https://code.claude.com/docs/en/settings-reference#worktree-symlinkdirectories"><code>worktree.symlinkDirectories</code></a> 這個設定，或者把安裝指令放在 <code>CLAUDE.md</code> 裡，讓 Claude 每次在新的簽出（checkout）裡啟動時就執行它。</p>
+
+<p>你很少需要自己清理這些：</p>
+<ul>
+<li>當你結束一個未命名的工作樹（worktree）工作階段時，如果裡面沒有東西，Claude Code 會<a href="https://code.claude.com/docs/en/worktrees#clean-up-worktrees">移除它用 git 建立的工作樹（worktree）</a>。對於已命名的工作階段，或是有變更的，它會問你要怎麼處理。</li>
+<li>子代理（subagent）的工作樹（worktree），在子代理（subagent）沒有變更就結束時會消失。</li>
+<li>被留下來的子代理（subagent）和背景工作階段（background-session）的工作樹（worktree），一旦比 <code>cleanupPeriodDays</code> 更舊而且裡面沒有工作，就會被清掉。</li>
+</ul>
+
+<blockquote>
+<p><strong>註（Note）</strong></p>
+<p><code>claude -p --worktree</code> 的執行，是你要自己清理的，因為它結束時不會詢問。用 <code>git worktree remove &lt;path&gt;</code> 移除這些，而如果 git 因為工作樹（worktree）被鎖住而拒絕，就先執行 <code>git worktree unlock &lt;path&gt;</code>。</p>
+</blockquote>
+
+<p>對於橫跨許多檔案的一次大規模機械式變更，<a href="https://code.claude.com/docs/en/commands"><code>/batch migrate every handler to the v2 response helpers</code></a>（把每個 handler 都遷移到 v2 回應輔助函式）會把工作拆成 5 到 30 個單元，並向你展示計畫。你核准之後，每個單元都有自己的工作樹（worktree），並開一個合併請求（PR）或回報發生了什麼事。從你的 shell，<a href="https://code.claude.com/docs/en/agent-view"><code>claude agents</code></a>（仍是研究預覽版）給你一個畫面，看到你機器上所有在背景執行的東西。</p>
+
+<p>第二個工作階段，也是你能得到的最容易取得的獨立審查者。一個工作階段寫速率限制器，另一個審查 <code>@src/middleware/rateLimiter.ts</code>，而沒有看過它是怎麼被寫出來的，然後你把發現貼回第一個。和 <code>/code-review</code> 是同一個概念，只是由你來傳遞訊息。</p>
+
+<h2>你可以不用再做的事<span class="en">What you can stop doing</span></h2>
+
+<p>這些每一條在被寫下來的時候，都是好建議。大多數是針對模型當時還做不可靠的事所用的變通辦法，而模型後來已經跟上了。如果其中幾條仍是你的習慣，下面是為什麼可以放心放掉。</p>
+
+<div class="tbl-wrap"><table class="tbl">
+<thead><tr><th>過去的建議（The old advice）</th><th>為什麼不再需要（Why it's gone）</th></tr></thead>
+<tbody>
+<tr><td>脈絡視窗（context window）是你最主要的限制，要積極管理它</td><td>現在大多數模型都有 100 萬令牌（token）的視窗，而且壓縮（compaction）會自動發生，所以用完很少見。在任務之間用 <code>/clear</code> 仍然值得做，因為專注的脈絡能給你更好的答案，也更省。</td></tr>
+<tr><td>在 Claude 一直漏掉的指示上加 IMPORTANT 或全大寫</td><td>較舊的模型有時需要這種強調。現在的模型會照著措辭平實的一行去做，而堆疊強調，多半只會讓 Claude 把那條規則套用過頭。如果它是一條不能讓步的規則，就把它變成 hook 或拒絕規則（deny rule）。如果那一行在長長的檔案裡被淹沒了，就是這個檔案需要變短。</td></tr>
+<tr><td>用子代理（subagents）來保護你的脈絡視窗（context window）</td><td>用完脈絡已經很少是問題了。子代理（subagents）對於平行工作、把吵雜的輸出擋在你的視線之外，以及獨立審查，仍然很棒，但這些每一項都會花額外的令牌（token）。</td></tr>
+<tr><td>委派給子代理（subagent）以得到更好的答案</td><td>把同一項任務交給子代理（subagent），並不會讓答案更好。全新的審查者確實有幫助，因為它沒看過你的推理，但這和委派是不同的事。</td></tr>
+<tr><td>在提示詞（prompt）裡寫 <code>think hard</code>、<code>think harder</code>、<code>be thorough</code></td><td>費力等級（effort）才是控制這件事的方式。這些片語是普通的提示詞（prompt）文字，會在 Claude 的費力設定（effort setting）範圍內輕推它，而不是會把它調高的關鍵字。<code>ultrathink</code> 仍然有效：它要求在那一輪做更深的推理，而不碰你的費力設定（effort setting）。</td></tr>
+<tr><td>告訴 Claude 要繼續做、循環到完成、不要偷懶</td><td>現在的模型通常不必被告知，也會把一項講定的任務做到底，而這類話比較可能造成過度工作，而不是解決停住不動的問題。給 Claude 一個要通過的檢查是不同的事，仍然值得做。如果一次執行確實提早停下，就說 <code>continue</code>（繼續），而對於沒人看著的執行，<code>/goal</code> 或 <code>Stop</code> hook 會強制執行。</td></tr>
+<tr><td>在 <code>CLAUDE.md</code> 裡描述你的架構和檔案配置</td><td>Claude 自己會讀儲存庫（repo）。只寫下不在那裡面的東西。</td></tr>
+</tbody></table></div>
+
+<p>如果這一頁上的其他建議，有哪一條開始讓你覺得是瑣碎的雜務，那大概就是一個訊號，表示它也屬於這張表。</p>
+
+<h2>相關資源<span class="en">Related resources</span></h2>
+
+<ul>
+<li><a href="https://code.claude.com/docs/en/how-claude-code-works">Claude Code 如何運作（How Claude Code works）</a>：迴圈、工具，以及啟動時載入的東西</li>
+<li><a href="https://code.claude.com/docs/en/context-window">探索脈絡視窗（Explore the context window）</a>：什麼東西會在工作階段中佔用空間，以及何時載入</li>
+<li><a href="https://code.claude.com/docs/en/features-overview">擴充 Claude Code（Extend Claude Code）</a>：在技能（skills）、hook、MCP、子代理（subagents）和外掛（plugins）之間做選擇</li>
+<li><a href="https://code.claude.com/docs/en/permission-modes">選擇權限模式（Choose a permission mode）</a>和<a href="https://code.claude.com/docs/en/permissions">設定權限（Configure permissions）</a></li>
+<li><a href="https://code.claude.com/docs/en/costs">有效管理成本（Manage costs effectively）</a></li>
+<li><a href="https://code.claude.com/docs/en/headless">以程式方式執行 Claude Code（Run Claude Code programmatically）</a>和<a href="https://code.claude.com/docs/en/routines">用雲端定時任務自動化工作（Automate work with cloud scheduled tasks）</a></li>
+<li>給團隊負責人和管理員：<a href="https://code.claude.com/docs/en/admin-setup">為你的組織設定 Claude Code（Set up Claude Code for your organization）</a></li>
+</ul>
+
+</section>
+<section class="panel tk" id="panel-takeaways" role="tabpanel">
+<p class="note">以下為譯者整理，非原文內容。</p>
+<h2>這篇在說什麼</h2>
+<p class="lead">這是 Anthropic 放在 Claude Code 官方文件裡的〈Claude Code 最佳實踐〉。它的核心意思是：Claude Code 的預設值大多已經夠用，真正需要你動手的，是「專案裡 Claude 光看程式碼看不出來的事」。</p>
+<p>文章把你可能碰到的問題歸成四類：它做出來的東西和你想的不一樣、它說做完了但其實沒有、它做了不能做的事，或是它花的時間和錢超出任務該有的程度。每一類對應一個做法：告訴它看不見的東西、給它一個可以檢查對錯的東西、把不能有例外的規則做成強制設定、在確實變貴變慢時才調整預設值。後半段再談怎麼邊看邊修，以及要讓它在你不在場時自己跑，該先確認什麼。</p>
+<h2>為什麼值得學</h2>
+<p>就算你不寫程式，只要身邊有人用 Claude Code 做事，這篇都給了一個很實用的分辨方式：哪些事交給 Claude 判斷就好，哪些事一定要用設定鎖死。讀的時候留意：這是官方文件，裡面的指令、功能和模型名稱（例如 Opus 5.5、Fable 5.2）會隨版本改變，譯文只對應我抓取當下的頁面；很多細節是給開發者看的，不懂的指令可以先略過，抓住每一節開頭的「提示（Tip）」就夠。</p>
+<h2>你可以帶走的重點</h2>
+
+<div class="pt"><h3>1. 「請你這樣做」和「一定會這樣做」是兩回事</h3>
+<p>你寫給 Claude 的提示詞、<code>CLAUDE.md</code>（放在專案裡的說明檔）和技能（skill），都是「請求」：Claude 讀了之後自己決定要不要照做，通常會，但不保證。hook（在固定時機自動執行的小程式）、拒絕規則和受管設定則是「規定」：不論模型怎麼想，Claude Code 每次都會執行。大部分事交給 Claude 判斷就好；只有「一定要發生、或絕對不能發生」的事，才值得做成規定。</p>
+<p class="eg">原文的檢測方式：如果你一直在加強某一行的語氣，Claude 還是漏掉，那一行就該改成 hook；反過來，如果有 hook 只是為了偏好，就刪掉。</p>
+<figure class="dgf"><div class="dg-wrap">
+<svg class="dg" viewBox="0 0 340 216" role="img" aria-labelledby="d1-t d1-d" xmlns="http://www.w3.org/2000/svg">
+<title id="d1-t">兩種指示的差別</title>
+<desc id="d1-d">左邊是非確定性的指示，包括提示詞、CLAUDE.md 和技能，由 Claude 讀了之後自己決定；右邊是確定性的設定，包括 hook、拒絕規則和受管設定，每次都由工具執行。下方虛線方塊：只是偏好就交給 Claude 決定，一定要發生的事就做成確定性設定。</desc>
+<defs><marker id="d1-a" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 z" fill="#4f5d75"/></marker></defs>
+<rect x="0" y="0" width="340" height="216" fill="#f5f5f5"/>
+<g font-size="12" fill="#2d3142">
+<text x="170" y="20" font-size="12" text-anchor="middle" font-weight="600">兩種指示，兩種保證</text>
+<rect x="10" y="34" width="150" height="100" rx="6" fill="#ffffff" stroke="#4f5d75" stroke-width="1.2"/>
+<text x="85.0" y="61.0" font-size="12" text-anchor="middle" font-weight="600">非確定性</text>
+<text x="85.0" y="79.0" font-size="12" text-anchor="middle">提示詞、CLAUDE.md、</text>
+<text x="85.0" y="97.0" font-size="12" text-anchor="middle">技能（skill）</text>
+<text x="85.0" y="115.0" font-size="12" text-anchor="middle">Claude 讀了再決定</text>
+<rect x="180" y="34" width="150" height="100" rx="6" fill="rgba(29,111,184,0.09)" stroke="#1d6fb8" stroke-width="1.6"/>
+<text x="255.0" y="61.0" font-size="12" text-anchor="middle" font-weight="600" fill="#1d6fb8">確定性</text>
+<text x="255.0" y="79.0" font-size="12" text-anchor="middle" font-weight="600" fill="#1d6fb8">hook、拒絕規則、</text>
+<text x="255.0" y="97.0" font-size="12" text-anchor="middle" font-weight="600" fill="#1d6fb8">受管設定</text>
+<text x="255.0" y="115.0" font-size="12" text-anchor="middle" font-weight="600" fill="#1d6fb8">每次都由工具執行</text>
+<rect x="10" y="150" width="320" height="56" rx="6" fill="#ffffff" stroke="#4f5d75" stroke-width="1.2" stroke-dasharray="5 4"/>
+<text x="170.0" y="173.0" font-size="12" text-anchor="middle">只是偏好 → 交給 Claude 決定</text>
+<text x="170.0" y="191.0" font-size="12" text-anchor="middle">一定要發生 → 做成確定性設定</text>
+</g>
+</svg></div></figure></div>
+
+<div class="pt"><h3>2. 只寫 Claude 自己找不到的東西</h3>
+<p>Claude 一開始就會讀你的程式碼，檔案結構、慣例、測試怎麼跑，它多半比你解釋得還快。所以真正該寫給它的，是沒有留在程式碼裡的事：會議上做的決定、只存在某個人腦袋裡的部署流程、整合測試需要的環境變數。寫之前問兩句：它讀程式碼找得到嗎？它會真的去找嗎？兩個都是，就不要寫。</p>
+<p class="eg">原文的例子：<code>CLAUDE.md</code> 只放確認工作的指令、容易誤導人的地方、不在儲存庫裡的決定，以及你已經糾正過兩次的事。檔案一長，重要的那一行反而會被淹沒。</p>
+<figure class="dgf"><div class="dg-wrap">
+<svg class="dg" viewBox="0 0 340 208" role="img" aria-labelledby="d2-t d2-d" xmlns="http://www.w3.org/2000/svg">
+<title id="d2-t">寫下來之前的兩個問題</title>
+<desc id="d2-d">由上往下：第一問，Claude 讀程式碼找得到嗎；第二問，它會真的去找嗎。兩個答案都是「是」，就不要寫，因為 Claude 自己會做到。任何一問答「否」，就寫進 CLAUDE.md 或技能。</desc>
+<defs><marker id="d2-a" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 z" fill="#4f5d75"/></marker></defs>
+<rect x="0" y="0" width="340" height="208" fill="#f5f5f5"/>
+<g font-size="12" fill="#2d3142">
+<text x="105" y="20" font-size="12" text-anchor="middle" font-weight="600">寫下來之前的兩個問題</text>
+<rect x="10" y="34" width="190" height="36" rx="6" fill="#ffffff" stroke="#4f5d75" stroke-width="1.2"/>
+<text x="105.0" y="56.0" font-size="12" text-anchor="middle">1. 讀程式碼找得到嗎？</text>
+<rect x="10" y="92" width="190" height="36" rx="6" fill="#ffffff" stroke="#4f5d75" stroke-width="1.2"/>
+<text x="105.0" y="114.0" font-size="12" text-anchor="middle">2. 它會真的去找嗎？</text>
+<rect x="10" y="150" width="190" height="48" rx="6" fill="rgba(29,111,184,0.09)" stroke="#1d6fb8" stroke-width="1.6"/>
+<text x="105.0" y="169.0" font-size="12" text-anchor="middle" font-weight="600" fill="#1d6fb8">不要寫</text>
+<text x="105.0" y="187.0" font-size="12" text-anchor="middle" font-weight="600" fill="#1d6fb8">（Claude 自己會做到）</text>
+<rect x="232" y="34" width="98" height="94" rx="6" fill="#ffffff" stroke="#4f5d75" stroke-width="1.2"/>
+<text x="281.0" y="58.0" font-size="12" text-anchor="middle">寫下來</text>
+<text x="281.0" y="76.0" font-size="12" text-anchor="middle">放進</text>
+<text x="281.0" y="94.0" font-size="12" text-anchor="middle">CLAUDE.md</text>
+<text x="281.0" y="112.0" font-size="12" text-anchor="middle">或技能（skill）</text>
+<polyline points="110,70 110,90" fill="none" stroke="#4f5d75" stroke-width="1.4" marker-end="url(#d2-a)"/>
+<text x="118" y="85" font-size="12" text-anchor="start">是</text>
+<polyline points="110,128 110,148" fill="none" stroke="#4f5d75" stroke-width="1.4" marker-end="url(#d2-a)"/>
+<text x="118" y="143" font-size="12" text-anchor="start">兩個都是</text>
+<polyline points="200,52 230,52" fill="none" stroke="#4f5d75" stroke-width="1.4" marker-end="url(#d2-a)"/>
+<text x="207" y="46" font-size="12" text-anchor="start">否</text>
+<polyline points="200,110 230,110" fill="none" stroke="#4f5d75" stroke-width="1.4" marker-end="url(#d2-a)"/>
+<text x="207" y="104" font-size="12" text-anchor="start">否</text>
+</g>
+</svg></div></figure></div>
+
+<div class="pt"><h3>3. 給它一個會回答「過」或「不過」的檢查</h3>
+<p>Claude 在工作「看起來」完成時就會停下來。如果它沒有任何東西能告訴它是不是真的完成，那你就成了測試員，每個錯誤都躺在那裡等你發現。給它一個能回報通過或失敗的東西，它就能自己做修改、跑檢查、讀錯誤、再修正，直到通過。檢查可以是一組測試、一個程式檢查工具，甚至是畫面截圖和設計稿的對照。</p>
+<p class="eg">檢查有四個嚴格程度：在提示詞裡請它跑到通過為止；用 <code>/goal</code> 設一個完成條件；用 <code>Stop</code> hook 強制它通過才能結束；或請沒看過你對話的全新子代理（subagent）來審查。不論哪一種，都要它附上證據（執行的指令與輸出、截圖），而不是只說「都通過了」。</p>
+<figure class="dgf"><div class="dg-wrap">
+<svg class="dg" viewBox="0 0 340 248" role="img" aria-labelledby="d3-t d3-d" xmlns="http://www.w3.org/2000/svg">
+<title id="d3-t">過／不過的檢查迴圈</title>
+<desc id="d3-d">由上往下：做出修改，執行檢查，判斷通過了嗎。通過就完成。沒通過，虛線箭頭回到做出修改，讀輸出再修正，再跑一次。整個迴圈由 Claude 自己跑，你不必盯著。</desc>
+<defs><marker id="d3-a" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 z" fill="#4f5d75"/></marker></defs>
+<rect x="0" y="0" width="340" height="248" fill="#f5f5f5"/>
+<g font-size="12" fill="#2d3142">
+<text x="170" y="18" font-size="12" text-anchor="middle" font-weight="600">給 Claude 一個過／不過的檢查</text>
+<rect x="10" y="30" width="140" height="36" rx="6" fill="#ffffff" stroke="#4f5d75" stroke-width="1.2"/>
+<text x="80.0" y="52.0" font-size="12" text-anchor="middle">做出修改</text>
+<rect x="10" y="86" width="140" height="36" rx="6" fill="#ffffff" stroke="#4f5d75" stroke-width="1.2"/>
+<text x="80.0" y="108.0" font-size="12" text-anchor="middle">執行檢查</text>
+<rect x="10" y="142" width="140" height="36" rx="6" fill="#ffffff" stroke="#4f5d75" stroke-width="1.2"/>
+<text x="80.0" y="164.0" font-size="12" text-anchor="middle">通過了嗎？</text>
+<rect x="10" y="198" width="140" height="36" rx="6" fill="rgba(29,111,184,0.09)" stroke="#1d6fb8" stroke-width="1.6"/>
+<text x="80.0" y="220.0" font-size="12" text-anchor="middle" font-weight="600" fill="#1d6fb8">完成</text>
+<polyline points="80,66 80,84" fill="none" stroke="#4f5d75" stroke-width="1.4" marker-end="url(#d3-a)"/>
+<polyline points="80,122 80,140" fill="none" stroke="#4f5d75" stroke-width="1.4" marker-end="url(#d3-a)"/>
+<polyline points="80,178 80,196" fill="none" stroke="#4f5d75" stroke-width="1.4" marker-end="url(#d3-a)"/>
+<text x="88" y="192" font-size="12" text-anchor="start">通過</text>
+<polyline points="150,160 190,160 190,48 152,48" fill="none" stroke="#4f5d75" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#d3-a)"/>
+<text x="198" y="96" font-size="12" text-anchor="start">沒通過：</text>
+<text x="198" y="114" font-size="12" text-anchor="start">讀輸出，</text>
+<text x="198" y="132" font-size="12" text-anchor="start">再修正</text>
+<text x="198" y="214" font-size="12" text-anchor="start">Claude 自己跑，</text>
+<text x="198" y="232" font-size="12" text-anchor="start">你不必盯著</text>
+</g>
+</svg></div></figure></div>
+
+<div class="pt"><h3>4. 絕對不能出錯的事，交給設定，不要靠叮嚀</h3>
+<p>原文舉的三個例子是：絕不讀 <code>.env</code>、編輯後一律跑格式化工具、不要動 migrations 資料夾。Claude 幾乎每次都會遵守，但對「幾乎不夠好」的少數規則，就從說明檔搬到設定裡：格式化可以做成每次編輯後自動執行的 hook，不能讀的檔案寫進拒絕規則，連 <code>cat .env</code> 這種指令也會被擋下。要注意兩件事：規則比對的是工具呼叫，不是意圖，有些繞法擋不住；而且這類規則要保持少量，每一條都需要有人維護，原文說如果你有四十條，多半大部分只是偏好。</p>
+<p class="eg">規則放哪裡，決定它管誰：個人設定檔只管你自己；專案裡的設定提交後管每個人；組織的受管設定誰也覆寫不了，是資安團隊政策唯一的歸宿。</p></div>
+
+<div class="pt"><h3>5. 預設值夠好，覺得太貴、太慢、太常被打斷時再調</h3>
+<p>原文把可能要調的東西列成四項，並建議先用 <code>/usage</code> 看錢和時間花到哪裡去：</p>
+<ul>
+<li>權限模式：手動模式每一步都問你，安全但你會開始不看就按；自動模式由另一個模型擋下重大動作，是現在的預設，但你的「絕不」規則仍然要放在拒絕規則或 hook。</li>
+<li>費力等級（effort）：預設 <code>medium</code> 夠日常功能開發；碰到容易漏掉的情況（別人寫的程式碼裡的錯誤、不穩定的測試）調高，快速來回時調低，<code>max</code> 留給你不在場時要解的難題。</li>
+<li>子代理（subagent）：能平行處理、能把很長的輸出擋在主對話外，但主要成本是令牌（token），而且不會讓答案更聰明；簡單的工作可以指定較小的模型。</li>
+<li>脈絡與成本：無關的任務之間用 <code>/clear</code>，因為每個請求都會把整段對話再送一次。</li>
+</ul></div>
+
+<div class="pt"><h3>6. 放手讓它自己跑之前，先問五個問題</h3>
+<p>你在場時，Claude 缺了某個資訊，一兩句話就補上了；你睡著時，它可能整晚都在錯誤的假設上做事。所以任務要無人看管地跑之前，原文建議先逐項確認：</p>
+<ol>
+<li>它知道「完成」長什麼樣子嗎？</li>
+<li>它能檢查自己的工作嗎？</li>
+<li>它被允許碰什麼？</li>
+<li>什麼會讓它停下來（回合數或花費上限）？</li>
+<li>結果送到哪裡，由誰簽核？</li>
+</ol>
+<p>有你在場時也一樣有控制手段：看著最開始的一分鐘，Claude 一偏離就按 <code>Esc</code>；用 <code>/rewind</code> 退回較早的狀態，所以大膽試一下風險不高；如果同一件事糾正了兩次還是不對，就用 <code>/clear</code> 重開並寫一個更好的提示詞，不要做第三次修正。</p>
+<p class="eg">原文最後也列了「可以不用再做的事」：在指示裡加 IMPORTANT 或全大寫、叫它「別偷懶」、用子代理換更好的答案。現在的模型不需要這些，做了反而容易過度。</p></div>
+
+<h2>怎麼開始</h2>
+<ol>
+<li>下一次下提示詞時，指名檔案、描述症狀，並說明「修好」是什麼樣子；不確定自己要什麼時，請 Claude 先訪談你、寫成規格檔再動手。</li>
+<li>把你專案裡「執行測試、型別檢查」的指令寫進 <code>CLAUDE.md</code>，並請 Claude 每次都附上它跑過的指令與輸出。</li>
+<li>想一條「絕對不能發生」的規則，請 Claude 幫你寫成 hook 或拒絕規則；其餘偏好留在說明檔，讓它自己權衡。</li>
+<li>覺得變慢或變貴時，先執行 <code>/usage</code>，再從四項預設值裡挑一項調整，而不是一次全改。</li>
+<li>要讓任務無人看管地跑之前，把第 6 點的五個問題逐題過一遍；剛設定好的排程任務，先看最初的幾次執行。</li>
+</ol>
+
+</section>
+<footer>原文：Anthropic〈Best practices for Claude Code〉（Claude Code 官方文件）。繁體中文翻譯，僅供個人閱讀。</footer>
+</main>
+</body>
+</html>
