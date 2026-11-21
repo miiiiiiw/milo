@@ -92,6 +92,10 @@ aside{display:flex;flex-direction:column;border-right:1px solid var(--rule);min-
 .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
 .tag{font-family:var(--mono);font-size:10px;padding:1px 6px;border-radius:99px;background:var(--accent-soft);color:var(--accent)}
 .card.on .tag{background:transparent;color:var(--sel-ink);border:1px solid currentColor;opacity:.75}
+.tag[data-tag]{cursor:pointer}
+.tag[data-tag]:hover{filter:brightness(1.15);text-decoration:underline}
+.hit-tags{display:flex;flex-wrap:wrap;gap:4px;padding:0 10px 6px 46px;margin-top:-2px}
+.hit-tags .tag mark{background:none;color:inherit;font-weight:700}
 .empty{padding:30px 14px;color:var(--ink-3);text-align:center;font-size:13px}
 mark{background:var(--accent-soft);color:inherit;border-radius:2px}
 
@@ -340,6 +344,20 @@ const isNew = f => f.date && (Date.now() - ts(f)) < CONFIG.newDays*864e5;
 const fmtDate = d => d ? new Date(d).toLocaleDateString("zh-TW",{year:"numeric",month:"2-digit",day:"2-digit"}).replace(/\//g,".") : "";
 const shortDate = d => d ? fmtDate(d).slice(5) : "";
 
+// 與資料夾重複的標籤只在畫面上省略，搜尋照樣比對
+const FOLDER_TAGS = new Set(["原文學習","影片學習"]);
+function showTags(tags){ return tags.filter(t=>!FOLDER_TAGS.has(t)); }
+function hitTags(f){
+  if(!QUERY) return "";
+  const hit = showTags(f.tags).filter(t=>t.toLowerCase().includes(QUERY));
+  return hit.length ? `<div class="hit-tags">${hit.map(t=>`<span class="tag" data-tag="${esc(t)}">${hl(t)}</span>`).join("")}</div>` : "";
+}
+// 用標籤（或任何字）搜尋：填入搜尋框、打開側欄
+function searchFor(q){
+  q = String(q||"").trim(); if(!q) return;
+  $("#q").value = q; QUERY = q.toLowerCase(); SEARCH_CLOSED.clear(); render();
+  document.body.classList.add("drawer");
+}
 function hl(text){
   if(!QUERY) return esc(text);
   const i = text.toLowerCase().indexOf(QUERY);
@@ -367,7 +385,7 @@ function renderTree(node, depth=0){
   for(const f of files){
     html += `<div class="file"><button class="row ${CURRENT===f.path?"on":""}" data-open="${esc(f.path)}" title="${esc(f.path)}">
       <span class="tw"></span>${ICON.file}<span class="nm">${hl(f.title)}</span>
-      ${isNew(f)?'<span class="new-dot" title="新"></span>':""}<span class="meta">${shortDate(f.date)}</span></button></div>`;
+      ${isNew(f)?'<span class="new-dot" title="新"></span>':""}<span class="meta">${shortDate(f.date)}</span></button>${hitTags(f)}</div>`;
   }
   return html;
 }
@@ -390,7 +408,7 @@ function renderTimeline(){
     html += `<button class="card ${CURRENT===f.path?"on":""}" data-open="${esc(f.path)}">
       <div class="d">${d?d.getDate():"–"}<small>${d?["SUN","MON","TUE","WED","THU","FRI","SAT"][d.getDay()]:""}</small></div>
       <div><div class="t">${hl(f.title)}</div><div class="p">${hl(dirLabel(f.tdir)||"/")}</div>
-      ${f.tags.length?`<div class="tags">${f.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>`:""}</div></button>`;
+      ${f.tags.length?`<div class="tags">${showTags(f.tags).map(t=>`<span class="tag" data-tag="${esc(t)}">${hl(t)}</span>`).join("")}</div>`:""}</div></button>`;
   }
   return html;
 }
@@ -413,7 +431,7 @@ function renderCover(){
       <div class="n"><span>${String(i+1).padStart(2,"0")}</span><span>${fmtDate(f.date)}</span></div>
       <div class="t">${esc(f.title)}</div>
       <div class="s">${esc(f.description || dirLabel(f.dir))}</div>
-      ${f.tags.length?`<div class="tags">${f.tags.slice(0,3).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>`:""}
+      ${f.tags.length?`<div class="tags">${showTags(f.tags).slice(0,3).map(t=>`<span class="tag" data-tag="${esc(t)}">${esc(t)}</span>`).join("")}</div>`:""}
     </button>`;
   $("#cover").innerHTML = `
     <div class="k">Notes · ${FILES.length} pages</div>
@@ -479,6 +497,7 @@ function reveal(dir){
 
 /* ---------- events ---------- */
 document.addEventListener("click", e=>{
+  const g = e.target.closest("[data-tag]"); if(g){ e.preventDefault(); e.stopPropagation(); searchFor(g.dataset.tag); return; }
   const o = e.target.closest("[data-open]"); if(o){ show(o.dataset.open); return; }
   const t = e.target.closest("[data-toggle]");
   if(t){ const p=t.dataset.toggle;
@@ -553,6 +572,7 @@ document.addEventListener("keydown", e=>{
   if(e.key==="Escape") document.body.classList.remove("full","drawer");
 });
 addEventListener("popstate", route);
+addEventListener("message", e=>{ if(e.origin===location.origin && e.data && e.data.milo==="tag") searchFor(e.data.q); });
 
 /* ---------- boot ---------- */
 (async()=>{
@@ -568,6 +588,8 @@ addEventListener("popstate", route);
   setView(store.get("view","tree"));
   renderCover();
   route();
+  const q0 = new URLSearchParams(location.search).get("q");
+  if(q0){ searchFor(q0); history.replaceState(null,"",location.pathname+location.hash); }
 })();
 </script>
 </body>

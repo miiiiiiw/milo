@@ -139,3 +139,25 @@ export const PROGRESS_JS =
   'addEventListener("resize",function(){ticks();req()});addEventListener("load",function(){ticks();req()});' +
   'var rs=document.querySelectorAll(".tab-r");for(var k=0;k<rs.length;k++)rs[k].addEventListener("change",function(){done=false;half=false;last=-1;lit={};bar.classList.remove("done");setTimeout(function(){ticks();upd()},50)});' +
   'ticks();upd()}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init()})();</script>';
+
+// ── 文章標籤（2026-11-22 與使用者確認）：把 <meta name="keywords"> 顯示成資訊框下方的一排標籤 ──
+// 「原文學習」「影片學習」與資料夾重複，只在畫面上省略（搜尋照樣比對）。
+// 點標籤：在導覽頁的預覽框裡 → 通知導覽頁直接搜尋；單獨開啟 → 回到導覽頁並帶 ?q=標籤 搜尋。
+export const TAGS_CSS =
+  "\n/* ── milo 文章標籤（收件匣同步自動加入，請勿手改） ── */\n" +
+  ".milo-tags{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px}\n" +
+  ".milo-tags a{font-size:12px;line-height:20px;letter-spacing:.5px;padding:2px 10px;border-radius:999px;background:rgba(127,127,127,.12);color:inherit;text-decoration:none;opacity:.8;transition:opacity .2s,background .2s}\n" +
+  ".milo-tags a::before{content:\"#\";margin-right:2px;opacity:.55}\n" +
+  ".milo-tags a:hover,.milo-tags a:focus-visible{opacity:1;background:rgba(255,138,76,.18)}\n" +
+  "@media print{.milo-tags{display:none}}\n";
+
+export const TAGS_JS =
+  '<script>/* milo 文章標籤 */(function(){function go(){' +
+  'var m=document.querySelector(\'meta[name="keywords"]\');if(!m||document.querySelector(".milo-tags"))return;' +
+  'var skip={"原文學習":1,"影片學習":1},tags=m.content.split(/[,，]/).map(function(s){return s.trim()}).filter(function(t){return t&&!skip[t]});if(!tags.length)return;' +
+  'var nav=document.createElement("nav");nav.className="milo-tags";nav.setAttribute("aria-label","標籤");' +
+  'function host(){try{var p=window.parent;if(p!==window&&p.location.origin===location.origin&&p.document.getElementById("q"))return p}catch(e){}return null}' +
+  'tags.forEach(function(t){var a=document.createElement("a");a.href="../?q="+encodeURIComponent(t);a.textContent=t;' +
+  'a.addEventListener("click",function(e){var p=host();if(p){e.preventDefault();p.postMessage({milo:"tag",q:t},location.origin)}});nav.appendChild(a)});' +
+  'var at=document.querySelector(".meta")||document.querySelector("h1");if(at)at.parentNode.insertBefore(nav,at.nextSibling)}' +
+  'if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",go);else go()})();</script>';
