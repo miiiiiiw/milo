@@ -53,22 +53,22 @@ export const TYPE_CSS =
 
 // ── 閱讀進度條（2026-11-21 與使用者確認）：流光漸層＋章節刻度＋流蘇前緣＋讀完慶祝 ──
 // 結構：#milo-rp > .fill（寬度＝進度）> .body（流光本體，往前多延伸一段，用遮罩裁出尾端淡出與五縷流蘇）
-// 流蘇就是本體的一部分，顏色與流光會一路延續；波浪擺動靠動畫改變遮罩的長度。
-// 捲動時加 .moving：前端變亮、流蘇擺動加快；讀到底加 .done：整條轉金色並浮出提示。
+// 流蘇就是本體的一部分，顏色與流光會一路延續；波浪擺動由腳本逐格改變遮罩長度（Safari 不會播放遮罩的 CSS 動畫，所以不用 @keyframes）。
+// 捲動時加 .moving：前端變亮、流蘇擺動加快；讀過一半加 .half：亮一下並浮出打氣提示；讀到底加 .done：整條轉金色並浮出提示。
 export const PROGRESS_CSS =
   "\n" +
   "/* ── milo 閱讀進度條（收件匣同步自動加入，請勿手改） ── */\n" +
   "#milo-rp{position:fixed;top:0;left:0;right:0;height:5px;z-index:50;pointer-events:none;background:rgba(255,140,90,.14)}\n" +
   "#milo-rp .fill{position:relative;height:100%;width:0;filter:drop-shadow(0 0 4px rgba(255,120,70,.45))}\n" +
-  "#milo-rp .body{position:absolute;top:0;bottom:0;left:0;right:-10px;background:linear-gradient(90deg,#ff5f6d,#ff8a4c,#ffc23d,#ff8a4c,#ff5f6d);background-size:200% 100%;animation:milo-rp-flow 3s linear infinite,milo-rp-wave 1.8s ease-in-out infinite;-webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 46px),rgba(0,0,0,.7) calc(100% - 32px),rgba(0,0,0,.3) calc(100% - 20px),transparent calc(100% - 10px)),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%);mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 46px),rgba(0,0,0,.7) calc(100% - 32px),rgba(0,0,0,.3) calc(100% - 20px),transparent calc(100% - 10px)),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:0 0,right 10px top 0px,right 18px top 1px,right 2px top 2px,right 21px top 3px,right 13px top 4px;mask-position:0 0,right 10px top 0px,right 18px top 1px,right 2px top 2px,right 21px top 3px,right 13px top 4px;-webkit-mask-size:100% 100%,30px 1px,22px 1px,38px 1px,19px 1px,27px 1px;mask-size:100% 100%,30px 1px,22px 1px,38px 1px,19px 1px,27px 1px}\n" +
-  "#milo-rp.moving .body{animation-duration:3s,.8s}\n" +
+  "#milo-rp .body{position:absolute;top:0;bottom:0;left:0;right:-4px;background:linear-gradient(90deg,#ff5f6d,#ff8a4c,#ffc23d,#ff8a4c,#ff5f6d);background-size:200% 100%;animation:milo-rp-flow 3s linear infinite;-webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 22px),rgba(0,0,0,.7) calc(100% - 14px),rgba(0,0,0,.3) calc(100% - 8px),transparent calc(100% - 4px)),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%);mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 22px),rgba(0,0,0,.7) calc(100% - 14px),rgba(0,0,0,.3) calc(100% - 8px),transparent calc(100% - 4px)),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%),linear-gradient(90deg,transparent,#000 30%,rgba(0,0,0,.3) 58%,transparent 85%);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:0 0,right 6px top 0px,right 9px top 1px,right 3px top 2px,right 10px top 3px,right 7px top 4px;mask-position:0 0,right 6px top 0px,right 9px top 1px,right 3px top 2px,right 10px top 3px,right 7px top 4px;-webkit-mask-size:100% 100%,12px 1px,9px 1px,15px 1px,8px 1px,11px 1px;mask-size:100% 100%,12px 1px,9px 1px,15px 1px,8px 1px,11px 1px}\n" +
   "#milo-rp .body::after{content:\"\";position:absolute;top:0;right:0;width:72px;height:100%;background:linear-gradient(90deg,rgba(255,244,214,0),rgba(255,244,214,.85) 60%,rgba(255,244,214,.85));opacity:.4;transition:opacity .3s}\n" +
   "#milo-rp.moving .body::after{opacity:1}\n" +
   "@keyframes milo-rp-flow{to{background-position:-200% 0}}\n" +
-  "@keyframes milo-rp-wave{0%{-webkit-mask-position:0 0,right 10px top 0px,right 12px top 1px,right 0px top 2px,right 24px top 3px,right 19px top 4px;mask-position:0 0,right 10px top 0px,right 12px top 1px,right 0px top 2px,right 24px top 3px,right 19px top 4px;-webkit-mask-size:100% 100%,30px 1px,28px 1px,40px 1px,16px 1px,21px 1px;mask-size:100% 100%,30px 1px,28px 1px,40px 1px,16px 1px,21px 1px}25%{-webkit-mask-position:0 0,right 4px top 0px,right 16px top 1px,right 6px top 2px,right 26px top 3px,right 12px top 4px;mask-position:0 0,right 4px top 0px,right 16px top 1px,right 6px top 2px,right 26px top 3px,right 12px top 4px;-webkit-mask-size:100% 100%,36px 1px,24px 1px,34px 1px,14px 1px,28px 1px;mask-size:100% 100%,36px 1px,24px 1px,34px 1px,14px 1px,28px 1px}50%{-webkit-mask-position:0 0,right 10px top 0px,right 24px top 1px,right 6px top 2px,right 18px top 3px,right 7px top 4px;mask-position:0 0,right 10px top 0px,right 24px top 1px,right 6px top 2px,right 18px top 3px,right 7px top 4px;-webkit-mask-size:100% 100%,30px 1px,16px 1px,34px 1px,22px 1px,33px 1px;mask-size:100% 100%,30px 1px,16px 1px,34px 1px,22px 1px,33px 1px}75%{-webkit-mask-position:0 0,right 16px top 0px,right 20px top 1px,right 0px top 2px,right 16px top 3px,right 14px top 4px;mask-position:0 0,right 16px top 0px,right 20px top 1px,right 0px top 2px,right 16px top 3px,right 14px top 4px;-webkit-mask-size:100% 100%,24px 1px,20px 1px,40px 1px,24px 1px,26px 1px;mask-size:100% 100%,24px 1px,20px 1px,40px 1px,24px 1px,26px 1px}100%{-webkit-mask-position:0 0,right 10px top 0px,right 12px top 1px,right 0px top 2px,right 24px top 3px,right 19px top 4px;mask-position:0 0,right 10px top 0px,right 12px top 1px,right 0px top 2px,right 24px top 3px,right 19px top 4px;-webkit-mask-size:100% 100%,30px 1px,28px 1px,40px 1px,16px 1px,21px 1px;mask-size:100% 100%,30px 1px,28px 1px,40px 1px,16px 1px,21px 1px}}\n" +
   "#milo-rp .tick{position:absolute;top:0;width:2px;height:100%;background:rgba(255,255,255,.85)}\n" +
   "#milo-rp.done .body{right:0;background:linear-gradient(90deg,#ffc23d,#ffd86b);-webkit-mask-image:none;mask-image:none;animation:milo-rp-done 1.2s ease-out 1}\n" +
   "#milo-rp.done .body::after{opacity:0}\n" +
+  "#milo-rp.half .fill{animation:milo-rp-half 1.2s ease-out 1}\n" +
+  "@keyframes milo-rp-half{30%{filter:drop-shadow(0 0 4px rgba(255,120,70,.45)) brightness(1.3)}100%{filter:drop-shadow(0 0 4px rgba(255,120,70,.45)) brightness(1)}}\n" +
   "@keyframes milo-rp-done{30%{filter:brightness(1.35)}100%{filter:brightness(1)}}\n" +
   "#milo-rp-toast{position:fixed;top:12px;left:50%;transform:translate(-50%,-8px);z-index:51;font:600 13px/20px 'Saira','PingFang TC',sans-serif;letter-spacing:.5px;color:#7a3b00;background:#fff3d6;border:1px solid #ffd27a;border-radius:999px;padding:4px 14px;box-shadow:0 4px 14px rgba(255,150,50,.25);opacity:0;transition:opacity .35s,transform .35s;pointer-events:none;white-space:nowrap}\n" +
   "#milo-rp-toast.show{opacity:1;transform:translate(-50%,0)}\n" +
@@ -80,17 +80,25 @@ export const PROGRESS_CSS =
 export const PROGRESS_JS =
   '<script>/* milo 閱讀進度條 */(function(){function init(){' +
   'var bar=document.createElement("div");bar.id="milo-rp";bar.innerHTML=\'<div class="fill"><i class="body"></i></div>\';' +
-  'var toast=document.createElement("div");toast.id="milo-rp-toast";toast.textContent="讀完了，辛苦了 ✦";' +
-  'document.body.appendChild(bar);document.body.appendChild(toast);var fill=bar.firstChild,done=false,raf=0,mt=0;' +
+  'var toast=document.createElement("div");toast.id="milo-rp-toast";' +
+  'document.body.appendChild(bar);document.body.appendChild(toast);var fill=bar.firstChild,done=false,half=false,last=-1,raf=0,mt=0,tt=0;'+
+  'function say(s){toast.textContent=s;toast.classList.add("show");clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove("show")},2200)}' +
+  'var BD=fill.firstChild,RW=[12,9,15,8,11],S=18,ph=0,lt=0,RM=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;' +
+  'function wave(ts){var dt=lt?Math.min(.1,(ts-lt)/1000):0;lt=ts;if(!document.hidden&&!done){ph+=dt*2*Math.PI/(bar.classList.contains("moving")?.8:1.8);' +
+  'var sz="100% 100%",ps="0 0";for(var i=0;i<5;i++){var w=Math.max(6,Math.min(S,Math.round(RW[i]+3*Math.sin(ph+i*1.2))));sz+=","+w+"px 1px";ps+=",right "+(S-w)+"px top "+i+"px"}' +
+  'BD.style.webkitMaskSize=sz;BD.style.maskSize=sz;BD.style.webkitMaskPosition=ps;BD.style.maskPosition=ps}requestAnimationFrame(wave)}' +
+  'if(!RM)requestAnimationFrame(wave);' +
   'function panel(){var ps=document.querySelectorAll(\'[id^="panel-"]\');for(var i=0;i<ps.length;i++){if(ps[i].offsetParent!==null)return ps[i]}return document.querySelector("main")||document.body}' +
   'function len(p){var top=p.getBoundingClientRect().top+scrollY,end=document.documentElement.scrollHeight-innerHeight-top;return Math.max(1,Math.min(p.offsetHeight-innerHeight*.6,end))}' +
   'function ticks(){var old=bar.querySelectorAll(".tick");for(var i=0;i<old.length;i++)old[i].remove();var p=panel(),top=p.getBoundingClientRect().top+scrollY,L=len(p),hs=p.querySelectorAll("h2");' +
   'for(var j=0;j<hs.length;j++){var f=(hs[j].getBoundingClientRect().top+scrollY-top)/L;if(f>.02&&f<.98){var t=document.createElement("i");t.className="tick";t.style.left=(f*100)+"%";bar.appendChild(t)}}}' +
   'function upd(){raf=0;var p=panel(),f=Math.min(1,Math.max(0,-p.getBoundingClientRect().top/len(p)));fill.style.width=(f*100)+"%";' +
-  'if(f>=.995&&!done){done=true;bar.classList.add("done");toast.classList.add("show");setTimeout(function(){toast.classList.remove("show")},2200)}' +
-  'else if(f<.97&&done){done=false;bar.classList.remove("done")}}' +
+  'if(last>=0&&last<.5&&f>=.5&&f<.995&&!half){half=true;say("過半了，繼續加油 ✦");bar.classList.add("half");setTimeout(function(){bar.classList.remove("half")},1200)}' +
+  'if(f<.45)half=false;' +
+  'if(f>=.995&&!done){done=true;bar.classList.add("done");say("讀完了，辛苦了 ✦")}' +
+  'else if(f<.97&&done){done=false;bar.classList.remove("done")}last=f}' +
   'function req(){if(!raf)raf=requestAnimationFrame(upd)}' +
   'addEventListener("scroll",function(){req();bar.classList.add("moving");clearTimeout(mt);mt=setTimeout(function(){bar.classList.remove("moving")},500)},{passive:true});' +
   'addEventListener("resize",function(){ticks();req()});addEventListener("load",function(){ticks();req()});' +
-  'var rs=document.querySelectorAll(".tab-r");for(var k=0;k<rs.length;k++)rs[k].addEventListener("change",function(){done=false;bar.classList.remove("done");setTimeout(function(){ticks();upd()},50)});' +
+  'var rs=document.querySelectorAll(".tab-r");for(var k=0;k<rs.length;k++)rs[k].addEventListener("change",function(){done=false;half=false;last=-1;bar.classList.remove("done");setTimeout(function(){ticks();upd()},50)});' +
   'ticks();upd()}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init()})();</script>';
