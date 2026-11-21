@@ -178,5 +178,25 @@
     "v": 13,
     "synced": "2026-11-19",
     "cat": "build"
+  },
+  "alexandr-wang-yc-builders": {
+    "sha256": "e3ae1bd5097ff5c9d784d0cec938b7b76c177df5ee984b4448e8e2aaf39f27ff",
+    "v": 13,
+    "synced": "2026-11-21"
+  },
+  "gary-chen-cicd-basics": {
+    "sha256": "82c9b406184d6797c645ff4065b9bd43bd23362eb349b3686d2ab6f43307f27f",
+    "v": 13,
+    "synced": "2026-11-21"
+  },
+  "kareema-fable-stickman": {
+    "sha256": "95bd227de95485241553b0af095d302607b72edbb818732cd86f82431f43cfcf",
+    "v": 13,
+    "synced": "2026-11-21"
+  },
+  "nate-parrott-claude-design": {
+    "sha256": "ad49c1f9d9696cd3aff117a49bc63d92145fd60c633f7fca26cf3a581d91ff9e",
+    "v": 13,
+    "synced": "2026-11-21"
   }
 }
