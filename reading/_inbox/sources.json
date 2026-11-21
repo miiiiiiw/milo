@@ -232,5 +232,70 @@
     "v": 23,
     "synced": "2026-11-19",
     "cat": "build"
+  },
+  "anthropic-agent-skills": {
+    "sha256": "7cd950b8b16116e8266649fb0653fdc801113c9fb82719a1339d4582192ee83f",
+    "v": 23,
+    "synced": "2026-11-21"
+  },
+  "anthropic-building-effective-agents": {
+    "sha256": "b074d643e9342007f6bac936e669b8ca7dabba599cbea33e004a8f2537bdfe43",
+    "v": 23,
+    "synced": "2026-11-21"
+  },
+  "anthropic-context-engineering": {
+    "sha256": "62e7984aabe899bd26fd9719c197f90163762ca9c7e1d31cb71593e842551f9b",
+    "v": 23,
+    "synced": "2026-11-21"
+  },
+  "anthropic-teams-claude-code": {
+    "sha256": "850f5bbbf310a01eb4e7d9ff41246e32da9bd43bdc1f739aac46b87de7c7afe4",
+    "v": 23,
+    "synced": "2026-11-21"
+  },
+  "claude-code-best-practices": {
+    "sha256": "9f4908542d9738b80e8354972ea5f0fed3a937fc13a747fbde36989bb38284bc",
+    "v": 23,
+    "synced": "2026-11-21"
+  },
+  "dankoe-writing-habit": {
+    "sha256": "c88970d2104c54ab979bdfdd171a0a64efd68df0b2b45c278e5c29e8999bdec1",
+    "v": 23,
+    "synced": "2026-11-21"
+  },
+  "leo-ai-comic-drama": {
+    "sha256": "970abe1e3bd1a6d4ffcd7ac2963c6047438a7d72f5dd7615eaa0c00ba71958d6",
+    "v": 23,
+    "synced": "2026-11-21"
+  },
+  "ryan-x-brand": {
+    "sha256": "d939554774f836fa07df7f333a66cb0f2223152c0f1bb7e894e1d03c7355293d",
+    "v": 23,
+    "synced": "2026-11-21"
+  },
+  "tongfeifan-multi-agent": {
+    "sha256": "6f5de7f6473a89fa206004892db958baee9e3138e84f21c77cb7d100227a0795",
+    "v": 23,
+    "synced": "2026-11-21"
+  },
+  "trq212-dynamic-workflows": {
+    "sha256": "e654c1073c6d2e3187cd5bc619b17062c9a648232d1f7cde428bb601d6919c28",
+    "v": 23,
+    "synced": "2026-11-21"
+  },
+  "trq212-html-effectiveness": {
+    "sha256": "6e59e06cd4f2332c39473711f14b00f008540bcfa1d76ac3382b3bc9130ffbc8",
+    "v": 23,
+    "synced": "2026-11-21"
+  },
+  "trq212-spending-effort": {
+    "sha256": "9aa8d76eb8687063eb0edde1890021b43a6a4ab09103677ec65296a209699ed0",
+    "v": 23,
+    "synced": "2026-11-21"
+  },
+  "xiaomo-harness": {
+    "sha256": "3790ddf64b3ea98a65c8975405c13ad13481e2b3c29fc5cbbf6e128579b7e767",
+    "v": 23,
+    "synced": "2026-11-21"
   }
 }
