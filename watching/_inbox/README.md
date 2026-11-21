@@ -54,6 +54,7 @@ Grok Bot ──寫入──▶ grokbot-inbox 的 milo/watching/<檔名>.html
   - 預設請 Grok 改用色票重推。
   - 顏色確實有需要（Grok 在回報中提出用途）時，補 `SVG_MAP`／`DARK_RULES`、`VERSION` +1，並把該色加進收件匣規格的色票表，兩邊保持一致。
 - **字型規範**（2026-11-19 與使用者確認，與原文學習共用）：`sync.mjs` 注入 `scripts/page-enhance.mjs` 的 `FONT_LINK`（Saira）與 `TYPE_CSS`，數值見原文學習收件匣說明。改 `TYPE_CSS` 後兩邊 `VERSION` 都要 +1。
+- **閱讀進度條**（2026-11-21 與使用者確認，原文學習與影片學習共用）：`sync.mjs` 注入 `scripts/page-enhance.mjs` 的 `PROGRESS_CSS`、`PROGRESS_JS`。頁面最頂端 5px 的暖色流光漸層，依目前頁籤計算進度；每個 H2 的位置有白色章節刻度；前緣淡出成會波浪擺動的流蘇（捲動時加快、變亮）；讀到底整條轉金色並浮出「讀完了，辛苦了 ✦」。系統開啟「減少動態效果」時不播動畫。改 `page-enhance.mjs` 後兩邊 `VERSION` 都要 +1。
 - **分頁置頂縮小**：`sync.mjs` 另外注入 `scripts/page-enhance.mjs`（原文學習與影片學習共用）的 CSS 與腳本：分頁按鈕滑到置頂後縮成細列、只顯示英文；縮小時量測位移補回，內容不跳動；置頂時切換分頁會捲到新分頁開頭。改 `page-enhance.mjs` 後兩邊 `VERSION` 都要 +1。
 
 ## 分類

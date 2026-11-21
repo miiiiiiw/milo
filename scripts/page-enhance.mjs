@@ -50,3 +50,47 @@ export const TYPE_CSS =
   "figcaption{font-size:12px;line-height:18px}\n" +
   ".note,footer,.tweet .when,.emb-note,.zh-note .orig,.code-lab,.tweet .tr-lbl,.tabs label .s{font-size:12px;line-height:20px}\n" +
   "@media (max-width:560px){h1{font-size:24px;line-height:32px}h2{font-size:20px;line-height:28px}}\n";
+
+// ── 閱讀進度條（2026-11-21 與使用者確認）：流光漸層＋章節刻度＋流蘇前緣＋讀完慶祝 ──
+// 結構：#milo-rp > .fill（寬度＝進度）> .body（流光本體，尾端淡出）＋ .fringe（流蘇，從本體淡出處長出）
+// 捲動時加 .moving：前端變亮、流蘇擺動；讀到底加 .done：整條轉金色並浮出提示。
+export const PROGRESS_CSS =
+  "\n" +
+  "/* ── milo 閱讀進度條（收件匣同步自動加入，請勿手改） ── */\n" +
+  "#milo-rp{position:fixed;top:0;left:0;right:0;height:5px;z-index:50;pointer-events:none;background:rgba(255,140,90,.14)}\n" +
+  "#milo-rp .fill{position:relative;height:100%;width:0;filter:drop-shadow(0 0 4px rgba(255,120,70,.45))}\n" +
+  "#milo-rp .body{position:absolute;inset:0;background:linear-gradient(90deg,#ff5f6d,#ff8a4c,#ffc23d,#ff8a4c,#ff5f6d);background-size:200% 100%;animation:milo-rp-flow 3s linear infinite;-webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 36px),rgba(0,0,0,.7) calc(100% - 22px),rgba(0,0,0,.3) calc(100% - 10px),transparent);mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 36px),rgba(0,0,0,.7) calc(100% - 22px),rgba(0,0,0,.3) calc(100% - 10px),transparent)}\n" +
+  "#milo-rp .body::after{content:\"\";position:absolute;top:0;right:0;width:64px;height:100%;background:linear-gradient(90deg,rgba(255,244,214,0),rgba(255,244,214,.9) 55%,rgba(255,244,214,.9));opacity:.45;transition:opacity .3s}\n" +
+  "#milo-rp.moving .body::after{opacity:1}\n" +
+  "@keyframes milo-rp-flow{to{background-position:-200% 0}}\n" +
+  "#milo-rp .fringe{position:absolute;top:0;right:-8px;width:32px;height:100%;opacity:.7;transition:opacity .3s;background:linear-gradient(90deg,rgba(255,210,122,0),#ffd27a 30%,rgba(255,210,122,0.3) 58%,rgba(255,210,122,0) 85%) 0 0px/20px 1px no-repeat,linear-gradient(90deg,rgba(255,195,90,0),#ffc35a 30%,rgba(255,195,90,0.3) 58%,rgba(255,195,90,0) 85%) 0 1px/15px 1px no-repeat,linear-gradient(90deg,rgba(255,227,163,0),#ffe3a3 30%,rgba(255,227,163,0.3) 58%,rgba(255,227,163,0) 85%) 0 2px/24px 1px no-repeat,linear-gradient(90deg,rgba(255,190,85,0),#ffbe55 30%,rgba(255,190,85,0.3) 58%,rgba(255,190,85,0) 85%) 0 3px/13px 1px no-repeat,linear-gradient(90deg,rgba(255,210,122,0),#ffd27a 30%,rgba(255,210,122,0.3) 58%,rgba(255,210,122,0) 85%) 0 4px/18px 1px no-repeat;animation:milo-rp-wave 1.8s ease-in-out infinite}\n" +
+  "#milo-rp.moving .fringe{opacity:1;animation-duration:.8s}\n" +
+  "@keyframes milo-rp-wave{0%{background-size:20px 1px,20px 1px,27px 1px,11px 1px,13px 1px}25%{background-size:25px 1px,17px 1px,20px 1px,9px 1px,18px 1px}50%{background-size:20px 1px,10px 1px,21px 1px,15px 1px,23px 1px}75%{background-size:15px 1px,13px 1px,28px 1px,17px 1px,18px 1px}100%{background-size:20px 1px,20px 1px,27px 1px,11px 1px,13px 1px}}\n" +
+  "#milo-rp .tick{position:absolute;top:0;width:2px;height:100%;background:rgba(255,255,255,.85)}\n" +
+  "#milo-rp.done .body{background:linear-gradient(90deg,#ffc23d,#ffd86b);-webkit-mask-image:none;mask-image:none;animation:milo-rp-done 1.2s ease-out 1}\n" +
+  "#milo-rp.done .body::after,#milo-rp.done .fringe{opacity:0}\n" +
+  "@keyframes milo-rp-done{30%{filter:brightness(1.35)}100%{filter:brightness(1)}}\n" +
+  "#milo-rp-toast{position:fixed;top:12px;left:50%;transform:translate(-50%,-8px);z-index:51;font:600 13px/20px 'Saira','PingFang TC',sans-serif;letter-spacing:.5px;color:#7a3b00;background:#fff3d6;border:1px solid #ffd27a;border-radius:999px;padding:4px 14px;box-shadow:0 4px 14px rgba(255,150,50,.25);opacity:0;transition:opacity .35s,transform .35s;pointer-events:none;white-space:nowrap}\n" +
+  "#milo-rp-toast.show{opacity:1;transform:translate(-50%,0)}\n" +
+  "@media (prefers-color-scheme:dark){:root:not([data-theme=light]) #milo-rp-toast{color:#ffe2ad;background:#3a2a12;border-color:#7a5520}}\n" +
+  ":root[data-theme=dark] #milo-rp-toast{color:#ffe2ad;background:#3a2a12;border-color:#7a5520}\n" +
+  "@media (prefers-reduced-motion:reduce){#milo-rp .body,#milo-rp .fringe{animation:none}#milo-rp-toast{transition:none}}\n" +
+  "@media print{#milo-rp,#milo-rp-toast{display:none}}\n";
+
+export const PROGRESS_JS =
+  '<script>/* milo 閱讀進度條 */(function(){function init(){' +
+  'var bar=document.createElement("div");bar.id="milo-rp";bar.innerHTML=\'<div class="fill"><i class="body"></i><i class="fringe"></i></div>\';' +
+  'var toast=document.createElement("div");toast.id="milo-rp-toast";toast.textContent="讀完了，辛苦了 ✦";' +
+  'document.body.appendChild(bar);document.body.appendChild(toast);var fill=bar.firstChild,done=false,raf=0,mt=0;' +
+  'function panel(){var ps=document.querySelectorAll(\'[id^="panel-"]\');for(var i=0;i<ps.length;i++){if(ps[i].offsetParent!==null)return ps[i]}return document.querySelector("main")||document.body}' +
+  'function len(p){var top=p.getBoundingClientRect().top+scrollY,end=document.documentElement.scrollHeight-innerHeight-top;return Math.max(1,Math.min(p.offsetHeight-innerHeight*.6,end))}' +
+  'function ticks(){var old=bar.querySelectorAll(".tick");for(var i=0;i<old.length;i++)old[i].remove();var p=panel(),top=p.getBoundingClientRect().top+scrollY,L=len(p),hs=p.querySelectorAll("h2");' +
+  'for(var j=0;j<hs.length;j++){var f=(hs[j].getBoundingClientRect().top+scrollY-top)/L;if(f>.02&&f<.98){var t=document.createElement("i");t.className="tick";t.style.left=(f*100)+"%";bar.appendChild(t)}}}' +
+  'function upd(){raf=0;var p=panel(),f=Math.min(1,Math.max(0,-p.getBoundingClientRect().top/len(p)));fill.style.width=(f*100)+"%";' +
+  'if(f>=.995&&!done){done=true;bar.classList.add("done");toast.classList.add("show");setTimeout(function(){toast.classList.remove("show")},2200)}' +
+  'else if(f<.97&&done){done=false;bar.classList.remove("done")}}' +
+  'function req(){if(!raf)raf=requestAnimationFrame(upd)}' +
+  'addEventListener("scroll",function(){req();bar.classList.add("moving");clearTimeout(mt);mt=setTimeout(function(){bar.classList.remove("moving")},500)},{passive:true});' +
+  'addEventListener("resize",function(){ticks();req()});addEventListener("load",function(){ticks();req()});' +
+  'var rs=document.querySelectorAll(".tab-r");for(var k=0;k<rs.length;k++)rs[k].addEventListener("change",function(){done=false;bar.classList.remove("done");setTimeout(function(){ticks();upd()},50)});' +
+  'ticks();upd()}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init()})();</script>';
