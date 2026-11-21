@@ -56,7 +56,7 @@ export const TYPE_CSS =
 // 流蘇就是本體的一部分，顏色與流光會一路延續；波浪擺動由腳本逐格改變遮罩長度（Safari 不會播放遮罩的 CSS 動畫，所以不用 @keyframes）。
 // 星芒：通過章節刻度時從前緣迸出 5 顆（約 0.7 秒）；讀完時從頂端分兩波灑下彩帶（手機 40 片、電腦 64 片，約 3～4 秒飄落到底並淡出，只灑一次）；開啟「減少動態效果」時不灑。
 // 收尾：最後 4% 的進度裡，流蘇與淡出區由腳本逐漸收回，讀到底時剛好填滿到邊；金色以淡入疊上，不是瞬間換色。
-// 捲動時加 .moving：前端變亮、流蘇擺動加快；通過每個章節刻度：刻度點亮成金色並從前緣迸出小星芒；讀過一半：一道光從起點掃到前緣並浮出打氣提示；讀到底加 .done：整條轉金色並浮出提示。
+// 捲動時加 .moving：前端變亮、流蘇擺動加快；通過每個章節刻度：刻度點亮成金色並從前緣迸出小星芒；讀過一半：「充能」——整條發光、頂端泛起暖光、兩道亮光接連從起點掃到前緣，抵達時整條強烈亮起、點亮的刻度一起閃，並浮出打氣提示；讀到底加 .done：整條轉金色並浮出提示。
 export const PROGRESS_CSS =
   "\n" +
   "/* ── milo 閱讀進度條（收件匣同步自動加入，請勿手改） ── */\n" +
@@ -68,7 +68,14 @@ export const PROGRESS_CSS =
   "@keyframes milo-rp-flow{to{background-position:-200% 0}}\n" +
   "#milo-rp .tick{position:absolute;top:0;width:2px;height:100%;background:rgba(255,255,255,.85);transition:background .4s,box-shadow .4s}\n" +
   "#milo-rp .tick.lit{background:#fff6d8;box-shadow:0 0 5px 1px rgba(255,196,80,.95)}\n" +
-  "#milo-rp .sweep{position:absolute;top:0;left:0;width:70px;height:100%;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,252,240,.95),rgba(255,255,255,0));opacity:0;z-index:1}\n" +
+  "#milo-rp .sweep{position:absolute;top:0;left:0;width:140px;height:100%;background:linear-gradient(90deg,rgba(255,240,200,0),rgba(255,236,170,.75) 40%,#fff 55%,rgba(255,236,170,.75) 70%,rgba(255,240,200,0));opacity:0;z-index:1}\n" +
+  "#milo-rp .fill{transition:filter .4s}\n" +
+  "#milo-rp.charging .fill{filter:drop-shadow(0 0 12px rgba(255,170,50,1)) drop-shadow(0 0 3px rgba(255,245,210,1))}\n" +
+  "#milo-rp-aura{position:fixed;left:0;right:0;top:0;height:90px;z-index:48;pointer-events:none;background:linear-gradient(180deg,rgba(255,186,80,.42),rgba(255,186,80,.12) 45%,rgba(255,186,80,0));opacity:0}\n" +
+  "#milo-rp.charged .body{animation:milo-rp-flow 3s linear infinite,milo-rp-charged 1.2s ease-out 1}\n" +
+  "@keyframes milo-rp-charged{0%{filter:brightness(1)}15%{filter:brightness(2) saturate(1.3)}40%{filter:brightness(1.5) saturate(1.15)}100%{filter:brightness(1)}}\n" +
+  "#milo-rp.charged .tick.lit{animation:milo-rp-twinkle 1.2s ease-out 1}\n" +
+  "@keyframes milo-rp-twinkle{20%{box-shadow:0 0 14px 5px rgba(255,210,100,1);background:#fff}50%{box-shadow:0 0 8px 2px rgba(255,210,100,.9)}}\n" +
   "#milo-rp .body::before{content:\"\";position:absolute;inset:0;background:linear-gradient(90deg,#ffc23d,#ffd86b);opacity:0;transition:opacity .6s ease}\n" +
   "#milo-rp.done .body::before{opacity:1}\n" +
   "#milo-rp.done .body{animation:milo-rp-flow 3s linear infinite,milo-rp-done 1.2s ease-out 1}\n" +
@@ -83,7 +90,7 @@ export const PROGRESS_CSS =
   "#milo-rp-confetti i{position:absolute;top:-14px;border-radius:1px;will-change:transform,opacity}\n" +
   "#milo-rp-spark{position:fixed;left:0;top:0;width:0;height:0;z-index:52;pointer-events:none}\n" +
   "#milo-rp-spark b{position:absolute;left:0;top:0;font:400 10px/1 sans-serif;margin:-5px 0 0 -5px;text-shadow:0 0 6px rgba(255,190,80,.9);will-change:transform,opacity}\n" +
-  "@media print{#milo-rp,#milo-rp-toast,#milo-rp-confetti,#milo-rp-spark{display:none}}\n";
+  "@media print{#milo-rp,#milo-rp-toast,#milo-rp-confetti,#milo-rp-spark,#milo-rp-aura{display:none}}\n";
 
 export const PROGRESS_JS =
   '<script>/* milo 閱讀進度條 */(function(){function init(){' +
@@ -111,13 +118,18 @@ export const PROGRESS_JS =
   'e.textContent="✦";e.style.color=C[i%C.length];e.style.fontSize=(8+Math.random()*6)+"px";c.appendChild(e);' +
   'e.animate([{transform:"translate(0,0) scale(.2) rotate(0deg)",opacity:0},{transform:"translate("+Math.cos(a)*d*.55+"px,"+Math.sin(a)*d*.55+"px) scale("+s+") rotate(45deg)",opacity:1,offset:.35},{transform:"translate("+Math.cos(a)*d+"px,"+(Math.sin(a)*d+8)+"px) scale("+s*.5+") rotate(90deg)",opacity:0}],' +
   '{duration:(900+Math.random()*400)*(m<1?.75:1),delay:Math.random()*120,easing:"cubic-bezier(.2,.7,.3,1)",fill:"forwards"})}setTimeout(function(){c.remove()},1800)}' +
-  'function sweep(){var sw=BD.firstChild,w=BD.getBoundingClientRect().width;if(RM||!sw.animate)return;sw.animate([{transform:"translateX(-70px)",opacity:0},{opacity:1,offset:.15},{opacity:1,offset:.85},{transform:"translateX("+w+"px)",opacity:0}],{duration:1000,easing:"cubic-bezier(.45,0,.25,1)"})}' +
+  'function sweep(){var sw=BD.firstChild,w=BD.getBoundingClientRect().width;if(RM||!sw.animate){say("過半了，繼續加油 ✦");return}bar.classList.add("charging");' +
+  'var K=[{transform:"translateX(-140px)",opacity:0},{opacity:1,offset:.12},{opacity:1,offset:.88},{transform:"translateX("+(w-60)+"px)",opacity:0}];' +
+  'sw.animate(K,{duration:1300,easing:"cubic-bezier(.5,0,.2,1)"});var s2=sw.cloneNode();BD.appendChild(s2);s2.animate(K,{duration:1300,delay:220,easing:"cubic-bezier(.5,0,.2,1)"});setTimeout(function(){s2.remove()},1700);' +
+  'var au=document.createElement("div");au.id="milo-rp-aura";document.body.appendChild(au);' +
+  'au.animate([{opacity:0},{opacity:.45,offset:.5},{opacity:.45,offset:.72},{opacity:1,offset:.8},{opacity:0}],{duration:2700,easing:"ease-out",fill:"forwards"});setTimeout(function(){au.remove()},2800);' +
+  'setTimeout(function(){bar.classList.remove("charging");bar.classList.add("charged");say("過半了，繼續加油 ✦");setTimeout(function(){bar.classList.remove("charged")},1250)},1350)}' +
   'function panel(){var ps=document.querySelectorAll(\'[id^="panel-"]\');for(var i=0;i<ps.length;i++){if(ps[i].offsetParent!==null)return ps[i]}return document.querySelector("main")||document.body}' +
   'function len(p){var top=p.getBoundingClientRect().top+scrollY,end=document.documentElement.scrollHeight-innerHeight-top;return Math.max(1,Math.min(p.offsetHeight-innerHeight*.6,end))}' +
   'function ticks(){TK=[];var old=bar.querySelectorAll(".tick");for(var i=0;i<old.length;i++)old[i].remove();var p=panel(),top=p.getBoundingClientRect().top+scrollY,L=len(p),hs=p.querySelectorAll("h2");' +
   'for(var j=0;j<hs.length;j++){var f=(hs[j].getBoundingClientRect().top+scrollY-top)/L;if(f>.02&&f<.98){var t=document.createElement("i");t.className="tick"+(lit[TK.length]?" lit":"");t.style.left=(f*100)+"%";bar.appendChild(t);TK.push({f:f,el:t})}}}' +
   'function upd(){raf=0;var p=panel(),f=Math.min(1,Math.max(0,-p.getBoundingClientRect().top/len(p)));fill.style.width=(f*100)+"%";cf=f;if(RM)shape();' +
-  'if(last>=0&&last<.5&&f>=.5&&f<.995&&!half){half=true;sweep();setTimeout(function(){say("過半了，繼續加油 ✦")},350)}' +
+  'if(last>=0&&last<.5&&f>=.5&&f<.995&&!half){half=true;sweep()}' +
   'if(f<.45)half=false;' +
   'if(last>=0)for(var q=0;q<TK.length;q++){var tf=TK[q].f;if(!lit[q]&&last<tf&&f>=tf){lit[q]=1;TK[q].el.classList.add("lit");if(Math.abs(tf-.5)>.04&&f<.98)spark(5,.7)}}' +
   'if(f>=.995&&!done){done=true;bar.classList.add("done");say("讀完了，辛苦了 ✦");confetti()}' +
