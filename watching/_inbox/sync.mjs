@@ -34,7 +34,7 @@ const CSS =
   "h1+.meta{margin-top:18px}\n";
 
 // 轉換版本：改了 transform（例如配色）就 +1，已同步的頁面下次執行會全部重新套用
-const VERSION = 14;
+const VERSION = 15;
 
 // ── 暗色模式：配色取自 milo 導覽頁（index.html :root 的暗色變數），對應 Grok 翻譯頁模板寫死的顏色 ──
 // 規則同導覽頁：預設跟系統；導覽頁 ◐ 切換後寫入 localStorage「cab:theme」，頁面讀取並即時同步。
@@ -83,7 +83,18 @@ const SVG_MAP = [
   ["#e5e5e5", D.rule], ["#f2f2f2", "#1a1813"], ["#f0f2f5", D.cell], ["#111", D.stage],
 ];
 const svgRules = SVG_MAP.map(([from, to]) => `svg [fill="${from}" i]{fill:${to}}svg [stroke="${from}" i]{stroke:${to}}`).join("");
-const scope = (sel, rules) => rules.replace(/(^|\})\s*([^{}]+)\{/g, (_, b, s) => `${b}${s.split(",").map((x) => `${sel} ${x.trim()}`).join(",")}{`);
+// 選擇器依「最外層」逗號切開：rgba(…)、[fill="…"]、:is(…) 裡的逗號不能切（2026-11-22 修正：之前 rgba 的暗色對照因此全部失效）
+const splitSel = (s) => { const out = []; let depth = 0, q = "", cur = "";
+  for (const ch of s) {
+    if (q) { if (ch === q) q = ""; }
+    else if (ch === '"' || ch === "'") q = ch;
+    else if (ch === "(" || ch === "[") depth++;
+    else if (ch === ")" || ch === "]") depth--;
+    else if (ch === "," && depth === 0) { out.push(cur); cur = ""; continue; }
+    cur += ch;
+  }
+  out.push(cur); return out; };
+const scope = (sel, rules) => rules.replace(/(^|\})\s*([^{}]+)\{/g, (_, b, s) => `${b}${splitSel(s).map((x) => `${sel} ${x.trim()}`).join(",")}{`);
 const DARK_CSS =
   "\n/* ── milo 暗色模式（影片學習收件匣同步自動加入，請勿手改） ── */\n:root{color-scheme:light}\n" +
   `@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark}${scope(':root:not([data-theme="light"])', DARK_RULES + svgRules)}}\n` +
@@ -92,7 +103,7 @@ const DARK_CSS =
 // 這些顏色在暗色背景上也看得清楚，不必另外處理
 const DARK_SAFE = new Set(["#1d9bf0", "#0f1720", "#e6edf3", "#c97a2c", "#2f7d4a"]);
 const COVERED_SEL = new Set([
-  ...[...DARK_RULES.matchAll(/(?:^|\})\s*([^{}]+)\{/g)].flatMap((m) => m[1].split(",").map((x) => x.trim())),
+  ...[...DARK_RULES.matchAll(/(?:^|\})\s*([^{}]+)\{/g)].flatMap((m) => splitSel(m[1]).map((x) => x.trim())),
   ".pt", ".tabs a .s", ".tabs label .s", "h1", "h2", "h3", "figure img",
 ]);
 const SVG_KNOWN = new Set(SVG_MAP.map(([c]) => c.toLowerCase()).concat(["none", "currentcolor", "transparent"]));
@@ -104,7 +115,7 @@ function darkGaps(html) {
   for (const [, sel, body] of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
     const colors = (body.match(/#[0-9a-f]{3,8}\b|rgba?\([^)]*\)/gi) || []).filter((c) => !DARK_SAFE.has(c.toLowerCase()));
     if (!colors.length) continue;
-    for (const x of sel.split(",").map((x) => x.trim().replace(/\s+/g, " "))) if (x && !x.startsWith("@") && !COVERED_SEL.has(x)) sels.add(x);
+    for (const x of splitSel(sel).map((x) => x.trim().replace(/\s+/g, " "))) if (x && !x.startsWith("@") && !COVERED_SEL.has(x)) sels.add(x);
   }
   const svg = new Set();
   for (const [, c] of t.matchAll(/\s(?:fill|stroke)=["']([^"']+)["']/gi)) if (!SVG_KNOWN.has(c.toLowerCase()) && !c.startsWith("url(")) svg.add(c);
