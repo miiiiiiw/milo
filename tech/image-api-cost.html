@@ -183,7 +183,7 @@ tbody tr:last-child td, tbody tr:last-child th { border-bottom: 0; }
 td.r, th.r { text-align: right; font-family: var(--font-num); font-variant-numeric: tabular-nums; white-space: nowrap; }
 tbody th { font-weight: 500; white-space: nowrap; }
 tr.pick td, tr.pick th { background: var(--accent-soft); }
-table.routes td { min-width: 150px; }
+table.routes td { min-width: 120px; }
 table.routes th[scope="col"].pickcol { color: var(--accent); }
 
 .fixed { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 6px 0 18px; }
@@ -276,7 +276,7 @@ header.top h1 { margin-top: 0; }
     <p class="eyebrow page-kicker">技術筆記 · 生圖 API 成本</p>
     <h1>生圖要不要外接 API</h1>
     <p class="lede prose">每月 20 篇文章、160 張圖。升級訂閱、另訂一個方案，還是按張付費？把每條路攤開來算過一次，留給之後回頭對照的自己。</p>
-    <div class="stamp" style="margin-top:14px">決策紀錄 · 2026-11-17 · 11-20 補上 $20 產量試算 · 11-22 補上 Google AI Pro 與 Gemini CLI · 價格皆為查詢當日的美元牌價</div>
+    <div class="stamp" style="margin-top:14px">決策紀錄 · 2026-11-17 · 11-20 補上 $20 產量試算 · 11-22 補上 Google AI Pro 與 Antigravity CLI · 價格皆為查詢當日的美元牌價</div>
   </div>
 </header>
 
@@ -389,7 +389,7 @@ header.top h1 { margin-top: 0; }
     <div><b>$0 增額</b>Grok Premium（月費 $30，已在付）。用量池是 Plus 的 4 倍，聊天、Bot、語音共用，沒有公布張數。</div>
     <div><b>$20 固定</b>ChatGPT Plus 搭配 Codex CLI。Bot 可以自動呼叫，生圖消耗額度的速度是一般操作的 3 到 5 倍。</div>
     <div><b>$70 增額</b>升級 Grok Super（月費 $100）。用量池是 Plus 的 15 倍，功能與 Premium 相同。</div>
-    <div><b>$19.99 固定</b>Google AI Pro。Gemini App 裡每天最多 100 張 Nano Banana Pro 重繪，但 CLI 生圖不吃這份額度，要另開 API 按張付費。</div>
+    <div><b>$19.99 固定</b>Google AI Pro 搭配 Antigravity CLI。生圖扣訂閱額度，Bot 可在背景呼叫；但有回報 CLI 會忽略參考圖，張數也沒有公布。</div>
   </div>
 
   <div class="prose">
@@ -489,7 +489,8 @@ header.top h1 { margin-top: 0; }
 
   <div class="prose">
     <h3>Google AI Pro 的 $20 呢</h3>
-    <p>同樣接近 20 美元的 Google AI Pro，生圖額度只在 Gemini App 裡有效。Gemini CLI 要生圖得裝 Nano Banana 擴充套件並設定 API 金鑰，費用按張另計，訂閱的錢一分都抵不到。所以拿來和 API 比的不是訂閱本身，而是 Gemini API 的單價：Nano Banana 2.1 每張約 $0.034，和 GPT Image 2.6 Flare low 同一級距；資訊圖表若改用 Nano Banana Pro，每張 $0.134，是 Sunburst high 的三倍多。</p>
+    <p>Gemini CLI 已在 2026 年 6 月停止服務個人帳號，接手的是 Antigravity CLI。它用帳號登入，生圖扣的是訂閱額度，不必另付 API 費用，定位和 Plus 搭 Codex CLI 很像：固定月費、Bot 可以呼叫、張數不透明。差別是它的生圖額度和寫程式分開計算，這點比 Codex 有利；但有回報指出 CLI 的生圖子代理會忽略參考圖，對靠角色設定表維持人物一致的做法是致命傷。</p>
+    <p>試算區保留兩種 Nano Banana 配置，算的是走 Gemini API 按張付費的情況，當作 Antigravity 額度不夠或參考圖不能用時的備案。</p>
     <h3>分界線在哪</h3>
     <ul class="tight" style="margin-bottom:14px">
       <li>每月少於 44 篇（約 350 張）：API 比較便宜。照現在的 20 篇，一年約省 130 美元。</li>
@@ -514,24 +515,24 @@ header.top h1 { margin-top: 0; }
           <th scope="col">Codex CLI（ChatGPT Plus）</th>
           <th scope="col">Grok Premium 訂閱</th>
           <th scope="col">Grok API</th>
-          <th scope="col">Gemini CLI（Google AI Pro）</th>
+          <th scope="col">Antigravity CLI（Google AI Pro）</th>
         </tr>
       </thead>
       <tbody>
-        <tr><th>每月費用</th><td>約 $9，隨用量</td><td>$20 固定</td><td>$30 固定，已在付，增額 $0</td><td>約 $5 到 $15，依模型</td><td>$19.99 訂閱，生圖另按張付 API（約 $8 到 $13）</td></tr>
-        <tr><th>Bot 自動化</th><td>可以</td><td>可以</td><td>可以，走用量池</td><td>可以</td><td>可以，但走 API 金鑰，不吃訂閱</td></tr>
-        <tr><th>額度</th><td>有餘額就能跑</td><td>與 Codex 其他用途共用，生圖消耗快 3 到 5 倍</td><td>每週用量池，Plus 的 4 倍，無公布張數</td><td>有餘額就能跑</td><td>訂閱額度只用在 Gemini App；CLI 依 API 計費</td></tr>
-        <tr><th>160 張夠不夠</th><td>夠</td><td>分散執行應該夠，集中批次可能撞上限</td><td>未知，看其他用途佔多少</td><td>夠</td><td>夠，付費即可</td></tr>
-        <tr><th>畫質與尺寸</th><td>參數精確指定</td><td>只能寫在提示詞裡</td><td>有限</td><td>可選解析度與畫質</td><td>可選 1K、2K、4K</td></tr>
-        <tr><th>中文字與版面</th><td>佐證最多</td><td>同系列模型，應相近</td><td>無中文實測</td><td>無中文實測</td><td>Pro 官方主打文字精準，無繁中實測</td></tr>
-        <tr><th>參考圖上限</th><td>多張</td><td>支援</td><td>最多 5 張</td><td>最多 5 張</td><td>最多 14 張</td></tr>
-        <tr><th>穩定性風險</th><td>低</td><td>登入憑證會過期</td><td>額度被聊天、Bot 分掉</td><td>低</td><td>低，但要綁 Google Cloud 帳單</td></tr>
-        <tr><th>額度用完時</th><td>再儲值</td><td>等視窗重置或升級</td><td>等每週重置、加購額度或改用 API</td><td>再儲值</td><td>依帳單續扣，建議設上限</td></tr>
+        <tr><th>每月費用</th><td>約 $9，隨用量</td><td>$20 固定</td><td>$30 固定，已在付，增額 $0</td><td>約 $5 到 $15，依模型</td><td>$19.99 固定，生圖扣訂閱額度</td></tr>
+        <tr><th>Bot 自動化</th><td>可以</td><td>可以</td><td>可以，走用量池</td><td>可以</td><td>可以，在背景模式呼叫 agy；官方沒有明文背書</td></tr>
+        <tr><th>額度</th><td>有餘額就能跑</td><td>與 Codex 其他用途共用，生圖消耗快 3 到 5 倍</td><td>每週用量池，Plus 的 4 倍，無公布張數</td><td>有餘額就能跑</td><td>生圖額度與寫程式分開；每 5 小時重置、有每週上限，未公布張數</td></tr>
+        <tr><th>160 張夠不夠</th><td>夠</td><td>分散執行應該夠，集中批次可能撞上限</td><td>未知，看其他用途佔多少</td><td>夠</td><td>未知，要實測</td></tr>
+        <tr><th>畫質與尺寸</th><td>參數精確指定</td><td>只能寫在提示詞裡</td><td>有限</td><td>可選解析度與畫質</td><td>只能寫在提示詞裡</td></tr>
+        <tr><th>中文字與版面</th><td>佐證最多</td><td>同系列模型，應相近</td><td>無中文實測</td><td>無中文實測</td><td>無繁中實測</td></tr>
+        <tr><th>參考圖上限</th><td>多張</td><td>支援</td><td>最多 5 張</td><td>最多 5 張</td><td>有回報 CLI 會忽略參考圖，尚未修正</td></tr>
+        <tr><th>穩定性風險</th><td>低</td><td>登入憑證會過期</td><td>額度被聊天、Bot 分掉</td><td>低</td><td>參考圖問題；額度曾在 2 月收緊</td></tr>
+        <tr><th>額度用完時</th><td>再儲值</td><td>等視窗重置或升級</td><td>等每週重置、加購額度或改用 API</td><td>再儲值</td><td>等重置，或加購 AI credits</td></tr>
       </tbody>
     </table>
   </div>
   <div class="prose">
-    <p>Gemini CLI 那一欄最容易誤會：訂了 Google AI Pro，CLI 生圖仍要另付 API 費用，兩筆錢不會互抵。Grok 的優勢只在「訂閱已付」這一點。一旦改成按張付費，Grok Imagine 2.0 的低畫質起價就是 GPT Image 2.6 的兩倍，又缺中文佐證，在含字的圖上沒有理由選它。</p>
+    <p>Antigravity CLI 那一欄看起來最划算：月費和 Plus 同級，生圖額度又和寫程式分開。卡住的是參考圖，角色設定表若被忽略，人物就無法跨圖一致，這條路要實測過才算數。Grok 的優勢只在「訂閱已付」這一點。一旦改成按張付費，Grok Imagine 2.0 的低畫質起價就是 GPT Image 2.6 的兩倍，又缺中文佐證，在含字的圖上沒有理由選它。</p>
   </div>
 </section>
 
@@ -663,7 +664,9 @@ header.top h1 { margin-top: 0; }
       <li>Premium 用量池裡一張圖扣多少，官方沒有公布，只能看帳號裡的 Usage 頁面。</li>
       <li>Codex CLI 內建生圖用的是不是 2.6，沒有查到確認。</li>
       <li>Nano Banana 2.1 的繁體中文表現沒有實測；它的參考圖輸入費（每次約 $0.001）是估計值。</li>
-      <li>Google AI Pro 每天 100 張的上限來自 Google 已撤下的舊表格，現行頁面沒有新數字。</li>
+      <li>Antigravity CLI 的生圖額度一週能撐幾張、用的是 Nano Banana 2 還是 Pro，都沒有官方數字。</li>
+      <li>Antigravity CLI 會忽略參考圖的問題還在 GitHub 上開著，沒有修正時程。</li>
+      <li>從 Bot 在背景啟動 agy 是否合規，目前只有一則非官方的論壇回覆。</li>
       <li>GPT Image 2.6 上架才兩週，MiniMax H3 才一週，第三方數據都還薄。</li>
     </ul>
   </div>
@@ -677,6 +680,7 @@ header.top h1 { margin-top: 0; }
       <li>每月成品超過約 350 張（約 44 篇），或生成次數接近 500 次：ChatGPT Plus 搭 Codex CLI 開始追平 API，值得重新比較。</li>
       <li>Premium 的用量常在週中見底，而且吃掉額度的是聊天和 Bot：這時升級才有道理，生圖只是順便受惠。</li>
       <li>繁體錯字率居高不下：改成模型只出底圖與角色，文字事後疊上。</li>
+      <li>Antigravity CLI 的參考圖問題修好，而且實測一週撐得住約 58 張：Google AI Pro 可以考慮取代 API，回來重算。</li>
       <li>出現新模型或調價：回到試算區，把單價換掉再看排序。</li>
     </ul>
     <h3>動手前先做完這幾件</h3>
@@ -685,6 +689,7 @@ header.top h1 { margin-top: 0; }
       <li><label><input type="checkbox" id="chk-sheet"><span>用 Sunburst high 做好角色設定表，之後每張圖都附上</span></label></li>
       <li><label><input type="checkbox" id="chk-test"><span>拿一則真實的繁體文案，Flare low 和 medium 各跑五張，記下錯字率</span></label></li>
       <li><label><input type="checkbox" id="chk-cap"><span>OpenRouter 儲值 15 到 20 美元，金鑰設好每月上限</span></label></li>
+      <li><label><input type="checkbox" id="chk-agy"><span>若有 Google AI Pro：用 Antigravity CLI 附角色設定表生一張圖、跑一則繁體文案，再連續生 20 到 30 張看用量扣多少</span></label></li>
       <li><label><input type="checkbox" id="chk-review"><span>第一個月結束後，拿後台的實際花費回來對照這一頁</span></label></li>
     </ul>
     <p class="small">勾選狀態只記在這個瀏覽器裡，換裝置不會跟著走。</p>
@@ -714,6 +719,10 @@ header.top h1 { margin-top: 0; }
       <li><a href="https://developers.openai.com/codex/pricing">OpenAI Developers：Codex Pricing</a></li>
       <li><a href="https://www.spheron.network/blog/openrouter-pricing-2026-fees-rate-limits/">Spheron：OpenRouter Pricing 2026</a></li>
       <li><a href="https://github.com/gemini-cli-extensions/nanobanana">GitHub：Nano Banana Gemini CLI 擴充套件</a></li>
+      <li><a href="https://www.cloudzero.com/blog/google-antigravity-pricing/">CloudZero：Google Antigravity pricing</a></li>
+      <li><a href="https://github.com/google-antigravity/antigravity-cli/issues/1312">GitHub：Antigravity CLI 參考圖問題 #1312</a></li>
+      <li><a href="https://discuss.ai.google.dev/t/is-external-orchestration-of-antigravity-cli-headless-mode-supported-with-account-based-usage/183051">Google AI 論壇：Antigravity CLI 背景模式</a></li>
+      <li><a href="https://aicodingtools.im/blog/antigravity-nano-banana-guide">AI Coding Tools：Antigravity Nano Banana Pro</a></li>
       <li><a href="https://discuss.ai.google.dev/t/pro-subscription-gemini-advanced-vs-api-quota-0-resource-exhausted/113011">Google AI 論壇：訂閱與 API 額度</a></li>
       <li><a href="https://whizi.io/resources/nano-banana-pricing/">Whizi：Nano Banana Pricing</a></li>
       <li><a href="https://www.izzedo.chat/blog/nano-banana-price-and-limits">Izzedo：Nano Banana Price and Limits</a></li>
