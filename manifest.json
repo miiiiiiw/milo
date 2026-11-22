@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-22T01:32:34.151Z",
+  "generated": "2026-11-22T01:52:16.418Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -15,6 +15,113 @@
     "mind": "心智"
   },
   "files": [
+    {
+      "path": "reading/ryan-x-brand.html",
+      "title": "如何在 X 上壯大你的個人品牌（練習手冊＋資源）（How to Grow Your Personal Brand on 𝕏 (workbook + resources)）",
+      "description": "Ryan 的 X 個人品牌練習手冊：從市場切入點、三層內容漏斗、開場鉤子，到 AI 工具與每週回顧",
+      "tags": [
+        "原文學習",
+        "個人品牌",
+        "自媒體",
+        "內容創作",
+        "Grok Bot",
+        "Ryan"
+      ],
+      "category": "reach",
+      "date": "2026-11-21"
+    },
+    {
+      "path": "reading/xiaomo-harness.html",
+      "title": "研究了這麼多 AI 代理，我越來越覺得 Harness 才是最值得深入研究的方向",
+      "description": "小墨同学比較多套 AI 代理工作環境，指出差別在脈絡管理、長任務執行與結果驗證",
+      "tags": [
+        "原文學習",
+        "AI 代理",
+        "Harness",
+        "長時間任務",
+        "Anthropic",
+        "小墨同学"
+      ],
+      "category": "build",
+      "date": "2026-11-21"
+    },
+    {
+      "path": "watching/alexandr-wang-yc-builders.html",
+      "title": "Alexandr Wang：「成為實作者的最好時機」，為什麼是現在？｜YC Startup School 2026 Scale AI 創辦人｜真實演講、單字解釋",
+      "description": "Alexandr Wang 談逆共識的信念、AI 時代創業，以及為什麼願景與野心變得最稀缺",
+      "tags": [
+        "影片學習",
+        "創業",
+        "AI 代理",
+        "YC Startup School",
+        "Alexandr Wang",
+        "Garry Tan",
+        "火热heart"
+      ],
+      "category": "mind",
+      "date": "2026-11-21"
+    },
+    {
+      "path": "watching/gary-chen-cicd-basics.html",
+      "title": "用 AI 寫程式你得懂的 CI/CD？新手一支影片看懂",
+      "description": "Gary_Chen 用記帳軟體帶新手看懂 CI/CD：從開 PR、自動檢查到自動部署",
+      "tags": [
+        "影片學習",
+        "CI/CD",
+        "持續整合",
+        "GitHub Actions",
+        "AI 寫程式",
+        "Gary_Chen"
+      ],
+      "category": "build",
+      "date": "2026-11-21"
+    },
+    {
+      "path": "watching/kareema-fable-stickman.html",
+      "title": "【實測】單月千萬播放！用 Claude+Fable 5.2 全流程製作爆款動畫短片",
+      "description": "Kareema 只用 Claude 聊天接 Higgsfield MCP，做出 2D、3D 火柴人動畫",
+      "tags": [
+        "影片學習",
+        "AI 動畫",
+        "火柴人動畫",
+        "Fable 5.2",
+        "Higgsfield",
+        "Kareema",
+        "AI技能师vanch"
+      ],
+      "category": "motion",
+      "date": "2026-11-21"
+    },
+    {
+      "path": "watching/karpathy-how-i-use-llms.html",
+      "title": "我如何使用大型語言模型：後半段的工具、多模態與 ChatGPT 進階功能（How I use LLMs）",
+      "description": "Karpathy 實機示範用程式工具、語音、圖片與自訂 GPT，把大型語言模型用得更準",
+      "tags": [
+        "影片學習",
+        "AI 工具",
+        "ChatGPT",
+        "提示詞",
+        "Andrej Karpathy",
+        "octocat"
+      ],
+      "category": "build",
+      "date": "2026-11-21"
+    },
+    {
+      "path": "watching/nate-parrott-claude-design.html",
+      "title": "完整教學：40 分鐘用 Claude Design 擺脫 AI 濫作｜Nate Parrott（Full Tutorial: How to Fix AI Slop with Claude Design in 40 Minutes | Nate Parrott）",
+      "description": "Nate Parrott 示範用 Claude 設計功能、儀表板與動畫，避開 AI 濫作",
+      "tags": [
+        "影片學習",
+        "Claude Design",
+        "AI 濫作",
+        "設計",
+        "Nate Parrott",
+        "Peter Yang"
+      ],
+      "category": "design",
+      "date": "2026-11-21"
+    },
     {
       "path": "family/induction-plan.html",
       "title": "催生或等待：39 週決策參考",
@@ -37,6 +144,142 @@
         "學習導航",
         "收藏榜"
       ],
+      "date": "2026-11-20"
+    },
+    {
+      "path": "reading/anthropic-agent-skills.html",
+      "title": "用 Agent Skills 為 AI 代理配備面對真實世界的能力（Equipping agents for the real world with Agent Skills）",
+      "description": "Anthropic 說明 Agent Skills 如何用資料夾教 AI 代理按需載入做法與開發要點",
+      "tags": [
+        "原文學習",
+        "Agent Skills",
+        "AI 代理",
+        "脈絡工程",
+        "Anthropic",
+        "Barry Zhang",
+        "Keith Lazuka",
+        "Mahesh Murag"
+      ],
+      "category": "build",
+      "date": "2026-11-20"
+    },
+    {
+      "path": "reading/anthropic-building-effective-agents.html",
+      "title": "打造有效的 AI 代理（Building effective agents）",
+      "description": "Anthropic 談打造有效 AI 代理：先用簡單做法，再按五種工作流程模式與工具設計逐步加複雜度",
+      "tags": [
+        "原文學習",
+        "AI 代理",
+        "工作流程",
+        "Anthropic",
+        "Erik S.",
+        "Barry Zhang"
+      ],
+      "category": "build",
+      "date": "2026-11-20"
+    },
+    {
+      "path": "reading/anthropic-context-engineering.html",
+      "title": "AI 代理的有效脈絡工程（Effective context engineering for AI agents）",
+      "description": "Anthropic 談脈絡工程：脈絡為何不是越多越好，以及如何用精簡資訊與長任務對策打造 AI 代理",
+      "tags": [
+        "原文學習",
+        "AI 代理",
+        "脈絡工程",
+        "提示詞工程",
+        "Anthropic",
+        "Prithvi Rajasekaran",
+        "Ethan Dixon",
+        "Carly Ryan",
+        "Jeremy Hadfield"
+      ],
+      "category": "build",
+      "date": "2026-11-20"
+    },
+    {
+      "path": "reading/anthropic-teams-claude-code.html",
+      "title": "Anthropic 團隊如何使用 Claude Code（How Anthropic teams use Claude Code）",
+      "description": "Anthropic 說明各團隊用 Claude Code 讀程式碼、除錯、寫測試，非工程師也能做工具",
+      "tags": [
+        "原文學習",
+        "Claude Code",
+        "AI 代理",
+        "程式開發",
+        "Anthropic"
+      ],
+      "category": "build",
+      "date": "2026-11-20"
+    },
+    {
+      "path": "reading/claude-code-best-practices.html",
+      "title": "Claude Code 最佳實踐（Best practices for Claude Code）",
+      "description": "Claude Code 官方最佳實踐：只寫它看不見的事、給它檢查，不能破例的規則做成設定",
+      "tags": [
+        "原文學習",
+        "Claude Code",
+        "CLAUDE.md",
+        "hook",
+        "驗證",
+        "Anthropic"
+      ],
+      "category": "build",
+      "date": "2026-11-20"
+    },
+    {
+      "path": "reading/dankoe-writing-habit.html",
+      "title": "拯救我大腦（與我未來）的寫作習慣（The writing habit that saved my brain (and my future)）",
+      "description": "Dan Koe 談為何不知學什麼就先寫作：能練思考與學習、累積數位槓桿，並拆解他每週的寫作系統。",
+      "tags": [
+        "原文學習",
+        "寫作習慣",
+        "學習方法",
+        "個人品牌",
+        "內容創作",
+        "Dan Koe"
+      ],
+      "category": "reach",
+      "date": "2026-11-20"
+    },
+    {
+      "path": "reading/trq212-dynamic-workflows.html",
+      "title": "每個任務都有專屬的工作環境：Claude Code 的動態工作流程（A harness for every task: dynamic workflows in Claude Code）",
+      "description": "Thariq 談動態工作流程：讓 Claude Code 自寫工作環境，並學六種模式與用法",
+      "tags": [
+        "原文學習",
+        "AI 代理",
+        "工作流程",
+        "Claude Code",
+        "Thariq"
+      ],
+      "category": "build",
+      "date": "2026-11-20"
+    },
+    {
+      "path": "reading/trq212-html-effectiveness.html",
+      "title": "使用 Claude Code：HTML 有效到離譜（Using Claude Code: The Unreasonable Effectiveness of HTML）",
+      "description": "Thariq 談為何用 HTML 取代 Markdown，與 Claude Code 的五類產出用法",
+      "tags": [
+        "原文學習",
+        "AI 代理",
+        "Claude Code",
+        "HTML",
+        "Thariq"
+      ],
+      "category": "build",
+      "date": "2026-11-20"
+    },
+    {
+      "path": "reading/trq212-spending-effort.html",
+      "title": "使用 Claude Code：花費你的費力等級（Using Claude Code: Spending your effort）",
+      "description": "Thariq 說明 Claude Code 費力等級：日常開發用低中檔，要驗證、邊界情況多時才拉高。",
+      "tags": [
+        "原文學習",
+        "Claude Code",
+        "費力等級",
+        "驗證",
+        "Thariq"
+      ],
+      "category": "build",
       "date": "2026-11-20"
     },
     {
@@ -64,6 +307,21 @@
         "jexchan"
       ],
       "category": "mind",
+      "date": "2026-11-19"
+    },
+    {
+      "path": "reading/leo-ai-comic-drama.html",
+      "title": "萬字長文｜AI 漫劇製作從 0 到 1 教學：Claude + Seedance 最佳搭檔",
+      "description": "劉老闆復盤一人加 Claude Code，4 天做出一集 AI 漫劇的四關流程、點數花費與避雷清單",
+      "tags": [
+        "原文學習",
+        "AI 漫劇",
+        "AI 影片",
+        "Seedance",
+        "Claude Code",
+        "劉老闆"
+      ],
+      "category": "motion",
       "date": "2026-11-19"
     },
     {
@@ -107,6 +365,20 @@
         "例行任務",
         "poteto",
         "lauren"
+      ],
+      "category": "build",
+      "date": "2026-11-19"
+    },
+    {
+      "path": "reading/tongfeifan-multi-agent.html",
+      "title": "為什麼我覺得市面上大多數多 AI 代理分工都是錯的",
+      "description": "Feifan 主張別照軟體公司編制拆一群 AI 代理：一件交付由端到端會話做完，只按獨立交付與審查分",
+      "tags": [
+        "原文學習",
+        "AI 代理",
+        "系統架構",
+        "Feifan",
+        "Mirasim"
       ],
       "category": "build",
       "date": "2026-11-19"
