@@ -134,6 +134,9 @@ mark { background: var(--mark); color: inherit; padding: 0 3px; border-radius: 2
 .tile .big { font-family: var(--font-num); font-size: 28px; line-height: 1.2; font-variant-numeric: tabular-nums; }
 .tile .cap { font-size: 13.5px; color: var(--muted); line-height: 1.55; margin-top: 4px; }
 .tile.pick { border-color: var(--accent); }
+.tiles.four { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 980px) { .tiles.four { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 460px) { .tiles.four { grid-template-columns: 1fr; } }
 .tile.drop .big { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 2px; }
 
 /* Calculator */
@@ -276,7 +279,7 @@ header.top h1 { margin-top: 0; }
     <p class="eyebrow page-kicker">技術筆記 · 生圖 API 成本</p>
     <h1>生圖要不要外接 API</h1>
     <p class="lede prose">每月 20 篇文章、160 張圖。升級訂閱、另訂一個方案，還是按張付費？把每條路攤開來算過一次，留給之後回頭對照的自己。</p>
-    <div class="stamp" style="margin-top:14px">決策紀錄 · 2026-11-17 · 11-20 補上 $20 產量試算 · 11-22 補上 Google AI Pro 與 Antigravity CLI · 價格皆為查詢當日的美元牌價</div>
+    <div class="stamp" style="margin-top:14px">決策紀錄 · 2026-11-17 · 11-20 補上 $20 產量試算 · 11-22 假定已有 Google AI Pro，補進各節評估 · 價格皆為查詢當日的美元牌價</div>
   </div>
 </header>
 
@@ -285,7 +288,7 @@ header.top h1 { margin-top: 0; }
 <section id="why">
   <div class="prose">
     <h2>為什麼要算這一題</h2>
-    <p>Grok Bot 產出的文章開始需要配圖：每篇一張封面、一張資訊圖表、六張圖文。手上是 Grok Premium 訂閱，生圖扣的是每週用量池，夠不夠用沒有把握。於是冒出兩個念頭：升級到每月 100 美元的 Super，或者外接一個便宜的生圖 API。</p>
+    <p>Grok Bot 產出的文章開始需要配圖：每篇一張封面、一張資訊圖表、六張圖文。手上是 Grok Premium 訂閱，生圖扣的是每週用量池，夠不夠用沒有把握。於是冒出兩個念頭：升級到每月 100 美元的 Super，或者外接一個便宜的生圖 API。另外手上還有 Google AI Pro，Antigravity CLI 也能生圖，這份額度同樣已經付過。</p>
     <p>哪一條划算？憑感覺答不出來。訂閱看的是額度，API 看的是單價，兩邊單位不同，放不到同一張桌上。只好先定一個固定的工作量，再把每條路換算成「這個月要多付多少」。</p>
   </div>
 </section>
@@ -295,17 +298,21 @@ header.top h1 { margin-top: 0; }
     <h2>算完之後的決定</h2>
     <div class="takeaway">
       <div class="label">TAKEAWAY</div>
-      <p>含中文字的圖走 OpenRouter 上的 GPT Image 2.6，無字的圖繼續用 Premium 額度。每月多花 5 到 9 美元，不升級任何訂閱。</p>
+      <p>不需要角色一致、字又少的圖，先交給已付的訂閱額度：Google AI Pro 的 Antigravity CLI 優先，Grok Premium 其次。含中文字或要角色一致的圖，走 OpenRouter 上的 GPT Image 2.6。每月多花約 2.4 到 9 美元，看 Antigravity 能接手多少，不升級也不新增訂閱。</p>
     </div>
   </div>
-  <div class="tiles">
+  <div class="tiles four">
     <div class="tile pick">
       <div class="big">$9.1</div>
       <div class="cap">160 張全部走 GPT Image 2.6 的月費，已含重生、局部修改、參考圖與手續費</div>
     </div>
+    <div class="tile pick">
+      <div class="big">$2.4</div>
+      <div class="cap">圖文與封面全交給 Antigravity，只剩資訊圖表走 API 時的下限</div>
+    </div>
     <div class="tile">
       <div class="big">$0</div>
-      <div class="cap">Premium 已經在付。用量池撐得住的部分，生圖沒有增額成本</div>
+      <div class="cap">Google AI Pro 與 Grok Premium 都已在付。額度撐得住的部分，生圖沒有增額成本</div>
     </div>
     <div class="tile drop">
       <div class="big">$70</div>
@@ -345,6 +352,10 @@ header.top h1 { margin-top: 0; }
       <div class="ctl">
         <label for="in-e">每張資訊圖表的修改次數 <output id="out-e" for="in-e">1.5</output></label>
         <input type="range" id="in-e" min="0" max="4" step="0.5" value="1.5">
+      </div>
+      <div class="ctl">
+        <label for="in-s">圖文與封面交給 Antigravity 的比例 <output id="out-s" for="in-s">0%</output></label>
+        <input type="range" id="in-s" min="0" max="100" step="10" value="0">
       </div>
       <div class="ctl check">
         <input type="checkbox" id="in-ref" checked>
@@ -389,12 +400,13 @@ header.top h1 { margin-top: 0; }
     <div><b>$0 增額</b>Grok Premium（月費 $30，已在付）。用量池是 Plus 的 4 倍，聊天、Bot、語音共用，沒有公布張數。</div>
     <div><b>$20 固定</b>ChatGPT Plus 搭配 Codex CLI。Bot 可以自動呼叫，生圖消耗額度的速度是一般操作的 3 到 5 倍。</div>
     <div><b>$70 增額</b>升級 Grok Super（月費 $100）。用量池是 Plus 的 15 倍，功能與 Premium 相同。</div>
-    <div><b>$19.99 固定</b>Google AI Pro 搭配 Antigravity CLI。生圖扣訂閱額度，Bot 可在背景呼叫；但有回報 CLI 會忽略參考圖，張數也沒有公布。</div>
+    <div><b>$0 增額</b>Google AI Pro（月費 $19.99，已訂閱）搭配 Antigravity CLI。生圖扣訂閱額度，Bot 可在背景呼叫；但有回報 CLI 會忽略參考圖，張數也沒有公布。</div>
   </div>
 
   <div class="prose">
     <h3>讀這張圖要記得的事</h3>
     <p>最便宜的三個模型和 GPT Image 2.6 套的是同一個重生率，這對它們是高估。Grok 舊版、MiniMax H3、GPT Image 2 的低畫質都沒有中文字的佐證，錯字一多，重生次數會往上走，有些錯字重生幾次也修不好。表面省下的 2 到 4 美元，很可能在校對時間裡賠回去。</p>
+    <p>Antigravity 不在長條圖裡，因為已經付過，增額是零。它的作用是讓長條變短：把「交給 Antigravity 的比例」拉到 50%，GPT Image 2.6 降到約 $5.8；拉到 100%，只剩資訊圖表走 API，約 $2.4。能拉多高，取決於參考圖問題和額度實測。</p>
     <p>GPT Image 2 和 2.6 只差一美元多。2.6 的低畫質用了約四倍的運算量，接近舊版的中高畫質，速度也快，這個差價付得心安。</p>
   </div>
 
@@ -471,31 +483,32 @@ header.top h1 { margin-top: 0; }
   </div>
 
   <div class="prose">
-    <h3>和 ChatGPT Plus 擺在一起</h3>
+    <h3>和兩個 $20 級訂閱擺在一起</h3>
   </div>
   <div class="scroll">
     <table>
       <thead>
-        <tr><th>比較項目</th><th>API（$20）</th><th>Plus 搭 Codex CLI（$20）</th></tr>
+        <tr><th>比較項目</th><th>API（$20）</th><th>Plus 搭 Codex CLI（$20）</th><th>Google AI Pro 搭 Antigravity CLI（已訂閱）</th></tr>
       </thead>
       <tbody>
-        <tr><th>產量</th><td>約 350 張成品，確定</td><td>沒有公布張數，與 Codex 其他用途共用額度</td></tr>
-        <tr><th>每月 160 張</th><td>只要約 $9，省下 $11</td><td>固定 $20</td></tr>
-        <tr><th>一年</th><td>約 $110</td><td>$240</td></tr>
-        <tr><th>用不完的部分</th><td>留到下個月繼續用</td><td>不能累積</td></tr>
+        <tr><th>產量</th><td>約 350 張成品，確定</td><td>沒有公布張數，與 Codex 其他用途共用額度</td><td>沒有公布張數，生圖額度與寫程式分開</td></tr>
+        <tr><th>每月 160 張</th><td>只要約 $9，省下 $11</td><td>固定 $20</td><td>增額 $0，但參考圖可能被忽略</td></tr>
+        <tr><th>一年</th><td>約 $110</td><td>$240</td><td>已在付，增額 $0</td></tr>
+        <tr><th>用不完的部分</th><td>留到下個月繼續用</td><td>不能累積</td><td>不能累積</td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="prose">
-    <h3>Google AI Pro 的 $20 呢</h3>
-    <p>Gemini CLI 已在 2026 年 6 月停止服務個人帳號，接手的是 Antigravity CLI。它用帳號登入，生圖扣的是訂閱額度，不必另付 API 費用，定位和 Plus 搭 Codex CLI 很像：固定月費、Bot 可以呼叫、張數不透明。差別是它的生圖額度和寫程式分開計算，這點比 Codex 有利；但有回報指出 CLI 的生圖子代理會忽略參考圖，對靠角色設定表維持人物一致的做法是致命傷。</p>
+    <h3>已經有 Google AI Pro 的話</h3>
+    <p>既然已經在付，Antigravity 的增額是零，問題就從「值不值得訂」變成「能接手多少張」。Gemini CLI 已在 2026 年 6 月停止服務個人帳號，接手的是 Antigravity CLI。它用帳號登入，生圖扣的是訂閱額度，不必另付 API 費用，定位和 Plus 搭 Codex CLI 很像：固定月費、Bot 可以呼叫、張數不透明。差別是它的生圖額度和寫程式分開計算，這點比 Codex 有利；但有回報指出 CLI 的生圖子代理會忽略參考圖，對靠角色設定表維持人物一致的做法是致命傷。</p>
     <p>試算區保留兩種 Nano Banana 配置，算的是走 Gemini API 按張付費的情況，當作 Antigravity 額度不夠或參考圖不能用時的備案。</p>
     <h3>分界線在哪</h3>
     <ul class="tight" style="margin-bottom:14px">
       <li>每月少於 44 篇（約 350 張）：API 比較便宜。照現在的 20 篇，一年約省 130 美元。</li>
       <li>每月超過 44 篇：Plus 開始划算，前提是 Codex 的額度撐得住。有人回報 Plus 一次跑約 20 張就吃緊，這個前提並不穩。</li>
       <li>用量起伏大的月份：API 的優勢更明顯，少用就少付；Plus 用多用少都是 20 美元。</li>
+      <li>已有 Google AI Pro：Antigravity 接手越多，API 越省；圖文與封面全交給它時，API 只剩約 2.4 美元。這時再訂 Plus 完全沒有理由。</li>
     </ul>
     <p>以現在的量，API 只花 Plus 的一半左右。要等文章量翻倍以上，才需要回頭重算這一題。上方試算區拉動篇數時，底下那行說明也會跟著算出 $20 能換到的張數。</p>
   </div>
@@ -519,7 +532,7 @@ header.top h1 { margin-top: 0; }
         </tr>
       </thead>
       <tbody>
-        <tr><th>每月費用</th><td>約 $9，隨用量</td><td>$20 固定</td><td>$30 固定，已在付，增額 $0</td><td>約 $5 到 $15，依模型</td><td>$19.99 固定，生圖扣訂閱額度</td></tr>
+        <tr><th>每月費用</th><td>約 $9，隨用量</td><td>$20 固定</td><td>$30 固定，已在付，增額 $0</td><td>約 $5 到 $15，依模型</td><td>$19.99 固定，已訂閱，增額 $0；生圖扣訂閱額度</td></tr>
         <tr><th>Bot 自動化</th><td>可以</td><td>可以</td><td>可以，走用量池</td><td>可以</td><td>可以，在背景模式呼叫 agy；官方沒有明文背書</td></tr>
         <tr><th>額度</th><td>有餘額就能跑</td><td>與 Codex 其他用途共用，生圖消耗快 3 到 5 倍</td><td>每週用量池，Plus 的 4 倍，無公布張數</td><td>有餘額就能跑</td><td>生圖額度與寫程式分開；每 5 小時重置、有每週上限，未公布張數</td></tr>
         <tr><th>160 張夠不夠</th><td>夠</td><td>分散執行應該夠，集中批次可能撞上限</td><td>未知，看其他用途佔多少</td><td>夠</td><td>未知，要實測</td></tr>
@@ -532,14 +545,14 @@ header.top h1 { margin-top: 0; }
     </table>
   </div>
   <div class="prose">
-    <p>Antigravity CLI 那一欄看起來最划算：月費和 Plus 同級，生圖額度又和寫程式分開。卡住的是參考圖，角色設定表若被忽略，人物就無法跨圖一致，這條路要實測過才算數。Grok 的優勢只在「訂閱已付」這一點。一旦改成按張付費，Grok Imagine 2.0 的低畫質起價就是 GPT Image 2.6 的兩倍，又缺中文佐證，在含字的圖上沒有理由選它。</p>
+    <p>Antigravity CLI 那一欄在已訂閱的前提下最划算：增額是零，生圖額度又和寫程式分開。卡住的是參考圖，角色設定表若被忽略，人物就無法跨圖一致，這條路要實測過才算數。Grok 的優勢只在「訂閱已付」這一點。一旦改成按張付費，Grok Imagine 2.0 的低畫質起價就是 GPT Image 2.6 的兩倍，又缺中文佐證，在含字的圖上沒有理由選它。</p>
   </div>
 </section>
 
 <section id="refs">
   <div class="prose">
     <h2>四張參考圖，難度差在哪</h2>
-    <p>畫風幾乎不影響難度。扁平卡通、日系動漫、3D 黏土感，低畫質都畫得出來。真正的變數是<mark>文字量與字級</mark>：字越多、越小，越需要往上調畫質。點圖片可以放大，用左右鍵切換對照。</p>
+    <p>畫風幾乎不影響難度。扁平卡通、日系動漫、3D 黏土感，低畫質都畫得出來。真正的變數是<mark>文字量與字級</mark>：字越多、越小，越需要往上調畫質。每張卡片也標了已付的 Antigravity 能不能先頂上。點圖片可以放大，用左右鍵切換對照。</p>
   </div>
   <div class="filter" role="group" aria-label="依建議畫質篩選">
     <button type="button" data-tier="all" aria-pressed="true">全部</button>
@@ -559,6 +572,7 @@ header.top h1 { margin-top: 0; }
           <dt>文字負擔</dt><dd>很低<span class="meter" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></span></dd>
           <dt>單張成本</dt><dd class="num">約 $0.02</dd>
           <dt>主要風險</dt><dd>角色跨圖的一致性</dd>
+          <dt>已付替代</dt><dd>可試 Antigravity。字很少，但人物要和設定表一致，參考圖問題要先過關</dd>
         </dl>
         <p class="note">只有兩個標題。表格用色塊代替文字，把模型最弱的部分直接繞開。這個手法值得多用。</p>
       </div>
@@ -574,6 +588,7 @@ header.top h1 { margin-top: 0; }
           <dt>文字負擔</dt><dd>中<span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i><i></i></span></dd>
           <dt>單張成本</dt><dd class="num">約 $0.03–0.04</dd>
           <dt>主要風險</dt><dd>螢幕裡的小字、右下的流程列</dd>
+          <dt>已付替代</dt><dd>可試 Antigravity。角色不必和系列一致時最適合，標題字要校對</dd>
         </dl>
         <p class="note">大標題和三個標籤夠大，不用擔心。容易出錯的是介面裡那行對話，可以改成只示意、不放可讀文字。</p>
       </div>
@@ -589,6 +604,7 @@ header.top h1 { margin-top: 0; }
           <dt>文字負擔</dt><dd>中偏高<span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></dd>
           <dt>單張成本</dt><dd class="num">約 $0.04–0.05，只做一次</dd>
           <dt>主要風險</dt><dd>小標籤錯字、各視角細節對不上</dd>
+          <dt>已付替代</dt><dd>優先試 Antigravity。這張是參考圖的源頭，本身不需要參考圖，正好避開它的弱點</dd>
         </dl>
         <p class="note">這張之後會當每一張圖的參考圖，是最該花錢的一張。標籤減到必要的幾個，重點放在三視圖畫得準。</p>
       </div>
@@ -604,6 +620,7 @@ header.top h1 { margin-top: 0; }
           <dt>文字負擔</dt><dd>很高<span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></dd>
           <dt>單張成本</dt><dd class="num">約 $0.04–0.05，另加修改</dd>
           <dt>主要風險</dt><dd>右側小字說明、底部註腳錯漏</dd>
+          <dt>已付替代</dt><dd>不建議。字多又要角色一致，兩個弱點都踩到</dd>
         </dl>
         <p class="note">大約 25 段文字，任何一段出錯都要修。每段逐條寫進提示詞並加引號；出錯時只改那一塊，不整張重生。</p>
       </div>
@@ -689,7 +706,7 @@ header.top h1 { margin-top: 0; }
       <li><label><input type="checkbox" id="chk-sheet"><span>用 Sunburst high 做好角色設定表，之後每張圖都附上</span></label></li>
       <li><label><input type="checkbox" id="chk-test"><span>拿一則真實的繁體文案，Flare low 和 medium 各跑五張，記下錯字率</span></label></li>
       <li><label><input type="checkbox" id="chk-cap"><span>OpenRouter 儲值 15 到 20 美元，金鑰設好每月上限</span></label></li>
-      <li><label><input type="checkbox" id="chk-agy"><span>若有 Google AI Pro：用 Antigravity CLI 附角色設定表生一張圖、跑一則繁體文案，再連續生 20 到 30 張看用量扣多少</span></label></li>
+      <li><label><input type="checkbox" id="chk-agy"><span>用 Antigravity CLI 先做角色設定表，再附上它生一張圖、跑一則繁體文案，再連續生 20 到 30 張看用量扣多少</span></label></li>
       <li><label><input type="checkbox" id="chk-review"><span>第一個月結束後，拿後台的實際花費回來對照這一頁</span></label></li>
     </ul>
     <p class="small">勾選狀態只記在這個瀏覽器裡，換裝置不會跟著走。</p>
@@ -773,14 +790,15 @@ header.top h1 { margin-top: 0; }
       t: 0.0336, c: 0.0336, i: 0.134, rt: 0.0336, rc: 0.0336, edit: 0.136, ref: 0.001,
       text: 'Pro 官方主打', textTier: 'mid' }
   ];
-  var DEFAULTS = { n: 20, t: 6, c: 1, i: 1, r: 30, e: 1.5, ref: true };
+  var DEFAULTS = { n: 20, t: 6, c: 1, i: 1, r: 30, e: 1.5, s: 0, ref: true };
   var PLUS = 20;
 
   function $(id) { return document.getElementById(id); }
   function money(v, d) { return '$' + v.toFixed(d === undefined ? 2 : d); }
 
   function compute(m, a) {
-    var T = a.n * a.t, C = a.n * a.c, I = a.n * a.i, r = a.r / 100;
+    var keep = 1 - a.s / 100;
+    var T = a.n * a.t * keep, C = a.n * a.c * keep, I = a.n * a.i, r = a.r / 100;
     var base = T * m.t + C * m.c + I * m.i;
     var redo = r * T * m.rt + r * C * m.rc + I * a.e * m.edit;
     var ref = a.ref ? (T + C + r * T + r * C) * m.ref : 0;
@@ -793,7 +811,7 @@ header.top h1 { margin-top: 0; }
   function read() {
     return {
       n: +$('in-n').value, t: +$('in-t').value, c: +$('in-c').value, i: +$('in-i').value,
-      r: +$('in-r').value, e: +$('in-e').value, ref: $('in-ref').checked
+      r: +$('in-r').value, e: +$('in-e').value, s: +$('in-s').value, ref: $('in-ref').checked
     };
   }
 
@@ -805,13 +823,18 @@ header.top h1 { margin-top: 0; }
     $('out-i').textContent = a.i;
     $('out-r').textContent = a.r + '%';
     $('out-e').textContent = a.e;
+    $('out-s').textContent = a.s + '%';
 
     var rows = MODELS.map(function (m) { return { m: m, v: compute(m, a) }; });
     rows.sort(function (x, y) { return x.v.total - y.v.total; });
     var finished = rows[0].v.finished, gens = rows[0].v.gens;
     var max = Math.max(PLUS * 1.1, rows[rows.length - 1].v.total * 1.05);
 
-    $('sum-line').textContent = '每月成品 ' + finished + ' 張，含重生與修改共約 ' + Math.round(gens) + ' 次生成';
+    var allImgs = a.n * (a.t + a.c + a.i);
+    var agyImgs = Math.round(a.n * (a.t + a.c) * a.s / 100);
+    $('sum-line').textContent = '每月成品 ' + allImgs + ' 張' +
+      (agyImgs > 0 ? '，其中 ' + agyImgs + ' 張交給 Antigravity、API 負責 ' + Math.round(finished) + ' 張' : '') +
+      '；API 含重生與修改共約 ' + Math.round(gens) + ' 次生成';
 
     var bars = $('bars');
     bars.innerHTML = '';
@@ -836,7 +859,7 @@ header.top h1 { margin-top: 0; }
 
       var tr = document.createElement('tr');
       if (m.pick) tr.className = 'pick';
-      var per = finished > 0 ? money(v.total / finished, 3) : '–';
+      var per = finished >= 0.5 ? money(v.total / finished, 3) : '–';
       tr.innerHTML =
         '<th>' + m.name + '</th>' +
         '<td class="r">' + money(v.base) + '</td>' +
@@ -852,7 +875,7 @@ header.top h1 { margin-top: 0; }
     var pick = rows.filter(function (x) { return x.m.pick; })[0].v;
     var out = $('readout');
     if (gens <= 0) {
-      out.textContent = '這組假設下沒有要生成的圖。';
+      out.textContent = agyImgs > 0 ? '這組假設下所有圖都交給 Antigravity，API 增額 $0。' : '這組假設下沒有要生成的圖。';
     } else {
       var avg = pick.total / gens;
       var breakeven = Math.round(PLUS / avg);
@@ -865,18 +888,22 @@ header.top h1 { margin-top: 0; }
         ? '把 $20 全部拿去刷 API，約可產出 ' + budgetImgs + ' 張成品' +
           (perArticle > 0 ? '（約 ' + Math.round(budgetImgs / perArticle) + ' 篇）' : '') + '。'
         : '';
-      out.textContent = '照這組假設，GPT Image 2.6 每月 ' + money(pick.total, 1) +
+      var agyLine = agyImgs > 0
+        ? '已有 Google AI Pro：Antigravity 接手 ' + agyImgs + ' 張，增額 $0。'
+        : '已有 Google AI Pro 的話，把最後一個滑桿拉高，看交給 Antigravity 能省多少。';
+      out.textContent = agyLine + '照這組假設，GPT Image 2.6 每月 ' + money(pick.total, 1) +
         '，平均每次生成 ' + money(avg, 3) + '。' + cmp + budgetLine;
     }
   }
 
-  ['in-n', 'in-t', 'in-c', 'in-i', 'in-r', 'in-e', 'in-ref'].forEach(function (id) {
+  ['in-n', 'in-t', 'in-c', 'in-i', 'in-r', 'in-e', 'in-s', 'in-ref'].forEach(function (id) {
     $(id).addEventListener('input', render);
     $(id).addEventListener('change', render);
   });
   $('btn-reset').addEventListener('click', function () {
     $('in-n').value = DEFAULTS.n; $('in-t').value = DEFAULTS.t; $('in-c').value = DEFAULTS.c;
     $('in-i').value = DEFAULTS.i; $('in-r').value = DEFAULTS.r; $('in-e').value = DEFAULTS.e;
+    $('in-s').value = DEFAULTS.s;
     $('in-ref').checked = DEFAULTS.ref;
     render();
   });
