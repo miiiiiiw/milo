@@ -29,6 +29,7 @@
   --seg-redo: #1f8a84;
   --seg-ref: #d99a14;
   --seg-fee: #8b968f;
+  --seg-sub: #4f7a66;
   --font-display: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
   --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
   --font-num: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -51,6 +52,7 @@
     --seg-redo: #4fc2bb;
     --seg-ref: #e6b445;
     --seg-fee: #6f7b75;
+    --seg-sub: #86b39d;
     color-scheme: dark;
   }
 }
@@ -70,6 +72,7 @@
   --seg-redo: #4fc2bb;
   --seg-ref: #e6b445;
   --seg-fee: #6f7b75;
+    --seg-sub: #86b39d;
   color-scheme: dark;
 }
 
@@ -373,7 +376,8 @@ header.top h1 { margin-top: 0; }
     <span><i style="background:var(--seg-redo)"></i>重生與修改</span>
     <span><i style="background:var(--seg-ref)"></i>參考圖輸入</span>
     <span><i style="background:var(--seg-fee)"></i>儲值手續費</span>
-    <span><i class="dash"></i>虛線：ChatGPT Plus 或 Google AI Pro，每月約 $20</span>
+    <span><i style="background:var(--seg-sub)"></i>訂閱月費</span>
+    <span><i class="dash"></i>虛線：$20 訂閱線</span>
   </div>
   <div class="bars" id="bars" role="img" aria-label="各模型每月費用長條圖，數值見下方表格"></div>
   <p class="readout" id="readout"></p>
@@ -406,7 +410,7 @@ header.top h1 { margin-top: 0; }
   <div class="prose">
     <h3>讀這張圖要記得的事</h3>
     <p>最便宜的三個模型和 GPT Image 2.6 套的是同一個重生率，這對它們是高估。Grok 舊版、MiniMax H3、GPT Image 2 的低畫質都沒有中文字的佐證，錯字一多，重生次數會往上走，有些錯字重生幾次也修不好。表面省下的 2 到 4 美元，很可能在校對時間裡賠回去。</p>
-    <p>Google AI Pro 和 Plus 一樣是固定月費，所以畫成那條虛線，不在長條裡。混搭也不划算：把「改用 Antigravity 的比例」拉到 100%，API 只剩約 $2.4，但加上 $19.99 月費合計約 $22.4，比全走 API 的 $9.1 貴一倍多。訂閱要划算，得是 API 帳單本身就超過 20 美元的時候。不過 Google AI Pro 附的每月 10 美元 API 額度，可以抵上面兩列 Nano Banana 的費用：全用 2.1 的 8.0 美元可全額抵掉，2.1＋Pro 的 13.1 美元只需自付約 3.1 美元。</p>
+    <p>三條訂閱路線也放進同一張長條圖：深綠色是月費，藍色是超出 10 美元額度後要另付的 API。Google AI Pro 走 Nano Banana 2.1 時，額度剛好抵掉 API 費，總支出就是 19.99 美元；資訊圖表改用 Pro，會超出額度約 3.1 美元。ChatGPT Plus 假設 Codex 額度夠用，固定 20 美元。三者都比 GPT Image 2.6 的 9.1 美元貴一倍以上。把「改用 Antigravity 的比例」拉高，Google AI Pro 的超額會縮小，但已經在額度內的那條不會再更便宜。</p>
     <p>GPT Image 2 和 2.6 只差一美元多。2.6 的低畫質用了約四倍的運算量，接近舊版的中高畫質，速度也快，這個差價付得心安。</p>
   </div>
 
@@ -421,13 +425,15 @@ header.top h1 { margin-top: 0; }
           <tr><th>GPT Image 2.6</th><td class="r">Flare low 0.020</td><td class="r">Flare medium 0.034</td><td class="r">Sunburst high 0.041</td><td class="r">0.034</td><td class="r">約 0.05</td><td class="r">約 0.01</td></tr>
           <tr><th>GPT Image 2</th><td class="r">low 0.005</td><td class="r">medium 0.041</td><td class="r">medium 0.041</td><td class="r">0.041</td><td class="r">約 0.05</td><td class="r">約 0.01</td></tr>
           <tr><th>MiniMax H3 Image</th><td class="r">1K 0.022</td><td class="r">2K 0.023</td><td class="r">2K 0.023</td><td class="r">同原價</td><td class="r">約 0.03</td><td class="r">約 0.005</td></tr>
+          <tr><th>Nano Banana 2.1</th><td class="r">1K 0.0336</td><td class="r">1K 0.0336</td><td class="r">1K 0.0336</td><td class="r">0.0336</td><td class="r">約 0.035</td><td class="r">約 0.001</td></tr>
+          <tr><th>Nano Banana 2.1＋Pro</th><td class="r">2.1 0.0336</td><td class="r">2.1 0.0336</td><td class="r">Pro 0.134</td><td class="r">0.0336</td><td class="r">約 0.136</td><td class="r">約 0.001</td></tr>
           <tr><th>Grok Imagine 舊版</th><td class="r">0.02</td><td class="r">0.02</td><td class="r">0.02</td><td class="r">0.02</td><td class="r">0.022</td><td class="r">0.002</td></tr>
           <tr><th>Grok Imagine 2.0</th><td class="r">1K 低 0.04</td><td class="r">1K 中 0.06</td><td class="r">2K 中 0.08</td><td class="r">0.06</td><td class="r">0.09</td><td class="r">0.01</td></tr>
           <tr><th>Grok Imagine Quality</th><td class="r">1K 0.05</td><td class="r">1K 0.05</td><td class="r">2K 0.07</td><td class="r">0.05</td><td class="r">0.08</td><td class="r">0.01</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="small prose">「修改一次」與「參考圖一次」是估計值，沒有實測。Grok 三項以 xAI 直連計算，不含 OpenRouter 的 5.5% 儲值手續費。</p>
+    <p class="small prose">「修改一次」與「參考圖一次」是估計值，沒有實測。Grok 三項以 xAI 直連、Nano Banana 兩項以 Gemini API 直連計算，不含 OpenRouter 的 5.5% 儲值手續費。</p>
   </div>
 </section>
 
@@ -491,11 +497,11 @@ header.top h1 { margin-top: 0; }
         <tr><th>比較項目</th><th>API（$20）</th><th>Plus 搭 Codex CLI（$20）</th><th>Google AI Pro 搭 Antigravity CLI（$19.99）</th></tr>
       </thead>
       <tbody>
-        <tr><th>產量</th><td>約 350 張成品，確定</td><td>沒有公布張數，與 Codex 其他用途共用額度</td><td>沒有公布張數，生圖額度與寫程式分開</td></tr>
+        <tr><th>產量</th><td>約 350 張成品，確定</td><td>沒有公布張數，與 Codex 其他用途共用額度</td><td>$10 額度約 300 張 Nano Banana 2.1（確定），另加 Antigravity 額度（未公布）</td></tr>
         <tr><th>附贈 API 額度</th><td>無</td><td>無</td><td>每月 $10，可抵 Gemini API</td></tr>
-        <tr><th>每月 160 張</th><td>只要約 $9，省下 $11</td><td>固定 $20</td><td>固定 $19.99，參考圖可能被忽略</td></tr>
+        <tr><th>每月 160 張</th><td>只要約 $9，省下 $11</td><td>固定 $20</td><td>全用 2.1 時額度全抵，總支出 $19.99</td></tr>
         <tr><th>一年</th><td>約 $110</td><td>$240</td><td>約 $240</td></tr>
-        <tr><th>用不完的部分</th><td>留到下個月繼續用</td><td>不能累積</td><td>不能累積</td></tr>
+        <tr><th>用不完的部分</th><td>留到下個月繼續用</td><td>不能累積</td><td>Antigravity 額度不能累積；$10 額度可累積 12 個月</td></tr>
       </tbody>
     </table>
   </div>
@@ -534,9 +540,9 @@ header.top h1 { margin-top: 0; }
         <tr><th>參考圖</th><td>支援</td><td>CLI 有回報會忽略；改用 API 額度呼叫則支援</td><td><span class="chip none">平手</span></td></tr>
         <tr><th>Bot 背景呼叫</th><td>Codex CLI 明列在 Plus 方案內</td><td>只有一則非官方論壇回覆說支援</td><td><span class="chip use">Codex</span></td></tr>
         <tr><th>免費先試</th><td>不行，Free 方案不能用 Codex 生圖</td><td>可以，免費方案有少量生圖額度</td><td><span class="chip use">Antigravity</span></td></tr>
-        <tr><th>160 張的每張成本</th><td>$0.125</td><td>$0.125</td><td><span class="chip none">平手</span></td></tr>
+        <tr><th>160 張的總支出</th><td>$20</td><td>全用 2.1：$19.99；2.1＋Pro：約 $23.0</td><td><span class="chip none">相近</span></td></tr>
         <tr><th>同模型走 API 的月費</th><td>約 $7.7（GPT Image 2）</td><td>約 $13.1（Nano Banana 2.1＋Pro），扣 $10 額度後自付約 $3.1</td><td><span class="chip none">都低於 $20</span></td></tr>
-        <tr><th>比 API 划算的門檻</th><td>每月約 350 張以上</td><td>同左</td><td><span class="chip none">平手</span></td></tr>
+        <tr><th>比 API 划算的門檻</th><td>每月約 350 張以上</td><td>Antigravity 接得住就同左；只靠 $10 額度，GPT API 月費要超過約 $80</td><td><span class="chip none">平手</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -587,19 +593,19 @@ header.top h1 { margin-top: 0; }
           <th scope="col">Codex CLI（ChatGPT Plus）</th>
           <th scope="col">Grok Premium 訂閱</th>
           <th scope="col">Grok API</th>
-          <th scope="col">Antigravity CLI（Google AI Pro）</th>
+          <th scope="col">Google AI Pro（Antigravity＋$10 API 額度）</th>
         </tr>
       </thead>
       <tbody>
         <tr><th>每月費用</th><td>約 $9，隨用量</td><td>$20 固定</td><td>$30 固定，已在付，增額 $0</td><td>約 $5 到 $15，依模型</td><td>$19.99 固定，生圖扣訂閱額度；另附每月 $10 API 額度</td></tr>
         <tr><th>Bot 自動化</th><td>可以</td><td>可以</td><td>可以，走用量池</td><td>可以</td><td>可以，在背景模式呼叫 agy；官方沒有明文背書</td></tr>
-        <tr><th>額度</th><td>有餘額就能跑</td><td>與 Codex 其他用途共用，生圖消耗快 3 到 5 倍</td><td>每週用量池，Plus 的 4 倍，無公布張數</td><td>有餘額就能跑</td><td>生圖額度與寫程式分開；每 5 小時重置、有每週上限，未公布張數</td></tr>
-        <tr><th>160 張夠不夠</th><td>夠</td><td>分散執行應該夠，集中批次可能撞上限</td><td>未知，看其他用途佔多少</td><td>夠</td><td>未知，要實測</td></tr>
-        <tr><th>畫質與尺寸</th><td>參數精確指定</td><td>只能寫在提示詞裡</td><td>有限</td><td>可選解析度與畫質</td><td>只能寫在提示詞裡</td></tr>
-        <tr><th>中文字與版面</th><td>佐證最多</td><td>同系列模型，應相近</td><td>無中文實測</td><td>無中文實測</td><td>無繁中實測</td></tr>
+        <tr><th>額度</th><td>有餘額就能跑</td><td>與 Codex 其他用途共用，生圖消耗快 3 到 5 倍</td><td>每週用量池，Plus 的 4 倍，無公布張數</td><td>有餘額就能跑</td><td>Antigravity 每 5 小時重置、有週上限；另有每月 $10 API 額度</td></tr>
+        <tr><th>160 張夠不夠</th><td>夠</td><td>分散執行應該夠，集中批次可能撞上限</td><td>未知，看其他用途佔多少</td><td>夠</td><td>$10 額度約 300 張 2.1，夠；不夠的部分按張付</td></tr>
+        <tr><th>畫質與尺寸</th><td>參數精確指定</td><td>只能寫在提示詞裡</td><td>有限</td><td>可選解析度與畫質</td><td>Antigravity 只能寫提示詞；走 API 額度可指定 1K、2K、4K</td></tr>
+        <tr><th>中文字與版面</th><td>佐證最多</td><td>同系列模型，應相近</td><td>無中文實測</td><td>無中文實測</td><td>Pro 官方主打文字精準，無繁中實測</td></tr>
         <tr><th>參考圖上限</th><td>多張</td><td>支援</td><td>最多 5 張</td><td>最多 5 張</td><td>CLI 有回報會忽略參考圖；改用 API 額度則支援</td></tr>
         <tr><th>穩定性風險</th><td>低</td><td>登入憑證會過期</td><td>額度被聊天、Bot 分掉</td><td>低</td><td>參考圖問題；額度曾在 2 月收緊</td></tr>
-        <tr><th>額度用完時</th><td>再儲值</td><td>等視窗重置或升級</td><td>等每週重置、加購額度或改用 API</td><td>再儲值</td><td>等重置，或加購 AI credits</td></tr>
+        <tr><th>額度用完時</th><td>再儲值</td><td>等視窗重置或升級</td><td>等每週重置、加購額度或改用 API</td><td>再儲值</td><td>Antigravity 等重置；API 額度用完改按張付費</td></tr>
       </tbody>
     </table>
   </div>
@@ -611,7 +617,7 @@ header.top h1 { margin-top: 0; }
 <section id="refs">
   <div class="prose">
     <h2>四張參考圖，難度差在哪</h2>
-    <p>畫風幾乎不影響難度。扁平卡通、日系動漫、3D 黏土感，低畫質都畫得出來。真正的變數是<mark>文字量與字級</mark>：字越多、越小，越需要往上調畫質。每張卡片也標了換成 Antigravity 路線時該用哪個模型、適不適合。點圖片可以放大，用左右鍵切換對照。</p>
+    <p>畫風幾乎不影響難度。扁平卡通、日系動漫、3D 黏土感，低畫質都畫得出來。真正的變數是<mark>文字量與字級</mark>：字越多、越小，越需要往上調畫質。每張卡片也標了換成 Google AI Pro 路線時，該用哪個模型、走 Antigravity 還是 API 額度。點圖片可以放大，用左右鍵切換對照。</p>
   </div>
   <div class="filter" role="group" aria-label="依建議畫質篩選">
     <button type="button" data-tier="all" aria-pressed="true">全部</button>
@@ -631,7 +637,7 @@ header.top h1 { margin-top: 0; }
           <dt>文字負擔</dt><dd>很低<span class="meter" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></span></dd>
           <dt>單張成本</dt><dd class="num">約 $0.02</dd>
           <dt>主要風險</dt><dd>角色跨圖的一致性</dd>
-          <dt>Antigravity</dt><dd>Nano Banana 2.1。字很少，但人物要和設定表一致，參考圖問題要先過關</dd>
+          <dt>Google AI Pro</dt><dd>Nano Banana 2.1，走 $10 API 額度並附參考圖，不受 CLI 問題影響</dd>
         </dl>
         <p class="note">只有兩個標題。表格用色塊代替文字，把模型最弱的部分直接繞開。這個手法值得多用。</p>
       </div>
@@ -647,7 +653,7 @@ header.top h1 { margin-top: 0; }
           <dt>文字負擔</dt><dd>中<span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i><i></i></span></dd>
           <dt>單張成本</dt><dd class="num">約 $0.03–0.04</dd>
           <dt>主要風險</dt><dd>螢幕裡的小字、右下的流程列</dd>
-          <dt>Antigravity</dt><dd>Nano Banana 2.1。角色不必和系列一致時最適合，標題字要校對</dd>
+          <dt>Google AI Pro</dt><dd>Nano Banana 2.1，Antigravity 或 API 額度都行；標題字要校對</dd>
         </dl>
         <p class="note">大標題和三個標籤夠大，不用擔心。容易出錯的是介面裡那行對話，可以改成只示意、不放可讀文字。</p>
       </div>
@@ -663,7 +669,7 @@ header.top h1 { margin-top: 0; }
           <dt>文字負擔</dt><dd>中偏高<span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></dd>
           <dt>單張成本</dt><dd class="num">約 $0.04–0.05，只做一次</dd>
           <dt>主要風險</dt><dd>小標籤錯字、各視角細節對不上</dd>
-          <dt>Antigravity</dt><dd>Nano Banana Pro，最適合。這張是參考圖的源頭，本身不需要參考圖，正好避開 Antigravity 的弱點</dd>
+          <dt>Google AI Pro</dt><dd>Nano Banana Pro，用 Antigravity 額度最省。這張本身不需要參考圖，避開 CLI 的弱點</dd>
         </dl>
         <p class="note">這張之後會當每一張圖的參考圖，是最該花錢的一張。標籤減到必要的幾個，重點放在三視圖畫得準。</p>
       </div>
@@ -679,7 +685,7 @@ header.top h1 { margin-top: 0; }
           <dt>文字負擔</dt><dd>很高<span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></dd>
           <dt>單張成本</dt><dd class="num">約 $0.04–0.05，另加修改</dd>
           <dt>主要風險</dt><dd>右側小字說明、底部註腳錯漏</dd>
-          <dt>Antigravity</dt><dd>Nano Banana Pro，但不建議當主力。字多又要角色一致，兩個弱點都踩到</dd>
+          <dt>Google AI Pro</dt><dd>Nano Banana Pro，走 API 額度附參考圖。每月 20 張約 $2.7，佔額度約四分之一；字多仍要校對</dd>
         </dl>
         <p class="note">大約 25 段文字，任何一段出錯都要修。每段逐條寫進提示詞並加引號；出錯時只改那一塊，不整張重生。</p>
       </div>
@@ -757,7 +763,7 @@ header.top h1 { margin-top: 0; }
       <li>每月成品超過約 350 張（約 44 篇），或生成次數接近 500 次：ChatGPT Plus 搭 Codex CLI 開始追平 API，值得重新比較。</li>
       <li>Premium 的用量常在週中見底，而且吃掉額度的是聊天和 Bot：這時升級才有道理，生圖只是順便受惠。</li>
       <li>繁體錯字率居高不下：改成模型只出底圖與角色，文字事後疊上。</li>
-      <li>Antigravity CLI 的參考圖問題修好、實測一週撐得住約 58 張，而且 API 帳單已接近 20 美元：這時 Google AI Pro 才值得訂，回來重算。</li>
+      <li>本來就要訂 Google AI Pro（為了 Gemini、Antigravity 或雲端空間）：圖文與封面改用 10 美元額度跑 Nano Banana 2.1，GPT Image 2.6 只留給資訊圖表，回來重算。</li>
       <li>出現新模型或調價：回到試算區，把單價換掉再看排序。</li>
     </ul>
     <h3>動手前先做完這幾件</h3>
@@ -859,6 +865,11 @@ header.top h1 { margin-top: 0; }
   var DEFAULTS = { n: 20, t: 6, c: 1, i: 1, r: 30, e: 1.5, s: 0, ref: true };
   var PLUS = 20;
   var AIPRO = 19.99;
+  var SUBS = [
+    { name: 'Google AI Pro＋Nano Banana 2.1', fee: AIPRO, credit: 10, via: 'nb21', text: '官方宣稱', textTier: 'mid' },
+    { name: 'Google AI Pro＋Nano Banana 2.1／Pro', fee: AIPRO, credit: 10, via: 'nbmix', text: 'Pro 官方主打', textTier: 'mid' },
+    { name: 'ChatGPT Plus＋Codex CLI', fee: PLUS, credit: 0, via: null, text: '同 GPT Image 2', textTier: 'mid' }
+  ];
 
   function $(id) { return document.getElementById(id); }
   function money(v, d) { return '$' + v.toFixed(d === undefined ? 2 : d); }
@@ -893,8 +904,17 @@ header.top h1 { margin-top: 0; }
     $('out-s').textContent = a.s + '%';
 
     var rows = MODELS.map(function (m) { return { m: m, v: compute(m, a) }; });
+    var base0 = compute(MODELS[0], a);
+    var finished = base0.finished, gens = base0.gens;
+    var byId = {};
+    rows.forEach(function (x) { byId[x.m.id] = x.v; });
+    SUBS.forEach(function (sd) {
+      var api = sd.via ? byId[sd.via].total : 0;
+      var over = Math.max(0, api - sd.credit);
+      rows.push({ m: { name: sd.name, sub: true, text: sd.text, textTier: sd.textTier },
+                  v: { subFee: sd.fee, over: over, api: api, total: sd.fee + over } });
+    });
     rows.sort(function (x, y) { return x.v.total - y.v.total; });
-    var finished = rows[0].v.finished, gens = rows[0].v.gens;
     var max = Math.max(PLUS * 1.1, rows[rows.length - 1].v.total * 1.05);
 
     var allImgs = a.n * (a.t + a.c + a.i);
@@ -908,8 +928,37 @@ header.top h1 { margin-top: 0; }
     var tbody = $('tbody');
     tbody.innerHTML = '';
 
+    function renderSub(m, v) {
+      var segS = function (val, color) {
+        return '<span style="width:' + (val / max * 100).toFixed(2) + '%;background:var(' + color + ')"></span>';
+      };
+      var div = document.createElement('div');
+      div.className = 'bar-row';
+      div.innerHTML =
+        '<div class="bar-name">' + m.name + '<span class="chip none">訂閱</span></div>' +
+        '<div class="track" title="' + m.name + ' 每月 ' + money(v.total) + '">' +
+          segS(v.subFee, '--seg-sub') + segS(v.over, '--seg-base') +
+          '<i class="plusline" style="left:' + (PLUS / max * 100).toFixed(2) + '%"></i>' +
+        '</div>' +
+        '<div class="bar-total">' + money(v.total, 1) + '</div>';
+      bars.appendChild(div);
+      var apiCell = v.over > 0 ? 'API 超額 ' + money(v.over) : (v.api > 0 ? '額度內 ' + money(v.api) : '–');
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<th>' + m.name + '</th>' +
+        '<td class="r">月費 ' + money(v.subFee) + '</td>' +
+        '<td class="r">' + apiCell + '</td>' +
+        '<td class="r">–</td>' +
+        '<td class="r">無</td>' +
+        '<td class="r"><b>' + money(v.total) + '</b></td>' +
+        '<td class="r">' + (allImgs > 0 ? money(v.total / allImgs, 3) : '–') + '</td>' +
+        '<td><span class="chip ' + m.textTier + '">' + m.text + '</span></td>';
+      tbody.appendChild(tr);
+    }
+
     rows.forEach(function (row) {
       var m = row.m, v = row.v;
+      if (m.sub) { renderSub(m, v); return; }
       var div = document.createElement('div');
       div.className = 'bar-row' + (m.pick ? ' pick' : '');
       var seg = function (val, color) {
