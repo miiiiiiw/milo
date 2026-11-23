@@ -195,9 +195,9 @@
     "synced": "2026-11-22"
   },
   "karpathy-how-i-use-llms": {
-    "sha256": "ecb176dbac38f298131918cbe72f1b6f65c54601744cc1b38920c7a7e4a2b203",
+    "sha256": "b06a5cdd0ec798371b326e02f5f236d2dd38b7301b9480e51c90624b3a3e743f",
     "v": 15,
-    "synced": "2026-11-22"
+    "synced": "2026-11-23"
   },
   "nate-parrott-claude-design": {
     "sha256": "ad49c1f9d9696cd3aff117a49bc63d92145fd60c633f7fca26cf3a581d91ff9e",
@@ -205,22 +205,22 @@
     "synced": "2026-11-22"
   },
   "alpha-school-ai-education": {
-    "sha256": "4d7c4910e5b692b61547847c3311edd96d3b150ba4cd6c9beea092074393fce2",
+    "sha256": "7c3dbd62e8dcc094f055e93d646b6b8eaf7bffdbed626dc761f672742394b9b1",
     "v": 15,
     "synced": "2026-11-23"
   },
   "cowen-imas-ai-history": {
-    "sha256": "2ed8450d21464028dc7608acd6efd9b3db687e7d2e5ac9763cf1dfe1e795ba21",
+    "sha256": "53aeac567508cef53340f17dade4b1722621f11804e4f68e2e570c75adab4b64",
     "v": 15,
     "synced": "2026-11-23"
   },
   "dan-martell-ai-mindset": {
-    "sha256": "8ca3d55da182b56a8213bdc667af0d6f614b418d39fdbe9bd13b449fed8922f4",
+    "sha256": "648390fb46ed0a7d2bc7f9307b8c93967382a54ceda916add57f798ccf1536f6",
     "v": 15,
     "synced": "2026-11-23"
   },
   "mark-tilbury-claude-business": {
-    "sha256": "602284d26b8af768679d9816c35e46065eee0330208d94ddf44564fb9e00b721",
+    "sha256": "9bb7c778a3ae55ab13f699693c54163e69fb04c7ccb3ab8dc09aa31a7d484dcd",
     "v": 15,
     "synced": "2026-11-23"
   }
