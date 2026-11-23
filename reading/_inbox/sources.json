@@ -297,5 +297,20 @@
     "sha256": "3790ddf64b3ea98a65c8975405c13ad13481e2b3c29fc5cbbf6e128579b7e767",
     "v": 25,
     "synced": "2026-11-22"
+  },
+  "leaf-antigravity-t3": {
+    "sha256": "14044f405a868f96c29c7b214f67aadc81334b2bd576b866b46969e4b05bdfba",
+    "v": 25,
+    "synced": "2026-11-23"
+  },
+  "leaf-antigravity-video": {
+    "sha256": "87b9056a2623976d6bec736039da0898c940d5a12cc8aa1231e2c68e4e019f78",
+    "v": 25,
+    "synced": "2026-11-23"
+  },
+  "wezzard-antigravity-cli": {
+    "sha256": "6b6983c5cc99eb65a68f6a794b173c59852e8bbcbafbb04c2e0e967a8cbf601f",
+    "v": 25,
+    "synced": "2026-11-23"
   }
 }
