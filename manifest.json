@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-23T08:31:50.133Z",
+  "generated": "2026-11-23T12:52:35.629Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -41,8 +41,7 @@
         "學習方法",
         "Alpha School",
         "Joe Liemandt",
-        "a16z",
-        "硅基觉醒_2049"
+        "a16z"
       ],
       "category": "mind",
       "date": "2026-11-23"
@@ -58,8 +57,7 @@
         "AI 代理",
         "Tyler Cowen",
         "Alex Imas",
-        "a16z",
-        "硅基觉醒_2049"
+        "a16z"
       ],
       "category": "mind",
       "date": "2026-11-23"
@@ -74,8 +72,7 @@
         "AI 副業",
         "Claude",
         "Higgsfield",
-        "Mark Tilbury",
-        "硅基觉醒_2049"
+        "Mark Tilbury"
       ],
       "category": "reach",
       "date": "2026-11-23"
@@ -120,8 +117,7 @@
         "AI 生意",
         "AI 代理",
         "學習迴圈",
-        "Dan Martell",
-        "ares."
+        "Dan Martell"
       ],
       "category": "reach",
       "date": "2026-11-22"
@@ -212,8 +208,7 @@
         "AI 工具",
         "ChatGPT",
         "提示詞",
-        "Andrej Karpathy",
-        "octocat"
+        "Andrej Karpathy"
       ],
       "category": "build",
       "date": "2026-11-21"
