@@ -203,5 +203,25 @@
     "sha256": "ad49c1f9d9696cd3aff117a49bc63d92145fd60c633f7fca26cf3a581d91ff9e",
     "v": 15,
     "synced": "2026-11-22"
+  },
+  "alpha-school-ai-education": {
+    "sha256": "4d7c4910e5b692b61547847c3311edd96d3b150ba4cd6c9beea092074393fce2",
+    "v": 15,
+    "synced": "2026-11-23"
+  },
+  "cowen-imas-ai-history": {
+    "sha256": "2ed8450d21464028dc7608acd6efd9b3db687e7d2e5ac9763cf1dfe1e795ba21",
+    "v": 15,
+    "synced": "2026-11-23"
+  },
+  "dan-martell-ai-mindset": {
+    "sha256": "8ca3d55da182b56a8213bdc667af0d6f614b418d39fdbe9bd13b449fed8922f4",
+    "v": 15,
+    "synced": "2026-11-23"
+  },
+  "mark-tilbury-claude-business": {
+    "sha256": "602284d26b8af768679d9816c35e46065eee0330208d94ddf44564fb9e00b721",
+    "v": 15,
+    "synced": "2026-11-23"
   }
 }
