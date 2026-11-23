@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-22T03:50:23.963Z",
+  "generated": "2026-11-23T08:31:30.761Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -15,6 +15,117 @@
     "mind": "心智"
   },
   "files": [
+    {
+      "path": "reading/leaf-antigravity-t3.html",
+      "title": "勸退 Antigravity App！超簡單 Antigravity CLI + T3 Code，從 0 到 1 用出 Gemini 4 的真實力",
+      "description": "別在 App 裡用 Gemini 4：CLI 與 T3 Code 的安裝、設定與分工實測",
+      "tags": [
+        "原文學習",
+        "Antigravity",
+        "Gemini",
+        "T3 Code",
+        "AI 代理",
+        "Claude Code",
+        "Leaf Yeah!"
+      ],
+      "category": "build",
+      "date": "2026-11-23"
+    },
+    {
+      "path": "watching/alpha-school-ai-education.html",
+      "title": "【中文音軌】孩子愛上學勝過放假：Alpha 學校的 AI 教育實踐",
+      "description": "Alpha 學校每天兩小時學完學科，其餘時間做專題練生活技能，談學習動機與大學重塑",
+      "tags": [
+        "影片學習",
+        "AI 教育",
+        "學習方法",
+        "Alpha School",
+        "Joe Liemandt",
+        "a16z",
+        "硅基觉醒_2049"
+      ],
+      "category": "mind",
+      "date": "2026-11-23"
+    },
+    {
+      "path": "watching/cowen-imas-ai-history.html",
+      "title": "【中文音軌】歷史如何幫助我們理解 AI 革命｜泰勒·柯文與亞歷克斯·伊馬斯",
+      "description": "經濟學家柯文與伊馬斯從歷史與瓶頸，談 AI 為何難帶來兩位數成長，以及 AI 代理協作的關鍵",
+      "tags": [
+        "影片學習",
+        "AI 經濟",
+        "經濟成長",
+        "AI 代理",
+        "Tyler Cowen",
+        "Alex Imas",
+        "a16z",
+        "硅基觉醒_2049"
+      ],
+      "category": "mind",
+      "date": "2026-11-23"
+    },
+    {
+      "path": "watching/mark-tilbury-claude-business.html",
+      "title": "【中文音軌】只聽 Claude 建議從零創業：七天 AI 副業實戰",
+      "description": "Mark Tilbury 七天只聽 Claude 建議，用 AI 幫小店做廣告接案，公開收支與利潤",
+      "tags": [
+        "影片學習",
+        "AI 生意",
+        "AI 副業",
+        "Claude",
+        "Higgsfield",
+        "Mark Tilbury",
+        "硅基觉醒_2049"
+      ],
+      "category": "reach",
+      "date": "2026-11-23"
+    },
+    {
+      "path": "reading/leaf-antigravity-video.html",
+      "title": "萬字乾貨｜Gemini 4 + Antigravity，從 0 到 1 跑通全自動出片，附 AI 代理指令",
+      "description": "用 Antigravity 串起三條出片路線全自動做影片，附可複製指令與 Pro 會員實測帳單",
+      "tags": [
+        "原文學習",
+        "AI 影片",
+        "Antigravity",
+        "Gemini",
+        "Google Flow",
+        "AI 代理",
+        "Leaf Yeah!"
+      ],
+      "category": "motion",
+      "date": "2026-11-22"
+    },
+    {
+      "path": "reading/wezzard-antigravity-cli.html",
+      "title": "讓 Antigravity CLI 不再那麼難用的 9 個技巧（9 Tips to Make Antigravity CLI Less Painful）",
+      "description": "WeZZard 的 Antigravity CLI 九個設定：少跳權限提示、保護隱私、適應快捷鍵",
+      "tags": [
+        "原文學習",
+        "Antigravity",
+        "AI 代理",
+        "權限設定",
+        "Gemini",
+        "WeZZard"
+      ],
+      "category": "build",
+      "date": "2026-11-22"
+    },
+    {
+      "path": "watching/dan-martell-ai-mindset.html",
+      "title": "AI 商業心態：2027 年靠 AI 賺錢的五個觀念轉變（AI Business Mindset）",
+      "description": "Dan Martell 用白板講五個 AI 商業心態：找瓶頸、自己先學、定義角色、整理資料與建立學習迴圈",
+      "tags": [
+        "影片學習",
+        "AI 生意",
+        "AI 代理",
+        "學習迴圈",
+        "Dan Martell",
+        "ares."
+      ],
+      "category": "reach",
+      "date": "2026-11-22"
+    },
     {
       "path": "reading/ryan-x-brand.html",
       "title": "如何在 X 上壯大你的個人品牌（練習手冊＋資源）（How to Grow Your Personal Brand on 𝕏 (workbook + resources)）",
