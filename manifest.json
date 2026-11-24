@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-24T17:00:41.826Z",
+  "generated": "2026-11-24T22:05:48.606Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -16,6 +16,23 @@
   },
   "files": [
     {
+      "path": "reading/gergely-fde.html",
+      "title": "什麼是駐點部署工程師？為什麼這麼搶手？（What are Forward Deployed Engineers, and why are they so in demand?）",
+      "description": "Gergely Orosz 拆解駐點部署工程師：Palantir 到 OpenAI 的做法與職涯",
+      "tags": [
+        "原文學習",
+        "駐點部署工程師",
+        "FDE",
+        "職涯發展",
+        "AI 代理",
+        "Palantir",
+        "OpenAI",
+        "Gergely Orosz"
+      ],
+      "category": "build",
+      "date": "2026-11-25"
+    },
+    {
       "path": "reading/dashi-ai-editing.html",
       "title": "全網獨一份：最深度 AI 剪輯全流程教學",
       "description": "人只寫腳本、錄口播，其餘交給 Claude：AI 剪輯影片從調色、分鏡、配樂到回饋的全流程與提示詞",
@@ -27,6 +44,24 @@
         "數位人",
         "Claude",
         "大师的AI小灶"
+      ],
+      "category": "motion",
+      "date": "2026-11-24"
+    },
+    {
+      "path": "reading/miller-film-style.html",
+      "title": "複製一段話，AI 畫面拍出電影感：王家衛、徐克、港片味，10 種東方電影風格範本｜附電影感 Skill",
+      "description": "刪層實驗證明導演名字沒用：把光、色彩、質感、構圖、運動寫進提示詞，附 10 個東方電影風格模組",
+      "tags": [
+        "原文學習",
+        "AI 影片",
+        "提示詞",
+        "電影感",
+        "AI 短劇",
+        "風格模組",
+        "王家衛",
+        "徐克",
+        "Miller"
       ],
       "category": "motion",
       "date": "2026-11-24"
