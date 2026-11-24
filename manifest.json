@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-23T12:52:35.629Z",
+  "generated": "2026-11-24T11:17:05.519Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -15,6 +15,67 @@
     "mind": "心智"
   },
   "files": [
+    {
+      "path": "reading/dashi-ai-editing.html",
+      "title": "全網獨一份：最深度 AI 剪輯全流程教學",
+      "description": "人只寫腳本、錄口播，其餘交給 Claude：AI 剪輯影片從調色、分鏡、配樂到回饋的全流程與提示詞",
+      "tags": [
+        "原文學習",
+        "AI 影片",
+        "剪輯",
+        "提示詞",
+        "數位人",
+        "Claude",
+        "大师的AI小灶"
+      ],
+      "category": "motion",
+      "date": "2026-11-24"
+    },
+    {
+      "path": "reading/nicholascalez-fable-views.html",
+      "title": "我們如何用 Claude Fable 5.2，替自家 App 自動化做到每天 100 萬次觀看｜完整指南（How we automated 1 million views/day using Claude Fable 5.2 for our app (Full Guide)）",
+      "description": "用 Claude Code 把一支影片剪成六版、Postiz 排好整月，學會一套短影音自動發布系統",
+      "tags": [
+        "原文學習",
+        "短影音",
+        "自媒體",
+        "自動化",
+        "剪輯",
+        "Claude Code",
+        "Nicholas"
+      ],
+      "category": "reach",
+      "date": "2026-11-24"
+    },
+    {
+      "path": "reading/uber-securing-agents.html",
+      "title": "保護 AI 代理的安全：從真實部署學到的經驗（Securing AI Agents: Lessons From Real-World Deployment）",
+      "description": "Uber 分享 AI 代理安全實戰：用三層防線與行為契約，擋下有權限卻被操弄的動作",
+      "tags": [
+        "原文學習",
+        "AI 代理",
+        "AI 安全",
+        "系統架構",
+        "Uber Engineering"
+      ],
+      "category": "build",
+      "date": "2026-11-24"
+    },
+    {
+      "path": "reading/uber-skill-evals.html",
+      "title": "Uber 如何評測每月 100 萬次的 AI 代理 skill 呼叫（How Uber Evals 1 Million Agent Skill Invocations a Month）",
+      "description": "Uber 怎麼管好五千多個 AI 代理 skill：分層發布、盲測評測、降低成本、讓 AI 回報問題",
+      "tags": [
+        "原文學習",
+        "AI 代理",
+        "Agent Skills",
+        "評測",
+        "脈絡工程",
+        "Uber Engineering"
+      ],
+      "category": "build",
+      "date": "2026-11-24"
+    },
     {
       "path": "reading/leaf-antigravity-t3.html",
       "title": "勸退 Antigravity App！超簡單 Antigravity CLI + T3 Code，從 0 到 1 用出 Gemini 4 的真實力",
