@@ -102,10 +102,22 @@ h2{font-family:var(--serif);font-size:1.1rem;margin:0 0 12px}
 .stat .k{font-size:.8rem;color:var(--muted)}
 .stat .v{font-family:var(--mono);font-size:1.45rem;font-variant-numeric:tabular-nums;line-height:1.3}
 .stat .v small{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-left:2px}
-.bars{display:flex;align-items:flex-end;gap:5px;height:70px;margin-top:14px;padding:0 2px}
-.bars span{flex:1;border-radius:6px 6px 3px 3px;background:var(--sage);min-height:4px;opacity:.85}
-.bars span.ok{background:var(--apricot)}
-.bars-cap{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);margin-top:4px}
+.chart{margin-top:14px}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart .ax{font-family:var(--mono);font-size:9px;fill:var(--muted)}
+.chart .lab{font-family:var(--sans);font-size:9.5px;fill:var(--muted)}
+.chart .val{font-family:var(--mono);font-size:10.5px;font-weight:600;paint-order:stroke;stroke:var(--card);stroke-width:4px;stroke-linejoin:round}
+.chart .ref-t{paint-order:stroke;stroke:var(--card);stroke-width:3px;stroke-linejoin:round}
+.chart .grid{stroke:var(--rule);stroke-width:1}
+.chart .ref{stroke-width:1;stroke-dasharray:3 3;fill:none}
+.chart .ref.go{stroke:var(--apricot)} .chart .ref.fast{stroke:var(--rose)}
+.chart .ref-t.go{fill:var(--apricot-ink)} .chart .ref-t.fast{fill:var(--rose-ink)}
+.chart .area{fill:var(--apricot);opacity:.10}
+.chart .line{fill:none;stroke:var(--apricot);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.chart .line.dur{stroke:var(--sage);stroke-width:1.6}
+.chart .pt{stroke:var(--card);stroke-width:1.5}
+.chart .pt.ok{fill:var(--apricot)} .chart .pt.long{fill:var(--sage)} .chart .pt.dur{fill:var(--sage)}
+.chart .val.gap{fill:var(--apricot-ink)} .chart .val.dur{fill:var(--sage-ink)}
 .empty{color:var(--muted);font-size:.9rem;text-align:center;padding:8px 0}
 
 /* 紀錄 */
@@ -252,7 +264,7 @@ body.focus .wrap>*:not(#stage){opacity:.38}
       <div class="stat"><div class="k">近 1 小時次數</div><div class="v" id="sHour">0<small>次</small></div></div>
     </div>
     <div id="barsBox"></div>
-    <p class="note">間隔是從上一次「開始」算到這一次「開始」。超過 2 小時沒有宮縮，會自動分成新的一段，數字只算目前這一段。</p>
+    <p class="note">曲線上每一點是一次間隔，從上一次「開始」算到這一次「開始」；橘色點代表在出發門檻以內。超過 2 小時沒有宮縮，會自動分成新的一段，數字只算目前這一段。</p>
   </section>
 
   <section class="card">
@@ -421,11 +433,70 @@ function renderStats(){
   $('sAvgDur').innerHTML = durs.length ? fmtDur(durs.reduce((a,b)=>a+b,0) / durs.length) : '–';
   $('sLastGap').innerHTML = g.length ? fmtGap(g[g.length-1]) : '–';
   $('sHour').innerHTML = `${S.list.filter(c => now - c.start <= 3600000).length}<small>次</small>`;
-  const recent = g.slice(-12);
-  if (recent.length < 2) { $('barsBox').innerHTML = '<p class="empty" style="margin-top:12px">記錄幾次之後，這裡會畫出間隔的變化</p>'; return; }
-  const max = Math.max(...recent, T * 1.2);
-  $('barsBox').innerHTML = `<div class="bars" aria-hidden="true">${recent.map(x => `<span class="${x<=T?'ok':''}" style="height:${Math.max(6, x/max*100)}%"></span>`).join('')}</div>
-    <div class="bars-cap"><span>較早</span><span>橘色＝${S.threshold} 分鐘以內</span><span>最近</span></div>`;
+  // 曲線獨立包起來：畫圖出錯只會讓曲線不顯示，數字、計時與提醒照常
+  try { $('barsBox').innerHTML = rhythmChart(L, T); }
+  catch (e) { console.warn('chart', e); $('barsBox').innerHTML = ''; }
+}
+
+// ── 節奏曲線：只讀目前這一段的紀錄，不寫入任何資料 ──
+function monoPath(P){   // 單調三次曲線（Fritsch–Carlson），不會畫出比資料更高或更低的假波峰
+  const n = P.length; if (n < 2) return '';
+  const f = v => v.toFixed(1);
+  if (n === 2) return `M${f(P[0][0])},${f(P[0][1])}L${f(P[1][0])},${f(P[1][1])}`;
+  const m = [], t = [];
+  for (let i = 0; i < n - 1; i++) m.push((P[i+1][1] - P[i][1]) / (P[i+1][0] - P[i][0]));
+  t[0] = m[0]; t[n-1] = m[n-2];
+  for (let i = 1; i < n - 1; i++) t[i] = m[i-1] * m[i] <= 0 ? 0 : (m[i-1] + m[i]) / 2;
+  for (let i = 0; i < n - 1; i++) {
+    if (m[i] === 0) { t[i] = t[i+1] = 0; continue; }
+    const a = t[i] / m[i], b = t[i+1] / m[i], q = a * a + b * b;
+    if (q > 9) { const k = 3 / Math.sqrt(q); t[i] = k * a * m[i]; t[i+1] = k * b * m[i]; }
+  }
+  let d = `M${f(P[0][0])},${f(P[0][1])}`;
+  for (let i = 0; i < n - 1; i++) {
+    const h = (P[i+1][0] - P[i][0]) / 3;
+    d += `C${f(P[i][0] + h)},${f(P[i][1] + t[i] * h)} ${f(P[i+1][0] - h)},${f(P[i+1][1] - t[i+1] * h)} ${f(P[i+1][0])},${f(P[i+1][1])}`;
+  }
+  return d;
+}
+function rhythmChart(seg, T){
+  const L = seg.slice(-24);
+  if (L.length < 3) return '<p class="empty" style="margin-top:12px">記錄 3 次之後，這裡會畫出間隔的曲線</p>';
+  const W = 320, X0 = 4, X1 = W - 40, Y0 = 14, Y1 = 104;
+  const t0 = L[0].start, t1 = L[L.length - 1].start, span = Math.max(t1 - t0, 60000);
+  const x = t => X0 + (t - t0) / span * (X1 - X0);
+  const G = L.slice(1).map((c, i) => ({ t: c.start, m: (c.start - L[i].start) / 60000 }));
+  const Tm = T / 60000, Fm = FAST / 60000;
+  const top = Math.min(30, Math.max(Tm * 1.6, ...G.map(p => p.m)) * 1.08);
+  const y = m => Y1 - Math.min(m, top) / top * (Y1 - Y0);
+  const P = G.map(p => [x(p.t), y(p.m)]);
+  const line = monoPath(P), last = G[G.length - 1], lp = P[P.length - 1];
+  const ref = (m, cls, label) => m < top ? `<line class="ref ${cls}" x1="${X0}" x2="${X1}" y1="${y(m).toFixed(1)}" y2="${y(m).toFixed(1)}"/><text class="lab ref-t ${cls}" x="${X1 + 6}" y="${(y(m) + 3).toFixed(1)}">${label}</text>` : '';
+  const hm = t => fmtClock(t);
+  const fm = v => v < 10 ? v.toFixed(1) : Math.round(v);
+  const gapSvg = `<svg viewBox="0 0 ${W} 124" role="img" aria-label="間隔曲線：最近 ${G.length} 次，從 ${fm(G[0].m)} 分到 ${fm(last.m)} 分">
+    <line class="grid" x1="${X0}" x2="${X1}" y1="${Y1}" y2="${Y1}"/>
+    ${ref(Tm, 'go', `${S.threshold} 分`)}${FAST < T ? ref(Fm, 'fast', '5 分') : ''}
+    <path class="area" d="${line}L${lp[0].toFixed(1)},${Y1}L${P[0][0].toFixed(1)},${Y1}Z"/>
+    <path class="line" d="${line}"/>
+    ${G.map((p, i) => `<circle class="pt ${p.m <= Tm ? 'ok' : 'long'}" cx="${P[i][0].toFixed(1)}" cy="${P[i][1].toFixed(1)}" r="${i === G.length - 1 ? 4 : 2.8}"/>`).join('')}
+    <text class="val gap" x="${Math.min(lp[0], X1 - 4).toFixed(1)}" y="${Math.max(lp[1] - 9, 10).toFixed(1)}" text-anchor="end">${fm(last.m)} 分</text>
+    <text class="ax" x="${X0}" y="118">${hm(t0)}</text>
+    <text class="ax" x="${X1}" y="118" text-anchor="end">${hm(t1)}</text>
+    <text class="lab" x="${(X0 + X1) / 2}" y="118" text-anchor="middle">間隔</text>
+  </svg>`;
+  const D = L.map(c => ({ t: c.start, s: (c.end - c.start) / 1000 }));
+  const dTop = Math.max(90, ...D.map(d => d.s)) * 1.1, DY0 = 8, DY1 = 40;
+  const dy = s => DY1 - s / dTop * (DY1 - DY0);
+  const DP = D.map(d => [x(d.t), dy(d.s)]), dl = DP[DP.length - 1], dlast = D[D.length - 1];
+  const durSvg = `<svg viewBox="0 0 ${W} 48" role="img" aria-label="持續時間曲線：最近一次 ${Math.round(dlast.s)} 秒">
+    <line class="grid" x1="${X0}" x2="${X1}" y1="${DY1}" y2="${DY1}"/>
+    <path class="line dur" d="${monoPath(DP)}"/>
+    ${DP.map((p, i) => `<circle class="pt dur" cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${i === DP.length - 1 ? 3.4 : 2.2}"/>`).join('')}
+    <text class="val dur" x="${X1 + 6}" y="${(dl[1] + 4).toFixed(1)}">${Math.round(dlast.s)} 秒</text>
+    <text class="lab" x="${(X0 + X1) / 2}" y="${DY1 + 8}" text-anchor="middle">持續</text>
+  </svg>`;
+  return `<div class="chart">${gapSvg}${durSvg}</div>`;
 }
 
 function renderLog(){
