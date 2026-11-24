@@ -147,6 +147,25 @@ body.full{grid-template-columns:1fr}
   .frame-wrap{padding:8px}.cover{inset:8px}
   .bar{padding:8px 12px}
 }
+
+/* ---------- 首頁門簾 ---------- */
+.sk{display:block;background:var(--paper-2);border-radius:6px;height:12px}
+.sk-row{display:flex;align-items:center;gap:10px;padding:9px 10px}
+.sk-row .sk:first-child{width:16px;height:16px;border-radius:4px;flex:none}
+.sk-list{opacity:.8;-webkit-mask-image:linear-gradient(#000 40%,transparent);mask-image:linear-gradient(#000 40%,transparent)}
+.sk-tile{border:1px solid var(--rule);border-radius:10px;padding:16px;min-height:140px;display:flex;flex-direction:column;gap:12px}
+.sk-grid{-webkit-mask-image:linear-gradient(#000 20%,transparent 95%);mask-image:linear-gradient(#000 20%,transparent 95%)}
+.gate{margin-top:32px;max-width:340px}
+.gate label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
+.gate-row{display:flex;gap:8px}
+.gate input{flex:1;min-width:0;font:500 20px/1 var(--mono);letter-spacing:.3em;padding:12px 14px;border:1px solid var(--rule);border-radius:8px;background:var(--paper-2);color:var(--ink);outline:none}
+.gate input:focus{border-color:var(--ink-3)}
+.gate button{padding:0 18px;border-radius:8px;background:var(--ink);color:var(--paper);font-size:14px}
+.gate-msg{min-height:1.5em;margin-top:8px;font-size:13px;color:var(--accent)}
+.gate.shake{animation:shake .32s}
+@keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
+body.locked .tools{opacity:.45;pointer-events:none}
+body.locked .menu-btn,body.locked #full{display:none!important}
 </style>
 </head>
 <body>
@@ -228,6 +247,9 @@ const CONFIG = {
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let FILES = [], FOLDERS = {}, CATS = {}, VIEW = "tree", QUERY = "", CURRENT = null;
+// 首頁門簾：未通過時只顯示佔位方塊，單篇以全畫面開啟（簡單隔離，不是真正的權限控管）
+const gateCode = () => { const d = new Date(); return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}`; };
+const skRows = n => Array.from({length:n},(_,i)=>`<div class="sk-row"><span class="sk"></span><span class="sk" style="width:${[46,62,38,55,70,42,58,35][i%8]}%"></span></div>`).join("");
 // 分類（categories.json）：資料夾裡的頁面有 <meta name="category"> 時，側邊欄多一層虛擬分類資料夾，
 // 路徑是「資料夾/分類」（例如 reading/build），檔案本身不搬家、網址不變。
 const NO_CAT = "~";                    // 有分類的資料夾裡，沒標分類的頁面放這裡
@@ -254,6 +276,7 @@ const store = {
   set(k, v){ try{ localStorage.setItem("cab:"+k, JSON.stringify(v)); }catch{} }
 };
 let OPEN = new Set(store.get("open", []));
+let LOCKED = !store.get("gate", false);
 // 搜尋時預設全部展開；使用者在搜尋中手動收合的資料夾記在這裡，換關鍵字或清空搜尋就重設
 let SEARCH_CLOSED = new Set();
 
@@ -354,6 +377,7 @@ function hitTags(f){
 }
 // 用標籤（或任何字）搜尋：填入搜尋框、打開側欄
 function searchFor(q){
+  if(LOCKED) return;
   q = String(q||"").trim(); if(!q) return;
   $("#q").value = q; QUERY = q.toLowerCase(); SEARCH_CLOSED.clear(); render();
   document.body.classList.add("drawer");
@@ -415,6 +439,7 @@ function renderTimeline(){
 
 function render(){
   const el = $("#list");
+  if(LOCKED){ el.innerHTML = `<div class="sk-list">${skRows(9)}</div>`; return; }
   $("#tree-ctl").style.display = VIEW==="tree" ? "" : "none";
   let html = VIEW==="tree" ? renderTree(pruneTree(buildTree(FILES))) : renderTimeline();
   if(!html) html = FILES.length ? `<div class="empty">找不到「${esc(QUERY)}」</div>`
@@ -424,6 +449,29 @@ function render(){
 
 /* ---------- cover ---------- */
 function renderCover(){
+  if(LOCKED){
+    const skTile = () => `<div class="sk-tile"><span class="sk" style="width:30%"></span><span class="sk" style="height:18px;width:75%"></span><span class="sk" style="width:90%"></span><span class="sk" style="width:55%"></span></div>`;
+    $("#cover").innerHTML = `
+      <div class="k">Notes · ${FILES.length} pages</div>
+      <h2>把經驗，<i>寫下來</i>。</h2>
+      <form class="gate" id="gate" autocomplete="off">
+        <label for="code">請輸入驗證碼</label>
+        <div class="gate-row"><input id="code" inputmode="numeric" pattern="[0-9]*" maxlength="6" aria-label="驗證碼"><button type="submit">進入</button></div>
+        <div class="gate-msg" id="gate-msg" aria-live="polite"></div>
+      </form>
+      <div class="section-h">最近的筆記</div>
+      <div class="grid sk-grid">${Array.from({length:6},skTile).join("")}</div>`;
+    const form = $("#gate"), input = $("#code");
+    const check = ()=>{
+      if(input.value === gateCode()){ unlock(); return; }
+      $("#gate-msg").textContent = "驗證碼不正確";
+      form.classList.remove("shake"); void form.offsetWidth; form.classList.add("shake");
+      input.select();
+    };
+    form.onsubmit = e=>{ e.preventDefault(); check(); };
+    input.oninput = ()=>{ input.value = input.value.replace(/\D/g,""); $("#gate-msg").textContent = ""; if(input.value.length===6) check(); };
+    return;
+  }
   const recent = [...FILES].sort((a,b)=>ts(b)-ts(a)).slice(0,6);
   const tree = buildTree(FILES);
   const topics = [...tree.dirs.values()].sort(byOrder);
@@ -461,6 +509,7 @@ function show(path, push=true){
     frame.src = url;
   }
   frame.hidden = false; $("#cover").hidden = true;
+  if(LOCKED) document.body.classList.add("full");
   $("#open").href = url; ["open","copy","full"].forEach(id=>$("#"+id).hidden=false);
   const segs = f.tdir ? f.tdir.split("/") : [];
   $("#crumb").innerHTML = segs.map((s,i)=>`<span>${esc(label(segs.slice(0,i+1).join("/")))}</span><span class="sep">/</span>`).join("") + `<b>${esc(f.title)}</b>`;
@@ -474,6 +523,7 @@ function show(path, push=true){
 }
 function home(push=true){
   CURRENT = null;
+  if(LOCKED) renderCover();
   $("#frame").hidden = true; $("#frame").removeAttribute("src"); $("#cover").hidden = false;
   ["open","copy","full"].forEach(id=>$("#"+id).hidden=true);
   $("#crumb").innerHTML = "<b>首頁</b>";
@@ -484,6 +534,7 @@ function home(push=true){
 }
 function route(){
   const h = decodeURI(location.hash.replace(/^#\/?/,"")).replace(/\/$/,"");
+  if(LOCKED && CAT_DIRS.has(h)){ home(false); return; }
   if(CAT_DIRS.has(h)){ home(false); reveal(h); return; } // 分類連結，例如 #/reading/build
   h ? show(h,false) : home(false);
 }
@@ -526,7 +577,7 @@ $("#scrim").onclick = ()=>document.body.classList.remove("drawer");
   let x0, y0, dx, mode = null;  // mode: null | "maybe" | "drag"
   const isOpen = ()=>document.body.classList.contains("drawer");
   document.addEventListener("touchstart", e=>{
-    if(!mq.matches || e.touches.length!==1) return;
+    if(!mq.matches || e.touches.length!==1 || LOCKED) return;
     const t = e.touches[0];
     if(isOpen() ? !e.target.closest("#side, #scrim") : t.clientX > 28) return;
     x0 = t.clientX; y0 = t.clientY; dx = 0; mode = "maybe";
@@ -567,6 +618,7 @@ $("#theme").onclick = ()=>{
 };
 document.addEventListener("keydown", e=>{
   if(e.target.matches("input")){ if(e.key==="Escape"){ e.target.value=""; QUERY=""; SEARCH_CLOSED.clear(); render(); e.target.blur(); } return; }
+  if(LOCKED) return;
   if(e.key==="/"){ e.preventDefault(); document.body.classList.add("drawer"); $("#q").focus(); }
   if(e.key==="f" && CURRENT) document.body.classList.toggle("full");
   if(e.key==="Escape") document.body.classList.remove("full","drawer");
@@ -574,9 +626,17 @@ document.addEventListener("keydown", e=>{
 addEventListener("popstate", route);
 addEventListener("message", e=>{ if(e.origin===location.origin && e.data && e.data.milo==="tag") searchFor(e.data.q); });
 
+function unlock(){
+  LOCKED = false; store.set("gate", true);
+  document.body.classList.remove("locked","full");
+  $("#q").disabled = false;
+  render(); renderCover(); route();
+}
+
 /* ---------- boot ---------- */
 (async()=>{
   const t = store.get("theme", null); if(t) document.documentElement.dataset.theme = t;
+  if(LOCKED){ document.body.classList.add("locked"); $("#q").disabled = true; }
   $("#site-title").innerHTML = esc(CONFIG.title)+"<em>.</em>";
   $("#site-kicker").textContent = CONFIG.kicker;
   $("#site-sub").textContent = CONFIG.subtitle;
