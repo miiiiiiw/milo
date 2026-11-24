@@ -384,6 +384,18 @@ with sync_playwright() as p:
     check('35 曲線出錯時，按鈕與紀錄照常', len(stored(pg)['list']) == n0 + 1 and pg.locator('#barsBox .chart').count() == 0 and text(pg, '#sAvgGap') != '–')
     check('35 曲線出錯不會變成頁面錯誤', not errs, '; '.join(errs))
     ctx.close()
+    # 36. 拉梅茲呼吸法小抄
+    ctx, pg, errs, shared = new_page(b)
+    check('36 小抄預設收合，不會自己打開', pg.evaluate("!document.getElementById('lamaze').open") and not pg.locator('#lamaze .breaths').is_visible())
+    pg.click('#lamaze summary'); pg.clock.run_for(300)
+    check('36 點標題才展開，列出六種呼吸與口訣', pg.locator('#lamaze .breaths li').count() == 6 and pg.locator('#lamaze .chant').count() == 5)
+    check('36 慢速呼吸口訣是吸 4 吐 6（與呼吸圓圈一致）', '吸、二、三、四，吐、二、三、四、五、六' in text(pg, '#lamaze'))
+    pg.locator('#mainBtn').click(force=True); pg.clock.run_for(40000); pg.locator('#mainBtn').click(force=True); pg.clock.run_for(300)
+    check('36 展開時宮縮按鈕照常可用', len(stored(pg)['list']) == 1)
+    pg.click('#lamaze summary'); pg.clock.run_for(300)
+    check('36 再點一次收合', pg.evaluate("!document.getElementById('lamaze').open"))
+    check('36 沒有 JavaScript 錯誤', not errs, '; '.join(errs))
+    ctx.close()
     b.close()
 
 srv.terminate()
