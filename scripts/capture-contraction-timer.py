@@ -116,6 +116,11 @@ with sync_playwright() as p:
     print('1 使用旅程：各階段用到的區塊')
     ctx, pg = open_page(b, state(LATER), at(3, 19, 10)); freeze(pg, 3000)
     card(pg, '#bag', '1-1-bag')
+    pg.evaluate("document.getElementById('lamaze').open = true"); pg.clock.run_for(100)
+    scroll_to(pg, '#lamaze', 60)
+    lz = box(pg, '#lamaze', pad=16); lz['height'] = min(lz['height'], 560)   # 只取前幾種呼吸
+    shot(pg, lz, '1-1b-lamaze')
+    pg.evaluate("document.getElementById('lamaze').open = false"); pg.clock.run_for(100)
     card(pg, 'section.card:has(#barsBox)', '1-3-rhythm')
     card(pg, 'section.clinic', '1-4-clinic')
     card(pg, 'section.symph', '1-5-symphony')
