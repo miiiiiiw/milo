@@ -160,6 +160,26 @@ h2{font-family:var(--serif);font-size:1.1rem;margin:0 0 12px}
 .flags li{margin:4px 0}
 .flags p{margin:10px 0 0;font-size:.9rem}
 
+
+/* 拉梅茲小抄：預設收合，點開才看 */
+.lamaze{display:block;margin-top:22px}
+.lamaze summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.lamaze summary::-webkit-details-marker{display:none}
+.lamaze summary h2{margin:0}
+.lamaze .chev{flex:none;width:10px;height:10px;border:solid var(--muted);border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-4px;transition:transform .3s}
+.lamaze[open] .chev{transform:rotate(-135deg);margin-top:4px}
+.lamaze .lead{margin:14px 0 4px;font-size:.92rem}
+.breaths{list-style:none;margin:0;padding:0}
+.breaths li{display:flex;flex-direction:column;gap:2px;padding:12px 0;border-bottom:1px dashed var(--rule)}
+.breaths li:last-child{border-bottom:0}
+.breaths b{font-family:var(--serif);font-size:1.05rem}
+.breaths .when{font-size:.82rem;color:var(--muted)}
+.breaths .chant{align-self:flex-start;margin:6px 0 2px;padding:6px 12px;border-radius:12px;background:var(--sage-soft);color:var(--sage-ink);font-family:var(--serif);font-weight:700;letter-spacing:.06em}
+.breaths .how{font-size:.9rem}
+.breaths .nw{white-space:nowrap}
+.lamaze .tips{margin:4px 0 0;padding-left:1.2em;font-size:.88rem}
+.lamaze .tips li{margin:4px 0}
+
 /* 產房 */
 .clinic dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.92rem}
 .clinic dt{color:var(--muted)}
@@ -287,6 +307,24 @@ body.focus .wrap>*:not(#stage){opacity:.38}
     </ul>
     <p>第二胎產程通常比較快，覺得不對勁就先打電話問產房，不必等到數字達標。</p>
   </section>
+
+  <details class="card lamaze" id="lamaze">
+    <summary><h2>拉梅茲呼吸法小抄</h2><span class="chev" aria-hidden="true"></span></summary>
+    <p class="lead">產程中沒有唯一正確的呼吸方式，慢而深的呼吸最能幫忙撐過宮縮。下面是可以參考的選項，挑覺得舒服的用就好。</p>
+    <ol class="breaths">
+      <li><b>清潔呼吸</b><span class="when">每次宮縮開始和結束，各一次</span><span class="chant">深吸——長長吐，放鬆</span><span class="how">鼻子吸、嘴巴吐，把緊繃一起吐掉。</span></li>
+      <li><b>慢速呼吸</b><span class="when">早期，間隔還長的時候</span><span class="chant"><span class="nw">吸、二、三、四，</span><span class="nw">吐、二、三、四、五、六</span></span><span class="how">大約平常一半的速度，像嘆氣一樣把氣吐光，肩膀放鬆。跟上面的呼吸圓圈是同一個節奏。</span></li>
+      <li><b>加快的淺呼吸</b><span class="when">宮縮變強的時候</span><span class="chant">吸、吐、吸、吐</span><span class="how">嘴巴微張，輕輕的、淺淺的，大約一秒一個字。宮縮減弱時就回到慢速呼吸。</span></li>
+      <li><b>嘻嘻呼</b><span class="when">轉換期，最痛的時候</span><span class="chant">嘻、嘻、嘻、呼——</span><span class="how">三個短的淺呼吸，加一個長吐氣。「嘻」的次數可以自己調。</span></li>
+      <li><b>忍住不要太早用力</b><span class="when">想用力但還不能用力時</span><span class="chant">吹、吹、吹</span><span class="how">像吹蠟燭一樣的短吐氣。</span></li>
+      <li><b>用力的時候</b><span class="when">生產時</span><span class="how">聽護理師的口令。</span></li>
+    </ol>
+    <ul class="tips">
+      <li>口訣只是幫忙記，速度以舒服為準；覺得頭暈就放慢。</li>
+      <li>宮縮之間正常呼吸，讓身體休息；不要憋氣。</li>
+    </ul>
+    <p class="note">這是整理給自己參考用的，不能取代產前課程；當下以醫師和護理師的指導為準。</p>
+  </details>
 
   <section class="card clinic">
     <h2>產房資訊</h2>
