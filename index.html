@@ -149,12 +149,9 @@ body.full{grid-template-columns:1fr}
 }
 
 /* ---------- 首頁門簾 ---------- */
-.sk{display:block;background:var(--paper-2);border-radius:6px;height:12px}
-.sk-row{display:flex;align-items:center;gap:10px;padding:9px 10px}
-.sk-row .sk:first-child{width:16px;height:16px;border-radius:4px;flex:none}
-.sk-list{opacity:.8;-webkit-mask-image:linear-gradient(#000 40%,transparent);mask-image:linear-gradient(#000 40%,transparent)}
-.sk-tile{border:1px solid var(--rule);border-radius:10px;padding:16px;min-height:140px;display:flex;flex-direction:column;gap:12px}
-.sk-grid{-webkit-mask-image:linear-gradient(#000 20%,transparent 95%);mask-image:linear-gradient(#000 20%,transparent 95%)}
+.veil{filter:blur(var(--veil-blur,3.5px));opacity:.7;pointer-events:none;user-select:none;-webkit-user-select:none}
+.list .veil{-webkit-mask-image:linear-gradient(#000 45%,transparent);mask-image:linear-gradient(#000 45%,transparent)}
+.cover .veil{-webkit-mask-image:linear-gradient(#000 25%,transparent 95%);mask-image:linear-gradient(#000 25%,transparent 95%)}
 .gate{margin-top:32px;max-width:340px}
 .gate label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
 .gate-row{display:flex;gap:8px}
@@ -249,7 +246,6 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt
 let FILES = [], FOLDERS = {}, CATS = {}, VIEW = "tree", QUERY = "", CURRENT = null;
 // 首頁門簾：未通過時只顯示佔位方塊，單篇以全畫面開啟（簡單隔離，不是真正的權限控管）
 const gateCode = () => { const d = new Date(); return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}`; };
-const skRows = n => Array.from({length:n},(_,i)=>`<div class="sk-row"><span class="sk"></span><span class="sk" style="width:${[46,62,38,55,70,42,58,35][i%8]}%"></span></div>`).join("");
 // 分類（categories.json）：資料夾裡的頁面有 <meta name="category"> 時，側邊欄多一層虛擬分類資料夾，
 // 路徑是「資料夾/分類」（例如 reading/build），檔案本身不搬家、網址不變。
 const NO_CAT = "~";                    // 有分類的資料夾裡，沒標分類的頁面放這裡
@@ -439,7 +435,7 @@ function renderTimeline(){
 
 function render(){
   const el = $("#list");
-  if(LOCKED){ el.innerHTML = `<div class="sk-list">${skRows(9)}</div>`; return; }
+  if(LOCKED){ el.innerHTML = `<div class="veil" inert aria-hidden="true">${renderTimeline()}</div>`; return; }
   $("#tree-ctl").style.display = VIEW==="tree" ? "" : "none";
   let html = VIEW==="tree" ? renderTree(pruneTree(buildTree(FILES))) : renderTimeline();
   if(!html) html = FILES.length ? `<div class="empty">找不到「${esc(QUERY)}」</div>`
@@ -449,8 +445,16 @@ function render(){
 
 /* ---------- cover ---------- */
 function renderCover(){
+  const recent = [...FILES].sort((a,b)=>ts(b)-ts(a)).slice(0,6);
+  const tree = buildTree(FILES);
+  const topics = [...tree.dirs.values()].sort(byOrder);
+  const tile = (f,i) => `<button class="tile" data-open="${esc(f.path)}">
+      <div class="n"><span>${String(i+1).padStart(2,"0")}</span><span>${fmtDate(f.date)}</span></div>
+      <div class="t">${esc(f.title)}</div>
+      <div class="s">${esc(f.description || dirLabel(f.dir))}</div>
+      ${f.tags.length?`<div class="tags">${showTags(f.tags).slice(0,3).map(t=>`<span class="tag" data-tag="${esc(t)}">${esc(t)}</span>`).join("")}</div>`:""}
+    </button>`;
   if(LOCKED){
-    const skTile = () => `<div class="sk-tile"><span class="sk" style="width:30%"></span><span class="sk" style="height:18px;width:75%"></span><span class="sk" style="width:90%"></span><span class="sk" style="width:55%"></span></div>`;
     $("#cover").innerHTML = `
       <div class="k">Notes · ${FILES.length} pages</div>
       <h2>把經驗，<i>寫下來</i>。</h2>
@@ -460,7 +464,7 @@ function renderCover(){
         <div class="gate-msg" id="gate-msg" aria-live="polite"></div>
       </form>
       <div class="section-h">最近的筆記</div>
-      <div class="grid sk-grid">${Array.from({length:6},skTile).join("")}</div>`;
+      <div class="grid veil" inert aria-hidden="true">${recent.map(tile).join("")}</div>`;
     const form = $("#gate"), input = $("#code");
     const check = ()=>{
       if(input.value === gateCode()){ unlock(); return; }
@@ -472,15 +476,6 @@ function renderCover(){
     input.oninput = ()=>{ input.value = input.value.replace(/\D/g,""); $("#gate-msg").textContent = ""; if(input.value.length===6) check(); };
     return;
   }
-  const recent = [...FILES].sort((a,b)=>ts(b)-ts(a)).slice(0,6);
-  const tree = buildTree(FILES);
-  const topics = [...tree.dirs.values()].sort(byOrder);
-  const tile = (f,i) => `<button class="tile" data-open="${esc(f.path)}">
-      <div class="n"><span>${String(i+1).padStart(2,"0")}</span><span>${fmtDate(f.date)}</span></div>
-      <div class="t">${esc(f.title)}</div>
-      <div class="s">${esc(f.description || dirLabel(f.dir))}</div>
-      ${f.tags.length?`<div class="tags">${showTags(f.tags).slice(0,3).map(t=>`<span class="tag" data-tag="${esc(t)}">${esc(t)}</span>`).join("")}</div>`:""}
-    </button>`;
   $("#cover").innerHTML = `
     <div class="k">Notes · ${FILES.length} pages</div>
     <h2>把經驗，<i>寫下來</i>。</h2>
