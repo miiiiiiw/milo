@@ -147,7 +147,7 @@ body.docked{padding-bottom:96px}
 .scb small{font-size:11px;font-weight:400;color:var(--mute);margin-left:1px}
 .scb[aria-expanded=true]{border-color:var(--seal);color:var(--seal)}
 .ro{display:flex;align-items:center;justify-content:flex-end;flex-wrap:nowrap}
-.rsd{grid-column:1/-1;grid-area:auto}
+
 .sdet{margin:4px 0 8px 32px;padding:8px 10px;border-radius:10px;background:var(--tile);font-size:13px}
 .sdet table{border-collapse:collapse;width:100%}.sdet th,.sdet td{padding:4px 6px;border:0;text-align:left;vertical-align:top}.sdet th{white-space:nowrap;color:var(--mute);font-weight:500}.sdet td.num{white-space:nowrap;text-align:right;font-weight:700}
 @media(max-width:700px){.rsd{grid-column:1/-1}.sdet{margin-left:0}.scb{font-size:15px}}
@@ -174,6 +174,8 @@ body[data-mode=pick] .m-rec,body[data-mode=rec] .m-pick,body[data-mode=rec] .bar
 .dch{margin:6px 0;font-size:15px;line-height:1.8}.dch b{font:900 20px "Noto Serif TC",serif}
 .dnum{margin:4px 0;font-size:14px;color:var(--mute)}
 #dsheet .sdet{margin-left:0}
+#dsheet .sheet-panel{max-width:720px}
+.sdet th{width:5.5em}.sdet td.num{width:5.5em}
 @media(max-width:600px){.chips{grid-template-columns:repeat(2,minmax(0,1fr))}.mode button{padding:0 11px;font-size:14px}}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mute);margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:15px}
@@ -253,7 +255,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 
 <section class="band m-pick" id="result" style="padding-top:0"><div class="wrap">
 <h2>第三步　組合結果</h2>
-<p class="hint">只顯示你挑的字之中，筆畫能配成上面規則的組合。勾選名字前的方框，名字會出現在畫面底部的列，從那裡製作分享卡。首選是三才火土金，次選是火土土，放寬組是天格剋人格，火木火組只看三才、不補八字。每個名字都有參考分數（點分數看怎麼算），依分數由高到低排列。總評會再把兩個字的等級、聲調、備註，一起考慮，★ 推薦的排最前面。只有明顯負面的組合（例如「小人」）會降成留意；其他諧音只用藍字提示別人可能聯想到什麼，不扣分，好壞由你們判斷。諧音清單沒辦法列盡，最後還是請自己念一遍。</p>
+<p class="hint">只顯示你挑的字之中，筆畫能配成上面規則的組合。勾選名字前的方框，名字會出現在畫面底部的列，從那裡製作分享卡。首選是三才火土金，次選是火土土，放寬組是天格剋人格，火木火組只看三才、不補八字。每個名字都有參考分數（點分數會從底部滑出明細），依分數由高到低排列。總評會再把兩個字的等級、聲調、備註，一起考慮，★ 推薦的排最前面。只有明顯負面的組合（例如「小人」）會降成留意；其他諧音只用藍字提示別人可能聯想到什麼，不扣分，好壞由你們判斷。諧音清單沒辦法列盡，最後還是請自己念一遍。</p>
 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button type="button" id="copy">複製組合清單</button><button type="button" id="clear">清除所有選字</button></div>
 <div id="out"></div>
 
@@ -527,9 +529,8 @@ function rowHTML(r){
    <span class="rnum"><i>人</i>${r.g.ren} <i>地</i>${r.g.di} <i>外</i>${r.g.wai} <i>總</i>${r.g.zong}</span>
    <span class="rsc">${r.g.sc}</span>
    <span class="rt"><span class="tier t${r.t}">${tn[r.t]}</span></span></span>
-   <span class="ro"><button type="button" class="scb" data-sd="${esc(r.key)}" aria-expanded="false" title="看分數怎麼算">${r.sc.total}<small>分</small></button><span class="overall o${r.o}">${OV[r.o]}</span></span>
+   <span class="ro"><button type="button" class="scb" data-detail="${esc(r.key)}" title="看分數怎麼算">${r.sc.total}<small>分</small></button><span class="overall o${r.o}">${OV[r.o]}</span></span>
    ${r.why.length||r.pun?`<span class="rwhy">${r.why.length?`<span class="why">${esc(r.why.join('；'))}</span>`:''}${r.pun?`<span class="why pun">諧音：${esc(r.pun)}</span>`:''}</span>`:''}
-   <span class="rsd" hidden>${scoreHTML(r)}</span>
   </div>`;
 }
 function listHTML(R){return `<div class="rlist"><div class="rrow rhead"><span>名字</span><span>五行</span><span>人・地・外・總格</span><span>三才</span><span>等級</span><span>分數・總評</span></div>${R.map(rowHTML).join('')}</div>`}
