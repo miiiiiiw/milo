@@ -520,14 +520,13 @@ function externalURL(){
 function readFavParam(){
   for(const L of [location,topLoc()]){try{const v=new URL(L.href).searchParams.get('fav');if(v){const add=v.split(',').filter(k=>[...k].length===2);st.fav=[...new Set([...st.fav,...add])];save();return}}catch(e){}}
 }
-function inAppNote(){return IN_APP?`<div class="inapp">目前是在 LINE 等 App 內建的瀏覽器裡，沒辦法分享或下載圖片。<a class="primary-link" href="${esc(externalURL())}" target="_blank" rel="noopener">用瀏覽器開啟</a><small>「我喜歡」的名字會一起帶過去；也可以直接長按圖片儲存。</small></div>`:''}
+function inAppNote(){return IN_APP&&!canShareFiles()?`<div class="inapp">目前是在 LINE 等 App 內建的瀏覽器裡，沒辦法分享或下載圖片。<a class="primary-link" href="${esc(externalURL())}" target="_blank" rel="noopener">用瀏覽器開啟</a><small>「我喜歡」的名字會一起帶過去；也可以直接長按圖片儲存。</small></div>`:''}
 function canShareFiles(){try{return !!(navigator.canShare&&navigator.share&&navigator.canShare({files:[new File([new Blob(['x'],{type:'image/png'})],'t.png',{type:'image/png'})]}))}catch(e){return false}}
 async function shareImg(i){
   const cv=window._imgs[i];if(!cv)return;
   const b=await new Promise(r=>cv.toBlob(r,'image/png'));
   const f=new File([b],`寶寶取名候選-${i+1}.png`,{type:'image/png'});
-  if(IN_APP){toast('LINE 內建瀏覽器不支援分享，請按上方「用瀏覽器開啟」，或長按圖片儲存');return}
-  if(!canShareFiles()){toast('這裡無法叫出分享選單，已改為下載');dl(i);return}
+  if(!canShareFiles()){if(IN_APP){toast('這個 App 的內建瀏覽器不支援分享，請按上方「用瀏覽器開啟」，或長按圖片儲存');return}toast('這裡無法叫出分享選單，已改為下載');dl(i);return}
   try{await navigator.share({files:[f],title:'寶寶取名候選',text:'寶寶取名候選，大家看看喜歡哪個？'})}
   catch(e){if(e&&e.name==='AbortError')return;dl(i)}
 }
