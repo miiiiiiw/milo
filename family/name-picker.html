@@ -88,7 +88,8 @@ button:focus-visible{outline:3px solid var(--slate);outline-offset:2px}
 .role{display:inline-block;font-size:13px;font-weight:500;padding:2px 10px;border-radius:12px;margin-left:8px;vertical-align:middle;font-family:"Noto Sans TC",sans-serif}
 .role.r-ren{background:#7a4b2a;color:#fff}.role.r-di{background:#b8860b;color:#fff}
 .fv{display:inline-flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}.fv b{font:inherit;color:var(--ink)}
-.fv input{width:22px;height:22px;accent-color:var(--seal);margin:0}
+.fv input{width:22px;height:22px;accent-color:var(--seal);margin:0;cursor:pointer}
+.fbox{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;margin:-10px -6px -10px -11px;cursor:pointer}
 tr.faved td{background:var(--sealbg)}
 .favbox-unused{margin-top:24px;border:1.5px solid var(--seal);border-radius:14px;padding:16px}
 .favbox-unused h3{font:600 20px "Noto Serif TC",serif;margin:0 0 10px}
@@ -544,7 +545,7 @@ function scoreHTML(r){
 function rowHTML(r){
   const OV=['','★ 推薦','可考慮','留意'],tn=['','首選','次選','放寬','火木火'];
   return `<div class="rrow click${st.fav.includes(r.key)?' faved':''}" data-detail="${esc(r.key)}" tabindex="0" role="button" aria-label="馮${esc(r.key)} 的明細">
-   <label class="fv rn"><input type="checkbox" data-fav="${esc(r.key)}" ${st.fav.includes(r.key)?'checked':''} aria-label="喜歡 馮${esc(r.key)}"><b>馮${esc(r.ca)}${esc(r.cb)}</b></label>
+   <span class="fv rn"><label class="fbox"><input type="checkbox" data-fav="${esc(r.key)}" ${st.fav.includes(r.key)?'checked':''} aria-label="喜歡 馮${esc(r.key)}"></label><b>馮${esc(r.ca)}${esc(r.cb)}</b></span>
    <span class="rmeta"><span class="rel">${GN[grade(r.xa)]}${r.xa[3]}・${GN[grade(r.xb)]}${r.xb[3]}</span>
    <span class="rnum"><i>人</i>${r.g.ren} <i>地</i>${r.g.di} <i>外</i>${r.g.wai} <i>總</i>${r.g.zong}</span>
    <span class="rsc">${r.g.sc}</span>
@@ -632,7 +633,7 @@ document.addEventListener('click',e=>{
   const sh=e.target.closest('[data-share]');if(sh){shareImg(+sh.dataset.share);return}
   const md=e.target.closest('.mode button[data-mode]');if(md){setMode(md.dataset.mode);render();window.scrollTo({top:Math.min(window.scrollY,document.querySelector('.bar').offsetTop),behavior:'smooth'});return}
   const tf=e.target.closest('[data-togfav]');if(tf){toggleFav(tf.dataset.togfav);return}
-  if(e.target.closest('label.fv'))return;
+  if(e.target.closest('label.fbox'))return;
   const dt=e.target.closest('[data-detail]');if(dt){openDetail(dt.dataset.detail);return}
   if(e.target.closest('[data-dclose]')){closeDetail();return}
   const be=e.target.closest('[data-band]');if(be){const s=+be.dataset.band;openBand.has(s)?openBand.delete(s):openBand.add(s);renderRec();return}
@@ -652,7 +653,7 @@ $('#clear').addEventListener('click',()=>{st.a=[];st.b=[];save();render()});
 $('#mkcard').addEventListener('click',makeCards);
 $('#recmore').addEventListener('click',()=>{recBands+=8;renderRec()});
 $('#fSubj').addEventListener('change',e=>{st.subj=e.target.checked;save();render()});
-document.addEventListener('keydown',e=>{const rw=e.target.closest&&e.target.closest('.rrow.click');if(rw&&(e.key==='Enter'||e.key===' ')&&!e.target.closest('label.fv')){e.preventDefault();openDetail(rw.dataset.detail);return}if(e.key!=='Escape')return;if(!$('#dsheet').hidden)closeDetail();else if(!$('#sheet').hidden)closeSheet()});
+document.addEventListener('keydown',e=>{const rw=e.target.closest&&e.target.closest('.rrow.click');if(rw&&(e.key==='Enter'||e.key===' ')&&!e.target.closest('label.fbox')){e.preventDefault();openDetail(rw.dataset.detail);return}if(e.key!=='Escape')return;if(!$('#dsheet').hidden)closeDetail();else if(!$('#sheet').hidden)closeSheet()});
 function favText(){const F=favPairs();return '寶寶取名候選\n'+F.map(r=>`馮${r.key}（féng ${r.xa[2]} ${r.xb[2]}）\n　${r.ca}：${r.xa[4]}；${r.cb}：${r.xb[4]}\n　三才${r.g.sc}・總格${r.g.zong}・${r.sc.total}分・${['','推薦','可考慮','留意'][r.o]}${r.pun?'・諧音：'+r.pun:''}`).join('\n')}
 $('#copyfav').addEventListener('click',async()=>{const F=favPairs();if(!F.length){toast('還沒有喜歡的名字');return}
   try{await navigator.clipboard.writeText(favText());toast(`已複製 ${F.length} 個名字`)}catch(e){toast('這個環境無法複製')}});
