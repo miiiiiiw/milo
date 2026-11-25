@@ -134,6 +134,14 @@ body.docked{padding-bottom:96px}
  .rwhy{grid-area:w;padding:0 0 4px 32px}
  .rn b{font-size:20px}
 }
+.rules{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;margin-top:10px;padding-top:12px;border-top:1px dashed color-mix(in srgb,var(--seal) 32%,transparent)}
+.rules-t{font-size:13px;color:var(--mute)}
+.sw{display:inline-flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}
+.sw input{appearance:none;-webkit-appearance:none;width:40px;height:24px;border-radius:12px;background:var(--line);position:relative;flex:none;margin:0;transition:background .2s;cursor:pointer}
+.sw input::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .2s}
+.sw input:checked{background:var(--seal)}.sw input:checked::after{transform:translateX(16px)}
+.sw input:focus-visible{outline:3px solid var(--slate);outline-offset:2px}
+.sw b{font-size:15px;font-weight:700;display:block;line-height:1.3}.sw small{font-size:12px;color:var(--mute);display:block;line-height:1.35}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mute);margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
@@ -167,6 +175,11 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 <div class="sancai" id="sancai" aria-label="三才示意圖"></div>
 <p class="lede" style="margin-top:16px">每一列是名字第一個字的筆畫，首選排在最前面，點列名可以跳到下方對應的字。筆畫後面的小色塊是組合出來的三才（天格・人格・地格）：</p>
 <ul class="pairs" id="pairs"></ul>
+<div class="rules">
+  <span class="rules-t">其他派別的組合</span>
+  <label class="sw"><input type="checkbox" id="fLoose"><span><b>放寬</b><small>允許天格剋人格，多出 5＋12 畫</small></span></label>
+  <label class="sw"><input type="checkbox" id="fHmh"><span><b>火木火</b><small>只看三才的派別認為吉，不補八字，多出 9、19 畫</small></span></label>
+</div>
 </div></section>
 
 <div class="bar"><div class="wrap">
@@ -176,8 +189,6 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   <button type="button" id="fWood" aria-pressed="false" title="隱藏字本身屬木的字">排除木</button>
   <button type="button" id="fEarth" aria-pressed="false" title="隱藏字本身屬土的字">排除土</button>
   <button type="button" id="fHorse" aria-pressed="false">隱藏生肖忌字</button>
-  <button type="button" id="fLoose" aria-pressed="false" title="放寬規則：允許天格剋人格，多出 5＋12 畫的組合">放寬</button>
-  <button type="button" id="fHmh" aria-pressed="false" title="火木火：只看三才的派別認為是吉，但不補寶寶八字">火木火</button>
   </div>
   <span class="tally" id="tally"></span>
 </div></div>
@@ -421,7 +432,8 @@ function render(){
   $('#pairs').innerHTML=A.map(a=>`<li class="prow"><a href="#d-a-${a}">第一字 ${a} 畫</a>${P2.filter(p=>p[0]===a).sort((x,y)=>x[2]-y[2]||x[1]-y[1]).map(p=>`<span class="chip${p[2]===1?' best':''}"><b>${p[0]}＋${p[1]}</b> 畫<span class="sc3" title="三才：天格・人格・地格">${grid(p[0],p[1]).sc.split('').map(e=>`<i class="e-${e}">${e}</i>`).join('')}</span>${p[2]===1?'<span class="bt">首選</span>':p[2]===3?'<span class="bt lo">放寬</span>':p[2]===4?'<span class="bt lo">不補八字</span>':''}</span>`).join('')}</li>`).join('');
   $('#first').innerHTML=A.map(n=>drawer(n,P2.filter(p=>p[0]===n).sort((x,y)=>x[2]-y[2]||x[1]-y[1]).map(p=>p[1]),'a')).join('')||'<p class="empty">沒有可用的字。</p>';
   $('#second').innerHTML=B.map(n=>drawer(n,P2.filter(p=>p[1]===n).sort((x,y)=>x[2]-y[2]||x[0]-y[0]).map(p=>p[0]),'b')).join('');
-  ['good','fire','wood','earth','horse','loose','hmh'].forEach(k=>$('#f'+{good:'Good',fire:'Fire',wood:'Wood',earth:'Earth',horse:'Horse',loose:'Loose',hmh:'Hmh'}[k]).setAttribute('aria-pressed',st[k]));
+  ['good','fire','wood','earth','horse'].forEach(k=>$('#f'+{good:'Good',fire:'Fire',wood:'Wood',earth:'Earth',horse:'Horse'}[k]).setAttribute('aria-pressed',st[k]));
+  $('#fLoose').checked=st.loose;$('#fHmh').checked=st.hmh;
   const R=[];
   for(const ca of st.a)for(const cb of st.b){const r=evalPair(ca,cb);if(r)R.push(r)}
   R.sort((p,q)=>p.o-q.o||p.t-q.t||(p.xa[1]+p.xb[1])-(q.xa[1]+q.xb[1]));
@@ -456,8 +468,8 @@ $('#fHorse').addEventListener('click',()=>{st.horse=!st.horse;save();render()});
 $('#fFire').addEventListener('click',()=>{st.fire=!st.fire;save();render()});
 $('#fWood').addEventListener('click',()=>{st.wood=!st.wood;save();render()});
 $('#fEarth').addEventListener('click',()=>{st.earth=!st.earth;save();render()});
-$('#fLoose').addEventListener('click',()=>{st.loose=!st.loose;save();render()});
-$('#fHmh').addEventListener('click',()=>{st.hmh=!st.hmh;save();render()});
+$('#fLoose').addEventListener('change',e=>{st.loose=e.target.checked;save();render()});
+$('#fHmh').addEventListener('change',e=>{st.hmh=e.target.checked;save();render()});
 $('#clear').addEventListener('click',()=>{st.a=[];st.b=[];save();render()});
 $('#mkcard').addEventListener('click',makeCards);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#sheet').hidden)closeSheet()});
