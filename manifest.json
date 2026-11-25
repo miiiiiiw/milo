@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-25T09:28:58.942Z",
+  "generated": "2026-11-25T11:33:39.171Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -17,7 +17,7 @@
   "files": [
     {
       "path": "family/name-picker.html",
-      "title": "馮家取名選字器",
+      "title": "寶寶取名選字器",
       "description": "依康熙筆畫、三才五格與八字喜用，先選字再自動組合名字，可製作分享卡",
       "tags": [
         "取名",
