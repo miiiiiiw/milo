@@ -381,7 +381,7 @@ function evalPair(ca,cb){
   const pun=PUNPAIR[ca+cb]||PUNSND[plain(xa[2])+' '+plain(xb[2])]||'';
   for(const c of [ca,cb]){const ns=(NOTES[c]||[]).filter(n=>/女性|較重|撞名/.test(n));if(ns.length)why.push(`${c}：${ns.join('、')}`)}
   const o=badMsg?3:(t===1&&ga===1&&gb===1&&!why.length)?1:(ga===3&&gb===3)||why.length>=2?3:2;
-  const r={ca,cb,xa,xb,t,o,why,pun,g:grid(xa[1],xb[1]),key:ca+cb,bad:!!badMsg,tn};
+  const r={ca,cb,xa,xb,t,o,why,pun,g:grid(xa[1],xb[1]),key:ca+cb,bad:!!badMsg,badMsg,tn};
   r.sc=score(r);return r;
 }
 
@@ -497,7 +497,7 @@ function score(r){
   // 命名適合度 10（主觀）
   const p7=r.xa[9]+r.xb[9];
   const adj=[];
-  if(r.bad)adj.push(['負面詞義',-15]);
+  if(r.bad)adj.push(['負面詞義：'+r.badMsg,-15]);
   for(const c of [r.ca,r.cb])for(const n of (NOTES[c]||[]))if(/女性|較重|撞名/.test(n))adj.push([`${c}：${n}`,-2]);
   const p8=Math.max(-15,adj.reduce((s,x)=>s+x[1],0));
   const base=p1+p2+p3+p4+p5+p6+p8;
