@@ -120,6 +120,10 @@ body.docked{padding-bottom:96px}
 .rrow{display:grid;grid-template-columns:minmax(9em,1.3fr) 7.5em 12em 5em 4.5em minmax(6em,1fr);column-gap:12px;align-items:center;padding:6px 4px;border-bottom:1px solid var(--line);font-size:15px}
 .rhead{font-size:13px;color:var(--mute);padding:8px 4px}
 .rrow.faved{background:var(--sealbg)}
+.rrow.click{cursor:pointer;transition:background .15s}.rrow.click:hover{background:color-mix(in srgb,var(--tile) 80%,transparent)}.rrow.faved.click:hover{background:var(--sealbg)}
+.rrow.click:focus-visible{outline:2px solid var(--slate);outline-offset:-2px}
+.rrow.click::after{content:"›";position:absolute;right:6px;top:50%;transform:translateY(-50%);color:var(--mute);font-size:20px}
+.rrow{position:relative}.rrow.click{padding-right:22px}
 .rn b{font:900 22px/1.2 "Noto Serif TC",serif}
 .rnum{font-variant-numeric:tabular-nums;white-space:nowrap}.rnum i{font-style:normal;color:var(--mute);font-size:12px;margin-right:1px}
 .rmeta{display:contents}
@@ -265,7 +269,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 
 <section class="band m-pick" id="result" style="padding-top:0"><div class="wrap">
 <h2>第三步　組合結果</h2>
-<p class="hint">只顯示你挑的字之中，筆畫能配成上面規則的組合。勾選名字前的方框，名字會出現在畫面底部的列，從那裡製作分享卡。首選是三才火土金，次選是火土土，放寬組是天格剋人格，火木火組只看三才、不補八字。每個名字都有參考分數（點分數會從底部滑出明細），依分數由高到低排列。總評會再把兩個字的等級、聲調、備註，一起考慮，★ 推薦的排最前面。只有明顯負面的組合（例如「小人」）會降成留意；其他諧音只用藍字提示別人可能聯想到什麼，不扣分，好壞由你們判斷。諧音清單沒辦法列盡，最後還是請自己念一遍。</p>
+<p class="hint">只顯示你挑的字之中，筆畫能配成上面規則的組合。勾選名字前的方框，名字會出現在畫面底部的列，從那裡製作分享卡。首選是三才火土金，次選是火土土，放寬組是天格剋人格，火木火組只看三才、不補八字。每個名字都有參考分數（點整列會從底部滑出明細），依分數由高到低排列。總評會再把兩個字的等級、聲調、備註，一起考慮，★ 推薦的排最前面。只有明顯負面的組合（例如「小人」）會降成留意；其他諧音只用藍字提示別人可能聯想到什麼，不扣分，好壞由你們判斷。諧音清單沒辦法列盡，最後還是請自己念一遍。</p>
 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button type="button" id="copy">複製組合清單</button><button type="button" id="clear">清除所有選字</button></div>
 <div id="out"></div>
 
@@ -539,7 +543,7 @@ function scoreHTML(r){
 }
 function rowHTML(r){
   const OV=['','★ 推薦','可考慮','留意'],tn=['','首選','次選','放寬','火木火'];
-  return `<div class="rrow${st.fav.includes(r.key)?' faved':''}">
+  return `<div class="rrow click${st.fav.includes(r.key)?' faved':''}" data-detail="${esc(r.key)}" tabindex="0" role="button" aria-label="馮${esc(r.key)} 的明細">
    <label class="fv rn"><input type="checkbox" data-fav="${esc(r.key)}" ${st.fav.includes(r.key)?'checked':''} aria-label="喜歡 馮${esc(r.key)}"><b>馮${esc(r.ca)}${esc(r.cb)}</b></label>
    <span class="rmeta"><span class="rel">${GN[grade(r.xa)]}${r.xa[3]}・${GN[grade(r.xb)]}${r.xb[3]}</span>
    <span class="rnum"><i>人</i>${r.g.ren} <i>地</i>${r.g.di} <i>外</i>${r.g.wai} <i>總</i>${r.g.zong}</span>
@@ -628,6 +632,7 @@ document.addEventListener('click',e=>{
   const sh=e.target.closest('[data-share]');if(sh){shareImg(+sh.dataset.share);return}
   const md=e.target.closest('.mode button[data-mode]');if(md){setMode(md.dataset.mode);render();window.scrollTo({top:Math.min(window.scrollY,document.querySelector('.bar').offsetTop),behavior:'smooth'});return}
   const tf=e.target.closest('[data-togfav]');if(tf){toggleFav(tf.dataset.togfav);return}
+  if(e.target.closest('label.fv'))return;
   const dt=e.target.closest('[data-detail]');if(dt){openDetail(dt.dataset.detail);return}
   if(e.target.closest('[data-dclose]')){closeDetail();return}
   const be=e.target.closest('[data-band]');if(be){const s=+be.dataset.band;openBand.has(s)?openBand.delete(s):openBand.add(s);renderRec();return}
@@ -647,7 +652,7 @@ $('#clear').addEventListener('click',()=>{st.a=[];st.b=[];save();render()});
 $('#mkcard').addEventListener('click',makeCards);
 $('#recmore').addEventListener('click',()=>{recBands+=8;renderRec()});
 $('#fSubj').addEventListener('change',e=>{st.subj=e.target.checked;save();render()});
-document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(!$('#dsheet').hidden)closeDetail();else if(!$('#sheet').hidden)closeSheet()});
+document.addEventListener('keydown',e=>{const rw=e.target.closest&&e.target.closest('.rrow.click');if(rw&&(e.key==='Enter'||e.key===' ')&&!e.target.closest('label.fv')){e.preventDefault();openDetail(rw.dataset.detail);return}if(e.key!=='Escape')return;if(!$('#dsheet').hidden)closeDetail();else if(!$('#sheet').hidden)closeSheet()});
 function favText(){const F=favPairs();return '寶寶取名候選\n'+F.map(r=>`馮${r.key}（féng ${r.xa[2]} ${r.xb[2]}）\n　${r.ca}：${r.xa[4]}；${r.cb}：${r.xb[4]}\n　三才${r.g.sc}・總格${r.g.zong}・${r.sc.total}分・${['','推薦','可考慮','留意'][r.o]}${r.pun?'・諧音：'+r.pun:''}`).join('\n')}
 $('#copyfav').addEventListener('click',async()=>{const F=favPairs();if(!F.length){toast('還沒有喜歡的名字');return}
   try{await navigator.clipboard.writeText(favText());toast(`已複製 ${F.length} 個名字`)}catch(e){toast('這個環境無法複製')}});
