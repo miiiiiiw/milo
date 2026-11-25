@@ -40,7 +40,7 @@ button:focus-visible{outline:3px solid var(--slate);outline-offset:2px}
 .tally a{color:var(--seal);font-weight:700}
 .drawer{margin:0 0 22px}
 .drawer h3{font:600 16px "Noto Sans TC",sans-serif;margin:0 0 8px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;position:sticky;top:var(--barh,64px);z-index:4;background:color-mix(in srgb,var(--bg) 92%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:8px 0;margin-inline:-4px;padding-inline:4px}
-.drawer h3 .st{color:var(--seal)}
+.drawer h3 .st{color:var(--seal)}.drawer h3 .cnt{font-weight:400;color:var(--mute);font-size:14px}
 .drawer h3 small{color:var(--mute);font-weight:400;font-size:13px}
 .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px}
 .t{border-radius:10px;border:1.5px solid transparent;background:var(--tile);padding:10px 6px 8px;display:grid;grid-template-rows:38px 20px 36px 20px 32px;align-content:start;justify-items:center;gap:2px;text-align:center}
@@ -261,7 +261,8 @@ function visible(x){return (!st.good||x[3]==='金'||x[3]==='水')&&(!st.horse||x
 function drawer(n,partners,key){
   const list=POOL.filter(x=>x[1]===n&&(visible(x)||st[key].includes(x[0])));
   if(!list.length)return '';
-  return `<div class="drawer" id="d-${key}-${n}"><h3><span><span class="st">${key==='a'?'第一字':'第二字'}</span>・${n} 畫</span> <small>可配第${key==='a'?'二':'一'}字 ${partners.join('、')} 畫</small></h3><div class="tiles">${list.map(x=>{
+  const sel=list.filter(x=>st[key].includes(x[0])).length;
+  return `<div class="drawer" id="d-${key}-${n}"><h3><span><span class="st">${key==='a'?'第一字':'第二字'}</span>・${n} 畫<span class="cnt">・${list.length} 字${sel?`・已選 ${sel}`:''}</span></span> <small>可配第${key==='a'?'二':'一'}字 ${partners.join('、')} 畫</small></h3><div class="tiles">${list.map(x=>{
     const on=st[key].includes(x[0]);
     const other=key==='a'?st.b:st.a;
     let cls='',badge='';
