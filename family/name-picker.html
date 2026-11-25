@@ -148,8 +148,6 @@ body.docked{padding-bottom:96px}
 .scb[aria-expanded=true]{border-color:var(--seal);color:var(--seal)}
 .ro{display:flex;align-items:center;justify-content:flex-end;flex-wrap:nowrap}
 
-.sdet{margin:4px 0 8px 32px;padding:8px 10px;border-radius:10px;background:var(--tile);font-size:13px}
-.sdet table{border-collapse:collapse;width:100%}.sdet th,.sdet td{padding:4px 6px;border:0;text-align:left;vertical-align:top}.sdet th{white-space:nowrap;color:var(--mute);font-weight:500}.sdet td.num{white-space:nowrap;text-align:right;font-weight:700}
 @media(max-width:700px){.rsd{grid-column:1/-1}.sdet{margin-left:0}.scb{font-size:15px}}
 body[data-mode=pick] .m-rec,body[data-mode=rec] .m-pick,body[data-mode=rec] .bar .tally{display:none}
 .mode{display:inline-flex;flex:none;border:1.5px solid var(--seal);border-radius:22px;overflow:hidden}
@@ -175,8 +173,20 @@ body[data-mode=pick] .m-rec,body[data-mode=rec] .m-pick,body[data-mode=rec] .bar
 .dnum{margin:4px 0;font-size:14px;color:var(--mute)}
 #dsheet .sdet{margin-left:0}
 #dsheet .sheet-panel{max-width:720px}
-.sdet th{width:5.5em}.sdet td.num{width:5.5em}
+
 @media(max-width:600px){.chips{grid-template-columns:repeat(2,minmax(0,1fr))}.mode button{padding:0 11px;font-size:14px}}
+.sdet{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:10px;margin:12px 0 0}
+.si{background:var(--tile);border-radius:12px;padding:12px 14px}
+.si-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.si-k{font-size:13px;color:var(--mute);letter-spacing:.02em}
+.si-v b{font:700 20px/1 "Noto Sans TC",sans-serif;color:var(--ink);font-variant-numeric:tabular-nums}.si-v small{font-size:12px;color:var(--mute);margin-left:2px}
+.si-v.neg b{color:var(--seal)}
+.si-bar{height:4px;border-radius:2px;background:var(--line);margin:8px 0 10px;overflow:hidden}.si-bar i{display:block;height:100%;background:var(--seal);border-radius:2px;opacity:.85}
+.si-d{display:flex;flex-wrap:wrap;gap:6px}
+.si-d span{font-size:12.5px;line-height:1.5;padding:2px 9px;border-radius:999px;background:color-mix(in srgb,var(--bg) 55%,transparent);color:color-mix(in srgb,var(--ink) 72%,transparent);white-space:nowrap}
+.si-d em{font-style:normal;font-weight:700;color:var(--slate);margin-left:2px}.si-d em.neg{color:var(--seal)}.si-d em.zero{color:var(--mute);font-weight:400}
+.si-n{font-size:12px;color:var(--mute);margin-top:8px}
+.si-h+.si-d{margin-top:10px}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mute);margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
@@ -487,11 +497,11 @@ function score(r){
   // 音韻 15
   const tns=new Set(r.tn).size, a=pyParts(r.xa[2]), b=pyParts(r.xb[2]);
   const ph=[];let p5=0;
-  const tv=tns===3?7:tns===2?4:0;p5+=tv;ph.push(`聲調${tns===3?'三字都不同':tns===2?'有起伏':'三字相同'} ${tv}`);
-  const di=a.ini!==b.ini?2:0;p5+=di;ph.push(`聲母${di?'不同':'相同'} ${di}`);
-  const df=a.fin!==b.fin?2:0;p5+=df;ph.push(`韻母${df?'不同':'相同'} ${df}`);
-  const ds=(a.fin!=='eng'&&b.fin!=='eng')?1:0;p5+=ds;if(ds)ph.push('不與姓氏同韻 1');
-  const loud=/a|o|ang|ong/.test(b.fin)?3:1;p5+=loud;ph.push(`結尾${loud===3?'響亮開口音':'較收斂'} ${loud}`);
+  const tv=tns===3?7:tns===2?4:0;p5+=tv;ph.push([`聲調${tns===3?'三字都不同':tns===2?'有起伏':'三字相同'}`,tv]);
+  const di=a.ini!==b.ini?2:0;p5+=di;ph.push([`聲母${di?'不同':'相同'}`,di]);
+  const df=a.fin!==b.fin?2:0;p5+=df;ph.push([`韻母${df?'不同':'相同'}`,df]);
+  const ds=(a.fin!=='eng'&&b.fin!=='eng')?1:0;p5+=ds;if(ds)ph.push(['不與姓氏同韻',1]);
+  const loud=/a|o|ang|ong/.test(b.fin)?3:1;p5+=loud;ph.push([`結尾${loud===3?'響亮開口音':'較收斂'}`,loud]);
   // 字形 10
   const W=r.xa[7]+r.xb[7];const ws=W<=16?5:W<=20?4:W<=24?3:W<=28?2:1;
   const sd=r.xa[8]!==r.xb[8]?3:1, rd=r.xa[6]!==r.xb[6]?2:0;
@@ -507,19 +517,25 @@ function score(r){
   return {total,p1,p2,p3,p4,p5,p6,p7,p8,wg,adj,ph,W,sd,rd,ws};
 }
 function scoreHTML(r){
-  const s=r.sc,f=v=>Number.isInteger(v)?v:v.toFixed(1);
-  const ch=x=>`${x[0]}屬${x[3]}`;
-  const row=(k,v,m,d)=>`<tr><th>${k}</th><td class="num">${f(v)}${m?'／'+m:''}</td><td>${d}</td></tr>`;
-  return `<div class="sdet"><table><tbody>
-   ${row('五格數理',s.p1,20,s.wg.map(w=>`${w[0]} ${w[1]}（${w[2]}）`).join('、'))}
-   ${row('三才',s.p2,10,r.g.sc+['','，首選','，次選','，放寬組','，火木火組'][r.t])}
-   ${row('八字喜用',s.p3,25,`${ch(r.xa)}、${ch(r.xb)}；金 12.5、水 10、木 5、火土 0`)}
-   ${row('生肖',s.p4,10,[r.xa,r.xb].map(x=>`${x[0]}${x[5]===1?' 馬＋':x[5]===-1?' 馬－':' 中性'}`).join('、'))}
-   ${row('音韻',s.p5,15,s.ph.join('、'))}
-   ${row('字形',s.p6,10,`書寫 ${s.W} 畫 ${s.ws}、結構${s.sd===3?'錯開':'相同'}（${r.xa[8]}／${r.xb[8]}）${s.sd}、部首${s.rd?'不同 2':'相同 0'}`)}
-   ${row('命名適合度',s.p7,10,`${r.xa[0]} ${r.xa[9]}／5、${r.xb[0]} ${r.xb[9]}／5（我的主觀評分${st.subj===false?'，目前未計入':''}）`)}
-   ${row('音義調整',s.p8,'',s.adj.length?s.adj.map(a=>`${esc(a[0])} ${a[1]}`).join('、'):'沒有扣分')}
-  </tbody></table></div>`;
+  const s=r.sc,f=v=>Number.isInteger(v)?String(v):v.toFixed(1);
+  const pts=v=>v>0?`<em>+${f(v)}</em>`:v<0?`<em class="neg">${f(v)}</em>`:`<em class="zero">0</em>`;
+  const pill=(txt,v)=>`<span>${esc(txt)}${v===undefined?'':' '+pts(v)}</span>`;
+  const hv=x=>x[5]===1?5:x[5]===0?3:0, ev=x=>x[3]==='金'?12.5:x[3]==='水'?10:x[3]==='木'?5:0;
+  const items=[
+   ['五格數理',s.p1,20,s.wg.map(w=>pill(`${w[0]} ${w[1]}・${w[2]}`,w[3]))],
+   ['三才',s.p2,10,[pill(r.g.sc),pill(['','首選','次選','放寬組','火木火組'][r.t])]],
+   ['八字喜用',s.p3,25,[r.xa,r.xb].map(x=>pill(`${x[0]} 屬${x[3]}`,ev(x))),'金 12.5・水 10・木 5・火土 0'],
+   ['生肖',s.p4,10,[r.xa,r.xb].map(x=>pill(`${x[0]} ${x[5]===1?'馬＋':x[5]===-1?'馬－':'中性'}`,hv(x)))],
+   ['音韻',s.p5,15,s.ph.map(p=>pill(p[0],p[1]))],
+   ['字形',s.p6,10,[pill(`書寫 ${s.W} 畫`,s.ws),pill(`結構 ${r.xa[8]}／${r.xb[8]}`,s.sd),pill(`部首${s.rd?'不同':'相同'}`,s.rd)]],
+   ['命名適合度',s.p7,10,[r.xa,r.xb].map(x=>pill(`${x[0]} ${x[9]}／5`)),`我的主觀評分${st.subj===false?'，目前未計入':''}`],
+   ['音義調整',s.p8,0,s.adj.length?s.adj.map(a=>pill(a[0],a[1])):[pill('沒有扣分')]]
+  ];
+  return `<div class="sdet">${items.map(([k,v,m,d,note])=>`<div class="si">
+    <div class="si-h"><span class="si-k">${k}</span><span class="si-v${v<0?' neg':''}"><b>${f(v)}</b>${m?`<small>／${m}</small>`:''}</span></div>
+    ${m?`<div class="si-bar"><i style="width:${Math.max(0,Math.min(100,v/m*100))}%"></i></div>`:''}
+    <div class="si-d">${d.join('')}</div>${note?`<div class="si-n">${esc(note)}</div>`:''}
+  </div>`).join('')}</div>`;
 }
 function rowHTML(r){
   const OV=['','★ 推薦','可考慮','留意'],tn=['','首選','次選','放寬','火木火'];
