@@ -218,6 +218,9 @@ body:has(.sheet:not([hidden])) .fab{display:none}
 .clr-btn span{font-size:16px;color:var(--mute)}
 .tally{display:flex;align-items:center}
 #toast .undo{min-height:32px;padding:0 10px;margin-left:10px;border-radius:16px;border:0;background:var(--seal);color:#fff;font-size:13px}
+.inapp{border:1.5px solid var(--seal);background:var(--sealbg);border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.6}
+.inapp .primary-link{display:inline-flex;align-items:center;min-height:40px;margin:8px 0 2px;padding:0 16px;border-radius:20px;background:var(--seal);color:#fff;text-decoration:none;font-weight:700}
+.inapp small{display:block;color:var(--mute);font-size:12px}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mute);margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
@@ -487,7 +490,7 @@ async function makeCards(){
   const d=new Date(),ds=`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
   const W=420,H=350,G=24,PAD=40,S=2;
   window._imgs=[];
-  $('#cards').innerHTML='';
+  $('#cards').innerHTML=inAppNote();
   openSheet();
   pages.forEach((P,pi)=>{
     const cols=P.length===1?1:P.length<=4?2:3,rows=Math.ceil(P.length/cols);
@@ -505,11 +508,25 @@ async function makeCards(){
   });
 }
 
+
+const IN_APP=/\bLine\/|FBAN|FBAV|Instagram|MicroMessenger/i.test(navigator.userAgent);
+function topLoc(){try{return window.top.location}catch(e){return location}}
+function externalURL(){
+  const L=topLoc(),u=new URL(L.href);
+  u.searchParams.set('openExternalBrowser','1');
+  if(st.fav.length)u.searchParams.set('fav',st.fav.join(','));
+  return u.toString();
+}
+function readFavParam(){
+  for(const L of [location,topLoc()]){try{const v=new URL(L.href).searchParams.get('fav');if(v){const add=v.split(',').filter(k=>[...k].length===2);st.fav=[...new Set([...st.fav,...add])];save();return}}catch(e){}}
+}
+function inAppNote(){return IN_APP?`<div class="inapp">目前是在 LINE 等 App 內建的瀏覽器裡，沒辦法分享或下載圖片。<a class="primary-link" href="${esc(externalURL())}" target="_blank" rel="noopener">用瀏覽器開啟</a><small>「我喜歡」的名字會一起帶過去；也可以直接長按圖片儲存。</small></div>`:''}
 function canShareFiles(){try{return !!(navigator.canShare&&navigator.share&&navigator.canShare({files:[new File([new Blob(['x'],{type:'image/png'})],'t.png',{type:'image/png'})]}))}catch(e){return false}}
 async function shareImg(i){
   const cv=window._imgs[i];if(!cv)return;
   const b=await new Promise(r=>cv.toBlob(r,'image/png'));
   const f=new File([b],`寶寶取名候選-${i+1}.png`,{type:'image/png'});
+  if(IN_APP){toast('LINE 內建瀏覽器不支援分享，請按上方「用瀏覽器開啟」，或長按圖片儲存');return}
   if(!canShareFiles()){toast('這裡無法叫出分享選單，已改為下載');dl(i);return}
   try{await navigator.share({files:[f],title:'寶寶取名候選',text:'寶寶取名候選，大家看看喜歡哪個？'})}
   catch(e){if(e&&e.name==='AbortError')return;dl(i)}
@@ -518,6 +535,7 @@ let dlns=null;
 (async()=>{try{dlns=await window.claude?.use?.('downloads')}catch(e){dlns=null}})();
 async function dl(i){
   const cv=window._imgs[i];if(!cv)return;
+  if(IN_APP){toast('LINE 內建瀏覽器不支援下載，請按上方「用瀏覽器開啟」，或長按圖片儲存');return}
   if(!dlns){cv.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`寶寶取名候選-${i+1}.png`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)},'image/png');return}
   cv.toBlob(async b=>{try{await dlns.save({filename:`寶寶取名候選-${i+1}.png`,data:b});toast('已下載')}catch(e){toast(e&&e.code==='declined'?'已取消下載':'無法下載，請長按圖片儲存')}},'image/png');
 }
@@ -743,7 +761,7 @@ $('#copy').addEventListener('click',async()=>{
   try{await navigator.clipboard.writeText(txt);toast(`已複製 ${R.length} 組`)}catch(e){toast('這個環境無法複製')}
 });
 new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document.body,{childList:true,subtree:true});
-setMode(st.mode||'pick');$('#fSubj').checked=st.subj!==false;
+readFavParam();setMode(st.mode||'pick');$('#fSubj').checked=st.subj!==false;
 {const dk=document.querySelector('#dock');const setD=()=>document.documentElement.style.setProperty('--dockh',(dk.hidden?0:dk.offsetHeight)+'px');setD();const dockRO=new ResizeObserver(setD);dockRO.observe(dk);new MutationObserver(setD).observe(dk,{attributes:true,attributeFilter:['hidden']})}
 {const bar=document.querySelector('.bar');const setB=()=>document.documentElement.style.setProperty('--barh',bar.offsetHeight+'px');setB();const barRO=new ResizeObserver(setB);barRO.observe(bar)}
 render();
