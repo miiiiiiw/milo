@@ -29,6 +29,8 @@ h2{font:600 24px/1.25 "Noto Serif TC",serif;margin:0 0 6px}
 .prow+.prow{border-top:1px dashed color-mix(in srgb,var(--seal) 32%,transparent)}
 .prow>a{font-weight:700;color:var(--ink);text-decoration:none;min-width:7.5em;white-space:nowrap;padding:6px 0}
 .prow>a:hover{color:var(--seal)}
+.sc3{display:inline-flex;gap:1px;margin-left:8px;padding:1px 6px;border-radius:8px;background:color-mix(in srgb,var(--line) 60%,transparent);font-size:12px;vertical-align:1px}.sc3 i{font-style:normal;font-weight:700}
+.bt{margin-left:6px;font-size:12px;color:var(--seal);font-weight:700}.bt.lo{color:var(--mute)}
 .pairs .chip{border:1px solid var(--line);border-radius:10px;padding:6px 12px;font-size:14px;white-space:nowrap}.pairs .chip.best{border-color:var(--seal)}
 .pairs b{color:var(--seal)}
 .bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px max(5vw,16px)}
@@ -162,7 +164,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 <li><b>字本身的五行</b>：看部首或字義，例如銘屬金、源屬水。名字裡的字帶金、水，可以再加強補八字。上方的「只看金水補八字」按鈕篩的就是這一層，打開後只留字本身屬金或水的字。</li>
 </ul>
 <div class="sancai" id="sancai" aria-label="三才示意圖"></div>
-<p class="lede" style="margin-top:16px">每一列是名字第一個字的筆畫，首選排在最前面，點列名可以跳到下方對應的字：</p>
+<p class="lede" style="margin-top:16px">每一列是名字第一個字的筆畫，首選排在最前面，點列名可以跳到下方對應的字。筆畫後面的小色塊是組合出來的三才（天格・人格・地格）：</p>
 <ul class="pairs" id="pairs"></ul>
 </div></section>
 
@@ -408,7 +410,7 @@ function render(){
   const rows=A.flatMap(a=>P2.filter(p=>p[0]===a).sort((x,y)=>x[2]-y[2]||x[1]-y[1]));
   const B=[...new Set([...rows.filter(p=>p[2]===1),...rows].map(p=>p[1]))];
   const tl=t=>t===1?'・首選':t===3?'・放寬':'';
-  $('#pairs').innerHTML=A.map(a=>`<li class="prow"><a href="#d-a-${a}">第一字 ${a} 畫</a>${P2.filter(p=>p[0]===a).sort((x,y)=>x[2]-y[2]||x[1]-y[1]).map(p=>`<span class="chip${p[2]===1?' best':''}"><b>${p[0]}＋${p[1]}</b> 畫・三才${grid(p[0],p[1]).sc}${tl(p[2])}</span>`).join('')}</li>`).join('');
+  $('#pairs').innerHTML=A.map(a=>`<li class="prow"><a href="#d-a-${a}">第一字 ${a} 畫</a>${P2.filter(p=>p[0]===a).sort((x,y)=>x[2]-y[2]||x[1]-y[1]).map(p=>`<span class="chip${p[2]===1?' best':''}"><b>${p[0]}＋${p[1]}</b> 畫<span class="sc3" title="三才：天格・人格・地格">${grid(p[0],p[1]).sc.split('').map(e=>`<i class="e-${e}">${e}</i>`).join('')}</span>${p[2]===1?'<span class="bt">首選</span>':p[2]===3?'<span class="bt lo">放寬</span>':''}</span>`).join('')}</li>`).join('');
   $('#first').innerHTML=A.map(n=>drawer(n,P2.filter(p=>p[0]===n).sort((x,y)=>x[2]-y[2]||x[1]-y[1]).map(p=>p[1]),'a')).join('')||'<p class="empty">沒有可用的字。</p>';
   $('#second').innerHTML=B.map(n=>drawer(n,P2.filter(p=>p[1]===n).sort((x,y)=>x[2]-y[2]||x[0]-y[0]).map(p=>p[0]),'b')).join('');
   ['good','horse','loose'].forEach(k=>$('#f'+{good:'Good',horse:'Horse',loose:'Loose'}[k]).setAttribute('aria-pressed',st[k]));
