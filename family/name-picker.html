@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>馮家取名選字器</title>
+<title>寶寶取名選字器</title>
 <meta name="description" content="依康熙筆畫、三才五格與八字喜用，先選字再自動組合名字，可製作分享卡">
 <meta name="keywords" content="取名, 三才五格, 八字, 工具">
 <meta name="date" content="2026-11-25">
@@ -154,7 +154,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 <body>
 <section class="band first"><div class="wrap">
 <p class="eyebrow page-kicker">家庭生活 · 寶寶取名</p>
-<h1>馮家取名選字器</h1>
+<h1>寶寶取名選字器</h1>
 <p class="lede">先挑名字第一個字，再挑第二個字，最後自動配出所有符合規則的組合。這裡有兩層五行，各管各的：</p>
 <ul class="lede" style="padding-left:1.2em;margin:8px 0 0">
 <li><b>筆畫的五行（三才）</b>：馮 12 畫，天格固定 13，屬火。寶寶喜金，但火會剋金，所以讓人格屬土當橋樑：火生土、土生金，地格落在金或土。下面列出的筆畫組合都已經符合這一層。</li>
@@ -369,7 +369,7 @@ async function makeCards(){
     const cw=PAD*2+cols*W+(cols-1)*G,ch=PAD*2+96+rows*H+(rows-1)*G+40;
     const cv=document.createElement('canvas');cv.width=cw*S;cv.height=ch*S;const c=cv.getContext('2d');c.scale(S,S);
     c.fillStyle='#f6f3ee';c.fillRect(0,0,cw,ch);
-    c.fillStyle='#1d1f24';c.font=`900 34px ${SERIF}`;c.fillText('馮家寶寶取名候選',PAD,PAD+38);
+    c.fillStyle='#1d1f24';c.font=`900 34px ${SERIF}`;c.fillText('寶寶取名候選',PAD,PAD+38);
     c.fillStyle='#8d9097';c.font=`400 16px ${SANS}`;c.fillText(`${ds}${pages.length>1?`・第 ${pi+1}/${pages.length} 張`:''}・共 ${F.length} 個名字`,PAD,PAD+70);
     P.forEach((r,i)=>drawCard(c,r,PAD+(i%cols)*(W+G),PAD+96+Math.floor(i/cols)*(H+G),W,H));
     c.fillStyle='#a3a5ab';c.font=`400 13px ${SANS}`;c.fillText('筆畫依康熙字典計算・三才五格與八字喜用僅供參考',PAD,ch-PAD/2-4);
@@ -384,17 +384,17 @@ function canShareFiles(){try{return !!(navigator.canShare&&navigator.share&&navi
 async function shareImg(i){
   const cv=window._imgs[i];if(!cv)return;
   const b=await new Promise(r=>cv.toBlob(r,'image/png'));
-  const f=new File([b],`馮家取名候選-${i+1}.png`,{type:'image/png'});
+  const f=new File([b],`寶寶取名候選-${i+1}.png`,{type:'image/png'});
   if(!canShareFiles()){toast('這裡無法叫出分享選單，已改為下載');dl(i);return}
-  try{await navigator.share({files:[f],title:'馮家寶寶取名候選',text:'寶寶取名候選，大家看看喜歡哪個？'})}
+  try{await navigator.share({files:[f],title:'寶寶取名候選',text:'寶寶取名候選，大家看看喜歡哪個？'})}
   catch(e){if(e&&e.name==='AbortError')return;dl(i)}
 }
 let dlns=null;
 (async()=>{try{dlns=await window.claude?.use?.('downloads')}catch(e){dlns=null}})();
 async function dl(i){
   const cv=window._imgs[i];if(!cv)return;
-  if(!dlns){cv.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`馮家取名候選-${i+1}.png`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)},'image/png');return}
-  cv.toBlob(async b=>{try{await dlns.save({filename:`馮家取名候選-${i+1}.png`,data:b});toast('已下載')}catch(e){toast(e&&e.code==='declined'?'已取消下載':'無法下載，請長按圖片儲存')}},'image/png');
+  if(!dlns){cv.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`寶寶取名候選-${i+1}.png`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)},'image/png');return}
+  cv.toBlob(async b=>{try{await dlns.save({filename:`寶寶取名候選-${i+1}.png`,data:b});toast('已下載')}catch(e){toast(e&&e.code==='declined'?'已取消下載':'無法下載，請長按圖片儲存')}},'image/png');
 }
 function render(){
   const P=pairList();
@@ -445,7 +445,7 @@ $('#fLoose').addEventListener('click',()=>{st.loose=!st.loose;save();render()});
 $('#clear').addEventListener('click',()=>{st.a=[];st.b=[];save();render()});
 $('#mkcard').addEventListener('click',makeCards);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#sheet').hidden)closeSheet()});
-function favText(){const F=favPairs();return '馮家寶寶取名候選\n'+F.map(r=>`馮${r.key}（féng ${r.xa[2]} ${r.xb[2]}）\n　${r.ca}：${r.xa[4]}；${r.cb}：${r.xb[4]}\n　三才${r.g.sc}・總格${r.g.zong}・${['','推薦','可考慮','留意'][r.o]}${r.pun?'・諧音：'+r.pun:''}`).join('\n')}
+function favText(){const F=favPairs();return '寶寶取名候選\n'+F.map(r=>`馮${r.key}（féng ${r.xa[2]} ${r.xb[2]}）\n　${r.ca}：${r.xa[4]}；${r.cb}：${r.xb[4]}\n　三才${r.g.sc}・總格${r.g.zong}・${['','推薦','可考慮','留意'][r.o]}${r.pun?'・諧音：'+r.pun:''}`).join('\n')}
 $('#copyfav').addEventListener('click',async()=>{const F=favPairs();if(!F.length){toast('還沒有喜歡的名字');return}
   try{await navigator.clipboard.writeText(favText());toast(`已複製 ${F.length} 個名字`)}catch(e){toast('這個環境無法複製')}});
 const toast=m=>{const el=$('#toast');el.textContent=m;el.style.opacity=1;setTimeout(()=>el.style.opacity=0,1800)};
