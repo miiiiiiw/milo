@@ -581,7 +581,7 @@ function renderRec(){
   $('#rec').innerHTML=rc.bands.length?rc.bands.slice(0,recBands).map(b=>{
     let shown=b.list;
     if(!openBand.has(b.s)){const cnt={};shown=[];for(const r of b.list){if((cnt[r.ca]||0)>=2||(cnt[r.cb]||0)>=2)continue;cnt[r.ca]=(cnt[r.ca]||0)+1;cnt[r.cb]=(cnt[r.cb]||0)+1;shown.push(r);if(shown.length>=12)break}}
-    return `<div class="band-s"><h3><span class="bs">${b.s}</span><span class="bu">分</span><span class="pill">${b.list.length} 個</span></h3><div class="chips">${shown.map(chipHTML).join('')}</div>${b.list.length>shown.length||openBand.has(b.s)?`<button type="button" class="bexp" data-band="${b.s}">${openBand.has(b.s)?'收合':`展開這一分（共 ${b.list.length} 個）`}</button>`:''}</div>`;
+    return `<div class="band-s"><h3><span class="bs">${b.s}</span><span class="bu">分</span><span class="pill">${b.list.length} 個</span></h3><div class="chips">${shown.map(chipHTML).join('')}</div>${b.list.length>shown.length||openBand.has(b.s)?`<button type="button" class="bexp" data-band="${b.s}">${openBand.has(b.s)?'收合':`展開（${b.list.length-shown.length} 個）`}</button>`:''}</div>`;
   }).join(''):'<p class="empty">目前的篩選條件下沒有組合，試著關掉幾個篩選。</p>';
   $('#recmore').hidden=recBands>=rc.bands.length;
 }
