@@ -127,11 +127,12 @@ body.docked{padding-bottom:96px}
 .overall{white-space:nowrap}
 @media(max-width:700px){
  .rhead{display:none}
- .rrow{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"n o" "m m" "w w";row-gap:2px;padding:4px 2px}
+ .rrow{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"n o" "m m" "w w" "s s";row-gap:2px;padding:4px 2px}
  .rn{grid-area:n;min-height:40px}.ro{grid-area:o;text-align:right}
  .rmeta{grid-area:m;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-size:13px;padding-left:32px}
  .rmeta .tier{font-size:12px;padding:0 7px}
  .rwhy{grid-area:w;padding:0 0 4px 32px}
+ .rsd{grid-area:s}
  .rn b{font-size:20px}
 }
 .rules{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;margin-top:10px;padding-top:12px;border-top:1px dashed color-mix(in srgb,var(--seal) 32%,transparent)}
@@ -142,6 +143,14 @@ body.docked{padding-bottom:96px}
 .sw input:checked{background:var(--seal)}.sw input:checked::after{transform:translateX(16px)}
 .sw input:focus-visible{outline:3px solid var(--slate);outline-offset:2px}
 .sw b{font-size:15px;font-weight:700;display:block;line-height:1.3}.sw small{font-size:12px;color:var(--mute);display:block;line-height:1.35}
+.scb{min-height:32px;padding:0 8px;border-radius:8px;border:1px solid var(--line);background:none;font:700 17px/1 "Noto Sans TC",sans-serif;color:var(--ink);margin-right:8px;font-variant-numeric:tabular-nums}
+.scb small{font-size:11px;font-weight:400;color:var(--mute);margin-left:1px}
+.scb[aria-expanded=true]{border-color:var(--seal);color:var(--seal)}
+.ro{display:flex;align-items:center;justify-content:flex-end;flex-wrap:nowrap}
+.rsd{grid-column:1/-1;grid-area:auto}
+.sdet{margin:4px 0 8px 32px;padding:8px 10px;border-radius:10px;background:var(--tile);font-size:13px}
+.sdet table{border-collapse:collapse;width:100%}.sdet th,.sdet td{padding:4px 6px;border:0;text-align:left;vertical-align:top}.sdet th{white-space:nowrap;color:var(--mute);font-weight:500}.sdet td.num{white-space:nowrap;text-align:right;font-weight:700}
+@media(max-width:700px){.rsd{grid-column:1/-1}.sdet{margin-left:0}.scb{font-size:15px}}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mute);margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
@@ -193,6 +202,14 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   <span class="tally" id="tally"></span>
 </div></div>
 
+<section class="band" id="recsec" style="padding-top:0"><div class="wrap">
+<h2>高分推薦</h2>
+<p class="hint" id="recinfo"></p>
+<p class="guide">依規則計分：五格 40、三才 20、八字喜用 25、生肖 15，再依音義扣分。點分數可以看怎麼算。分數判斷不了兩個字合起來的語感和意境，請自己念念看。</p>
+<div id="rec"></div>
+<button type="button" id="recmore" style="margin-top:12px">看更多</button>
+</div></section>
+
 <section class="band"><div class="wrap">
 <h2>第一步　名字第一個字<span class="role r-ren">決定人格 → 要屬土</span></h2>
 <p class="guide">這個字和姓氏一起決定「人格」，也就是主運和個性核心，是最重要的位置。適合穩重、端正的字，也是傳統放輩分字的地方。</p>
@@ -210,7 +227,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 
 <section class="band" id="result" style="padding-top:0"><div class="wrap">
 <h2>第三步　組合結果</h2>
-<p class="hint">只顯示你挑的字之中，筆畫能配成上面規則的組合。勾選名字前的方框，名字會出現在畫面底部的列，從那裡製作分享卡。首選是三才火土金，次選是火土土，放寬組是天格剋人格，火木火組只看三才、不補八字。總評會再把兩個字的等級、聲調、備註，一起考慮，★ 推薦的排最前面。只有明顯負面的組合（例如「小人」）會降成留意；其他諧音只用藍字提示別人可能聯想到什麼，不扣分，好壞由你們判斷。諧音清單沒辦法列盡，最後還是請自己念一遍。</p>
+<p class="hint">只顯示你挑的字之中，筆畫能配成上面規則的組合。勾選名字前的方框，名字會出現在畫面底部的列，從那裡製作分享卡。首選是三才火土金，次選是火土土，放寬組是天格剋人格，火木火組只看三才、不補八字。每個名字都有參考分數（點分數看怎麼算），依分數由高到低排列。總評會再把兩個字的等級、聲調、備註，一起考慮，★ 推薦的排最前面。只有明顯負面的組合（例如「小人」）會降成留意；其他諧音只用藍字提示別人可能聯想到什麼，不扣分，好壞由你們判斷。諧音清單沒辦法列盡，最後還是請自己念一遍。</p>
 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button type="button" id="copy">複製組合清單</button><button type="button" id="clear">清除所有選字</button></div>
 <div id="out"></div>
 
@@ -331,7 +348,8 @@ function evalPair(ca,cb){
   const pun=PUNPAIR[ca+cb]||PUNSND[plain(xa[2])+' '+plain(xb[2])]||'';
   for(const c of [ca,cb]){const ns=(NOTES[c]||[]).filter(n=>/女性|較重|撞名/.test(n));if(ns.length)why.push(`${c}：${ns.join('、')}`)}
   const o=badMsg?3:(t===1&&ga===1&&gb===1&&!why.length)?1:(ga===3&&gb===3)||why.length>=2?3:2;
-  return {ca,cb,xa,xb,t,o,why,pun,g:grid(xa[1],xb[1]),key:ca+cb};
+  const r={ca,cb,xa,xb,t,o,why,pun,g:grid(xa[1],xb[1]),key:ca+cb,bad:!!badMsg,tn};
+  r.sc=score(r);return r;
 }
 
 function favPairs(){return st.fav.map(k=>{const r=evalPair([...k][0],[...k][1]);return r||null}).filter(Boolean)}
@@ -372,7 +390,7 @@ function drawCard(c,r,x,y,W,H){
     if(i<2){c.fillStyle='#8d9097';c.font=`700 20px ${SANS}`;c.fillText('→',fx+bw+15,fy+33)}c.textAlign='left';fx+=bw+30});
   cy=fy+80;
   c.fillStyle=r.o===1?'#c8322b':'#3a3d44';c.font=`700 18px ${SANS}`;
-  c.fillText(['','★ 推薦','可考慮','留意'][r.o]+`・總格 ${r.g.zong}・${['','首選','次選','放寬','火木火'][r.t]}`,x+26,cy);
+  c.fillText(['','★ 推薦','可考慮','留意'][r.o]+`・${r.sc.total} 分・總格 ${r.g.zong}・${['','首選','次選','放寬','火木火'][r.t]}`,x+26,cy);
   cy+=28;c.font=`400 15px ${SANS}`;
   if(r.pun){c.fillStyle='#3d5a80';c.fillText(('諧音：'+r.pun).slice(0,22),x+26,cy);cy+=24}
   if(r.why.length){c.fillStyle='#8d9097';const w=r.why.join('；');c.fillText(w.length>24?w.slice(0,23)+'…':w,x+26,cy)}
@@ -419,6 +437,71 @@ async function dl(i){
   if(!dlns){cv.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`寶寶取名候選-${i+1}.png`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)},'image/png');return}
   cv.toBlob(async b=>{try{await dlns.save({filename:`寶寶取名候選-${i+1}.png`,data:b});toast('已下載')}catch(e){toast(e&&e.code==='declined'?'已取消下載':'無法下載，請長按圖片儲存')}},'image/png');
 }
+
+function score(r){
+  const L=(n,m)=>luck(n)==='吉'?m:luck(n)==='半吉'?m/2:0;
+  const wg=[['人格',r.g.ren,15],['地格',r.g.di,10],['總格',r.g.zong,10],['外格',r.g.wai,5]].map(([k,n,m])=>[k,n,L(n,m),m]);
+  const p1=wg.reduce((s,x)=>s+x[2],0);
+  const p2=[0,20,16,12,10][r.t];
+  const ev=x=>(x[3]==='金'||x[3]==='水')?12.5:x[3]==='木'?6.25:0;
+  const p3=ev(r.xa)+ev(r.xb);
+  const hv=x=>x[5]===1?7.5:x[5]===0?5:0;
+  const p4=hv(r.xa)+hv(r.xb);
+  const adj=[];
+  if(r.bad)adj.push(['負面詞義',-10]);
+  if(r.tn[0]===r.tn[1]&&r.tn[1]===r.tn[2])adj.push(['三字同聲調',-4]);else if(r.tn[1]===r.tn[2])adj.push(['名字兩字同聲調',-2]);
+  for(const c of [r.ca,r.cb])for(const n of (NOTES[c]||[]))if(/女性|較重|撞名/.test(n))adj.push([`${c}：${n}`,-2]);
+  const p5=Math.max(-10,adj.reduce((s,x)=>s+x[1],0));
+  const total=Math.max(0,Math.round(p1+p2+p3+p4+p5));
+  return {total,p1,p2,p3,p4,p5,wg,adj};
+}
+function scoreHTML(r){
+  const s=r.sc,f=v=>Number.isInteger(v)?v:v.toFixed(1);
+  const ch=x=>`${x[0]}屬${x[3]}`;
+  return `<div class="sdet"><table><tbody>
+   <tr><th>五格數理</th><td class="num">${f(s.p1)}／40</td><td>${s.wg.map(w=>`${w[0]} ${w[1]}（${luck(w[1])}）`).join('、')}</td></tr>
+   <tr><th>三才</th><td class="num">${s.p2}／20</td><td>${r.g.sc}${['','，首選','，次選','，放寬組','，火木火組'][r.t]}</td></tr>
+   <tr><th>八字喜用</th><td class="num">${f(s.p3)}／25</td><td>${ch(r.xa)}、${ch(r.xb)}；金水滿分，木一半，火土不給分</td></tr>
+   <tr><th>生肖</th><td class="num">${f(s.p4)}／15</td><td>${[r.xa,r.xb].map(x=>`${x[0]}${x[5]===1?' 馬＋':x[5]===-1?' 馬－':' 中性'}`).join('、')}</td></tr>
+   <tr><th>音義調整</th><td class="num">${s.p5}</td><td>${s.adj.length?s.adj.map(a=>`${esc(a[0])} ${a[1]}`).join('、')+(s.adj.reduce((x,a)=>x+a[1],0)<-10?'（最多扣 10）':''):'沒有扣分'}</td></tr>
+  </tbody></table></div>`;
+}
+function rowHTML(r){
+  const OV=['','★ 推薦','可考慮','留意'],tn=['','首選','次選','放寬','火木火'];
+  return `<div class="rrow${st.fav.includes(r.key)?' faved':''}">
+   <label class="fv rn"><input type="checkbox" data-fav="${esc(r.key)}" ${st.fav.includes(r.key)?'checked':''} aria-label="喜歡 馮${esc(r.key)}"><b>馮${esc(r.ca)}${esc(r.cb)}</b></label>
+   <span class="rmeta"><span class="rel">${GN[grade(r.xa)]}${r.xa[3]}・${GN[grade(r.xb)]}${r.xb[3]}</span>
+   <span class="rnum"><i>人</i>${r.g.ren} <i>地</i>${r.g.di} <i>外</i>${r.g.wai} <i>總</i>${r.g.zong}</span>
+   <span class="rsc">${r.g.sc}</span>
+   <span class="rt"><span class="tier t${r.t}">${tn[r.t]}</span></span></span>
+   <span class="ro"><button type="button" class="scb" data-sd="${esc(r.key)}" aria-expanded="false" title="看分數怎麼算">${r.sc.total}<small>分</small></button><span class="overall o${r.o}">${OV[r.o]}</span></span>
+   ${r.why.length||r.pun?`<span class="rwhy">${r.why.length?`<span class="why">${esc(r.why.join('；'))}</span>`:''}${r.pun?`<span class="why pun">諧音：${esc(r.pun)}</span>`:''}</span>`:''}
+   <span class="rsd" hidden>${scoreHTML(r)}</span>
+  </div>`;
+}
+function listHTML(R){return `<div class="rlist"><div class="rrow rhead"><span>名字</span><span>五行</span><span>人・地・外・總格</span><span>三才</span><span>等級</span><span>分數・總評</span></div>${R.map(rowHTML).join('')}</div>`}
+let recCache={key:'',list:[]};
+function recommend(){
+  const key=JSON.stringify([st.good,st.fire,st.wood,st.earth,st.horse,st.loose,st.hmh]);
+  if(recCache.key!==key){
+    const vis=POOL.filter(visible),all=[];
+    const firsts=vis,seconds=vis;
+    for(const a of firsts)for(const b of seconds){if(a[0]===b[0])continue;if(!tier(a[1],b[1],st.loose))continue;const r=evalPair(a[0],b[0]);if(r&&!r.bad)all.push(r)}
+    all.sort((p,q)=>q.sc.total-p.sc.total||p.o-q.o);
+    const cnt={},pick=[];
+    for(const r of all){if((cnt[r.ca]||0)>=2||(cnt[r.cb]||0)>=2)continue;cnt[r.ca]=(cnt[r.ca]||0)+1;cnt[r.cb]=(cnt[r.cb]||0)+1;pick.push(r);if(pick.length>=50)break}
+    recCache={key,list:pick,total:all.length};
+  }
+  return recCache;
+}
+let recN=12;
+function renderRec(){
+  const rc=recommend(),L=rc.list.slice(0,recN);
+  $('#recinfo').textContent=`從 ${rc.total.toLocaleString()} 個合格組合中，依分數挑出前 ${rc.list.length} 名（同一個字最多出現 2 次）`;
+  $('#rec').innerHTML=L.length?listHTML(L):'<p class="empty">目前的篩選條件下沒有組合，試著關掉幾個篩選。</p>';
+  $('#recmore').hidden=recN>=rc.list.length;
+  $('#recmore').textContent=`看更多（共 ${rc.list.length} 個）`;
+}
 function render(){
   const P=pairList();
   const has=n=>POOL.some(x=>x[1]===n);
@@ -436,29 +519,22 @@ function render(){
   $('#fLoose').checked=st.loose;$('#fHmh').checked=st.hmh;
   const R=[];
   for(const ca of st.a)for(const cb of st.b){const r=evalPair(ca,cb);if(r)R.push(r)}
-  R.sort((p,q)=>p.o-q.o||p.t-q.t||(p.xa[1]+p.xb[1])-(q.xa[1]+q.xb[1]));
+  R.sort((p,q)=>q.sc.total-p.sc.total||p.o-q.o||p.t-q.t);
   window._R=R;
   drawSancai(R);
   renderFav();
+  renderRec();
   $('#tally').innerHTML=`<span class="tl">第一字 ${st.a.length}・第二字 ${st.b.length}・</span><a href="#result">${R.length} 組</a>`;
   if(!R.length){$('#out').innerHTML=`<p class="empty">${st.a.length&&st.b.length?'你挑的字之中，筆畫配不出符合規則的組合。可以多挑幾個不同筆畫的字，或打開「放寬」。':'兩個步驟各挑幾個字，這裡就會列出組合。'}</p>`;return}
   const tn=['','首選','次選','放寬','火木火'];
-  const OV=['','★ 推薦','可考慮','留意'];
-  $('#out').innerHTML=`<div class="rlist"><div class="rrow rhead"><span>名字</span><span>五行</span><span>人・地・外・總格</span><span>三才</span><span>等級</span><span>總評</span></div>${R.map(r=>`<div class="rrow${st.fav.includes(r.key)?' faved':''}">
-   <label class="fv rn"><input type="checkbox" data-fav="${esc(r.key)}" ${st.fav.includes(r.key)?'checked':''} aria-label="喜歡 馮${esc(r.key)}"><b>馮${esc(r.ca)}${esc(r.cb)}</b></label>
-   <span class="rmeta"><span class="rel">${GN[grade(r.xa)]}${r.xa[3]}・${GN[grade(r.xb)]}${r.xb[3]}</span>
-   <span class="rnum"><i>人</i>${r.g.ren} <i>地</i>${r.g.di} <i>外</i>${r.g.wai} <i>總</i>${r.g.zong}</span>
-   <span class="rsc">${r.g.sc}</span>
-   <span class="rt"><span class="tier t${r.t}">${tn[r.t]}</span></span></span>
-   <span class="ro"><span class="overall o${r.o}">${OV[r.o]}</span></span>
-   ${r.why.length||r.pun?`<span class="rwhy">${r.why.length?`<span class="why">${esc(r.why.join('；'))}</span>`:''}${r.pun?`<span class="why pun">諧音：${esc(r.pun)}</span>`:''}</span>`:''}
-  </div>`).join('')}</div>`;
+  $('#out').innerHTML=listHTML(R);
 }
 document.addEventListener('change',e=>{const f=e.target.closest('[data-fav]');if(!f)return;const k=f.dataset.fav;st.fav=f.checked?[...new Set([...st.fav,k])]:st.fav.filter(x=>x!==k);save();render()});
 document.addEventListener('click',e=>{
   const u=e.target.closest('[data-unfav]');if(u){st.fav=st.fav.filter(x=>x!==u.dataset.unfav);save();render();return}
   if(e.target.closest('[data-close]')){closeSheet();return}
   const sh=e.target.closest('[data-share]');if(sh){shareImg(+sh.dataset.share);return}
+  const sd=e.target.closest('[data-sd]');if(sd){const box=sd.closest('.rrow').querySelector('.rsd');box.hidden=!box.hidden;sd.setAttribute('aria-expanded',!box.hidden);return}
   const dd=e.target.closest('[data-dl]');if(dd){dl(+dd.dataset.dl);return}
   const t=e.target.closest('.t');
   if(t){const k=t.dataset.k,c=t.dataset.c;st[k]=st[k].includes(c)?st[k].filter(x=>x!==c):[...st[k],c];save();render();return}
@@ -472,14 +548,15 @@ $('#fLoose').addEventListener('change',e=>{st.loose=e.target.checked;save();rend
 $('#fHmh').addEventListener('change',e=>{st.hmh=e.target.checked;save();render()});
 $('#clear').addEventListener('click',()=>{st.a=[];st.b=[];save();render()});
 $('#mkcard').addEventListener('click',makeCards);
+$('#recmore').addEventListener('click',()=>{recN=50;renderRec()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#sheet').hidden)closeSheet()});
-function favText(){const F=favPairs();return '寶寶取名候選\n'+F.map(r=>`馮${r.key}（féng ${r.xa[2]} ${r.xb[2]}）\n　${r.ca}：${r.xa[4]}；${r.cb}：${r.xb[4]}\n　三才${r.g.sc}・總格${r.g.zong}・${['','推薦','可考慮','留意'][r.o]}${r.pun?'・諧音：'+r.pun:''}`).join('\n')}
+function favText(){const F=favPairs();return '寶寶取名候選\n'+F.map(r=>`馮${r.key}（féng ${r.xa[2]} ${r.xb[2]}）\n　${r.ca}：${r.xa[4]}；${r.cb}：${r.xb[4]}\n　三才${r.g.sc}・總格${r.g.zong}・${r.sc.total}分・${['','推薦','可考慮','留意'][r.o]}${r.pun?'・諧音：'+r.pun:''}`).join('\n')}
 $('#copyfav').addEventListener('click',async()=>{const F=favPairs();if(!F.length){toast('還沒有喜歡的名字');return}
   try{await navigator.clipboard.writeText(favText());toast(`已複製 ${F.length} 個名字`)}catch(e){toast('這個環境無法複製')}});
 const toast=m=>{const el=$('#toast');el.textContent=m;el.style.opacity=1;setTimeout(()=>el.style.opacity=0,1800)};
 $('#copy').addEventListener('click',async()=>{
   const R=window._R||[];if(!R.length){toast('還沒有組合可以複製');return}
-  const txt=R.map(r=>`馮${r.ca}${r.cb}（${r.xa[2]} ${r.xb[2]}）三才${r.g.sc}，總格${r.g.zong}，${['','推薦','可考慮','留意'][r.o]}${r.why.length?'：'+r.why.join('；'):''}${r.pun?'（諧音：'+r.pun+'）':''}`).join('\n');
+  const txt=R.map(r=>`馮${r.ca}${r.cb}（${r.xa[2]} ${r.xb[2]}）${r.sc.total}分，三才${r.g.sc}，總格${r.g.zong}，${['','推薦','可考慮','留意'][r.o]}${r.why.length?'：'+r.why.join('；'):''}${r.pun?'（諧音：'+r.pun+'）':''}`).join('\n');
   try{await navigator.clipboard.writeText(txt);toast(`已複製 ${R.length} 組`)}catch(e){toast('這個環境無法複製')}
 });
 new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document.body,{childList:true,subtree:true});
