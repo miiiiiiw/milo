@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-24T22:05:48.606Z",
+  "generated": "2026-11-25T09:28:58.942Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -15,6 +15,18 @@
     "mind": "心智"
   },
   "files": [
+    {
+      "path": "family/name-picker.html",
+      "title": "馮家取名選字器",
+      "description": "依康熙筆畫、三才五格與八字喜用，先選字再自動組合名字，可製作分享卡",
+      "tags": [
+        "取名",
+        "三才五格",
+        "八字",
+        "工具"
+      ],
+      "date": "2026-11-25"
+    },
     {
       "path": "reading/gergely-fde.html",
       "title": "什麼是駐點部署工程師？為什麼這麼搶手？（What are Forward Deployed Engineers, and why are they so in demand?）",
