@@ -32,13 +32,15 @@ h2{font:600 24px/1.25 "Noto Serif TC",serif;margin:0 0 6px}
 .pairs b{color:var(--seal)}
 .bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px max(5vw,16px)}
 .bar .wrap{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+@media(max-width:600px){.bar .wrap{flex-wrap:nowrap;gap:6px}.bar button{padding:0 11px;font-size:14px;white-space:nowrap}.bar .tl{display:none}}
 button{font:500 15px "Noto Sans TC",sans-serif;min-height:44px;padding:0 14px;border-radius:22px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
 button[aria-pressed=true]{border-color:var(--seal);color:var(--seal);background:var(--sealbg)}
 button:focus-visible{outline:3px solid var(--slate);outline-offset:2px}
 .tally{margin-left:auto;font-size:14px;color:var(--mute);white-space:nowrap}
 .tally a{color:var(--seal);font-weight:700}
 .drawer{margin:0 0 22px}
-.drawer h3{font:600 16px "Noto Sans TC",sans-serif;margin:0 0 8px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.drawer h3{font:600 16px "Noto Sans TC",sans-serif;margin:0 0 8px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;position:sticky;top:var(--barh,64px);z-index:4;background:color-mix(in srgb,var(--bg) 92%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:8px 0;margin-inline:-4px;padding-inline:4px}
+.drawer h3 .st{color:var(--seal)}
 .drawer h3 small{color:var(--mute);font-weight:400;font-size:13px}
 .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px}
 .t{border-radius:10px;border:1.5px solid transparent;background:var(--tile);padding:10px 6px 8px;display:grid;grid-template-rows:38px 20px 36px 20px 32px;align-content:start;justify-items:center;gap:2px;text-align:center}
@@ -110,6 +112,24 @@ body.docked{padding-bottom:96px}
 .linebtn{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:22px;background:#06c755;color:#fff;font:500 15px "Noto Sans TC",sans-serif;text-decoration:none;white-space:nowrap}
 .sheet-head h3{font:600 20px "Noto Serif TC",serif;margin:0}
 @media(max-width:600px){.dock-in{flex-wrap:wrap}.dock-chips{order:3;flex-basis:100%}.dock-btns{margin-left:auto}body.docked{padding-bottom:150px}}
+.rlist{border-top:1px solid var(--line)}
+.rrow{display:grid;grid-template-columns:minmax(9em,1.3fr) 7.5em 12em 5em 4.5em minmax(6em,1fr);column-gap:12px;align-items:center;padding:6px 4px;border-bottom:1px solid var(--line);font-size:15px}
+.rhead{font-size:13px;color:var(--mute);padding:8px 4px}
+.rrow.faved{background:var(--sealbg)}
+.rn b{font:900 22px/1.2 "Noto Serif TC",serif}
+.rnum{font-variant-numeric:tabular-nums;white-space:nowrap}.rnum i{font-style:normal;color:var(--mute);font-size:12px;margin-right:1px}
+.rmeta{display:contents}
+.rwhy{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:2px 12px;padding:0 0 4px 32px}
+.overall{white-space:nowrap}
+@media(max-width:700px){
+ .rhead{display:none}
+ .rrow{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"n o" "m m" "w w";row-gap:2px;padding:4px 2px}
+ .rn{grid-area:n;min-height:40px}.ro{grid-area:o;text-align:right}
+ .rmeta{grid-area:m;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-size:13px;padding-left:32px}
+ .rmeta .tier{font-size:12px;padding:0 7px}
+ .rwhy{grid-area:w;padding:0 0 4px 32px}
+ .rn b{font-size:20px}
+}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mute);margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
@@ -148,7 +168,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 <div class="bar"><div class="wrap">
   <button type="button" id="fGood" aria-pressed="false">只看金水補八字</button>
   <button type="button" id="fHorse" aria-pressed="false">隱藏生肖忌字</button>
-  <button type="button" id="fLoose" aria-pressed="false">放寬：允許天格剋人格</button>
+  <button type="button" id="fLoose" aria-pressed="false" title="放寬規則：允許天格剋人格，多出 5＋12 畫的組合">放寬</button>
   <span class="tally" id="tally"></span>
 </div></div>
 
@@ -241,7 +261,7 @@ function visible(x){return (!st.good||x[3]==='金'||x[3]==='水')&&(!st.horse||x
 function drawer(n,partners,key){
   const list=POOL.filter(x=>x[1]===n&&(visible(x)||st[key].includes(x[0])));
   if(!list.length)return '';
-  return `<div class="drawer" id="d-${key}-${n}"><h3>${n} 畫 <small>可配第${key==='a'?'二':'一'}字 ${partners.join('、')} 畫</small></h3><div class="tiles">${list.map(x=>{
+  return `<div class="drawer" id="d-${key}-${n}"><h3><span><span class="st">${key==='a'?'第一字':'第二字'}</span>・${n} 畫</span> <small>可配第${key==='a'?'二':'一'}字 ${partners.join('、')} 畫</small></h3><div class="tiles">${list.map(x=>{
     const on=st[key].includes(x[0]);
     const other=key==='a'?st.b:st.a;
     let cls='',badge='';
@@ -396,10 +416,19 @@ function render(){
   window._R=R;
   drawSancai(R);
   renderFav();
-  $('#tally').innerHTML=`第一字 ${st.a.length}・第二字 ${st.b.length}・<a href="#result">${R.length} 組</a>`;
+  $('#tally').innerHTML=`<span class="tl">第一字 ${st.a.length}・第二字 ${st.b.length}・</span><a href="#result">${R.length} 組</a>`;
   if(!R.length){$('#out').innerHTML=`<p class="empty">${st.a.length&&st.b.length?'你挑的字之中，筆畫配不出符合規則的組合。可以多挑幾個不同筆畫的字，或打開「放寬」。':'兩個步驟各挑幾個字，這裡就會列出組合。'}</p>`;return}
   const tn=['','首選','次選','放寬'];
-  $('#out').innerHTML=`<table class="stack"><thead><tr><th>名字</th><th>讀音</th><th>五行</th><th>人格</th><th>地格</th><th>外格</th><th>總格</th><th>三才</th><th>等級</th><th>總評</th></tr></thead><tbody>${R.map(r=>`<tr${st.fav.includes(r.key)?' class="faved"':''}><td class="n"><label class="fv"><input type="checkbox" data-fav="${esc(r.key)}" ${st.fav.includes(r.key)?'checked':''} aria-label="喜歡 馮${esc(r.key)}"><b>馮${esc(r.ca)}${esc(r.cb)}</b></label></td><td>féng ${esc(r.xa[2])} ${esc(r.xb[2])}</td><td>${GN[grade(r.xa)]}${r.xa[3]}・${GN[grade(r.xb)]}${r.xb[3]}</td><td class="num">${r.g.ren}</td><td class="num">${r.g.di}</td><td class="num">${r.g.wai}</td><td class="num">${r.g.zong}</td><td>${r.g.sc}</td><td><span class="tier t${r.t}">${tn[r.t]}</span></td><td><span class="overall o${r.o}">${['','★ 推薦','可考慮','留意'][r.o]}</span>${r.why.length?`<div class="why">${esc(r.why.join('；'))}</div>`:''}${r.pun?`<div class="why pun">諧音：${esc(r.pun)}</div>`:''}</td></tr>`).join('')}</tbody></table>`;
+  const OV=['','★ 推薦','可考慮','留意'];
+  $('#out').innerHTML=`<div class="rlist"><div class="rrow rhead"><span>名字</span><span>五行</span><span>人・地・外・總格</span><span>三才</span><span>等級</span><span>總評</span></div>${R.map(r=>`<div class="rrow${st.fav.includes(r.key)?' faved':''}">
+   <label class="fv rn"><input type="checkbox" data-fav="${esc(r.key)}" ${st.fav.includes(r.key)?'checked':''} aria-label="喜歡 馮${esc(r.key)}"><b>馮${esc(r.ca)}${esc(r.cb)}</b></label>
+   <span class="rmeta"><span class="rel">${GN[grade(r.xa)]}${r.xa[3]}・${GN[grade(r.xb)]}${r.xb[3]}</span>
+   <span class="rnum"><i>人</i>${r.g.ren} <i>地</i>${r.g.di} <i>外</i>${r.g.wai} <i>總</i>${r.g.zong}</span>
+   <span class="rsc">${r.g.sc}</span>
+   <span class="rt"><span class="tier t${r.t}">${tn[r.t]}</span></span></span>
+   <span class="ro"><span class="overall o${r.o}">${OV[r.o]}</span></span>
+   ${r.why.length||r.pun?`<span class="rwhy">${r.why.length?`<span class="why">${esc(r.why.join('；'))}</span>`:''}${r.pun?`<span class="why pun">諧音：${esc(r.pun)}</span>`:''}</span>`:''}
+  </div>`).join('')}</div>`;
 }
 document.addEventListener('change',e=>{const f=e.target.closest('[data-fav]');if(!f)return;const k=f.dataset.fav;st.fav=f.checked?[...new Set([...st.fav,k])]:st.fav.filter(x=>x!==k);save();render()});
 document.addEventListener('click',e=>{
@@ -426,6 +455,7 @@ $('#copy').addEventListener('click',async()=>{
   try{await navigator.clipboard.writeText(txt);toast(`已複製 ${R.length} 組`)}catch(e){toast('這個環境無法複製')}
 });
 new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document.body,{childList:true,subtree:true});
+{const bar=document.querySelector('.bar');const setB=()=>document.documentElement.style.setProperty('--barh',bar.offsetHeight+'px');setB();const barRO=new ResizeObserver(setB);barRO.observe(bar)}
 render();
 }
 </script>
