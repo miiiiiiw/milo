@@ -166,6 +166,7 @@ body[data-mode=pick] .m-rec,body[data-mode=rec] .m-pick,body[data-mode=rec] .bar
 .nchip.fav{border-color:var(--seal);background:var(--sealbg)}
 .nc-main{flex:1;border:0;background:none;text-align:left;padding:8px 4px 8px 12px;min-height:64px;display:flex;flex-direction:column;gap:4px;border-radius:12px}
 .nc-main b{font:900 22px/1.15 "Noto Serif TC",serif;color:var(--ink)}
+.nc-s{font:700 15px "Noto Sans TC",sans-serif;color:var(--seal);margin-left:8px}.nc-s small{font-size:11px;color:var(--mute);font-weight:400}
 .nc-tags{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
 .ce{display:inline-flex;gap:4px;font-size:12px}.ce i{font-style:normal;font-weight:700}
 .nc-fav{border:0;background:none;min-width:40px;padding:0;font-size:20px;color:var(--seal);border-radius:12px}
@@ -194,6 +195,14 @@ body[data-mode=pick] .m-rec,body[data-mode=rec] .m-pick,body[data-mode=rec] .bar
 .si.wide{grid-column:1/-1}
 .swarn{margin:12px 0 0;padding:10px 14px;border-radius:12px;border:1px solid color-mix(in srgb,var(--seal) 45%,transparent);background:var(--sealbg);color:var(--seal);font-weight:700;font-size:14px}.swarn small{display:block;font-weight:400;color:var(--mute);font-size:12px;margin-top:2px}
 .si-h+.si-d{margin-top:10px}
+.srch{flex:none;min-width:44px;padding:0;display:inline-flex;align-items:center;justify-content:center;color:var(--ink)}
+#dsheet{z-index:40}
+.sheet-panel.top{top:0;bottom:auto;border-radius:0 0 18px 18px;padding-top:calc(14px + env(safe-area-inset-top));max-height:85vh}
+.sbox{display:flex;gap:8px;position:sticky;top:-14px;background:var(--bg);padding:4px 0 10px;z-index:1}
+.sbox input{flex:1;min-height:48px;border-radius:24px;border:1.5px solid var(--line);background:var(--tile);color:var(--ink);padding:0 18px;font:500 18px "Noto Sans TC",sans-serif}
+.sbox input:focus{outline:none;border-color:var(--seal)}
+.smsg{font-size:14px;color:var(--mute);margin:6px 2px 12px;line-height:1.6}
+.smsg b{color:var(--ink)}.smsg .bad{color:var(--seal)}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mute);margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
@@ -236,6 +245,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 
 <div class="bar"><div class="wrap">
   <div class="mode" role="tablist"><button type="button" role="tab" data-mode="pick">手挑</button><button type="button" role="tab" data-mode="rec">推薦</button></div>
+  <button type="button" class="srch" id="srchBtn" aria-label="搜尋名字"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
   <div class="filters">
   <button type="button" id="fGood" aria-pressed="false" title="只顯示字本身屬金或水的字">金水補八字</button>
   <button type="button" id="fFire" aria-pressed="false" title="隱藏字本身屬火的字">排除火</button>
@@ -291,6 +301,13 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   <div class="sheet-panel" role="dialog" aria-modal="true" aria-label="分享卡">
     <div class="sheet-head"><h3>分享卡</h3><button type="button" data-close>關閉</button></div>
     <div id="cards"></div>
+  </div>
+</div>
+<div class="sheet" id="ssheet" hidden>
+  <div class="sheet-mask" data-sclose></div>
+  <div class="sheet-panel top" role="dialog" aria-modal="true" aria-label="搜尋名字">
+    <div class="sbox"><input type="search" id="sq" placeholder="輸入名字，例如 千語、語" autocomplete="off" enterkeyhint="search"><button type="button" data-sclose>關閉</button></div>
+    <div id="sres"></div>
   </div>
 </div>
 <div class="sheet" id="dsheet" hidden>
@@ -570,9 +587,9 @@ function recAll(){
   return recCache;
 }
 let recBands=8;const openBand=new Set();
-function chipHTML(r){
+function chipHTML(r,showScore){
   const f=st.fav.includes(r.key);
-  return `<div class="nchip${f?' fav':''}"><button type="button" class="nc-main" data-detail="${esc(r.key)}"><b>馮${esc(r.ca)}${esc(r.cb)}</b><span class="nc-tags"><span class="sc3">${r.g.sc.split('').map(e=>`<i class="e-${e}">${e}</i>`).join('')}</span><span class="ce"><i class="e-${r.xa[3]}">${GN[grade(r.xa)]}${r.xa[3]}</i><i class="e-${r.xb[3]}">${GN[grade(r.xb)]}${r.xb[3]}</i></span></span></button><button type="button" class="nc-fav" data-togfav="${esc(r.key)}" aria-pressed="${f}" aria-label="${f?'移出':'加入'}我喜歡">${f?'★':'☆'}</button></div>`;
+  return `<div class="nchip${f?' fav':''}"><button type="button" class="nc-main" data-detail="${esc(r.key)}"><b>馮${esc(r.ca)}${esc(r.cb)}${showScore?`<span class="nc-s">${r.sc.total}<small>分</small></span>`:''}</b><span class="nc-tags"><span class="sc3">${r.g.sc.split('').map(e=>`<i class="e-${e}">${e}</i>`).join('')}</span><span class="ce"><i class="e-${r.xa[3]}">${GN[grade(r.xa)]}${r.xa[3]}</i><i class="e-${r.xb[3]}">${GN[grade(r.xb)]}${r.xb[3]}</i></span></span></button><button type="button" class="nc-fav" data-togfav="${esc(r.key)}" aria-pressed="${f}" aria-label="${f?'移出':'加入'}我喜歡">${f?'★':'☆'}</button></div>`;
 }
 function renderRec(){
   if(st.mode!=='rec')return;
@@ -598,9 +615,44 @@ function openDetail(key){
    <button type="button" class="${f?'':'primary'}" data-togfav="${esc(key)}" style="margin-top:12px">${f?'移出我喜歡':'加入我喜歡'}</button>`;
   $('#dsheet').hidden=false;document.body.style.overflow='hidden';
 }
-const closeDetail=()=>{$('#dsheet').hidden=true;document.body.style.overflow=''};
-function toggleFav(k){st.fav=st.fav.includes(k)?st.fav.filter(x=>x!==k):[...st.fav,k];save();render();if(!$('#dsheet').hidden)openDetail(k)}
+const closeDetail=()=>{$('#dsheet').hidden=true;if($('#ssheet').hidden)document.body.style.overflow=''};
+function toggleFav(k){st.fav=st.fav.includes(k)?st.fav.filter(x=>x!==k):[...st.fav,k];save();render();if(!$('#ssheet').hidden)searchRun();if(!$('#dsheet').hidden)openDetail(k)}
 function setMode(m){st.mode=m;document.body.dataset.mode=m;document.querySelectorAll('.mode button[data-mode]').forEach(b=>b.setAttribute('aria-selected',b.dataset.mode===m));save()}
+
+function searchRun(){
+  const raw=$('#sq').value.replace(/\s/g,'');
+  let q=raw.startsWith('馮')&&raw.length>1?raw.slice(1):raw;
+  const box=$('#sres');
+  if(!q){box.innerHTML='<p class="smsg">輸入一個字，列出含這個字的名字；輸入兩個字，查這個名字的分數。</p>';return}
+  const chars=[...q];
+  const miss=chars.filter(c=>!byCh[c]);
+  if(miss.length){box.innerHTML=`<p class="smsg">「${esc(miss.join('、'))}」還沒收錄在字庫裡。想用的話告訴我，我幫你查筆畫補進去。</p>`;return}
+  if(chars.length===1){
+    const c=chars[0],L=[];
+    for(const x of POOL){for(const [a,b] of [[c,x[0]],[x[0],c]]){if(a===b)continue;const r=evalPair(a,b);if(r)L.push(r)}}
+    L.sort((p,q2)=>q2.sc.total-p.sc.total);
+    const x=byCh[c];
+    box.innerHTML=`<p class="smsg">「<b>${esc(c)}</b>」${x[1]} 畫・${x[3]}・${esc(x[4])}。含這個字的合格名字共 <b>${L.length}</b> 個${L.length>60?'，先列分數最高的 60 個':''}：</p>${L.length?`<div class="chips">${L.slice(0,60).map(r=>chipHTML(r,1)).join('')}</div>`:'<p class="smsg">目前的規則下沒有合格的組合，可以試著打開「放寬」或「火木火」。</p>'}`;
+    return;
+  }
+  if(chars.length===2){
+    const [a,b]=chars,r=evalPair(a,b);
+    if(r){box.innerHTML=`<div class="chips">${chipHTML(r,1)}</div><p class="smsg">點名字看分數明細。</p>`;return}
+    const xa=byCh[a],xb=byCh[b],g=grid(xa[1],xb[1]);
+    const why=[];[['人格',g.ren],['地格',g.di],['總格',g.zong]].forEach(([k,n])=>{if(luck(n)!=='吉')why.push(`${k} ${n} 是${luck(n)}數`)});
+    if(luck(g.wai)==='凶')why.push(`外格 ${g.wai} 是凶數`);
+    const [et,er,ed]=g.sc.split('');
+    if(rel(et,er)==='相剋')why.push(`天格${et}剋人格${er}`);if(rel(er,ed)==='相剋')why.push(`人格${er}剋地格${ed}`);
+    if(ed==='火')why.push(`地格屬火（三才${g.sc}），寶寶八字火已經太旺`);
+    const sv=[st.loose,st.hmh];st.loose=true;st.hmh=true;const alt=tier(xa[1],xb[1],true);st.loose=sv[0];st.hmh=sv[1];
+    const hint=alt===3?'打開頂部的「放寬」開關就會出現。':alt===4?'打開頂部的「火木火」開關就會出現。':'';
+    box.innerHTML=`<p class="smsg">「<b>馮${esc(a)}${esc(b)}</b>」是 ${xa[1]}＋${xb[1]} 畫，人格 ${g.ren}、地格 ${g.di}、外格 ${g.wai}、總格 ${g.zong}，三才${g.sc}。<br><span class="bad">不符合目前的規則</span>：${esc(why.join('；')||'筆畫組合不在允許清單')}。${hint}</p>`;
+    return;
+  }
+  box.innerHTML='<p class="smsg">名字只要輸入一個或兩個字。</p>';
+}
+const openSearch=()=>{$('#ssheet').hidden=false;document.body.style.overflow='hidden';searchRun();setTimeout(()=>$('#sq').focus(),50)};
+const closeSearch=()=>{$('#ssheet').hidden=true;if($('#dsheet').hidden)document.body.style.overflow=''};
 function render(){
   const P=pairList();
   const has=n=>POOL.some(x=>x[1]===n);
@@ -638,6 +690,8 @@ document.addEventListener('click',e=>{
   if(e.target.closest('label.fbox'))return;
   const dt=e.target.closest('[data-detail]');if(dt){openDetail(dt.dataset.detail);return}
   if(e.target.closest('[data-dclose]')){closeDetail();return}
+  if(e.target.closest('#srchBtn')){openSearch();return}
+  if(e.target.closest('[data-sclose]')){closeSearch();return}
   const be=e.target.closest('[data-band]');if(be){const s=+be.dataset.band;openBand.has(s)?openBand.delete(s):openBand.add(s);renderRec();return}
   const sd=e.target.closest('[data-sd]');if(sd){const box=sd.closest('.rrow').querySelector('.rsd');box.hidden=!box.hidden;sd.setAttribute('aria-expanded',!box.hidden);return}
   const dd=e.target.closest('[data-dl]');if(dd){dl(+dd.dataset.dl);return}
@@ -653,9 +707,10 @@ $('#fLoose').addEventListener('change',e=>{st.loose=e.target.checked;save();rend
 $('#fHmh').addEventListener('change',e=>{st.hmh=e.target.checked;save();render()});
 $('#clear').addEventListener('click',()=>{st.a=[];st.b=[];save();render()});
 $('#mkcard').addEventListener('click',makeCards);
+$('#sq').addEventListener('input',searchRun);
 $('#recmore').addEventListener('click',()=>{recBands+=8;renderRec()});
 $('#fSubj').addEventListener('change',e=>{st.subj=e.target.checked;save();render()});
-document.addEventListener('keydown',e=>{const rw=e.target.closest&&e.target.closest('.rrow.click');if(rw&&(e.key==='Enter'||e.key===' ')&&!e.target.closest('label.fbox')){e.preventDefault();openDetail(rw.dataset.detail);return}if(e.key!=='Escape')return;if(!$('#dsheet').hidden)closeDetail();else if(!$('#sheet').hidden)closeSheet()});
+document.addEventListener('keydown',e=>{const rw=e.target.closest&&e.target.closest('.rrow.click');if(rw&&(e.key==='Enter'||e.key===' ')&&!e.target.closest('label.fbox')){e.preventDefault();openDetail(rw.dataset.detail);return}if(e.key!=='Escape')return;if(!$('#dsheet').hidden)closeDetail();else if(!$('#ssheet').hidden)closeSearch();else if(!$('#sheet').hidden)closeSheet()});
 function favText(){const F=favPairs();return '寶寶取名候選\n'+F.map(r=>`馮${r.key}（féng ${r.xa[2]} ${r.xb[2]}）\n　${r.ca}：${r.xa[4]}；${r.cb}：${r.xb[4]}\n　三才${r.g.sc}・總格${r.g.zong}・${r.sc.total}分・${['','推薦','可考慮','留意'][r.o]}${r.pun?'・諧音：'+r.pun:''}`).join('\n')}
 $('#copyfav').addEventListener('click',async()=>{const F=favPairs();if(!F.length){toast('還沒有喜歡的名字');return}
   try{await navigator.clipboard.writeText(favText());toast(`已複製 ${F.length} 個名字`)}catch(e){toast('這個環境無法複製')}});
