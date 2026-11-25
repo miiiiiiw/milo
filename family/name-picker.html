@@ -214,6 +214,10 @@ body:has(.sheet:not([hidden])) .fab{display:none}
 .cnt-btn.bump{animation:bump .45s ease}
 @keyframes bump{0%{transform:scale(1)}35%{transform:scale(1.18)}70%{transform:scale(.96)}100%{transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){.cnt-btn.bump{animation:none}}
+.clr-btn{min-height:40px;padding:0 12px;margin-right:6px;border-radius:20px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);font-size:14px;display:inline-flex;align-items:center;gap:4px}
+.clr-btn span{font-size:16px;color:var(--mute)}
+.tally{display:flex;align-items:center}
+#toast .undo{min-height:32px;padding:0 10px;margin-left:10px;border-radius:16px;border:0;background:var(--seal);color:#fff;font-size:13px}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mute);margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
@@ -687,7 +691,7 @@ function render(){
   renderFav();
   renderRec();
   {const prev=window._lastN;window._lastN=R.length;
-  $('#tally').innerHTML=`<span class="tl">第一字 ${st.a.length}・第二字 ${st.b.length}</span><a href="#result" class="cnt-btn${R.length?'':' zero'}" aria-label="${R.length} 組組合，跳到組合結果"><b>${R.length}</b> 組<span class="arr">›</span></a>`;
+  $('#tally').innerHTML=`<span class="tl">第一字 ${st.a.length}・第二字 ${st.b.length}</span>${st.a.length+st.b.length?`<button type="button" class="clr-btn" data-clear aria-label="清除所有選字">清除<span aria-hidden="true">×</span></button>`:''}<a href="#result" class="cnt-btn${R.length?'':' zero'}" aria-label="${R.length} 組組合，跳到組合結果"><b>${R.length}</b> 組<span class="arr">›</span></a>`;
   if(prev!==undefined&&prev!==R.length){const el=$('#tally .cnt-btn');el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump')}}
   if(!R.length){$('#out').innerHTML=`<p class="empty">${st.a.length&&st.b.length?'你挑的字之中，筆畫配不出符合規則的組合。可以多挑幾個不同筆畫的字，或打開「放寬」。':'兩個步驟各挑幾個字，這裡就會列出組合。'}</p>`;return}
   const tn=['','首選','次選','放寬','火木火'];
@@ -703,6 +707,7 @@ document.addEventListener('click',e=>{
   if(e.target.closest('label.fbox'))return;
   const dt=e.target.closest('[data-detail]');if(dt){openDetail(dt.dataset.detail);return}
   if(e.target.closest('[data-dclose]')){closeDetail();return}
+  if(e.target.closest('[data-clear]')){clearPicks();return}
   if(e.target.closest('#srchBtn')){openSearch();return}
   if(e.target.closest('[data-sclose]')){closeSearch();return}
   const be=e.target.closest('[data-band]');if(be){const s=+be.dataset.band;openBand.has(s)?openBand.delete(s):openBand.add(s);renderRec();return}
@@ -718,7 +723,11 @@ $('#fWood').addEventListener('click',()=>{st.wood=!st.wood;save();render()});
 $('#fEarth').addEventListener('click',()=>{st.earth=!st.earth;save();render()});
 $('#fLoose').addEventListener('change',e=>{st.loose=e.target.checked;save();render()});
 $('#fHmh').addEventListener('change',e=>{st.hmh=e.target.checked;save();render()});
-$('#clear').addEventListener('click',()=>{st.a=[];st.b=[];save();render()});
+function clearPicks(){const prev={a:st.a,b:st.b},n=st.a.length+st.b.length;if(!n)return;st.a=[];st.b=[];save();render();
+  const el=$('#toast');el.innerHTML=`已清除 ${n} 個字 <button type="button" class="undo">復原</button>`;el.style.opacity=1;el.style.pointerEvents='auto';
+  clearTimeout(window._ut);window._ut=setTimeout(()=>{el.style.opacity=0;el.style.pointerEvents='none'},5000);
+  el.querySelector('.undo').onclick=()=>{st.a=prev.a;st.b=prev.b;save();render();el.style.opacity=0;el.style.pointerEvents='none'}}
+$('#clear').addEventListener('click',clearPicks);
 $('#mkcard').addEventListener('click',makeCards);
 $('#sq').addEventListener('input',searchRun);
 $('#recmore').addEventListener('click',()=>{recBands+=8;renderRec()});
