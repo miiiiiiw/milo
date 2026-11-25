@@ -186,7 +186,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 <div class="sheet" id="sheet" hidden>
   <div class="sheet-mask" data-close></div>
   <div class="sheet-panel" role="dialog" aria-modal="true" aria-label="分享卡">
-    <div class="sheet-head"><h3>分享卡</h3><span style="display:flex;gap:8px"><a class="linebtn" id="linetext" href="#" target="_blank" rel="noopener">用 LINE 傳文字</a><button type="button" data-close>關閉</button></span></div>
+    <div class="sheet-head"><h3>分享卡</h3><button type="button" data-close>關閉</button></div>
     <div id="cards"></div>
   </div>
 </div>
@@ -298,7 +298,7 @@ function renderFav(){
   $('#favcount').textContent=`我喜歡 ${F.length}`;
   $('#favlist').innerHTML=F.map(r=>`<span class="fchip">馮${esc(r.key)}<button type="button" data-unfav="${esc(r.key)}" aria-label="移除 馮${esc(r.key)}">×</button></span>`).join('');
 }
-const openSheet=()=>{$('#linetext').href='https://line.me/R/msg/text/?'+encodeURIComponent(favText());$('#sheet').hidden=false;document.body.style.overflow='hidden'};
+const openSheet=()=>{$('#sheet').hidden=false;document.body.style.overflow='hidden'};
 const closeSheet=()=>{$('#sheet').hidden=true;document.body.style.overflow=''};
 const ELC={金:'#b8860b',水:'#2f64b0',木:'#2f5e24',火:'#c8442e',土:'#7a4b2a'};
 function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
