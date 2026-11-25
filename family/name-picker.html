@@ -41,7 +41,7 @@ button{font:500 15px "Noto Sans TC",sans-serif;min-height:44px;padding:0 14px;bo
 button[aria-pressed=true]{border-color:var(--seal);color:var(--seal);background:var(--sealbg)}
 button:focus-visible{outline:3px solid var(--slate);outline-offset:2px}
 .tally{margin-left:auto;font-size:14px;color:var(--mute);white-space:nowrap}
-.tally a{color:var(--seal);font-weight:700}
+
 .drawer{margin:0 0 22px}
 .drawer h3{font:600 16px "Noto Sans TC",sans-serif;margin:0 0 8px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;position:sticky;top:var(--barh,64px);z-index:4;background:color-mix(in srgb,var(--bg) 92%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:8px 0;margin-inline:-4px;padding-inline:4px}
 .drawer h3 .st{color:var(--seal)}.pill{display:inline-block;margin-left:8px;padding:1px 9px;border-radius:999px;font:500 12px/1.6 "Noto Sans TC",sans-serif;background:color-mix(in srgb,var(--slate) 16%,transparent);color:var(--slate);vertical-align:2px;white-space:nowrap}.pill.on{background:var(--seal);color:#fff;margin-left:4px}
@@ -88,7 +88,8 @@ button:focus-visible{outline:3px solid var(--slate);outline-offset:2px}
 .role{display:inline-block;font-size:13px;font-weight:500;padding:2px 10px;border-radius:12px;margin-left:8px;vertical-align:middle;font-family:"Noto Sans TC",sans-serif}
 .role.r-ren{background:#7a4b2a;color:#fff}.role.r-di{background:#b8860b;color:#fff}
 .fv{display:inline-flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}.fv b{font:inherit;color:var(--ink)}
-.fv input{width:22px;height:22px;accent-color:var(--seal);margin:0}
+.fv input{width:22px;height:22px;accent-color:var(--seal);margin:0;cursor:pointer}
+.fbox{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;margin:-10px -6px -10px -11px;cursor:pointer}
 tr.faved td{background:var(--sealbg)}
 .favbox-unused{margin-top:24px;border:1.5px solid var(--seal);border-radius:14px;padding:16px}
 .favbox-unused h3{font:600 20px "Noto Serif TC",serif;margin:0 0 10px}
@@ -120,6 +121,10 @@ body.docked{padding-bottom:96px}
 .rrow{display:grid;grid-template-columns:minmax(9em,1.3fr) 7.5em 12em 5em 4.5em minmax(6em,1fr);column-gap:12px;align-items:center;padding:6px 4px;border-bottom:1px solid var(--line);font-size:15px}
 .rhead{font-size:13px;color:var(--mute);padding:8px 4px}
 .rrow.faved{background:var(--sealbg)}
+.rrow.click{cursor:pointer;transition:background .15s}.rrow.click:hover{background:color-mix(in srgb,var(--tile) 80%,transparent)}.rrow.faved.click:hover{background:var(--sealbg)}
+.rrow.click:focus-visible{outline:2px solid var(--slate);outline-offset:-2px}
+.rrow.click::after{content:"›";position:absolute;right:6px;top:50%;transform:translateY(-50%);color:var(--mute);font-size:20px}
+.rrow{position:relative}.rrow.click{padding-right:22px}
 .rn b{font:900 22px/1.2 "Noto Serif TC",serif}
 .rnum{font-variant-numeric:tabular-nums;white-space:nowrap}.rnum i{font-style:normal;color:var(--mute);font-size:12px;margin-right:1px}
 .rmeta{display:contents}
@@ -127,13 +132,88 @@ body.docked{padding-bottom:96px}
 .overall{white-space:nowrap}
 @media(max-width:700px){
  .rhead{display:none}
- .rrow{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"n o" "m m" "w w";row-gap:2px;padding:4px 2px}
+ .rrow{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"n o" "m m" "w w" "s s";row-gap:2px;padding:4px 2px}
  .rn{grid-area:n;min-height:40px}.ro{grid-area:o;text-align:right}
  .rmeta{grid-area:m;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-size:13px;padding-left:32px}
  .rmeta .tier{font-size:12px;padding:0 7px}
  .rwhy{grid-area:w;padding:0 0 4px 32px}
+ .rsd{grid-area:s}
  .rn b{font-size:20px}
 }
+.rules{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;margin-top:10px;padding-top:12px;border-top:1px dashed color-mix(in srgb,var(--seal) 32%,transparent)}
+.rules-t{font-size:13px;color:var(--mute)}
+.sw{display:inline-flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}
+.sw input{appearance:none;-webkit-appearance:none;width:40px;height:24px;border-radius:12px;background:var(--line);position:relative;flex:none;margin:0;transition:background .2s;cursor:pointer}
+.sw input::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .2s}
+.sw input:checked{background:var(--seal)}.sw input:checked::after{transform:translateX(16px)}
+.sw input:focus-visible{outline:3px solid var(--slate);outline-offset:2px}
+.sw b{font-size:15px;font-weight:700;display:block;line-height:1.3}.sw small{font-size:12px;color:var(--mute);display:block;line-height:1.35}
+.scb{min-height:32px;padding:0 8px;border-radius:8px;border:1px solid var(--line);background:none;font:700 17px/1 "Noto Sans TC",sans-serif;color:var(--ink);margin-right:8px;font-variant-numeric:tabular-nums}
+.scb small{font-size:11px;font-weight:400;color:var(--mute);margin-left:1px}
+.scb[aria-expanded=true]{border-color:var(--seal);color:var(--seal)}
+.ro{display:flex;align-items:center;justify-content:flex-end;flex-wrap:nowrap}
+
+@media(max-width:700px){.rsd{grid-column:1/-1}.sdet{margin-left:0}.scb{font-size:15px}}
+body[data-mode=pick] .m-rec,body[data-mode=rec] .m-pick,body[data-mode=rec] .bar .tally{display:none}
+.mode{display:inline-flex;flex:none;border:1.5px solid var(--seal);border-radius:22px;overflow:hidden}
+.mode button{border:0;border-radius:0;min-height:40px;padding:0 14px;background:none;color:var(--seal);font-weight:700}
+.mode button[aria-selected=true]{background:var(--seal);color:#fff}
+.band-s{margin:0 0 18px}
+.band-s h3{display:flex;align-items:baseline;gap:4px;margin:0 0 8px;position:sticky;top:var(--barh,64px);z-index:3;background:color-mix(in srgb,var(--bg) 92%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:6px 0}
+.bs{font:900 30px/1 "Noto Serif TC",serif;color:var(--seal)}.bu{font-size:14px;color:var(--mute)}
+.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.nchip{position:relative;border:1.5px solid var(--line);border-radius:12px;background:var(--tile);display:flex;align-items:stretch}
+.nchip.fav{border-color:var(--seal);background:var(--sealbg)}
+.nc-main{flex:1;border:0;background:none;text-align:left;padding:8px 4px 8px 12px;min-height:64px;display:flex;flex-direction:column;gap:4px;border-radius:12px}
+.nc-main b{font:900 22px/1.15 "Noto Serif TC",serif;color:var(--ink)}
+.nc-s{font:700 15px "Noto Sans TC",sans-serif;color:var(--seal);margin-left:8px}.nc-s small{font-size:11px;color:var(--mute);font-weight:400}
+.nc-tags{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.ce{display:inline-flex;gap:4px;font-size:12px}.ce i{font-style:normal;font-weight:700}
+.nc-fav{border:0;background:none;min-width:40px;padding:0;font-size:20px;color:var(--seal);border-radius:12px}
+.bexp{margin-top:8px;min-height:36px;font-size:14px}
+.sc3.big{font-size:15px;padding:3px 10px}
+.dpy{margin:0;color:var(--mute);font-size:14px}
+.dtop{display:flex;align-items:center;gap:10px;margin:8px 0}
+.dscore{font:900 40px/1 "Noto Sans TC",sans-serif;color:var(--seal)}.dscore small{font-size:14px;color:var(--mute);margin-left:2px}
+.dch{margin:6px 0;font-size:15px;line-height:1.8}.dch b{font:900 20px "Noto Serif TC",serif}
+.dnum{margin:4px 0;font-size:14px;color:var(--mute)}
+#dsheet .sdet{margin-left:0}
+#dsheet .sheet-panel{max-width:720px}
+
+@media(max-width:600px){.chips{grid-template-columns:repeat(2,minmax(0,1fr))}.mode button{padding:0 11px;font-size:14px}}
+.sdet{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:10px;margin:12px 0 0}
+.si{background:var(--tile);border-radius:12px;padding:12px 14px}
+.si-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.si-k{font-size:13px;color:var(--mute);letter-spacing:.02em}
+.si-v b{font:700 20px/1 "Noto Sans TC",sans-serif;color:var(--ink);font-variant-numeric:tabular-nums}.si-v small{font-size:12px;color:var(--mute);margin-left:2px}
+.si-v.neg b{color:var(--seal)}
+.si-bar{height:4px;border-radius:2px;background:var(--line);margin:8px 0 10px;overflow:hidden}.si-bar i{display:block;height:100%;background:var(--seal);border-radius:2px;opacity:.85}
+.si-d{display:flex;flex-wrap:wrap;gap:6px}
+.si-d span{font-size:12.5px;line-height:1.5;padding:2px 9px;border-radius:999px;background:color-mix(in srgb,var(--bg) 55%,transparent);color:color-mix(in srgb,var(--ink) 72%,transparent);white-space:nowrap}
+.si-d em{font-style:normal;font-weight:700;color:var(--slate);margin-left:2px}.si-d em.neg{color:var(--seal)}.si-d em.zero{color:var(--mute);font-weight:400}
+.si-n{font-size:12px;color:var(--mute);margin-top:8px;line-height:1.5}
+.si.wide{grid-column:1/-1}
+.swarn{margin:12px 0 0;padding:10px 14px;border-radius:12px;border:1px solid color-mix(in srgb,var(--seal) 45%,transparent);background:var(--sealbg);color:var(--seal);font-weight:700;font-size:14px}.swarn small{display:block;font-weight:400;color:var(--mute);font-size:12px;margin-top:2px}
+.si-h+.si-d{margin-top:10px}
+.fab{position:fixed;right:max(16px,calc((100vw - 1100px)/2));bottom:calc(var(--dockh,0px) + 16px + env(safe-area-inset-bottom));z-index:21;width:56px;height:56px;min-height:56px;padding:0;border-radius:50%;border:0;background:var(--seal);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.28);transition:bottom .2s,transform .15s}
+.fab:active{transform:scale(.94)}
+body:has(.sheet:not([hidden])) .fab{display:none}
+#dsheet{z-index:40}
+.sheet-panel.top{top:0;bottom:auto;border-radius:0 0 18px 18px;padding-top:calc(14px + env(safe-area-inset-top));max-height:85vh}
+.sbox{display:flex;gap:8px;position:sticky;top:-14px;background:var(--bg);padding:4px 0 10px;z-index:1}
+.sbox input{flex:1;min-height:48px;border-radius:24px;border:1.5px solid var(--line);background:var(--tile);color:var(--ink);padding:0 18px;font:500 18px "Noto Sans TC",sans-serif}
+.sbox input:focus{outline:none;border-color:var(--seal)}
+.smsg{font-size:14px;color:var(--mute);margin:6px 2px 12px;line-height:1.6}
+.smsg b{color:var(--ink)}.smsg .bad{color:var(--seal)}
+.tally .tl{margin-right:8px}
+.tally .cnt-btn{color:#fff}.tally .cnt-btn.zero{color:var(--mute)}
+.cnt-btn{display:inline-flex;align-items:center;gap:3px;min-height:40px;padding:0 12px 0 14px;border-radius:20px;background:var(--seal);color:#fff;text-decoration:none;font-size:14px;font-weight:500;box-shadow:0 2px 8px color-mix(in srgb,var(--seal) 35%,transparent)}
+.cnt-btn b{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums}
+.cnt-btn .arr{font-size:18px;margin-left:2px;opacity:.85}
+.cnt-btn.zero{background:none;color:var(--mute);border:1.5px solid var(--line);box-shadow:none}
+.cnt-btn.bump{animation:bump .45s ease}
+@keyframes bump{0%{transform:scale(1)}35%{transform:scale(1.18)}70%{transform:scale(.96)}100%{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.cnt-btn.bump{animation:none}}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mute);margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
@@ -142,7 +222,7 @@ td.n{font:900 22px/1.2 "Noto Serif TC",serif;white-space:nowrap}
 td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .tier{font-size:13px;padding:2px 9px;border-radius:12px;border:1px solid var(--line);white-space:nowrap}
 .tier.t1{border-color:var(--seal);color:var(--seal)}
-.tier.t3{border-style:dashed}
+.tier.t3{border-style:dashed}.tier.t4{border-style:dashed;color:var(--mute)}
 .empty{color:var(--mute);padding:18px 0}
 .foot{color:var(--mute);font-size:14px;border-top:1px solid var(--line)}
 #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:20px;font-size:14px;opacity:0;transition:opacity .25s;pointer-events:none}
@@ -167,21 +247,35 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 <div class="sancai" id="sancai" aria-label="三才示意圖"></div>
 <p class="lede" style="margin-top:16px">每一列是名字第一個字的筆畫，首選排在最前面，點列名可以跳到下方對應的字。筆畫後面的小色塊是組合出來的三才（天格・人格・地格）：</p>
 <ul class="pairs" id="pairs"></ul>
+<div class="rules">
+  <span class="rules-t">其他派別的組合</span>
+  <label class="sw"><input type="checkbox" id="fLoose"><span><b>放寬</b><small>允許天格剋人格，多出 5＋12 畫</small></span></label>
+  <label class="sw"><input type="checkbox" id="fHmh"><span><b>火木火</b><small>只看三才的派別認為吉，不補八字，多出 9、19 畫</small></span></label>
+</div>
 </div></section>
 
 <div class="bar"><div class="wrap">
+  <div class="mode" role="tablist"><button type="button" role="tab" data-mode="pick">手挑</button><button type="button" role="tab" data-mode="rec">推薦</button></div>
   <div class="filters">
   <button type="button" id="fGood" aria-pressed="false" title="只顯示字本身屬金或水的字">金水補八字</button>
   <button type="button" id="fFire" aria-pressed="false" title="隱藏字本身屬火的字">排除火</button>
   <button type="button" id="fWood" aria-pressed="false" title="隱藏字本身屬木的字">排除木</button>
   <button type="button" id="fEarth" aria-pressed="false" title="隱藏字本身屬土的字">排除土</button>
   <button type="button" id="fHorse" aria-pressed="false">隱藏生肖忌字</button>
-  <button type="button" id="fLoose" aria-pressed="false" title="放寬規則：允許天格剋人格，多出 5＋12 畫的組合">放寬</button>
   </div>
   <span class="tally" id="tally"></span>
 </div></div>
 
-<section class="band"><div class="wrap">
+<section class="band m-rec" id="recsec"><div class="wrap">
+<h2>高分推薦</h2>
+<p class="hint" id="recinfo"></p>
+<p class="guide">依規則計分：五格 20、三才 10、八字喜用 25、生肖 10、音韻 15、字形 10、命名適合度 10，共 100 分。有負面詞義的組合不會出現在推薦裡。點名字看分數怎麼算，☆ 直接加入我喜歡。分數判斷不了兩個字合起來的意境，請自己念念看。</p>
+<label class="sw" style="margin:4px 0 8px"><input type="checkbox" id="fSubj" checked><span><b>計入命名適合度</b><small>這一項是我對每個字的主觀評分，關掉後其他項目會換算成 100 分</small></span></label>
+<div id="rec"></div>
+<button type="button" id="recmore" style="margin-top:12px">顯示更多分數</button>
+</div></section>
+
+<section class="band m-pick"><div class="wrap">
 <h2>第一步　名字第一個字<span class="role r-ren">決定人格 → 要屬土</span></h2>
 <p class="guide">這個字和姓氏一起決定「人格」，也就是主運和個性核心，是最重要的位置。適合穩重、端正的字，也是傳統放輩分字的地方。</p>
 <p class="hint">點選喜歡的字，可以多選。每個字下面是讀音和簡義，字的顏色代表常見的五行歸類：金是金黃、水是藍、木是綠、火是紅、土是褐。</p>
@@ -189,16 +283,16 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 <div id="first"></div>
 </div></section>
 
-<section class="band" style="padding-top:0"><div class="wrap">
+<section class="band m-pick" style="padding-top:0"><div class="wrap">
 <h2>第二步　名字第二個字<span class="role r-di">決定地格 → 屬金最好，土也可</span></h2>
 <p class="guide">這個字決定「地格」（少年運、家庭）和「外格」（人際），也是平常最常被叫的字。讀音響亮、好叫，字義鮮明比較好。</p>
 <p class="hint">一樣多選。挑了字之後，另一欄會跟著提示：右上角「可配 N」表示能和你已選的 N 個字組成合格的名字，變淡的字表示筆畫配不上（仍可選），左上角「同部首」表示字形會太像。兩欄都會互相提示，先挑哪一欄都可以。</p>
 <div id="second"></div>
 </div></section>
 
-<section class="band" id="result" style="padding-top:0"><div class="wrap">
+<section class="band m-pick" id="result" style="padding-top:0"><div class="wrap">
 <h2>第三步　組合結果</h2>
-<p class="hint">只顯示你挑的字之中，筆畫能配成上面規則的組合。勾選名字前的方框，名字會出現在畫面底部的列，從那裡製作分享卡。首選是三才火土金，次選是火土土，放寬組是天格剋人格。總評會再把兩個字的等級、聲調、備註，一起考慮，★ 推薦的排最前面。只有明顯負面的組合（例如「小人」）會降成留意；其他諧音只用藍字提示別人可能聯想到什麼，不扣分，好壞由你們判斷。諧音清單沒辦法列盡，最後還是請自己念一遍。</p>
+<p class="hint">只顯示你挑的字之中，筆畫能配成上面規則的組合。勾選名字前的方框，名字會出現在畫面底部的列，從那裡製作分享卡。首選是三才火土金，次選是火土土，放寬組是天格剋人格，火木火組只看三才、不補八字。每個名字都有參考分數（點整列會從底部滑出明細），依分數由高到低排列。總評會再把兩個字的等級、聲調、備註，一起考慮，★ 推薦的排最前面。只有明顯負面的組合（例如「小人」）會降成留意；其他諧音只用藍字提示別人可能聯想到什麼，不扣分，好壞由你們判斷。諧音清單沒辦法列盡，最後還是請自己念一遍。</p>
 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button type="button" id="copy">複製組合清單</button><button type="button" id="clear">清除所有選字</button></div>
 <div id="out"></div>
 
@@ -219,12 +313,27 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
     <div id="cards"></div>
   </div>
 </div>
+<button type="button" class="fab" id="srchBtn" aria-label="搜尋名字"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+<div class="sheet" id="ssheet" hidden>
+  <div class="sheet-mask" data-sclose></div>
+  <div class="sheet-panel top" role="dialog" aria-modal="true" aria-label="搜尋名字">
+    <div class="sbox"><input type="search" id="sq" placeholder="輸入名字，例如 千語、語" autocomplete="off" enterkeyhint="search"><button type="button" data-sclose>關閉</button></div>
+    <div id="sres"></div>
+  </div>
+</div>
+<div class="sheet" id="dsheet" hidden>
+  <div class="sheet-mask" data-dclose></div>
+  <div class="sheet-panel" role="dialog" aria-modal="true" aria-label="名字明細">
+    <div class="sheet-head"><h3 id="dtitle"></h3><button type="button" data-dclose>關閉</button></div>
+    <div id="dbody"></div>
+  </div>
+</div>
 <div id="toast" role="status"></div>
 
 <script>
 {
-const POOL=[["人",2,"rén","金","仁人、為人",0,9],["力",2,"lì","火","力量、努力",0,19],["乃",2,"nǎi","火","於是，古雅",0,4],["又",2,"yòu","水","再、又一",0,29],["丁",2,"dīng","火","壯丁、丁寧",0,1],["卜",2,"bo","水","占卜；古姓",0,25],["千",3,"qiān","金","數多、千里",0,24],["士",3,"shì","金","讀書人、有擔當",0,33],["川",3,"chuān","金","河流、山川",0,47],["夕",3,"xī","金","黃昏、夕照",0,36],["久",3,"jiǔ","木","長久",0,4],["也",3,"yě","土","語助，簡約",0,5],["山",3,"shān","土","高山、穩重",0,46],["大",3,"dà","火","廣大",0,37],["凡",3,"fán","水","平凡、超凡",0,16],["于",3,"yú","水","古姓、往",0,7],["才",3,"cái","金","才華",0,64],["小",3,"xiǎo","金","小巧、親切",0,42],["子",3,"zǐ","水","孩子、君子；古代美稱",-1,39],["三",3,"sān","火","數字三",0,1],["上",3,"shàng","火","向上",0,1],["工",3,"gōng","火","工巧",0,48],["弓",3,"gōng","木","弓箭",0,57],["寸",3,"cùn","金","分寸",0,41],["己",3,"jǐ","土","自己",0,49],["土",3,"tǔ","土","土地、厚實",0,32],["巾",3,"jīn","木","頭巾",0,50],["仁",4,"rén","金","仁愛",0,9],["今",4,"jīn","金","當下",0,9],["介",4,"jiè","金","耿介、正直",0,9],["尹",4,"yǐn","土","治理、古官名",0,4],["心",4,"xīn","金","心意",0,61],["予",4,"yǔ","金","給予",0,6],["文",4,"wén","水","文采",0,67],["方",4,"fāng","水","方正",0,70],["云",4,"yún","水","說；雲的古字",0,7],["中",4,"zhōng","火","中正",0,2],["丹",4,"dān","火","赤誠、丹心",0,3],["之",4,"zhī","火","古雅虛詞",0,4],["午",4,"wǔ","火","正午；馬之本支",0,24],["天",4,"tiān","火","天空",0,37],["太",4,"tài","火","極大",0,37],["斗",4,"dòu","火","北斗",0,68],["日",4,"rì","火","太陽",0,72],["允",4,"yǔn","土","允諾、公允",0,10],["王",4,"wáng","土","君王",1,96],["元",4,"yuán","木","首、開始",0,10],["友",4,"yǒu","木","朋友、友愛",0,29],["升",4,"shēng","木","上升",0,24],["月",4,"yuè","木","月亮",0,74],["公",4,"gōng","木","公正",0,12],["少",4,"shǎo","金","年少",0,42],["夫",4,"fū","水","大丈夫",0,37],["引",4,"yǐn","土","引導",0,57],["及",4,"jí","木","及時、達到",0,29],["支",4,"zhī","金","支持",0,65],["斤",4,"jīn","金","斧斤",0,69],["尤",4,"yóu","土","尤其、優異",0,43],["壬",4,"rén","水","天干壬，屬陽水",0,33],["勻",4,"yún","土","均勻",0,20],["化",4,"huà","水","變化、教化",0,21],["戈",4,"gē","金","干戈",0,62],["比",4,"bǐ","水","比肩",0,81],["井",4,"jǐng","水","井然有序",0,7],["孔",4,"kǒng","木","孔子；古姓",-1,39],["木",4,"mù","木","樹木",0,75],["水",4,"shuǐ","水","水",-1,85],["牛",4,"niú","土","牛；屬馬遇丑有相害之說",-1,93],["丰",4,"fēng","木","丰采、風度",0,2],["世",5,"shì","金","世代、世界",0,1],["仕",5,"shì","金","仕途、做事",0,9],["申",5,"shēn","金","伸展、申明",0,102],["白",5,"bái","金","潔白",0,106],["石",5,"shí","金","石頭、堅定",0,112],["玉",5,"yù","金","美玉",1,96],["正",5,"zhèng","金","端正",0,77],["立",5,"lì","金","站立、建立",0,117],["生",5,"shēng","金","生長",0,100],["冬",5,"dōng","水","冬天",-1,15],["永",5,"yǒng","水","永久",-1,85],["玄",5,"xuán","水","深遠",0,95],["弘",5,"hóng","水","寬大、弘揚",0,57],["以",5,"yǐ","土","用以，現代常用",0,9],["平",5,"píng","水","平安、平和",0,51],["巨",5,"jù","土","巨大",0,48],["田",5,"tián","土","田野",0,102],["由",5,"yóu","土","緣由、自由",0,102],["禾",5,"hé","木","禾苗；屬馬喜",1,115],["本",5,"běn","木","根本",0,75],["甲",5,"jiǎ","木","第一",0,102],["未",5,"wèi","木","未來",0,75],["令",5,"lìng","火","美好、令德",0,9],["可",5,"kě","木","可以",0,30],["古",5,"gǔ","木","古樸",0,30],["史",5,"shǐ","金","歷史",0,30],["加",5,"jiā","木","增加",0,19],["央",5,"yāng","土","中央",0,37],["善",12,"shàn","金","良善",0,30],["尊",12,"zūn","金","尊貴",0,41],["尋",12,"xún","金","尋找、探求",0,41],["斯",12,"sī","金","此，斯文",0,69],["欽",12,"qīn","金","欽佩",0,76],["鈞",12,"jūn","金","穩重有分量",1,167],["詠",12,"yǒng","金","吟詠",0,149],["舒",12,"shū","金","舒展",0,135],["竣",12,"jùn","金","完成",0,117],["皓",12,"hào","金","潔白明亮",0,106],["盛",12,"shèng","金","興盛",0,108],["涵",12,"hán","水","涵養",-1,85],["淳",12,"chún","水","淳樸",-1,85],["淵",12,"yuān","水","深淵、淵博",-1,85],["清",12,"qīng","水","清澈",-1,85],["淇",12,"qí","水","淇水",-1,85],["深",12,"shēn","水","深遠",-1,85],["添",12,"tiān","水","增添",-1,85],["博",12,"bó","水","博學",0,24],["雲",12,"yún","水","雲朵",-1,173],["雄",12,"xióng","水","雄壯",0,172],["雯",12,"wén","水","雲彩紋",-1,173],["閎",12,"hóng","水","宏大",0,169],["富",12,"fù","水","富足",0,40],["惠",12,"huì","水","恩惠",0,61],["森",12,"sēn","木","森林",0,75],["棋",12,"qí","木","棋藝",0,75],["棠",12,"táng","木","棠棣，兄弟情",0,75],["景",12,"jǐng","木","景色",0,72],["凱",12,"kǎi","木","凱旋",0,16],["喬",12,"qiáo","木","高大",0,30],["茗",12,"míng","木","茶；屬馬喜",1,140],["荃",12,"quán","木","香草；屬馬喜",1,140],["策",12,"cè","木","策略",0,118],["絢",12,"xuàn","木","絢爛",0,120],["傑",12,"jié","木","傑出",0,9],["晴",12,"qíng","火","晴朗",0,72],["晶",12,"jīng","火","晶亮",0,72],["智",12,"zhì","火","智慧",0,72],["普",12,"pǔ","火","普及",0,72],["然",12,"rán","火","自然、然諾",0,86],["登",12,"dēng","火","登高",0,105],["朝",12,"cháo","火","早晨",0,74],["斐",12,"fěi","水","文采斐然",0,67],["程",12,"chéng","火","路程、規程",1,115],["童",12,"tóng","金","童心",0,117],["堯",12,"yáo","土","古聖王",0,32],["嵐",12,"lán","土","山間霧氣",0,46],["翔",12,"xiáng","土","飛翔",0,124],["雅",12,"yǎ","土","文雅",0,172],["越",12,"yuè","土","超越",0,156],["順",12,"shùn","金","順利",0,181],["雁",12,"yàn","土","大雁",0,172],["勛",12,"xūn","土","功勛",0,19],["創",12,"chuàng","金","開創",0,18],["勝",12,"shèng","金","勝利、勝景",0,19],["喜",12,"xǐ","水","喜悅",0,30],["就",12,"jiù","金","成就",0,43],["弼",12,"bì","水","輔弼",0,57],["彭",12,"péng","水","古姓、盛大",0,59],["復",12,"fù","水","恢復、往復",0,60],["循",12,"xún","金","遵循",0,60],["惇",12,"dūn","火","敦厚",0,61],["敦",12,"dūn","火","敦厚",0,66],["曾",12,"céng","金","曾經；古姓",0,73],["期",12,"qī","木","期望",0,74],["棣",12,"dì","木","棠棣，兄弟情",0,75],["棟",12,"dòng","木","棟樑",0,75],["植",12,"zhí","木","種植、培植",0,75],["淙",12,"cóng","水","淙淙流水",-1,85],["淞",12,"sōng","水","淞江",-1,85],["淮",12,"huái","水","淮河",-1,85],["理",12,"lǐ","火","道理、條理",1,96],["琅",12,"láng","金","美玉、琅琅",1,96],["甦",12,"sū","金","甦醒",0,100],["筆",12,"bǐ","木","筆墨",0,118],["筑",12,"zhù","木","古樂器筑",0,118],["統",12,"tǒng","金","統合",0,120],["舜",12,"shùn","金","古聖王舜",0,136],["荀",12,"xún","木","荀子；古姓",1,140],["萬",12,"wàn","土","萬千",0,114],["詞",12,"cí","金","詩詞",0,149],["貴",12,"guì","木","尊貴",0,154],["賀",12,"hè","水","祝賀",0,154],["超",12,"chāo","金","超越",0,156],["軼",12,"yì","火","超群",0,159],["迪",12,"dí","火","啟迪",0,162],["量",12,"liàng","火","度量、氣量",0,166],["開",12,"kāi","木","開朗",0,169],["閑",12,"xián","木","悠閑",0,169],["閔",12,"mǐn","水","古姓、憐憫",0,169],["集",12,"jí","金","聚集",0,172],["馭",12,"yù","火","駕馭",0,187],["黃",12,"huáng","土","黃色、黃土",0,201],["新",13,"xīn","金","新的",0,69],["靖",13,"jìng","金","安定",0,174],["聖",13,"shèng","金","明理通達",0,128],["鈺",13,"yù","金","珍寶",1,167],["鈴",13,"líng","金","鈴聲",1,167],["鉅",13,"jù","金","巨大",1,167],["鉉",13,"xuàn","金","鼎耳，賢臣",1,167],["琛",13,"chēn","金","珍寶",1,96],["琦",13,"qí","金","美玉、奇偉",1,96],["琨",13,"kūn","金","美玉",1,96],["琪",13,"qí","金","美玉",1,96],["琳",13,"lín","金","美玉",1,96],["琴",13,"qín","金","古琴",1,96],["琮",13,"cóng","金","方柱形玉器",1,96],["詩",13,"shī","金","詩歌",0,149],["詮",13,"quán","金","詮釋",0,149],["詳",13,"xiáng","金","周詳",0,149],["詹",13,"zhān","金","古姓、至",0,149],["頌",13,"sòng","金","頌揚",0,181],["群",13,"qún","金","合群",0,123],["義",13,"yì","金","道義",0,123],["裕",13,"yù","金","富裕寬容",0,145],["稚",13,"zhì","金","稚嫩、純真",1,115],["歆",13,"xīn","金","欣喜、嚮往",0,76],["湘",13,"xiāng","水","湘江",-1,85],["湛",13,"zhàn","水","清澈深遠",-1,85],["湖",13,"hú","水","湖泊",-1,85],["游",13,"yóu","水","游歷",-1,85],["渝",13,"yú","水","不變",-1,85],["雷",13,"léi","水","雷",-1,173],["楊",13,"yáng","木","楊柳",0,75],["楓",13,"fēng","木","楓樹",0,75],["楚",13,"chǔ","木","清楚、楚楚",0,75],["楠",13,"nán","木","楠木",0,75],["業",13,"yè","木","事業、學業",0,75],["楷",13,"kǎi","木","楷模",0,75],["楫",13,"jí","木","船槳",0,75],["莊",13,"zhuāng","木","莊重",1,140],["莘",13,"shēn","木","莘莘學子",1,140],["稔",13,"rěn","木","熟悉、豐收",1,115],["筠",13,"yún","木","竹青皮，堅貞",0,118],["經",13,"jīng","木","經典",0,120],["毓",13,"yù","木","養育、鍾靈毓秀",0,80],["暄",13,"xuān","火","溫暖",0,72],["暉",13,"huī","火","光輝",0,72],["暖",13,"nuǎn","火","溫暖",0,72],["暘",13,"yáng","火","日出",0,72],["煌",13,"huáng","火","輝煌",0,86],["煜",13,"yù","火","照耀",0,86],["煥",13,"huàn","火","煥發",0,86],["煦",13,"xù","火","和煦",0,86],["照",13,"zhào","火","照耀",0,86],["傳",13,"chuán","火","傳承",0,9],["嵩",13,"sōng","土","嵩山、高",0,46],["園",13,"yuán","土","園地",0,31],["圓",13,"yuán","土","圓滿",0,31],["意",13,"yì","土","心意",0,61],["愛",13,"ài","土","愛",0,61],["雍",13,"yōng","土","雍容",0,172],["微",13,"wēi","水","細微",0,60],["敬",13,"jìng","木","敬重",0,66],["會",13,"huì","木","相會",0,73],["路",13,"lù","火","道路",0,157],["鼎",13,"dǐng","火","鼎盛",0,206],["勤",13,"qín","木","勤奮",0,19],["奧",13,"ào","土","深奧",0,37],["愉",13,"yú","土","愉快",0,61],["感",13,"gǎn","木","感恩",0,61],["楨",13,"zhēn","木","楨幹，棟樑之材",0,75],["極",13,"jí","木","極致",0,75],["楹",13,"yíng","木","廳堂前柱",0,75],["湧",13,"yǒng","水","湧現",-1,85],["湯",13,"tāng","水","湯湯流水；古姓",-1,85],["滋",13,"zī","水","滋養",-1,85],["琢",13,"zuó","火","雕琢、琢磨",1,96],["琥",13,"hǔ","金","琥珀",1,96],["琯",13,"guǎn","金","玉製樂器",1,96],["睦",13,"mù","火","和睦",0,109],["祺",13,"qí","木","吉祥",0,113],["祿",13,"lù","火","福祿",0,113],["稟",13,"bǐng","金","稟賦",1,115],["綏",13,"suī","土","安撫、平安",0,120],["肅",13,"sù","金","嚴肅、恭敬",0,129],["莫",13,"mò","水","莫逆",1,140],["莞",13,"guǎn","木","莞爾一笑",1,140],["虞",13,"yú","木","古國名、安樂",0,141],["詣",13,"yì","金","造詣",0,149],["載",13,"zài","火","承載",0,159],["雋",13,"juàn","金","雋永",0,172],["頊",13,"xū","木","古帝顓頊",0,181],["預",13,"yù","土","預先",0,181],["廉",13,"lián","木","廉潔",0,53],["鼓",13,"gǔ","木","鼓舞",0,207],["勣",13,"jī","木","功績",0,19],["誠",14,"chéng","金","真誠",0,149],["源",14,"yuán","水","源頭",-1,85],["銘",14,"míng","金","銘記",1,167],["銓",14,"quán","金","衡量",1,167],["銀",14,"yín","金","白銀",1,167],["瑞",14,"ruì","金","祥瑞",1,96],["瑜",14,"yú","金","美玉",1,96],["瑛",14,"yīng","金","玉光",1,96],["碩",14,"shuò","金","碩大、碩學",0,112],["碧",14,"bì","金","青綠玉石",0,112],["睿",14,"ruì","金","智慧通達",0,109],["誌",14,"zhì","金","記",0,149],["語",14,"yǔ","金","言語",0,149],["誥",14,"gào","金","告誡",0,149],["誦",14,"sòng","金","誦讀",0,149],["齊",14,"qí","金","見賢思齊",0,210],["韶",14,"sháo","金","美好，韶光",0,180],["端",14,"duān","金","端正",0,117],["實",14,"shí","金","誠實",0,40],["瑄",14,"xuān","金","祭天玉璧",1,96],["溥",14,"pǔ","水","廣大",-1,85],["溪",14,"xī","水","溪流",-1,85],["溫",14,"wēn","水","溫和",-1,85],["滄",14,"cāng","水","滄海",-1,85],["豪",14,"háo","水","豪邁",0,152],["聞",14,"wén","水","聽聞、聞名",0,128],["鳴",14,"míng","水","鳴叫",0,196],["福",14,"fú","水","福氣",0,113],["榕",14,"róng","木","榕樹",0,75],["榛",14,"zhēn","木","榛樹",0,75],["榮",14,"róng","木","光榮",0,75],["嘉",14,"jiā","木","美好、嘉許",0,30],["菁",14,"jīng","木","精華；屬馬喜",1,140],["華",14,"huá","木","光華；屬馬喜",1,140],["綸",14,"lún","木","經綸",0,120],["維",14,"wéi","土","維繫",0,120],["綺",14,"qǐ","木","美麗",0,120],["精",14,"jīng","金","精良",1,119],["箏",14,"zhēng","木","古箏",0,118],["熙",14,"xī","火","光明興盛",0,86],["熊",14,"xióng","火","熊",0,86],["赫",14,"hè","火","顯赫",0,155],["暢",14,"chàng","火","暢達",0,72],["寧",14,"níng","火","安寧",0,40],["爾",14,"ěr","火","你、如此",0,89],["禎",14,"zhēn","火","吉祥",0,113],["慎",14,"shèn","火","謹慎",0,61],["境",14,"jìng","土","境界",0,32],["壽",14,"shòu","金","長壽",0,33],["甄",14,"zhēn","土","甄選",0,98],["肇",14,"zhào","火","開始",0,129],["僑",14,"qiáo","火","僑居",0,9],["夢",14,"mèng","木","夢想",0,36],["彰",14,"zhāng","金","彰顯",0,59],["愷",14,"kǎi","木","和樂",0,61],["慈",14,"cí","金","慈愛",0,61],["旗",14,"qí","木","旗幟",0,70],["槐",14,"huái","木","槐樹",0,75],["歌",14,"gē","木","歌聲",0,76],["滔",14,"tāo","水","滔滔",-1,85],["瑚",14,"hú","金","珊瑚",1,96],["瑟",14,"sè","金","琴瑟",1,96],["綜",14,"zōng","金","綜合",0,120],["綵",14,"cǎi","金","彩色絲綢",0,120],["翟",14,"dí","火","長尾雉羽；古姓",0,124],["翠",14,"cuì","金","翠綠",0,124],["聚",14,"jù","金","聚集",0,128],["舞",14,"wǔ","水","舞蹈",0,136],["菩",14,"pú","木","菩提",1,140],["裳",14,"shang","金","衣裳",0,145],["裴",14,"péi","水","古姓、衣長貌",0,145],["說",14,"shuō","金","說話、喜悅",0,149],["賓",14,"bīn","水","賓客",0,154],["趙",14,"zhào","火","古姓",0,156],["輔",14,"fǔ","水","輔佐",0,159],["逍",14,"xiāo","火","逍遙",0,162],["通",14,"tōng","火","通達",0,162],["造",14,"zào","金","創造",0,162],["逢",14,"féng","水","相逢",0,162],["連",14,"lián","火","連結",0,162],["郡",14,"jùn","木","郡縣",0,163],["閣",14,"gé","木","樓閣",0,169],["領",14,"lǐng","火","領導",0,181],["颯",14,"sà","金","颯爽",0,182],["魁",14,"kuí","木","魁首",0,194],["鑄",22,"zhù","金","鑄造",1,167],["鑑",22,"jiàn","金","鏡子、借鑑",1,167],["讀",22,"dú","火","讀書",0,149],["霽",22,"jì","水","雨後天晴",-1,173],["籟",22,"lài","木","天籟",0,118],["藻",22,"zǎo","木","文藻",1,140],["蘊",22,"yùn","木","蘊含",1,140],["蘇",22,"sū","木","復甦",1,140],["權",22,"quán","木","權衡",0,75],["聽",22,"tīng","火","聆聽",0,128],["驍",22,"xiāo","火","驍勇",0,187],["懿",22,"yì","土","美德",0,61],["巒",22,"luán","土","山巒",0,46],["巔",22,"diān","土","山巔",0,46],["歡",22,"huān","水","歡喜",0,76],["鑒",22,"jiàn","金","借鑒",1,167],["藹",22,"ǎi","木","和藹",1,140],["顯",23,"xiǎn","火","顯揚",0,181],["麟",23,"lín","土","麒麟",0,198],["巖",23,"yán","土","山巖",0,46],["鑠",23,"shuò","金","光亮",1,167],["鷺",23,"lù","火","白鷺",0,196],["纓",23,"yīng","土","請纓",0,120],["籥",23,"yuè","木","古代管樂器",0,118]];
-const NOTES={"琪":["偏女性"],"琳":["偏女性"],"鈴":["偏女性"],"琴":["偏女性"],"雯":["偏女性"],"詩":["偏女性"],"碧":["偏女性"],"瑛":["偏女性"],"綺":["偏女性"],"菁":["偏女性"],"瑜":["偏女性"],"涵":["偏女性"],"淇":["偏女性"],"茗":["偏女性"],"絢":["偏女性"],"箏":["偏女性"],"夕":["偏女性"],"聖":["字義較重"],"尊":["字義較重"],"王":["字義較重"],"天":["字義較重"],"太":["字義較重"],"巨":["字義較重"],"鉅":["字義較重"],"權":["字義較重","筆畫多、不好寫"],"顯":["字義較重","筆畫多、不好寫"],"鼎":["字義較重"],"睿":["常見，撞名率較高"],"翔":["常見，撞名率較高"],"傑":["常見，撞名率較高"],"凱":["常見，撞名率較高"],"豪":["常見，撞名率較高"],"博":["常見，撞名率較高"],"皓":["常見，撞名率較高","響亮好叫，適合放第二字"],"銘":["常見，撞名率較高"],"瑞":["常見，撞名率較高","響亮好叫，適合放第二字"],"文":["常見，撞名率較高"],"宇":["常見，撞名率較高"],"霽":["筆畫多、不好寫"],"籟":["筆畫多、不好寫"],"鑄":["筆畫多、不好寫"],"鑑":["筆畫多、不好寫"],"藻":["筆畫多、不好寫"],"蘊":["筆畫多、不好寫"],"蘇":["筆畫多、不好寫"],"聽":["筆畫多、不好寫"],"驍":["筆畫多、不好寫"],"懿":["筆畫多、不好寫"],"巒":["筆畫多、不好寫"],"巔":["筆畫多、不好寫"],"歡":["筆畫多、不好寫"],"讀":["筆畫多、不好寫"],"麟":["筆畫多、不好寫"],"巖":["筆畫多、不好寫"],"鑠":["筆畫多、不好寫"],"鷺":["筆畫多、不好寫"],"乃":["語助字，單用較少見"],"于":["語助字，單用較少見"],"也":["語助字，單用較少見"],"午":["屬馬遇午，有「自刑」之說"],"介":["易聯想「介意」"],"微":["易聯想「微小」"],"熊":["字感較剛硬"],"雷":["字感較剛硬"],"靖":["穩重，適合放第一字"],"士":["穩重，適合放第一字"],"語":["響亮好叫，適合放第二字"],"人":["單獨當名字較少見"],"力":["單獨當名字較少見"],"又":["語助字，單用較少見"],"子":["屬馬遇子，有「子午相沖」之說"],"牛":["屬馬遇丑，有「丑午相害」之說"],"黃":["常見"],"萬":["常見"],"翠":["偏女性"],"綵":["偏女性"],"裳":["偏女性"],"瑚":["偏女性"],"湯":["常見姓氏"],"孔":["常見姓氏"],"荀":["常見姓氏"],"趙":["常見姓氏"],"裴":["常見姓氏"],"彭":["常見姓氏"],"閔":["常見姓氏"],"曾":["常見姓氏"],"翟":["常見姓氏"],"卜":["常見姓氏"]};
+const POOL=[["人",2,"rén","金","仁人、為人",0,9,2,"獨體",2],["力",2,"lì","火","力量、努力",0,19,2,"獨體",2],["乃",2,"nǎi","火","於是，古雅",0,4,2,"包圍",2],["又",2,"yòu","水","再、又一",0,29,2,"獨體",2],["丁",2,"dīng","火","壯丁、丁寧",0,1,2,"上下",2],["卜",2,"bo","水","占卜；古姓",0,25,2,"獨體",2],["千",3,"qiān","金","數多、千里",0,24,3,"上下",5],["士",3,"shì","金","讀書人、有擔當",0,33,3,"獨體",5],["川",3,"chuān","金","河流、山川",0,47,3,"左右",5],["夕",3,"xī","金","黃昏、夕照",0,36,3,"包圍",3],["久",3,"jiǔ","木","長久",0,4,3,"獨體",4],["也",3,"yě","土","語助，簡約",0,5,3,"獨體",2],["山",3,"shān","土","高山、穩重",0,46,3,"包圍",4],["大",3,"dà","火","廣大",0,37,3,"獨體",2],["凡",3,"fán","水","平凡、超凡",0,16,3,"包圍",2],["于",3,"yú","水","古姓、往",0,7,3,"上下",2],["才",3,"cái","金","才華",0,64,3,"包圍",4],["小",3,"xiǎo","金","小巧、親切",0,42,3,"左右",3],["子",3,"zǐ","水","孩子、君子；古代美稱",-1,39,3,"獨體",4],["三",3,"sān","火","數字三",0,1,3,"獨體",2],["上",3,"shàng","火","向上",0,1,3,"上下",2],["工",3,"gōng","火","工巧",0,48,3,"上下",2],["弓",3,"gōng","木","弓箭",0,57,3,"上下",4],["寸",3,"cùn","金","分寸",0,41,3,"包圍",2],["己",3,"jǐ","土","自己",0,49,3,"獨體",2],["土",3,"tǔ","土","土地、厚實",0,32,3,"上下",2],["巾",3,"jīn","木","頭巾",0,50,3,"獨體",2],["仁",4,"rén","金","仁愛",0,9,4,"左右",5],["今",4,"jīn","金","當下",0,9,4,"上下",4],["介",4,"jiè","金","耿介、正直",0,9,4,"上下",3],["尹",4,"yǐn","土","治理、古官名",0,4,4,"獨體",4],["心",4,"xīn","金","心意",0,61,4,"左右",4],["予",4,"yǔ","金","給予",0,6,4,"上下",5],["文",4,"wén","水","文采",0,67,4,"上下",4],["方",4,"fāng","水","方正",0,70,4,"上下",4],["云",4,"yún","水","說；雲的古字",0,7,4,"上下",3],["中",4,"zhōng","火","中正",0,2,4,"獨體",4],["丹",4,"dān","火","赤誠、丹心",0,3,4,"獨體",2],["之",4,"zhī","火","古雅虛詞",0,4,4,"上下",2],["午",4,"wǔ","火","正午；馬之本支",0,24,4,"上下",3],["天",4,"tiān","火","天空",0,37,4,"上下",3],["太",4,"tài","火","極大",0,37,4,"包圍",1],["斗",4,"dòu","火","北斗",0,68,4,"獨體",4],["日",4,"rì","火","太陽",0,72,4,"包圍",4],["允",4,"yǔn","土","允諾、公允",0,10,4,"上下",5],["王",4,"wáng","土","君王",1,96,4,"上下",3],["元",4,"yuán","木","首、開始",0,10,4,"上下",5],["友",4,"yǒu","木","朋友、友愛",0,29,4,"包圍",4],["升",4,"shēng","木","上升",0,24,4,"上下",5],["月",4,"yuè","木","月亮",0,74,4,"包圍",2],["公",4,"gōng","木","公正",0,12,4,"上下",2],["少",4,"shǎo","金","年少",0,42,4,"上下",2],["夫",4,"fū","水","大丈夫",0,37,4,"獨體",2],["引",4,"yǐn","土","引導",0,57,4,"左右",4],["及",4,"jí","木","及時、達到",0,29,4,"獨體",2],["支",4,"zhī","金","支持",0,65,4,"上下",4],["斤",4,"jīn","金","斧斤",0,69,4,"包圍",4],["尤",4,"yóu","土","尤其、優異",0,43,4,"包圍",4],["壬",4,"rén","水","天干壬，屬陽水",0,33,4,"上下",4],["勻",4,"yún","土","均勻",0,20,4,"包圍",4],["化",4,"huà","水","變化、教化",0,21,4,"左右",4],["戈",4,"gē","金","干戈",0,62,4,"包圍",4],["比",4,"bǐ","水","比肩",0,81,4,"左右",4],["井",4,"jǐng","水","井然有序",0,7,4,"獨體",4],["孔",4,"kǒng","木","孔子；古姓",-1,39,4,"左右",2],["木",4,"mù","木","樹木",0,75,4,"獨體",2],["水",4,"shuǐ","水","水",-1,85,4,"左右",2],["牛",4,"niú","土","牛；屬馬遇丑有相害之說",-1,93,4,"左右",2],["丰",4,"fēng","木","丰采、風度",0,2,4,"獨體",4],["世",5,"shì","金","世代、世界",0,1,5,"獨體",5],["仕",5,"shì","金","仕途、做事",0,9,5,"左右",4],["申",5,"shēn","金","伸展、申明",0,102,5,"獨體",4],["白",5,"bái","金","潔白",0,106,5,"上下",4],["石",5,"shí","金","石頭、堅定",0,112,5,"包圍",4],["玉",5,"yù","金","美玉",1,96,5,"獨體",4],["正",5,"zhèng","金","端正",0,77,5,"上下",4],["立",5,"lì","金","站立、建立",0,117,5,"上下",5],["生",5,"shēng","金","生長",0,100,5,"左右",4],["冬",5,"dōng","水","冬天",-1,15,5,"上下",2],["永",5,"yǒng","水","永久",-1,85,5,"獨體",5],["玄",5,"xuán","水","深遠",0,95,5,"上下",4],["弘",5,"hóng","水","寬大、弘揚",0,57,5,"左右",5],["以",5,"yǐ","土","用以，現代常用",0,9,5,"獨體",4],["平",5,"píng","水","平安、平和",0,51,5,"獨體",4],["巨",5,"jù","土","巨大",0,48,5,"包圍",3],["田",5,"tián","土","田野",0,102,5,"包圍",2],["由",5,"yóu","土","緣由、自由",0,102,5,"獨體",2],["禾",5,"hé","木","禾苗；屬馬喜",1,115,5,"上下",4],["本",5,"běn","木","根本",0,75,5,"獨體",4],["甲",5,"jiǎ","木","第一",0,102,5,"獨體",4],["未",5,"wèi","木","未來",0,75,5,"獨體",2],["令",5,"lìng","火","美好、令德",0,9,5,"上下",4],["可",5,"kě","木","可以",0,30,5,"包圍",2],["古",5,"gǔ","木","古樸",0,30,5,"上下",4],["史",5,"shǐ","金","歷史",0,30,5,"獨體",4],["加",5,"jiā","木","增加",0,19,5,"左右",2],["央",5,"yāng","土","中央",0,37,5,"獨體",2],["信",9,"xìn","金","誠信",0,9,9,"左右",4],["宣",9,"xuān","火","宣揚",0,40,9,"上下",5],["彥",9,"yàn","火","俊彥、才德出眾",0,59,9,"上下",5],["柏",9,"bǎi","木","柏樹，堅貞",0,75,9,"左右",5],["奕",9,"yì","木","神采奕奕",0,37,9,"上下",5],["星",9,"xīng","金","星辰",0,72,9,"上下",5],["昭",9,"zhāo","火","昭明",0,72,9,"左右",5],["映",9,"yìng","火","映照",0,72,9,"左右",4],["冠",9,"guān","木","冠軍、冠冕",0,14,9,"上下",5],["南",9,"nán","火","南方",0,24,9,"上下",4],["亮",9,"liàng","火","明亮",0,8,9,"上下",5],["威",9,"wēi","土","威嚴",0,38,9,"包圍",4],["俊",9,"jùn","金","俊秀",0,9,9,"左右",4],["秋",9,"qiū","金","秋天",1,115,9,"左右",5],["思",9,"sī","金","思考",0,61,9,"上下",5],["泓",9,"hóng","水","水深而廣",-1,85,8,"左右",5],["治",9,"zhì","水","治理",-1,85,8,"左右",4],["河",9,"hé","水","河流",-1,85,8,"左右",4],["泉",9,"quán","水","泉水",-1,85,9,"上下",4],["炫",9,"xuàn","火","炫耀、光明",0,86,9,"左右",4],["研",9,"yán","金","研究",0,112,9,"左右",4],["祈",9,"qí","木","祈福",0,113,9,"左右",4],["紀",9,"jì","木","紀律、紀念",0,120,9,"左右",4],["美",9,"měi","水","美好",0,123,9,"上下",1],["軍",9,"jūn","木","軍隊",0,159,9,"上下",4],["建",9,"jiàn","木","建立",0,54,9,"包圍",4],["律",9,"lǜ","火","規律",0,60,9,"左右",4],["衍",9,"yǎn","水","繁衍、延展",0,144,9,"左右",5],["品",9,"pǐn","水","品德",0,30,9,"上下",4],["厚",9,"hòu","土","厚道",0,27,9,"包圍",4],["春",9,"chūn","木","春天",0,72,9,"上下",4],["宥",9,"yòu","土","寬宥",0,40,9,"上下",4],["炳",9,"bǐng","火","炳耀、顯著",0,86,9,"左右",4],["昱",9,"yù","火","日光",0,72,9,"上下",5],["昶",9,"chǎng","火","白晝漫長、舒暢",0,72,9,"包圍",5],["勇",9,"yǒng","土","勇敢",0,19,9,"上下",4],["保",9,"bǎo","水","保護",0,9,9,"左右",4],["致",9,"zhì","火","致遠",0,133,9,"左右",4],["亭",9,"tíng","火","亭亭玉立",0,8,9,"上下",1],["善",12,"shàn","金","良善",0,30,12,"上下",5],["尊",12,"zūn","金","尊貴",0,41,12,"上下",4],["尋",12,"xún","金","尋找、探求",0,41,12,"上下",5],["斯",12,"sī","金","此，斯文",0,69,12,"左右",3],["欽",12,"qīn","金","欽佩",0,76,12,"左右",4],["鈞",12,"jūn","金","穩重有分量",1,167,12,"左右",5],["詠",12,"yǒng","金","吟詠",0,149,12,"左右",5],["舒",12,"shū","金","舒展",0,135,12,"左右",5],["竣",12,"jùn","金","完成",0,117,12,"左右",5],["皓",12,"hào","金","潔白明亮",0,106,12,"左右",4],["盛",12,"shèng","金","興盛",0,108,12,"上下",4],["涵",12,"hán","水","涵養",-1,85,11,"左右",4],["淳",12,"chún","水","淳樸",-1,85,11,"左右",5],["淵",12,"yuān","水","深淵、淵博",-1,85,12,"左右",4],["清",12,"qīng","水","清澈",-1,85,11,"左右",4],["淇",12,"qí","水","淇水",-1,85,11,"左右",1],["深",12,"shēn","水","深遠",-1,85,11,"左右",4],["添",12,"tiān","水","增添",-1,85,11,"左右",4],["博",12,"bó","水","博學",0,24,12,"左右",4],["雲",12,"yún","水","雲朵",-1,173,12,"上下",5],["雄",12,"xióng","水","雄壯",0,172,12,"左右",4],["雯",12,"wén","水","雲彩紋",-1,173,12,"上下",1],["閎",12,"hóng","水","宏大",0,169,12,"包圍",4],["富",12,"fù","水","富足",0,40,12,"上下",2],["惠",12,"huì","水","恩惠",0,61,12,"上下",4],["森",12,"sēn","木","森林",0,75,12,"上下",4],["棋",12,"qí","木","棋藝",0,75,12,"左右",3],["棠",12,"táng","木","棠棣，兄弟情",0,75,12,"上下",4],["景",12,"jǐng","木","景色",0,72,12,"上下",5],["凱",12,"kǎi","木","凱旋",0,16,12,"左右",4],["喬",12,"qiáo","木","高大",0,30,12,"上下",5],["茗",12,"míng","木","茶；屬馬喜",1,140,9,"上下",1],["荃",12,"quán","木","香草；屬馬喜",1,140,9,"上下",2],["策",12,"cè","木","策略",0,118,12,"上下",4],["絢",12,"xuàn","木","絢爛",0,120,12,"左右",1],["傑",12,"jié","木","傑出",0,9,12,"左右",4],["晴",12,"qíng","火","晴朗",0,72,12,"左右",5],["晶",12,"jīng","火","晶亮",0,72,12,"上下",4],["智",12,"zhì","火","智慧",0,72,12,"上下",5],["普",12,"pǔ","火","普及",0,72,12,"上下",4],["然",12,"rán","火","自然、然諾",0,86,12,"上下",4],["登",12,"dēng","火","登高",0,105,12,"上下",4],["朝",12,"cháo","火","早晨",0,74,12,"左右",4],["斐",12,"fěi","水","文采斐然",0,67,12,"上下",4],["程",12,"chéng","火","路程、規程",1,115,12,"左右",4],["童",12,"tóng","金","童心",0,117,12,"上下",2],["堯",12,"yáo","土","古聖王",0,32,12,"上下",4],["嵐",12,"lán","土","山間霧氣",0,46,12,"上下",4],["翔",12,"xiáng","土","飛翔",0,124,12,"左右",4],["雅",12,"yǎ","土","文雅",0,172,12,"左右",5],["越",12,"yuè","土","超越",0,156,12,"包圍",5],["順",12,"shùn","金","順利",0,181,12,"左右",4],["雁",12,"yàn","土","大雁",0,172,12,"包圍",4],["勛",12,"xūn","土","功勛",0,19,12,"左右",5],["創",12,"chuàng","金","開創",0,18,12,"左右",5],["勝",12,"shèng","金","勝利、勝景",0,19,12,"左右",4],["喜",12,"xǐ","水","喜悅",0,30,12,"上下",4],["就",12,"jiù","金","成就",0,43,12,"左右",4],["弼",12,"bì","水","輔弼",0,57,12,"左右",5],["彭",12,"péng","水","古姓、盛大",0,59,12,"左右",2],["復",12,"fù","水","恢復、往復",0,60,12,"左右",4],["循",12,"xún","金","遵循",0,60,12,"左右",4],["惇",12,"dūn","火","敦厚",0,61,11,"左右",4],["敦",12,"dūn","火","敦厚",0,66,12,"左右",5],["曾",12,"céng","金","曾經；古姓",0,73,12,"上下",2],["期",12,"qī","木","期望",0,74,12,"左右",4],["棣",12,"dì","木","棠棣，兄弟情",0,75,12,"左右",4],["棟",12,"dòng","木","棟樑",0,75,12,"左右",5],["植",12,"zhí","木","種植、培植",0,75,12,"左右",4],["淙",12,"cóng","水","淙淙流水",-1,85,11,"左右",4],["淞",12,"sōng","水","淞江",-1,85,11,"左右",4],["淮",12,"huái","水","淮河",-1,85,11,"左右",3],["理",12,"lǐ","火","道理、條理",1,96,11,"左右",5],["琅",12,"láng","金","美玉、琅琅",1,96,11,"左右",5],["甦",12,"sū","金","甦醒",0,100,12,"包圍",2],["筆",12,"bǐ","木","筆墨",0,118,12,"上下",2],["筑",12,"zhù","木","古樂器筑",0,118,12,"上下",2],["統",12,"tǒng","金","統合",0,120,12,"左右",4],["舜",12,"shùn","金","古聖王舜",0,136,12,"上下",5],["荀",12,"xún","木","荀子；古姓",1,140,10,"上下",2],["萬",12,"wàn","土","萬千",0,114,13,"上下",2],["詞",12,"cí","金","詩詞",0,149,12,"左右",4],["貴",12,"guì","木","尊貴",0,154,12,"上下",2],["賀",12,"hè","水","祝賀",0,154,12,"上下",4],["超",12,"chāo","金","超越",0,156,12,"包圍",5],["軼",12,"yì","火","超群",0,159,12,"左右",4],["迪",12,"dí","火","啟迪",0,162,9,"包圍",5],["量",12,"liàng","火","度量、氣量",0,166,12,"上下",4],["開",12,"kāi","木","開朗",0,169,12,"包圍",5],["閑",12,"xián","木","悠閑",0,169,12,"包圍",4],["閔",12,"mǐn","水","古姓、憐憫",0,169,12,"包圍",2],["集",12,"jí","金","聚集",0,172,12,"上下",4],["馭",12,"yù","火","駕馭",0,187,12,"左右",4],["黃",12,"huáng","土","黃色、黃土",0,201,12,"上下",2],["新",13,"xīn","金","新的",0,69,13,"左右",5],["靖",13,"jìng","金","安定",0,174,13,"左右",5],["聖",13,"shèng","金","明理通達",0,128,13,"上下",4],["鈺",13,"yù","金","珍寶",1,167,13,"左右",5],["鈴",13,"líng","金","鈴聲",1,167,13,"左右",1],["鉅",13,"jù","金","巨大",1,167,13,"左右",2],["鉉",13,"xuàn","金","鼎耳，賢臣",1,167,13,"左右",4],["琛",13,"chēn","金","珍寶",1,96,12,"左右",5],["琦",13,"qí","金","美玉、奇偉",1,96,12,"左右",4],["琨",13,"kūn","金","美玉",1,96,12,"左右",5],["琪",13,"qí","金","美玉",1,96,12,"左右",1],["琳",13,"lín","金","美玉",1,96,12,"左右",1],["琴",13,"qín","金","古琴",1,96,12,"上下",1],["琮",13,"cóng","金","方柱形玉器",1,96,12,"左右",5],["詩",13,"shī","金","詩歌",0,149,13,"左右",1],["詮",13,"quán","金","詮釋",0,149,13,"左右",4],["詳",13,"xiáng","金","周詳",0,149,13,"左右",4],["詹",13,"zhān","金","古姓、至",0,149,13,"包圍",2],["頌",13,"sòng","金","頌揚",0,181,13,"左右",5],["群",13,"qún","金","合群",0,123,13,"左右",4],["義",13,"yì","金","道義",0,123,13,"上下",4],["裕",13,"yù","金","富裕寬容",0,145,12,"左右",5],["稚",13,"zhì","金","稚嫩、純真",1,115,13,"左右",4],["歆",13,"xīn","金","欣喜、嚮往",0,76,13,"左右",4],["湘",13,"xiāng","水","湘江",-1,85,12,"左右",4],["湛",13,"zhàn","水","清澈深遠",-1,85,12,"左右",5],["湖",13,"hú","水","湖泊",-1,85,12,"左右",2],["游",13,"yóu","水","游歷",-1,85,12,"左右",2],["渝",13,"yú","水","不變",-1,85,12,"左右",4],["雷",13,"léi","水","雷",-1,173,13,"上下",2],["楊",13,"yáng","木","楊柳",0,75,13,"左右",2],["楓",13,"fēng","木","楓樹",0,75,13,"左右",4],["楚",13,"chǔ","木","清楚、楚楚",0,75,13,"上下",2],["楠",13,"nán","木","楠木",0,75,13,"左右",4],["業",13,"yè","木","事業、學業",0,75,13,"上下",4],["楷",13,"kǎi","木","楷模",0,75,13,"左右",5],["楫",13,"jí","木","船槳",0,75,13,"左右",2],["莊",13,"zhuāng","木","莊重",1,140,11,"上下",4],["莘",13,"shēn","木","莘莘學子",1,140,11,"上下",2],["稔",13,"rěn","木","熟悉、豐收",1,115,13,"左右",4],["筠",13,"yún","木","竹青皮，堅貞",0,118,13,"上下",4],["經",13,"jīng","木","經典",0,120,13,"左右",4],["毓",13,"yù","木","養育、鍾靈毓秀",0,80,14,"左右",5],["暄",13,"xuān","火","溫暖",0,72,13,"左右",5],["暉",13,"huī","火","光輝",0,72,13,"左右",5],["暖",13,"nuǎn","火","溫暖",0,72,13,"左右",2],["暘",13,"yáng","火","日出",0,72,13,"左右",4],["煌",13,"huáng","火","輝煌",0,86,13,"左右",4],["煜",13,"yù","火","照耀",0,86,13,"左右",5],["煥",13,"huàn","火","煥發",0,86,13,"左右",4],["煦",13,"xù","火","和煦",0,86,13,"上下",4],["照",13,"zhào","火","照耀",0,86,13,"上下",5],["傳",13,"chuán","火","傳承",0,9,13,"左右",5],["嵩",13,"sōng","土","嵩山、高",0,46,13,"上下",4],["園",13,"yuán","土","園地",0,31,13,"包圍",2],["圓",13,"yuán","土","圓滿",0,31,13,"包圍",2],["意",13,"yì","土","心意",0,61,13,"上下",4],["愛",13,"ài","土","愛",0,61,13,"上下",2],["雍",13,"yōng","土","雍容",0,172,13,"上下",4],["微",13,"wēi","水","細微",0,60,13,"左右",2],["敬",13,"jìng","木","敬重",0,66,13,"左右",4],["會",13,"huì","木","相會",0,73,13,"上下",2],["路",13,"lù","火","道路",0,157,13,"左右",2],["鼎",13,"dǐng","火","鼎盛",0,206,13,"包圍",3],["勤",13,"qín","木","勤奮",0,19,13,"左右",4],["奧",13,"ào","土","深奧",0,37,13,"上下",4],["愉",13,"yú","土","愉快",0,61,12,"左右",2],["感",13,"gǎn","木","感恩",0,61,13,"包圍",2],["楨",13,"zhēn","木","楨幹，棟樑之材",0,75,13,"左右",4],["極",13,"jí","木","極致",0,75,12,"左右",4],["楹",13,"yíng","木","廳堂前柱",0,75,13,"左右",2],["湧",13,"yǒng","水","湧現",-1,85,12,"左右",2],["湯",13,"tāng","水","湯湯流水；古姓",-1,85,12,"左右",2],["滋",13,"zī","水","滋養",-1,85,12,"左右",2],["琢",13,"zuó","火","雕琢、琢磨",1,96,12,"左右",4],["琥",13,"hǔ","金","琥珀",1,96,12,"左右",4],["琯",13,"guǎn","金","玉製樂器",1,96,12,"左右",2],["睦",13,"mù","火","和睦",0,109,13,"左右",5],["祺",13,"qí","木","吉祥",0,113,12,"左右",5],["祿",13,"lù","火","福祿",0,113,13,"左右",4],["稟",13,"bǐng","金","稟賦",1,115,13,"上下",2],["綏",13,"suī","土","安撫、平安",0,120,13,"左右",2],["肅",13,"sù","金","嚴肅、恭敬",0,129,12,"獨體",4],["莫",13,"mò","水","莫逆",1,140,11,"上下",2],["莞",13,"guǎn","木","莞爾一笑",1,140,10,"上下",2],["虞",13,"yú","木","古國名、安樂",0,141,13,"包圍",2],["詣",13,"yì","金","造詣",0,149,13,"左右",2],["載",13,"zài","火","承載",0,159,13,"包圍",4],["雋",13,"juàn","金","雋永",0,172,13,"上下",5],["頊",13,"xū","木","古帝顓頊",0,181,13,"左右",4],["預",13,"yù","土","預先",0,181,13,"左右",2],["廉",13,"lián","木","廉潔",0,53,13,"包圍",4],["鼓",13,"gǔ","木","鼓舞",0,207,13,"左右",2],["勣",13,"jī","木","功績",0,19,13,"左右",4],["誠",14,"chéng","金","真誠",0,149,13,"左右",5],["源",14,"yuán","水","源頭",-1,85,13,"左右",5],["銘",14,"míng","金","銘記",1,167,14,"左右",4],["銓",14,"quán","金","衡量",1,167,14,"左右",4],["銀",14,"yín","金","白銀",1,167,14,"左右",2],["瑞",14,"ruì","金","祥瑞",1,96,13,"左右",4],["瑜",14,"yú","金","美玉",1,96,13,"左右",4],["瑛",14,"yīng","金","玉光",1,96,12,"左右",1],["碩",14,"shuò","金","碩大、碩學",0,112,14,"左右",5],["碧",14,"bì","金","青綠玉石",0,112,14,"上下",1],["睿",14,"ruì","金","智慧通達",0,109,14,"上下",4],["誌",14,"zhì","金","記",0,149,14,"左右",4],["語",14,"yǔ","金","言語",0,149,14,"左右",5],["誥",14,"gào","金","告誡",0,149,14,"左右",4],["誦",14,"sòng","金","誦讀",0,149,14,"左右",4],["齊",14,"qí","金","見賢思齊",0,210,14,"上下",5],["韶",14,"sháo","金","美好，韶光",0,180,14,"左右",5],["端",14,"duān","金","端正",0,117,14,"左右",5],["實",14,"shí","金","誠實",0,40,14,"上下",4],["瑄",14,"xuān","金","祭天玉璧",1,96,13,"左右",5],["溥",14,"pǔ","水","廣大",-1,85,13,"左右",5],["溪",14,"xī","水","溪流",-1,85,13,"左右",3],["溫",14,"wēn","水","溫和",-1,85,13,"左右",4],["滄",14,"cāng","水","滄海",-1,85,13,"左右",4],["豪",14,"háo","水","豪邁",0,152,14,"上下",4],["聞",14,"wén","水","聽聞、聞名",0,128,14,"包圍",4],["鳴",14,"míng","水","鳴叫",0,196,14,"左右",4],["福",14,"fú","水","福氣",0,113,14,"左右",4],["榕",14,"róng","木","榕樹",0,75,14,"左右",4],["榛",14,"zhēn","木","榛樹",0,75,14,"左右",3],["榮",14,"róng","木","光榮",0,75,14,"上下",5],["嘉",14,"jiā","木","美好、嘉許",0,30,14,"上下",5],["菁",14,"jīng","木","精華；屬馬喜",1,140,11,"上下",1],["華",14,"huá","木","光華；屬馬喜",1,140,12,"上下",2],["綸",14,"lún","木","經綸",0,120,14,"左右",5],["維",14,"wéi","土","維繫",0,120,14,"左右",5],["綺",14,"qǐ","木","美麗",0,120,14,"左右",1],["精",14,"jīng","金","精良",1,119,14,"左右",4],["箏",14,"zhēng","木","古箏",0,118,14,"上下",1],["熙",14,"xī","火","光明興盛",0,86,14,"上下",5],["熊",14,"xióng","火","熊",0,86,14,"上下",2],["赫",14,"hè","火","顯赫",0,155,14,"左右",4],["暢",14,"chàng","火","暢達",0,72,14,"左右",4],["寧",14,"níng","火","安寧",0,40,14,"上下",5],["爾",14,"ěr","火","你、如此",0,89,14,"獨體",2],["禎",14,"zhēn","火","吉祥",0,113,13,"左右",5],["慎",14,"shèn","火","謹慎",0,61,13,"左右",4],["境",14,"jìng","土","境界",0,32,14,"左右",4],["壽",14,"shòu","金","長壽",0,33,14,"上下",4],["甄",14,"zhēn","土","甄選",0,98,13,"左右",4],["肇",14,"zhào","火","開始",0,129,14,"上下",4],["僑",14,"qiáo","火","僑居",0,9,14,"左右",2],["夢",14,"mèng","木","夢想",0,36,14,"上下",4],["彰",14,"zhāng","金","彰顯",0,59,14,"左右",5],["愷",14,"kǎi","木","和樂",0,61,13,"左右",5],["慈",14,"cí","金","慈愛",0,61,13,"上下",4],["旗",14,"qí","木","旗幟",0,70,14,"左右",4],["槐",14,"huái","木","槐樹",0,75,13,"左右",2],["歌",14,"gē","木","歌聲",0,76,14,"左右",4],["滔",14,"tāo","水","滔滔",-1,85,13,"左右",4],["瑚",14,"hú","金","珊瑚",1,96,13,"左右",1],["瑟",14,"sè","金","琴瑟",1,96,13,"上下",4],["綜",14,"zōng","金","綜合",0,120,14,"左右",4],["綵",14,"cǎi","金","彩色絲綢",0,120,14,"左右",1],["翟",14,"dí","火","長尾雉羽；古姓",0,124,14,"上下",2],["翠",14,"cuì","金","翠綠",0,124,14,"上下",1],["聚",14,"jù","金","聚集",0,128,14,"上下",4],["舞",14,"wǔ","水","舞蹈",0,136,14,"上下",2],["菩",14,"pú","木","菩提",1,140,12,"上下",2],["裳",14,"shang","金","衣裳",0,145,14,"上下",1],["裴",14,"péi","水","古姓、衣長貌",0,145,14,"上下",3],["說",14,"shuō","金","說話、喜悅",0,149,14,"左右",4],["賓",14,"bīn","水","賓客",0,154,14,"上下",4],["趙",14,"zhào","火","古姓",0,156,14,"包圍",2],["輔",14,"fǔ","水","輔佐",0,159,14,"左右",4],["逍",14,"xiāo","火","逍遙",0,162,10,"包圍",5],["通",14,"tōng","火","通達",0,162,11,"包圍",4],["造",14,"zào","金","創造",0,162,11,"包圍",4],["逢",14,"féng","水","相逢",0,162,11,"包圍",4],["連",14,"lián","火","連結",0,162,11,"包圍",4],["郡",14,"jùn","木","郡縣",0,163,9,"左右",2],["閣",14,"gé","木","樓閣",0,169,14,"包圍",4],["領",14,"lǐng","火","領導",0,181,14,"左右",4],["颯",14,"sà","金","颯爽",0,182,14,"左右",5],["魁",14,"kuí","木","魁首",0,194,13,"包圍",4],["鵬",19,"péng","水","鵬程萬里",0,196,19,"左右",5],["韻",19,"yùn","土","韻味",0,180,19,"左右",5],["麒",19,"qí","木","麒麟",0,198,19,"左右",5],["譜",19,"pǔ","金","樂譜、族譜",0,149,19,"左右",4],["識",19,"shí","金","見識",0,149,19,"左右",5],["鏡",19,"jìng","金","明鏡",1,167,19,"左右",5],["願",19,"yuàn","木","願望",0,181,19,"左右",2],["穩",19,"wěn","土","穩重",1,115,19,"左右",4],["疆",19,"jiāng","土","疆土",0,102,19,"左右",4],["繹",19,"yì","土","演繹",0,120,19,"左右",4],["曠",19,"kuàng","火","曠達",0,72,18,"左右",4],["璽",19,"xǐ","火","玉璽",1,96,19,"上下",2],["關",19,"guān","木","關懷；古姓",0,169,19,"包圍",2],["辭",19,"cí","金","文辭",0,160,19,"左右",4],["贊",19,"zàn","金","贊同、贊助",0,154,19,"上下",4],["韜",19,"tāo","金","韜略",0,178,19,"左右",4],["霧",19,"wù","水","霧",-1,173,18,"上下",2],["鑄",22,"zhù","金","鑄造",1,167,22,"左右",4],["鑑",22,"jiàn","金","鏡子、借鑑",1,167,22,"左右",5],["讀",22,"dú","火","讀書",0,149,22,"左右",4],["霽",22,"jì","水","雨後天晴",-1,173,22,"上下",5],["籟",22,"lài","木","天籟",0,118,22,"上下",4],["藻",22,"zǎo","木","文藻",1,140,19,"上下",4],["蘊",22,"yùn","木","蘊含",1,140,19,"上下",4],["蘇",22,"sū","木","復甦",1,140,19,"上下",2],["權",22,"quán","木","權衡",0,75,21,"左右",3],["聽",22,"tīng","火","聆聽",0,128,22,"左右",4],["驍",22,"xiāo","火","驍勇",0,187,22,"左右",4],["懿",22,"yì","土","美德",0,61,22,"左右",5],["巒",22,"luán","土","山巒",0,46,22,"上下",4],["巔",22,"diān","土","山巔",0,46,22,"上下",2],["歡",22,"huān","水","歡喜",0,76,22,"左右",2],["鑒",22,"jiàn","金","借鑒",1,167,22,"上下",5],["藹",22,"ǎi","木","和藹",1,140,19,"上下",4],["顯",23,"xiǎn","火","顯揚",0,181,23,"左右",4],["麟",23,"lín","土","麒麟",0,198,23,"左右",5],["巖",23,"yán","土","山巖",0,46,23,"上下",4],["鑠",23,"shuò","金","光亮",1,167,23,"左右",4],["鷺",23,"lù","火","白鷺",0,196,24,"上下",2],["纓",23,"yīng","土","請纓",0,120,23,"左右",4],["籥",23,"yuè","木","古代管樂器",0,118,23,"上下",2]];
+const NOTES={"琪":["偏女性"],"琳":["偏女性"],"鈴":["偏女性"],"琴":["偏女性"],"雯":["偏女性"],"詩":["偏女性"],"碧":["偏女性"],"瑛":["偏女性"],"綺":["偏女性"],"菁":["偏女性"],"瑜":["偏女性"],"涵":["偏女性"],"淇":["偏女性"],"茗":["偏女性"],"絢":["偏女性"],"箏":["偏女性"],"夕":["偏女性"],"聖":["字義較重"],"尊":["字義較重"],"王":["字義較重"],"天":["字義較重"],"太":["字義較重"],"巨":["字義較重"],"鉅":["字義較重"],"權":["字義較重","筆畫多、不好寫"],"顯":["字義較重","筆畫多、不好寫"],"鼎":["字義較重"],"睿":["常見，撞名率較高"],"翔":["常見，撞名率較高"],"傑":["常見，撞名率較高"],"凱":["常見，撞名率較高"],"豪":["常見，撞名率較高"],"博":["常見，撞名率較高"],"皓":["常見，撞名率較高","響亮好叫，適合放第二字"],"銘":["常見，撞名率較高"],"瑞":["常見，撞名率較高","響亮好叫，適合放第二字"],"文":["常見，撞名率較高"],"宇":["常見，撞名率較高"],"霽":["筆畫多、不好寫"],"籟":["筆畫多、不好寫"],"鑄":["筆畫多、不好寫"],"鑑":["筆畫多、不好寫"],"藻":["筆畫多、不好寫"],"蘊":["筆畫多、不好寫"],"蘇":["筆畫多、不好寫"],"聽":["筆畫多、不好寫"],"驍":["筆畫多、不好寫"],"懿":["筆畫多、不好寫"],"巒":["筆畫多、不好寫"],"巔":["筆畫多、不好寫"],"歡":["筆畫多、不好寫"],"讀":["筆畫多、不好寫"],"麟":["筆畫多、不好寫"],"巖":["筆畫多、不好寫"],"鑠":["筆畫多、不好寫"],"鷺":["筆畫多、不好寫"],"乃":["語助字，單用較少見"],"于":["語助字，單用較少見"],"也":["語助字，單用較少見"],"午":["屬馬遇午，有「自刑」之說"],"介":["易聯想「介意」"],"微":["易聯想「微小」"],"熊":["字感較剛硬"],"雷":["字感較剛硬"],"靖":["穩重，適合放第一字"],"士":["穩重，適合放第一字"],"語":["響亮好叫，適合放第二字"],"人":["單獨當名字較少見"],"力":["單獨當名字較少見"],"又":["語助字，單用較少見"],"子":["屬馬遇子，有「子午相沖」之說"],"牛":["屬馬遇丑，有「丑午相害」之說"],"黃":["常見"],"萬":["常見"],"翠":["偏女性"],"綵":["偏女性"],"裳":["偏女性"],"瑚":["偏女性"],"湯":["常見姓氏"],"孔":["常見姓氏"],"荀":["常見姓氏"],"趙":["常見姓氏"],"裴":["常見姓氏"],"彭":["常見姓氏"],"閔":["常見姓氏"],"曾":["常見姓氏"],"翟":["常見姓氏"],"卜":["常見姓氏"],"亭":["偏女性"],"美":["偏女性"],"俊":["常見，撞名率較高"],"信":["常見，撞名率較高"],"宥":["常見，撞名率較高"],"譚":["常見姓氏"],"關":["常見姓氏"]};
 const grade=x=>{const good=x[3]==='金'||x[3]==='水';if(x[3]==='火'||x[3]==='土')return 3;if(good&&x[5]>=0)return 1;if(!good&&x[5]===-1)return 3;return 2};
 const NEG={'小人':'「小人」是負面詞'};
 const NEGSUR={'ren':'「馮人」讀音像「瘋人」','zi':'「馮子」讀音像「瘋子」','kuang':'讀音像「瘋狂」'};
@@ -249,6 +358,7 @@ function tier(a,b,loose){
   const g=grid(a,b);
   if(!(luck(g.ren)==='吉'&&luck(g.di)==='吉'&&luck(g.zong)==='吉'&&luck(g.wai)!=='凶'))return 0;
   const [t,r,d]=g.sc;
+  if(st.hmh&&g.sc==='火木火')return 4;
   if(d==='火'||rel(r,d)==='相剋')return 0;
   if(r==='土')return d==='金'?1:(d==='土'?2:0);
   if(r==='金'&&loose)return 3;
@@ -256,7 +366,7 @@ function tier(a,b,loose){
 }
 const $=s=>document.querySelector(s);
 const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let st={a:[],b:[],fav:[],good:false,fire:false,wood:false,earth:false,horse:false,loose:false};
+let st={mode:'pick',subj:true,a:[],b:[],fav:[],good:false,fire:false,wood:false,earth:false,horse:false,loose:false,hmh:false};
 try{Object.assign(st,JSON.parse(localStorage.getItem('feng-picker')||'{}'))}catch(e){}
 if(!Array.isArray(st.fav))st.fav=[];
 const save=()=>{try{localStorage.setItem('feng-picker',JSON.stringify(st))}catch(e){}};
@@ -302,7 +412,7 @@ function drawSancai(R){
     <div class="ge ${et}"><small>天格 ${g.tian}</small><b>${et}</b></div><div class="arrow">${lab(et,er,r1)}</div>
     <div class="ge ${er}"><small>人格 ${g.ren}</small><b>${er}</b></div><div class="arrow">${lab(er,ed,r2)}</div>
     <div class="ge ${ed}"><small>地格 ${g.di}</small><b>${ed}</b></div></div>
-   <p class="sc-cap">${R&&R.length?`以你目前排第一的「馮${esc(ex.ca)}${esc(ex.cb)}」為例。`:'以「馮千語」為例，挑字後會換成你的第一名。'}數字看尾數換五行：1、2 木，3、4 火，5、6 土，7、8 金，9、0 水。天格的火改不了，靠人格的土接住，${ed==='金'?'再生出地格的金，這是首選。':ed==='土'?'地格也是土（比和），可以接受；能落在金會更好。':'人格的金被天格的火剋，這是放寬組。'}</p>`;
+   <p class="sc-cap">${R&&R.length?`以你目前排第一的「馮${esc(ex.ca)}${esc(ex.cb)}」為例。`:'以「馮千語」為例，挑字後會換成你的第一名。'}數字看尾數換五行：1、2 木，3、4 火，5、6 土，7、8 金，9、0 水。天格的火改不了，靠人格的土接住，${ed==='金'?'再生出地格的金，這是首選。':ed==='土'?'地格也是土（比和），可以接受；能落在金會更好。':er==='木'?'這是「火木火」：木生兩邊的火，三才相生，只看三才的派別認為是吉；但會讓寶寶本來就旺的火更旺，不補八字。':'人格的金被天格的火剋，這是放寬組。'}</p>`;
 }
 
 function evalPair(ca,cb){
@@ -318,7 +428,8 @@ function evalPair(ca,cb){
   const pun=PUNPAIR[ca+cb]||PUNSND[plain(xa[2])+' '+plain(xb[2])]||'';
   for(const c of [ca,cb]){const ns=(NOTES[c]||[]).filter(n=>/女性|較重|撞名/.test(n));if(ns.length)why.push(`${c}：${ns.join('、')}`)}
   const o=badMsg?3:(t===1&&ga===1&&gb===1&&!why.length)?1:(ga===3&&gb===3)||why.length>=2?3:2;
-  return {ca,cb,xa,xb,t,o,why,pun,g:grid(xa[1],xb[1]),key:ca+cb};
+  const r={ca,cb,xa,xb,t,o,why,pun,g:grid(xa[1],xb[1]),key:ca+cb,bad:!!badMsg,badMsg,tn};
+  r.sc=score(r);return r;
 }
 
 function favPairs(){return st.fav.map(k=>{const r=evalPair([...k][0],[...k][1]);return r||null}).filter(Boolean)}
@@ -359,7 +470,7 @@ function drawCard(c,r,x,y,W,H){
     if(i<2){c.fillStyle='#8d9097';c.font=`700 20px ${SANS}`;c.fillText('→',fx+bw+15,fy+33)}c.textAlign='left';fx+=bw+30});
   cy=fy+80;
   c.fillStyle=r.o===1?'#c8322b':'#3a3d44';c.font=`700 18px ${SANS}`;
-  c.fillText(['','★ 推薦','可考慮','留意'][r.o]+`・總格 ${r.g.zong}・${['','首選','次選','放寬'][r.t]}`,x+26,cy);
+  c.fillText(['','★ 推薦','可考慮','留意'][r.o]+`・${r.sc.total} 分・總格 ${r.g.zong}・${['','首選','次選','放寬','火木火'][r.t]}`,x+26,cy);
   cy+=28;c.font=`400 15px ${SANS}`;
   if(r.pun){c.fillStyle='#3d5a80';c.fillText(('諧音：'+r.pun).slice(0,22),x+26,cy);cy+=24}
   if(r.why.length){c.fillStyle='#8d9097';const w=r.why.join('；');c.fillText(w.length>24?w.slice(0,23)+'…':w,x+26,cy)}
@@ -406,6 +517,153 @@ async function dl(i){
   if(!dlns){cv.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`寶寶取名候選-${i+1}.png`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)},'image/png');return}
   cv.toBlob(async b=>{try{await dlns.save({filename:`寶寶取名候選-${i+1}.png`,data:b});toast('已下載')}catch(e){toast(e&&e.code==='declined'?'已取消下載':'無法下載，請長按圖片儲存')}},'image/png');
 }
+
+const DAJI=new Set([1,3,5,11,13,15,16,21,23,24,31,32,33,41,45,47,48,52,63,65,67,81]);
+const lv=n=>DAJI.has(n)?['大吉',1]:luck(n)==='吉'?['吉',.75]:luck(n)==='半吉'?['半吉',.4]:['凶',0];
+function pyParts(py){const p=plain(py).replace(/[^a-zv]/g,'');const m=p.match(/^(zh|ch|sh|[bpmfdtnlgkhjqxrzcsyw])?(.*)$/);return {ini:m[1]||'',fin:m[2]||''}}
+function score(r){
+  const wg=[['人格',r.g.ren,8],['地格',r.g.di,5],['總格',r.g.zong,5],['外格',r.g.wai,2]].map(([k,n,m])=>{const l=lv(n);return [k,n,l[0],m*l[1],m]});
+  const p1=wg.reduce((s,x)=>s+x[3],0);
+  const p2=[0,10,7,5,4][r.t];
+  const ev=x=>x[3]==='金'?12.5:x[3]==='水'?10:x[3]==='木'?5:0;
+  const p3=ev(r.xa)+ev(r.xb);
+  const hv=x=>x[5]===1?5:x[5]===0?3:0;
+  const p4=hv(r.xa)+hv(r.xb);
+  // 音韻 15
+  const tns=new Set(r.tn).size, a=pyParts(r.xa[2]), b=pyParts(r.xb[2]);
+  const ph=[];let p5=0;
+  const tv=tns===3?7:tns===2?4:0;p5+=tv;ph.push([`聲調${tns===3?'三字都不同':tns===2?'有起伏':'三字相同'}`,tv]);
+  const di=a.ini!==b.ini?2:0;p5+=di;ph.push([`聲母${di?'不同':'相同'}`,di]);
+  const df=a.fin!==b.fin?2:0;p5+=df;ph.push([`韻母${df?'不同':'相同'}`,df]);
+  const ds=(a.fin!=='eng'&&b.fin!=='eng')?1:0;p5+=ds;if(ds)ph.push(['不與姓氏同韻',1]);
+  const loud=/a|o|ang|ong/.test(b.fin)?3:1;p5+=loud;ph.push([`結尾${loud===3?'響亮開口音':'較收斂'}`,loud]);
+  // 字形 10
+  const W=r.xa[7]+r.xb[7];const ws=W<=16?5:W<=20?4:W<=24?3:W<=28?2:1;
+  const sd=r.xa[8]!==r.xb[8]?3:1, rd=r.xa[6]!==r.xb[6]?2:0;
+  const p6=ws+sd+rd;
+  // 命名適合度 10（主觀）
+  const p7=r.xa[9]+r.xb[9];
+  const adj=[];
+  if(r.bad)adj.push(['負面詞義：'+r.badMsg,-15]);
+  for(const c of [r.ca,r.cb])for(const n of (NOTES[c]||[]))if(/女性|較重|撞名/.test(n))adj.push([`${c}：${n}`,-2]);
+  const p8=Math.max(-15,adj.reduce((s,x)=>s+x[1],0));
+  const base=p1+p2+p3+p4+p5+p6;
+  const total=Math.max(0,Math.round(st.subj===false?base*100/90:base+p7));
+  return {total,p1,p2,p3,p4,p5,p6,p7,p8,wg,adj,ph,W,sd,rd,ws};
+}
+function scoreHTML(r){
+  const s=r.sc,f=v=>Number.isInteger(v)?String(v):v.toFixed(1);
+  const pts=v=>v>0?`<em>+${f(v)}</em>`:v<0?`<em class="neg">${f(v)}</em>`:`<em class="zero">0</em>`;
+  const pill=(txt,v)=>`<span>${esc(txt)}${v===undefined?'':' '+pts(v)}</span>`;
+  const hv=x=>x[5]===1?5:x[5]===0?3:0, ev=x=>x[3]==='金'?12.5:x[3]==='水'?10:x[3]==='木'?5:0;
+  const items=[
+   ['五格數理',s.p1,20,s.wg.map(w=>pill(`${w[0]} ${w[1]}・${w[2]}`,w[3]))],
+   ['三才',s.p2,10,[pill(r.g.sc),pill(['','首選','次選','放寬組','火木火組'][r.t])]],
+   ['八字喜用',s.p3,25,[r.xa,r.xb].map(x=>pill(`${x[0]} 屬${x[3]}`,ev(x))),'金 12.5・水 10・木 5・火土 0'],
+   ['生肖',s.p4,10,[r.xa,r.xb].map(x=>pill(`${x[0]} ${x[5]===1?'馬＋':x[5]===-1?'馬－':'中性'}`,hv(x)))],
+   ['音韻',s.p5,15,s.ph.map(p=>pill(p[0],p[1]))],
+   ['字形',s.p6,10,[pill(`書寫 ${s.W} 畫`,s.ws),pill(`結構 ${r.xa[8]}／${r.xb[8]}`,s.sd),pill(`部首${s.rd?'不同':'相同'}`,s.rd)]],
+   ['命名適合度',s.p7,10,[r.xa,r.xb].map(x=>pill(`${x[0]} ${x[9]}／5`)),`我的主觀評分：5 經典名字用字、4 字義正面但較少用、3 中性、2 平淡或多作虛詞姓氏、1 不適合；偏女性、撞名率高、字義太重各減 1。不看生肖和五行${st.subj===false?'。目前未計入總分':''}`,'wide'],
+  ];
+  const warn=r.badMsg?`<div class="swarn">⚠ ${esc(r.badMsg)}<small>不扣分，請自行判斷</small></div>`:'';
+  return `${warn}<div class="sdet">${items.map(([k,v,m,d,note,wide])=>`<div class="si${wide?' wide':''}">
+    <div class="si-h"><span class="si-k">${k}</span><span class="si-v${v<0?' neg':''}"><b>${f(v)}</b>${m?`<small>／${m}</small>`:''}</span></div>
+    ${m?`<div class="si-bar"><i style="width:${Math.max(0,Math.min(100,v/m*100))}%"></i></div>`:''}
+    <div class="si-d">${d.join('')}</div>${note?`<div class="si-n">${esc(note)}</div>`:''}
+  </div>`).join('')}</div>`;
+}
+function rowHTML(r){
+  const OV=['','★ 推薦','可考慮','留意'],tn=['','首選','次選','放寬','火木火'];
+  return `<div class="rrow click${st.fav.includes(r.key)?' faved':''}" data-detail="${esc(r.key)}" tabindex="0" role="button" aria-label="馮${esc(r.key)} 的明細">
+   <span class="fv rn"><label class="fbox"><input type="checkbox" data-fav="${esc(r.key)}" ${st.fav.includes(r.key)?'checked':''} aria-label="喜歡 馮${esc(r.key)}"></label><b>馮${esc(r.ca)}${esc(r.cb)}</b></span>
+   <span class="rmeta"><span class="rel">${GN[grade(r.xa)]}${r.xa[3]}・${GN[grade(r.xb)]}${r.xb[3]}</span>
+   <span class="rnum"><i>人</i>${r.g.ren} <i>地</i>${r.g.di} <i>外</i>${r.g.wai} <i>總</i>${r.g.zong}</span>
+   <span class="rsc">${r.g.sc}</span>
+   <span class="rt"><span class="tier t${r.t}">${tn[r.t]}</span></span></span>
+   <span class="ro"><button type="button" class="scb" data-detail="${esc(r.key)}" title="看分數怎麼算">${r.sc.total}<small>分</small></button><span class="overall o${r.o}">${OV[r.o]}</span></span>
+   ${r.why.length||r.pun?`<span class="rwhy">${r.why.length?`<span class="why">${esc(r.why.join('；'))}</span>`:''}${r.pun?`<span class="why pun">諧音：${esc(r.pun)}</span>`:''}</span>`:''}
+  </div>`;
+}
+function listHTML(R){return `<div class="rlist"><div class="rrow rhead"><span>名字</span><span>五行</span><span>人・地・外・總格</span><span>三才</span><span>等級</span><span>分數・總評</span></div>${R.map(rowHTML).join('')}</div>`}
+let recCache={key:''};
+function recAll(){
+  const key=JSON.stringify([st.good,st.fire,st.wood,st.earth,st.horse,st.loose,st.hmh,st.subj]);
+  if(recCache.key!==key){
+    const vis=POOL.filter(visible),all=[];
+    for(const a of vis)for(const b of vis){if(a[0]===b[0]||!tier(a[1],b[1],st.loose))continue;const r=evalPair(a[0],b[0]);if(r&&!r.bad)all.push(r)}
+    all.sort((p,q)=>q.sc.total-p.sc.total||(q.xa[9]+q.xb[9])-(p.xa[9]+p.xb[9])||p.sc.W-q.sc.W);
+    const bands=[];for(const r of all){const l=bands[bands.length-1];if(l&&l.s===r.sc.total)l.list.push(r);else bands.push({s:r.sc.total,list:[r]})}
+    recCache={key,all,bands};
+  }
+  return recCache;
+}
+let recBands=8;const openBand=new Set();
+function chipHTML(r,showScore){
+  const f=st.fav.includes(r.key);
+  return `<div class="nchip${f?' fav':''}"><button type="button" class="nc-main" data-detail="${esc(r.key)}"><b>馮${esc(r.ca)}${esc(r.cb)}${showScore?`<span class="nc-s">${r.sc.total}<small>分</small></span>`:''}</b><span class="nc-tags"><span class="sc3">${r.g.sc.split('').map(e=>`<i class="e-${e}">${e}</i>`).join('')}</span><span class="ce"><i class="e-${r.xa[3]}">${GN[grade(r.xa)]}${r.xa[3]}</i><i class="e-${r.xb[3]}">${GN[grade(r.xb)]}${r.xb[3]}</i></span></span></button><button type="button" class="nc-fav" data-togfav="${esc(r.key)}" aria-pressed="${f}" aria-label="${f?'移出':'加入'}我喜歡">${f?'★':'☆'}</button></div>`;
+}
+function renderRec(){
+  if(st.mode!=='rec')return;
+  const rc=recAll();
+  $('#recinfo').textContent=`從 ${rc.all.length.toLocaleString()} 個合格組合中依分數排列，共 ${rc.bands.length} 個分數段`;
+  $('#rec').innerHTML=rc.bands.length?rc.bands.slice(0,recBands).map(b=>{
+    let shown=b.list;
+    if(!openBand.has(b.s)){const cnt={};shown=[];for(const r of b.list){if((cnt[r.ca]||0)>=2||(cnt[r.cb]||0)>=2)continue;cnt[r.ca]=(cnt[r.ca]||0)+1;cnt[r.cb]=(cnt[r.cb]||0)+1;shown.push(r);if(shown.length>=12)break}}
+    return `<div class="band-s"><h3><span class="bs">${b.s}</span><span class="bu">分</span><span class="pill">${b.list.length} 個</span></h3><div class="chips">${shown.map(chipHTML).join('')}</div>${b.list.length>shown.length||openBand.has(b.s)?`<button type="button" class="bexp" data-band="${b.s}">${openBand.has(b.s)?'收合':`展開（${b.list.length-shown.length} 個）`}</button>`:''}</div>`;
+  }).join(''):'<p class="empty">目前的篩選條件下沒有組合，試著關掉幾個篩選。</p>';
+  $('#recmore').hidden=recBands>=rc.bands.length;
+}
+function openDetail(key){
+  const r=evalPair([...key][0],[...key][1]);if(!r)return;
+  const f=st.fav.includes(key);
+  $('#dtitle').textContent=`馮${r.ca}${r.cb}`;
+  $('#dbody').innerHTML=`<p class="dpy">féng ${esc(r.xa[2])} ${esc(r.xb[2])}</p>
+   <div class="dtop"><span class="dscore">${r.sc.total}<small>分</small></span><span class="sc3 big">${r.g.sc.split('').map(e=>`<i class="e-${e}">${e}</i>`).join('')}</span><span class="tier t${r.t}">${['','首選','次選','放寬','火木火'][r.t]}</span></div>
+   <p class="dch">${[r.xa,r.xb].map(x=>`<b class="e-${x[3]}">${esc(x[0])}</b> ${GN[grade(x)]}${x[3]}・${esc(x[4])}`).join('<br>')}</p>
+   <p class="dnum">人格 ${r.g.ren}・地格 ${r.g.di}・外格 ${r.g.wai}・總格 ${r.g.zong}</p>
+   ${r.why.filter(w=>!w.startsWith('詞義')).length?`<p class="why">${esc(r.why.filter(w=>!w.startsWith('詞義')).join('；'))}</p>`:''}${r.pun?`<p class="why pun">諧音：${esc(r.pun)}</p>`:''}
+   ${scoreHTML(r)}
+   <button type="button" class="${f?'':'primary'}" data-togfav="${esc(key)}" style="margin-top:12px">${f?'移出我喜歡':'加入我喜歡'}</button>`;
+  $('#dsheet').hidden=false;document.body.style.overflow='hidden';
+}
+const closeDetail=()=>{$('#dsheet').hidden=true;if($('#ssheet').hidden)document.body.style.overflow=''};
+function toggleFav(k){st.fav=st.fav.includes(k)?st.fav.filter(x=>x!==k):[...st.fav,k];save();render();if(!$('#ssheet').hidden)searchRun();if(!$('#dsheet').hidden)openDetail(k)}
+function setMode(m){st.mode=m;document.body.dataset.mode=m;document.querySelectorAll('.mode button[data-mode]').forEach(b=>b.setAttribute('aria-selected',b.dataset.mode===m));save()}
+
+function searchRun(){
+  const raw=$('#sq').value.replace(/\s/g,'');
+  let q=raw.startsWith('馮')&&raw.length>1?raw.slice(1):raw;
+  const box=$('#sres');
+  if(!q){box.innerHTML='<p class="smsg">輸入一個字，列出含這個字的名字；輸入兩個字，查這個名字的分數。</p>';return}
+  const chars=[...q];
+  const miss=chars.filter(c=>!byCh[c]);
+  if(miss.length){box.innerHTML=`<p class="smsg">「${esc(miss.join('、'))}」還沒收錄在字庫裡。想用的話告訴我，我幫你查筆畫補進去。</p>`;return}
+  if(chars.length===1){
+    const c=chars[0],L=[];
+    for(const x of POOL){for(const [a,b] of [[c,x[0]],[x[0],c]]){if(a===b)continue;const r=evalPair(a,b);if(r)L.push(r)}}
+    L.sort((p,q2)=>q2.sc.total-p.sc.total);
+    const x=byCh[c];
+    box.innerHTML=`<p class="smsg">「<b>${esc(c)}</b>」${x[1]} 畫・${x[3]}・${esc(x[4])}。含這個字的合格名字共 <b>${L.length}</b> 個${L.length>60?'，先列分數最高的 60 個':''}：</p>${L.length?`<div class="chips">${L.slice(0,60).map(r=>chipHTML(r,1)).join('')}</div>`:'<p class="smsg">目前的規則下沒有合格的組合，可以試著打開「放寬」或「火木火」。</p>'}`;
+    return;
+  }
+  if(chars.length===2){
+    const [a,b]=chars,r=evalPair(a,b);
+    if(r){box.innerHTML=`<div class="chips">${chipHTML(r,1)}</div><p class="smsg">點名字看分數明細。</p>`;return}
+    const xa=byCh[a],xb=byCh[b],g=grid(xa[1],xb[1]);
+    const why=[];[['人格',g.ren],['地格',g.di],['總格',g.zong]].forEach(([k,n])=>{if(luck(n)!=='吉')why.push(`${k} ${n} 是${luck(n)}數`)});
+    if(luck(g.wai)==='凶')why.push(`外格 ${g.wai} 是凶數`);
+    const [et,er,ed]=g.sc.split('');
+    if(rel(et,er)==='相剋')why.push(`天格${et}剋人格${er}`);if(rel(er,ed)==='相剋')why.push(`人格${er}剋地格${ed}`);
+    if(ed==='火')why.push(`地格屬火（三才${g.sc}），寶寶八字火已經太旺`);
+    const sv=[st.loose,st.hmh];st.loose=true;st.hmh=true;const alt=tier(xa[1],xb[1],true);st.loose=sv[0];st.hmh=sv[1];
+    const hint=alt===3?'打開頂部的「放寬」開關就會出現。':alt===4?'打開頂部的「火木火」開關就會出現。':'';
+    box.innerHTML=`<p class="smsg">「<b>馮${esc(a)}${esc(b)}</b>」是 ${xa[1]}＋${xb[1]} 畫，人格 ${g.ren}、地格 ${g.di}、外格 ${g.wai}、總格 ${g.zong}，三才${g.sc}。<br><span class="bad">不符合目前的規則</span>：${esc(why.join('；')||'筆畫組合不在允許清單')}。${hint}</p>`;
+    return;
+  }
+  box.innerHTML='<p class="smsg">名字只要輸入一個或兩個字。</p>';
+}
+const openSearch=()=>{$('#ssheet').hidden=false;document.body.style.overflow='hidden';searchRun();setTimeout(()=>$('#sq').focus(),50)};
+const closeSearch=()=>{$('#ssheet').hidden=true;if($('#dsheet').hidden)document.body.style.overflow=''};
 function render(){
   const P=pairList();
   const has=n=>POOL.some(x=>x[1]===n);
@@ -416,35 +674,39 @@ function render(){
   const rows=A.flatMap(a=>P2.filter(p=>p[0]===a).sort((x,y)=>x[2]-y[2]||x[1]-y[1]));
   const B=[...new Set([...rows.filter(p=>p[2]===1),...rows].map(p=>p[1]))];
   const tl=t=>t===1?'・首選':t===3?'・放寬':'';
-  $('#pairs').innerHTML=A.map(a=>`<li class="prow"><a href="#d-a-${a}">第一字 ${a} 畫</a>${P2.filter(p=>p[0]===a).sort((x,y)=>x[2]-y[2]||x[1]-y[1]).map(p=>`<span class="chip${p[2]===1?' best':''}"><b>${p[0]}＋${p[1]}</b> 畫<span class="sc3" title="三才：天格・人格・地格">${grid(p[0],p[1]).sc.split('').map(e=>`<i class="e-${e}">${e}</i>`).join('')}</span>${p[2]===1?'<span class="bt">首選</span>':p[2]===3?'<span class="bt lo">放寬</span>':''}</span>`).join('')}</li>`).join('');
+  $('#pairs').innerHTML=A.map(a=>`<li class="prow"><a href="#d-a-${a}">第一字 ${a} 畫</a>${P2.filter(p=>p[0]===a).sort((x,y)=>x[2]-y[2]||x[1]-y[1]).map(p=>`<span class="chip${p[2]===1?' best':''}"><b>${p[0]}＋${p[1]}</b> 畫<span class="sc3" title="三才：天格・人格・地格">${grid(p[0],p[1]).sc.split('').map(e=>`<i class="e-${e}">${e}</i>`).join('')}</span>${p[2]===1?'<span class="bt">首選</span>':p[2]===3?'<span class="bt lo">放寬</span>':p[2]===4?'<span class="bt lo">不補八字</span>':''}</span>`).join('')}</li>`).join('');
   $('#first').innerHTML=A.map(n=>drawer(n,P2.filter(p=>p[0]===n).sort((x,y)=>x[2]-y[2]||x[1]-y[1]).map(p=>p[1]),'a')).join('')||'<p class="empty">沒有可用的字。</p>';
   $('#second').innerHTML=B.map(n=>drawer(n,P2.filter(p=>p[1]===n).sort((x,y)=>x[2]-y[2]||x[0]-y[0]).map(p=>p[0]),'b')).join('');
-  ['good','fire','wood','earth','horse','loose'].forEach(k=>$('#f'+{good:'Good',fire:'Fire',wood:'Wood',earth:'Earth',horse:'Horse',loose:'Loose'}[k]).setAttribute('aria-pressed',st[k]));
+  ['good','fire','wood','earth','horse'].forEach(k=>$('#f'+{good:'Good',fire:'Fire',wood:'Wood',earth:'Earth',horse:'Horse'}[k]).setAttribute('aria-pressed',st[k]));
+  $('#fLoose').checked=st.loose;$('#fHmh').checked=st.hmh;
   const R=[];
   for(const ca of st.a)for(const cb of st.b){const r=evalPair(ca,cb);if(r)R.push(r)}
-  R.sort((p,q)=>p.o-q.o||p.t-q.t||(p.xa[1]+p.xb[1])-(q.xa[1]+q.xb[1]));
+  R.sort((p,q)=>q.sc.total-p.sc.total||p.o-q.o||p.t-q.t);
   window._R=R;
   drawSancai(R);
   renderFav();
-  $('#tally').innerHTML=`<span class="tl">第一字 ${st.a.length}・第二字 ${st.b.length}・</span><a href="#result">${R.length} 組</a>`;
+  renderRec();
+  {const prev=window._lastN;window._lastN=R.length;
+  $('#tally').innerHTML=`<span class="tl">第一字 ${st.a.length}・第二字 ${st.b.length}</span><a href="#result" class="cnt-btn${R.length?'':' zero'}" aria-label="${R.length} 組組合，跳到組合結果"><b>${R.length}</b> 組<span class="arr">›</span></a>`;
+  if(prev!==undefined&&prev!==R.length){const el=$('#tally .cnt-btn');el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump')}}
   if(!R.length){$('#out').innerHTML=`<p class="empty">${st.a.length&&st.b.length?'你挑的字之中，筆畫配不出符合規則的組合。可以多挑幾個不同筆畫的字，或打開「放寬」。':'兩個步驟各挑幾個字，這裡就會列出組合。'}</p>`;return}
-  const tn=['','首選','次選','放寬'];
-  const OV=['','★ 推薦','可考慮','留意'];
-  $('#out').innerHTML=`<div class="rlist"><div class="rrow rhead"><span>名字</span><span>五行</span><span>人・地・外・總格</span><span>三才</span><span>等級</span><span>總評</span></div>${R.map(r=>`<div class="rrow${st.fav.includes(r.key)?' faved':''}">
-   <label class="fv rn"><input type="checkbox" data-fav="${esc(r.key)}" ${st.fav.includes(r.key)?'checked':''} aria-label="喜歡 馮${esc(r.key)}"><b>馮${esc(r.ca)}${esc(r.cb)}</b></label>
-   <span class="rmeta"><span class="rel">${GN[grade(r.xa)]}${r.xa[3]}・${GN[grade(r.xb)]}${r.xb[3]}</span>
-   <span class="rnum"><i>人</i>${r.g.ren} <i>地</i>${r.g.di} <i>外</i>${r.g.wai} <i>總</i>${r.g.zong}</span>
-   <span class="rsc">${r.g.sc}</span>
-   <span class="rt"><span class="tier t${r.t}">${tn[r.t]}</span></span></span>
-   <span class="ro"><span class="overall o${r.o}">${OV[r.o]}</span></span>
-   ${r.why.length||r.pun?`<span class="rwhy">${r.why.length?`<span class="why">${esc(r.why.join('；'))}</span>`:''}${r.pun?`<span class="why pun">諧音：${esc(r.pun)}</span>`:''}</span>`:''}
-  </div>`).join('')}</div>`;
+  const tn=['','首選','次選','放寬','火木火'];
+  $('#out').innerHTML=listHTML(R);
 }
 document.addEventListener('change',e=>{const f=e.target.closest('[data-fav]');if(!f)return;const k=f.dataset.fav;st.fav=f.checked?[...new Set([...st.fav,k])]:st.fav.filter(x=>x!==k);save();render()});
 document.addEventListener('click',e=>{
   const u=e.target.closest('[data-unfav]');if(u){st.fav=st.fav.filter(x=>x!==u.dataset.unfav);save();render();return}
   if(e.target.closest('[data-close]')){closeSheet();return}
   const sh=e.target.closest('[data-share]');if(sh){shareImg(+sh.dataset.share);return}
+  const md=e.target.closest('.mode button[data-mode]');if(md){setMode(md.dataset.mode);render();window.scrollTo({top:Math.min(window.scrollY,document.querySelector('.bar').offsetTop),behavior:'smooth'});return}
+  const tf=e.target.closest('[data-togfav]');if(tf){toggleFav(tf.dataset.togfav);return}
+  if(e.target.closest('label.fbox'))return;
+  const dt=e.target.closest('[data-detail]');if(dt){openDetail(dt.dataset.detail);return}
+  if(e.target.closest('[data-dclose]')){closeDetail();return}
+  if(e.target.closest('#srchBtn')){openSearch();return}
+  if(e.target.closest('[data-sclose]')){closeSearch();return}
+  const be=e.target.closest('[data-band]');if(be){const s=+be.dataset.band;openBand.has(s)?openBand.delete(s):openBand.add(s);renderRec();return}
+  const sd=e.target.closest('[data-sd]');if(sd){const box=sd.closest('.rrow').querySelector('.rsd');box.hidden=!box.hidden;sd.setAttribute('aria-expanded',!box.hidden);return}
   const dd=e.target.closest('[data-dl]');if(dd){dl(+dd.dataset.dl);return}
   const t=e.target.closest('.t');
   if(t){const k=t.dataset.k,c=t.dataset.c;st[k]=st[k].includes(c)?st[k].filter(x=>x!==c):[...st[k],c];save();render();return}
@@ -454,20 +716,26 @@ $('#fHorse').addEventListener('click',()=>{st.horse=!st.horse;save();render()});
 $('#fFire').addEventListener('click',()=>{st.fire=!st.fire;save();render()});
 $('#fWood').addEventListener('click',()=>{st.wood=!st.wood;save();render()});
 $('#fEarth').addEventListener('click',()=>{st.earth=!st.earth;save();render()});
-$('#fLoose').addEventListener('click',()=>{st.loose=!st.loose;save();render()});
+$('#fLoose').addEventListener('change',e=>{st.loose=e.target.checked;save();render()});
+$('#fHmh').addEventListener('change',e=>{st.hmh=e.target.checked;save();render()});
 $('#clear').addEventListener('click',()=>{st.a=[];st.b=[];save();render()});
 $('#mkcard').addEventListener('click',makeCards);
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#sheet').hidden)closeSheet()});
-function favText(){const F=favPairs();return '寶寶取名候選\n'+F.map(r=>`馮${r.key}（féng ${r.xa[2]} ${r.xb[2]}）\n　${r.ca}：${r.xa[4]}；${r.cb}：${r.xb[4]}\n　三才${r.g.sc}・總格${r.g.zong}・${['','推薦','可考慮','留意'][r.o]}${r.pun?'・諧音：'+r.pun:''}`).join('\n')}
+$('#sq').addEventListener('input',searchRun);
+$('#recmore').addEventListener('click',()=>{recBands+=8;renderRec()});
+$('#fSubj').addEventListener('change',e=>{st.subj=e.target.checked;save();render()});
+document.addEventListener('keydown',e=>{const rw=e.target.closest&&e.target.closest('.rrow.click');if(rw&&(e.key==='Enter'||e.key===' ')&&!e.target.closest('label.fbox')){e.preventDefault();openDetail(rw.dataset.detail);return}if(e.key!=='Escape')return;if(!$('#dsheet').hidden)closeDetail();else if(!$('#ssheet').hidden)closeSearch();else if(!$('#sheet').hidden)closeSheet()});
+function favText(){const F=favPairs();return '寶寶取名候選\n'+F.map(r=>`馮${r.key}（féng ${r.xa[2]} ${r.xb[2]}）\n　${r.ca}：${r.xa[4]}；${r.cb}：${r.xb[4]}\n　三才${r.g.sc}・總格${r.g.zong}・${r.sc.total}分・${['','推薦','可考慮','留意'][r.o]}${r.pun?'・諧音：'+r.pun:''}`).join('\n')}
 $('#copyfav').addEventListener('click',async()=>{const F=favPairs();if(!F.length){toast('還沒有喜歡的名字');return}
   try{await navigator.clipboard.writeText(favText());toast(`已複製 ${F.length} 個名字`)}catch(e){toast('這個環境無法複製')}});
 const toast=m=>{const el=$('#toast');el.textContent=m;el.style.opacity=1;setTimeout(()=>el.style.opacity=0,1800)};
 $('#copy').addEventListener('click',async()=>{
   const R=window._R||[];if(!R.length){toast('還沒有組合可以複製');return}
-  const txt=R.map(r=>`馮${r.ca}${r.cb}（${r.xa[2]} ${r.xb[2]}）三才${r.g.sc}，總格${r.g.zong}，${['','推薦','可考慮','留意'][r.o]}${r.why.length?'：'+r.why.join('；'):''}${r.pun?'（諧音：'+r.pun+'）':''}`).join('\n');
+  const txt=R.map(r=>`馮${r.ca}${r.cb}（${r.xa[2]} ${r.xb[2]}）${r.sc.total}分，三才${r.g.sc}，總格${r.g.zong}，${['','推薦','可考慮','留意'][r.o]}${r.why.length?'：'+r.why.join('；'):''}${r.pun?'（諧音：'+r.pun+'）':''}`).join('\n');
   try{await navigator.clipboard.writeText(txt);toast(`已複製 ${R.length} 組`)}catch(e){toast('這個環境無法複製')}
 });
 new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document.body,{childList:true,subtree:true});
+setMode(st.mode||'pick');$('#fSubj').checked=st.subj!==false;
+{const dk=document.querySelector('#dock');const setD=()=>document.documentElement.style.setProperty('--dockh',(dk.hidden?0:dk.offsetHeight)+'px');setD();const dockRO=new ResizeObserver(setD);dockRO.observe(dk);new MutationObserver(setD).observe(dk,{attributes:true,attributeFilter:['hidden']})}
 {const bar=document.querySelector('.bar');const setB=()=>document.documentElement.style.setProperty('--barh',bar.offsetHeight+'px');setB();const barRO=new ResizeObserver(setB);barRO.observe(bar)}
 render();
 }
