@@ -35,7 +35,8 @@ h2{font:600 24px/1.25 "Noto Serif TC",serif;margin:0 0 6px}
 .pairs b{color:var(--seal)}
 .bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px max(5vw,16px)}
 .bar .wrap{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-@media(max-width:600px){.bar .wrap{flex-wrap:nowrap;gap:6px}.bar button{padding:0 11px;font-size:14px;white-space:nowrap}.bar .tl{display:none}}
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+@media(max-width:760px){.bar .wrap{flex-wrap:nowrap;gap:8px}.filters{flex:1;flex-wrap:nowrap;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent);padding-right:24px}.filters::-webkit-scrollbar{display:none}.bar button{flex:none;padding:0 11px;font-size:14px;white-space:nowrap}.bar .tl{display:none}.bar .tally{flex:none;margin-left:0}}
 button{font:500 15px "Noto Sans TC",sans-serif;min-height:44px;padding:0 14px;border-radius:22px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
 button[aria-pressed=true]{border-color:var(--seal);color:var(--seal);background:var(--sealbg)}
 button:focus-visible{outline:3px solid var(--slate);outline-offset:2px}
@@ -161,7 +162,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 <p class="lede">先挑名字第一個字，再挑第二個字，最後自動配出所有符合規則的組合。這裡有兩層五行，各管各的：</p>
 <ul class="lede" style="padding-left:1.2em;margin:8px 0 0">
 <li><b>筆畫的五行（三才）</b>：馮 12 畫，天格固定 13，屬火。寶寶喜金，但火會剋金，所以讓人格屬土當橋樑：火生土、土生金，地格落在金或土。下面列出的筆畫組合都已經符合這一層。</li>
-<li><b>字本身的五行</b>：看部首或字義，例如銘屬金、源屬水。名字裡的字帶金、水，可以再加強補八字。上方的「只看金水補八字」按鈕篩的就是這一層，打開後只留字本身屬金或水的字。</li>
+<li><b>字本身的五行</b>：看部首或字義，例如銘屬金、源屬水。名字裡的字帶金、水，可以再加強補八字。上方的「金水補八字」按鈕篩的就是這一層，打開後只留字本身屬金或水的字；也可以用「排除火」「排除木」只拿掉某一種。</li>
 </ul>
 <div class="sancai" id="sancai" aria-label="三才示意圖"></div>
 <p class="lede" style="margin-top:16px">每一列是名字第一個字的筆畫，首選排在最前面，點列名可以跳到下方對應的字。筆畫後面的小色塊是組合出來的三才（天格・人格・地格）：</p>
@@ -169,9 +170,13 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 </div></section>
 
 <div class="bar"><div class="wrap">
-  <button type="button" id="fGood" aria-pressed="false">只看金水補八字</button>
+  <div class="filters">
+  <button type="button" id="fGood" aria-pressed="false" title="只顯示字本身屬金或水的字">金水補八字</button>
+  <button type="button" id="fFire" aria-pressed="false" title="隱藏字本身屬火的字">排除火</button>
+  <button type="button" id="fWood" aria-pressed="false" title="隱藏字本身屬木的字">排除木</button>
   <button type="button" id="fHorse" aria-pressed="false">隱藏生肖忌字</button>
   <button type="button" id="fLoose" aria-pressed="false" title="放寬規則：允許天格剋人格，多出 5＋12 畫的組合">放寬</button>
+  </div>
   <span class="tally" id="tally"></span>
 </div></div>
 
@@ -250,7 +255,7 @@ function tier(a,b,loose){
 }
 const $=s=>document.querySelector(s);
 const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let st={a:[],b:[],fav:[],good:false,horse:false,loose:false};
+let st={a:[],b:[],fav:[],good:false,fire:false,wood:false,horse:false,loose:false};
 try{Object.assign(st,JSON.parse(localStorage.getItem('feng-picker')||'{}'))}catch(e){}
 if(!Array.isArray(st.fav))st.fav=[];
 const save=()=>{try{localStorage.setItem('feng-picker',JSON.stringify(st))}catch(e){}};
@@ -260,7 +265,7 @@ function pairList(){
   for(let a=2;a<=25;a++)for(let b=2;b<=25;b++){const t=tier(a,b,st.loose);if(t)P.push([a,b,t])}
   return P;
 }
-function visible(x){return (!st.good||x[3]==='金'||x[3]==='水')&&(!st.horse||x[5]!==-1)}
+function visible(x){return (!st.good||x[3]==='金'||x[3]==='水')&&(!st.fire||x[3]!=='火')&&(!st.wood||x[3]!=='木')&&(!st.horse||x[5]!==-1)}
 function drawer(n,partners,key){
   const list=POOL.filter(x=>x[1]===n&&(visible(x)||st[key].includes(x[0])));
   if(!list.length)return '';
@@ -413,7 +418,7 @@ function render(){
   $('#pairs').innerHTML=A.map(a=>`<li class="prow"><a href="#d-a-${a}">第一字 ${a} 畫</a>${P2.filter(p=>p[0]===a).sort((x,y)=>x[2]-y[2]||x[1]-y[1]).map(p=>`<span class="chip${p[2]===1?' best':''}"><b>${p[0]}＋${p[1]}</b> 畫<span class="sc3" title="三才：天格・人格・地格">${grid(p[0],p[1]).sc.split('').map(e=>`<i class="e-${e}">${e}</i>`).join('')}</span>${p[2]===1?'<span class="bt">首選</span>':p[2]===3?'<span class="bt lo">放寬</span>':''}</span>`).join('')}</li>`).join('');
   $('#first').innerHTML=A.map(n=>drawer(n,P2.filter(p=>p[0]===n).sort((x,y)=>x[2]-y[2]||x[1]-y[1]).map(p=>p[1]),'a')).join('')||'<p class="empty">沒有可用的字。</p>';
   $('#second').innerHTML=B.map(n=>drawer(n,P2.filter(p=>p[1]===n).sort((x,y)=>x[2]-y[2]||x[0]-y[0]).map(p=>p[0]),'b')).join('');
-  ['good','horse','loose'].forEach(k=>$('#f'+{good:'Good',horse:'Horse',loose:'Loose'}[k]).setAttribute('aria-pressed',st[k]));
+  ['good','fire','wood','horse','loose'].forEach(k=>$('#f'+{good:'Good',fire:'Fire',wood:'Wood',horse:'Horse',loose:'Loose'}[k]).setAttribute('aria-pressed',st[k]));
   const R=[];
   for(const ca of st.a)for(const cb of st.b){const r=evalPair(ca,cb);if(r)R.push(r)}
   R.sort((p,q)=>p.o-q.o||p.t-q.t||(p.xa[1]+p.xb[1])-(q.xa[1]+q.xb[1]));
@@ -445,6 +450,8 @@ document.addEventListener('click',e=>{
 });
 $('#fGood').addEventListener('click',()=>{st.good=!st.good;save();render()});
 $('#fHorse').addEventListener('click',()=>{st.horse=!st.horse;save();render()});
+$('#fFire').addEventListener('click',()=>{st.fire=!st.fire;save();render()});
+$('#fWood').addEventListener('click',()=>{st.wood=!st.wood;save();render()});
 $('#fLoose').addEventListener('click',()=>{st.loose=!st.loose;save();render()});
 $('#clear').addEventListener('click',()=>{st.a=[];st.b=[];save();render()});
 $('#mkcard').addEventListener('click',makeCards);
