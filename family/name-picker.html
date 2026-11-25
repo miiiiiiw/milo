@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>馮家取名選字器</title>
+<meta name="description" content="依康熙筆畫、三才五格與八字喜用，先選字再自動組合名字，可製作分享卡">
+<meta name="keywords" content="取名, 三才五格, 八字, 工具">
+<meta name="date" content="2026-11-25">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: calm working tool for a family decision, quiet and precise
+   IDEA: a printer's type case — drawers of characters sorted by stroke count, pick pieces, then set the name
+   PICTURE: the character drawers themselves; tapping a piece stamps it red
+   COLOUR and TYPE: white paper, ink, vermilion seal for chosen pieces; Noto Serif TC characters, Noto Sans TC labels
+   LAYOUT: step 1 first-character drawers, step 2 second-character drawers, step 3 the set names; sticky tally bar */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#16171b);--ink:light-dark(#1d1f24,#ecebe7);--mute:light-dark(#62656d,#a3a5ab);--line:light-dark(#e6e4df,#2c2e34);--tile:light-dark(#f6f5f2,#22242a);--seal:light-dark(#c8322b,#e0574e);--sealbg:light-dark(#fbeeed,#3a1f1d);--slate:light-dark(#3d5a80,#8fb0d8)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Noto Sans TC",system-ui,sans-serif;overflow-x:clip}
+.band{padding:clamp(24px,4vw,48px) max(5vw,16px)}
+.wrap{max-width:1100px;margin:0 auto}
+h1{font:900 clamp(30px,6vw,44px)/1.08 "Noto Serif TC",serif;margin:0 0 10px;text-wrap:balance}
+h2{font:600 24px/1.25 "Noto Serif TC",serif;margin:0 0 6px}
+.lede,.hint{color:var(--mute);margin:0;max-width:66ch}
+.hint{font-size:14px;margin-bottom:14px}
+.pairs{display:grid;gap:8px;margin:16px 0 0;padding:0;list-style:none}
+.prow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.prow>a{font-weight:700;color:var(--ink);text-decoration:none;min-width:7.5em;white-space:nowrap;padding:6px 0}
+.prow>a:hover{color:var(--seal)}
+.pairs .chip{border:1px solid var(--line);border-radius:10px;padding:6px 12px;font-size:14px;white-space:nowrap}.pairs .chip.best{border-color:var(--seal)}
+.pairs b{color:var(--seal)}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px max(5vw,16px)}
+.bar .wrap{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+@media(max-width:600px){.bar .wrap{flex-wrap:nowrap;gap:6px}.bar button{padding:0 11px;font-size:14px;white-space:nowrap}.bar .tl{display:none}}
+button{font:500 15px "Noto Sans TC",sans-serif;min-height:44px;padding:0 14px;border-radius:22px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+button[aria-pressed=true]{border-color:var(--seal);color:var(--seal);background:var(--sealbg)}
+button:focus-visible{outline:3px solid var(--slate);outline-offset:2px}
+.tally{margin-left:auto;font-size:14px;color:var(--mute);white-space:nowrap}
+.tally a{color:var(--seal);font-weight:700}
+.drawer{margin:0 0 22px}
+.drawer h3{font:600 16px "Noto Sans TC",sans-serif;margin:0 0 8px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;position:sticky;top:var(--barh,64px);z-index:4;background:color-mix(in srgb,var(--bg) 92%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:8px 0;margin-inline:-4px;padding-inline:4px}
+.drawer h3 .st{color:var(--seal)}
+.drawer h3 small{color:var(--mute);font-weight:400;font-size:13px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px}
+.t{border-radius:10px;border:1.5px solid transparent;background:var(--tile);padding:10px 6px 8px;display:grid;grid-template-rows:38px 20px 36px 20px 32px;align-content:start;justify-items:center;gap:2px;text-align:center}
+.t b{font:900 30px/38px "Noto Serif TC",serif}
+.t .py{font-size:12px;line-height:20px;color:light-dark(#a8aab0,#5c5f66)}
+.t .gl{font-size:13px;line-height:18px;color:var(--mute);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;align-self:start}
+.t i{line-height:20px}
+.hz{font-size:11px;padding:0 4px;border-radius:6px;white-space:nowrap}.hp{background:light-dark(#ece6fa,#3a2f5c);color:light-dark(#5b3fb0,#c3b0f5)}.hm{border:1px solid light-dark(#b9bbc1,#5c5f66);color:light-dark(#7a7d84,#8d9097)}
+.t[aria-pressed=true] .hp{background:#fff;color:#5b3fb0}.t[aria-pressed=true] .hm{border-color:#fff;color:#fff}
+.t small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:16px !important;align-self:start}
+
+.t i{font-style:normal;font-size:13px}
+.t[aria-pressed=true]{background:var(--seal);border-color:var(--seal);color:#fff}
+.t[aria-pressed=true] .gl{color:rgba(255,255,255,.85)}.t[aria-pressed=true] .py{color:rgba(255,255,255,.55)}
+.e-金{color:light-dark(#b8860b,#e3b23c)}.e-水{color:light-dark(#2f64b0,#6a9be0)}.e-木{color:light-dark(#2f5e24,#4f8a3e)}.e-火{color:light-dark(#c8442e,#ec6f57)}.e-土{color:light-dark(#7a4b2a,#c58b67)}
+.t[aria-pressed=true] i,.t[aria-pressed=true] i span,.t[aria-pressed=true] b{color:#fff}
+.g{font-size:13px;font-weight:700}.g1{color:var(--seal)}.g3{color:var(--mute)}.t[aria-pressed=true] .g{color:#fff}
+.t{position:relative}.t.dim{opacity:.38}.t.dim[aria-pressed=true]{opacity:.7}
+.badge{position:absolute;top:4px;right:4px;font-size:11px;line-height:1.3;padding:0 5px;border-radius:8px;background:var(--seal);color:#fff;font-style:normal}
+.badge.warn{left:4px;right:auto;background:#b48a3c}
+.t[aria-pressed=true] .badge{background:#fff;color:var(--seal)}
+.t small{font-size:12px;color:var(--mute);line-height:1.25}.t[aria-pressed=true] small{color:rgba(255,255,255,.85)}
+.overall{font-weight:700;white-space:nowrap}.overall.o1{color:var(--seal)}.why{font-size:13px;color:var(--mute)}.why.pun{color:var(--slate)}
+.guide{border-left:3px solid var(--seal);padding:2px 0 2px 12px;margin:0 0 12px;font-size:15px;max-width:66ch}
+.sancai{margin:20px 0 4px;max-width:560px}
+.sc-names,.sc-br{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sc-n{border:1.5px solid var(--line);border-radius:12px;text-align:center;padding:8px 4px}
+.sc-n b{display:block;font:900 clamp(30px,8vw,40px)/1.15 "Noto Serif TC",serif}
+.sc-n small{font-size:13px;color:var(--mute)}
+.sc-n.fixed b{color:var(--mute)}.sc-n.pick{border-color:var(--seal)}.sc-n.pick b{color:var(--seal)}
+.sc-br{margin-top:8px;row-gap:6px}
+.br{border:2px solid currentColor;border-top:0;height:12px;border-radius:0 0 8px 8px;opacity:.8}
+.br+.brl{font-size:13px;text-align:center;margin-top:-2px}
+.sc-flow{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:6px;margin-top:14px}
+.ge{border-radius:12px;padding:8px 4px;text-align:center;color:#fff}
+.ge small{display:block;font-size:13px;opacity:.9}.ge b{display:block;font:700 22px/1.2 "Noto Sans TC",sans-serif}
+.ge.火{background:#c8442e}.ge.土{background:#7a4b2a}.ge.金{background:#b8860b}.ge.水{background:#2f64b0}.ge.木{background:#2f5e24}
+.arrow{font-size:13px;color:var(--mute);text-align:center;line-height:1.2;white-space:nowrap}
+.arrow::after{content:"→";display:block;font-size:20px;color:var(--ink)}
+.sc-cap{font-size:14px;color:var(--mute);margin:10px 0 0}
+.role{display:inline-block;font-size:13px;font-weight:500;padding:2px 10px;border-radius:12px;margin-left:8px;vertical-align:middle;font-family:"Noto Sans TC",sans-serif}
+.role.r-ren{background:#7a4b2a;color:#fff}.role.r-di{background:#b8860b;color:#fff}
+.fv{display:inline-flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}.fv b{font:inherit;color:var(--ink)}
+.fv input{width:22px;height:22px;accent-color:var(--seal);margin:0}
+tr.faved td{background:var(--sealbg)}
+.favbox-unused{margin-top:24px;border:1.5px solid var(--seal);border-radius:14px;padding:16px}
+.favbox-unused h3{font:600 20px "Noto Serif TC",serif;margin:0 0 10px}
+.fchip{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:20px;padding:0 4px 0 12px;margin:0 6px 6px 0;font:900 18px "Noto Serif TC",serif;min-height:40px}
+.fchip button{min-height:36px;min-width:36px;padding:0;border:0;font-size:18px;color:var(--mute);background:none}
+button.primary{background:var(--seal);border-color:var(--seal);color:#fff}
+#cards{display:grid;gap:14px;margin-top:14px}
+#cards figure{margin:0;border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--tile)}
+#cards img{display:block;width:100%;height:auto;border-radius:8px}
+#cards figcaption{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-top:8px;font-size:14px;color:var(--mute)}
+@media(max-width:600px){.stack td.n{padding-inline-start:0}.stack td.n::before{display:none}}
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:20;background:color-mix(in srgb,var(--bg) 78%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:10px max(4vw,12px) calc(10px + env(safe-area-inset-bottom))}
+.dock-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.dock-n{white-space:nowrap;font-size:14px;color:var(--seal)}
+.dock-chips{flex:1;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0}
+.dock-chips::-webkit-scrollbar{display:none}
+.dock-btns{display:flex;gap:8px;flex:none}
+.fchip{flex:none;display:inline-flex;align-items:center;gap:2px;border:1px solid var(--line);background:var(--bg);border-radius:20px;padding:0 2px 0 12px;font:900 17px "Noto Serif TC",serif;min-height:40px;white-space:nowrap}
+.fchip button{min-height:36px;min-width:34px;padding:0;border:0;font-size:18px;color:var(--mute);background:none}
+body.docked{padding-bottom:96px}
+.sheet{position:fixed;inset:0;z-index:30}
+.sheet-mask{position:absolute;inset:0;background:rgba(10,10,14,.5);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+.sheet-panel{position:absolute;left:0;right:0;bottom:0;max-height:88vh;overflow:auto;background:var(--bg);border-radius:18px 18px 0 0;padding:14px max(4vw,14px) calc(18px + env(safe-area-inset-bottom));max-width:1100px;margin:0 auto}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;position:sticky;top:-14px;background:var(--bg);padding:6px 0;z-index:1}
+.linebtn{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:22px;background:#06c755;color:#fff;font:500 15px "Noto Sans TC",sans-serif;text-decoration:none;white-space:nowrap}
+.sheet-head h3{font:600 20px "Noto Serif TC",serif;margin:0}
+@media(max-width:600px){.dock-in{flex-wrap:wrap}.dock-chips{order:3;flex-basis:100%}.dock-btns{margin-left:auto}body.docked{padding-bottom:150px}}
+.rlist{border-top:1px solid var(--line)}
+.rrow{display:grid;grid-template-columns:minmax(9em,1.3fr) 7.5em 12em 5em 4.5em minmax(6em,1fr);column-gap:12px;align-items:center;padding:6px 4px;border-bottom:1px solid var(--line);font-size:15px}
+.rhead{font-size:13px;color:var(--mute);padding:8px 4px}
+.rrow.faved{background:var(--sealbg)}
+.rn b{font:900 22px/1.2 "Noto Serif TC",serif}
+.rnum{font-variant-numeric:tabular-nums;white-space:nowrap}.rnum i{font-style:normal;color:var(--mute);font-size:12px;margin-right:1px}
+.rmeta{display:contents}
+.rwhy{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:2px 12px;padding:0 0 4px 32px}
+.overall{white-space:nowrap}
+@media(max-width:700px){
+ .rhead{display:none}
+ .rrow{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"n o" "m m" "w w";row-gap:2px;padding:4px 2px}
+ .rn{grid-area:n;min-height:40px}.ro{grid-area:o;text-align:right}
+ .rmeta{grid-area:m;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-size:13px;padding-left:32px}
+ .rmeta .tier{font-size:12px;padding:0 7px}
+ .rwhy{grid-area:w;padding:0 0 4px 32px}
+ .rn b{font-size:20px}
+}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mute);margin:0 0 16px}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:13px;color:var(--mute);font-weight:500}
+td.n{font:900 22px/1.2 "Noto Serif TC",serif;white-space:nowrap}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tier{font-size:13px;padding:2px 9px;border-radius:12px;border:1px solid var(--line);white-space:nowrap}
+.tier.t1{border-color:var(--seal);color:var(--seal)}
+.tier.t3{border-style:dashed}
+.empty{color:var(--mute);padding:18px 0}
+.foot{color:var(--mute);font-size:14px;border-top:1px solid var(--line)}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:20px;font-size:14px;opacity:0;transition:opacity .25s;pointer-events:none}
+@media(max-width:600px){table{font-size:13px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:6.5em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:6em;margin-inline-start:-6.5em;color:var(--mute);font:400 13px "Noto Sans TC",sans-serif}.stack td:empty{display:none}td.n{font-size:24px}.tiles{grid-template-columns:repeat(auto-fill,minmax(92px,1fr))}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+.band.first{padding-top:56px}
+@media(max-width:560px){.band.first{padding-top:32px}}
+.page-kicker{color:var(--mute)}
+/* ── milo 頁首小標規範（見 README「頁首小標」），請勿個別調整 ── */
+.page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
+</style>
+</head>
+<body>
+<section class="band first"><div class="wrap">
+<p class="eyebrow page-kicker">家庭生活 · 寶寶取名</p>
+<h1>馮家取名選字器</h1>
+<p class="lede">先挑名字第一個字，再挑第二個字，最後自動配出所有符合規則的組合。這裡有兩層五行，各管各的：</p>
+<ul class="lede" style="padding-left:1.2em;margin:8px 0 0">
+<li><b>筆畫的五行（三才）</b>：馮 12 畫，天格固定 13，屬火。寶寶喜金，但火會剋金，所以讓人格屬土當橋樑：火生土、土生金，地格落在金或土。下面列出的筆畫組合都已經符合這一層。</li>
+<li><b>字本身的五行</b>：看部首或字義，例如銘屬金、源屬水。名字裡的字帶金、水，可以再加強補八字。上方的「只看金水補八字」按鈕篩的就是這一層，打開後只留字本身屬金或水的字。</li>
+</ul>
+<div class="sancai" id="sancai" aria-label="三才示意圖"></div>
+<p class="lede" style="margin-top:16px">每一列是名字第一個字的筆畫，首選排在最前面，點列名可以跳到下方對應的字：</p>
+<ul class="pairs" id="pairs"></ul>
+</div></section>
+
+<div class="bar"><div class="wrap">
+  <button type="button" id="fGood" aria-pressed="false">只看金水補八字</button>
+  <button type="button" id="fHorse" aria-pressed="false">隱藏生肖忌字</button>
+  <button type="button" id="fLoose" aria-pressed="false" title="放寬規則：允許天格剋人格，多出 5＋12 畫的組合">放寬</button>
+  <span class="tally" id="tally"></span>
+</div></div>
+
+<section class="band"><div class="wrap">
+<h2>第一步　名字第一個字<span class="role r-ren">決定人格 → 要屬土</span></h2>
+<p class="guide">這個字和姓氏一起決定「人格」，也就是主運和個性核心，是最重要的位置。適合穩重、端正的字，也是傳統放輩分字的地方。</p>
+<p class="hint">點選喜歡的字，可以多選。每個字下面是讀音和簡義，字的顏色代表常見的五行歸類：金是金黃、水是藍、木是綠、火是紅、土是褐。</p>
+<div class="legend"><span><b class="g g1">◎ 推薦</b>：五行屬金或水，也不犯生肖</span><span><b class="g">○ 可用</b>：屬木，或八字和生肖一加一減</span><span><b class="g g3">△ 留意</b>：屬火或土，或犯生肖</span><span style="flex-basis:100%">等級只看八字和生肖；小字是我對字本身的備註（偏女性、字義重、撞名率等），不影響等級。</span><span><span class="hz hp">馬＋</span> 屬馬喜用的字根（艹、禾、玉、金、米）</span><span><span class="hz hm">馬－</span> 生肖派忌用的字根（水、雨、子、冫）</span></div>
+<div id="first"></div>
+</div></section>
+
+<section class="band" style="padding-top:0"><div class="wrap">
+<h2>第二步　名字第二個字<span class="role r-di">決定地格 → 屬金最好，土也可</span></h2>
+<p class="guide">這個字決定「地格」（少年運、家庭）和「外格」（人際），也是平常最常被叫的字。讀音響亮、好叫，字義鮮明比較好。</p>
+<p class="hint">一樣多選。挑了字之後，另一欄會跟著提示：右上角「可配 N」表示能和你已選的 N 個字組成合格的名字，變淡的字表示筆畫配不上（仍可選），左上角「同部首」表示字形會太像。兩欄都會互相提示，先挑哪一欄都可以。</p>
+<div id="second"></div>
+</div></section>
+
+<section class="band" id="result" style="padding-top:0"><div class="wrap">
+<h2>第三步　組合結果</h2>
+<p class="hint">只顯示你挑的字之中，筆畫能配成上面規則的組合。勾選名字前的方框，名字會出現在畫面底部的列，從那裡製作分享卡。首選是三才火土金，次選是火土土，放寬組是天格剋人格。總評會再把兩個字的等級、聲調、備註，一起考慮，★ 推薦的排最前面。只有明顯負面的組合（例如「小人」）會降成留意；其他諧音只用藍字提示別人可能聯想到什麼，不扣分，好壞由你們判斷。諧音清單沒辦法列盡，最後還是請自己念一遍。</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button type="button" id="copy">複製組合清單</button><button type="button" id="clear">清除所有選字</button></div>
+<div id="out"></div>
+
+</div></section>
+
+<section class="band foot"><div class="wrap">
+<p>筆畫依 Unicode Unihan 字庫的康熙部首計算（部首還原原字，例如氵算水 4 畫），並校正「成」這類康熙與現代寫法不同的部件。字的五行是常見姓名學字典的歸類，各家不完全一致。五格剖象是 20 世紀初日本發展的方法，沒有科學根據，當成篩選參考就好。</p>
+</div></section>
+<div class="dock" id="dock" hidden><div class="dock-in">
+  <b class="dock-n" id="favcount"></b>
+  <div class="dock-chips" id="favlist"></div>
+  <div class="dock-btns"><button type="button" id="copyfav">複製文字</button><button type="button" id="mkcard" class="primary">製作分享卡</button></div>
+</div></div>
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet-mask" data-close></div>
+  <div class="sheet-panel" role="dialog" aria-modal="true" aria-label="分享卡">
+    <div class="sheet-head"><h3>分享卡</h3><button type="button" data-close>關閉</button></div>
+    <div id="cards"></div>
+  </div>
+</div>
+<div id="toast" role="status"></div>
+
+<script>
+{
+const POOL=[["人",2,"rén","金","仁人、為人",0,9],["力",2,"lì","火","力量、努力",0,19],["乃",2,"nǎi","火","於是，古雅",0,4],["又",2,"yòu","水","再、又一",0,29],["千",3,"qiān","金","數多、千里",0,24],["士",3,"shì","金","讀書人、有擔當",0,33],["川",3,"chuān","金","河流、山川",0,47],["夕",3,"xī","金","黃昏、夕照",0,36],["久",3,"jiǔ","木","長久",0,4],["也",3,"yě","土","語助，簡約",0,5],["山",3,"shān","土","高山、穩重",0,46],["大",3,"dà","火","廣大",0,37],["凡",3,"fán","水","平凡、超凡",0,16],["于",3,"yú","水","古姓、往",0,7],["才",3,"cái","金","才華",0,64],["小",3,"xiǎo","金","小巧、親切",0,42],["仁",4,"rén","金","仁愛",0,9],["今",4,"jīn","金","當下",0,9],["介",4,"jiè","金","耿介、正直",0,9],["尹",4,"yǐn","土","治理、古官名",0,4],["心",4,"xīn","金","心意",0,61],["予",4,"yǔ","金","給予",0,6],["文",4,"wén","水","文采",0,67],["方",4,"fāng","水","方正",0,70],["云",4,"yún","水","說；雲的古字",0,7],["中",4,"zhōng","火","中正",0,2],["丹",4,"dān","火","赤誠、丹心",0,3],["之",4,"zhī","火","古雅虛詞",0,4],["午",4,"wǔ","火","正午；馬之本支",0,24],["天",4,"tiān","火","天空",0,37],["太",4,"tài","火","極大",0,37],["斗",4,"dòu","火","北斗",0,68],["日",4,"rì","火","太陽",0,72],["允",4,"yǔn","土","允諾、公允",0,10],["王",4,"wáng","土","君王",1,96],["元",4,"yuán","木","首、開始",0,10],["友",4,"yǒu","木","朋友、友愛",0,29],["升",4,"shēng","木","上升",0,24],["月",4,"yuè","木","月亮",0,74],["公",4,"gōng","木","公正",0,12],["世",5,"shì","金","世代、世界",0,1],["仕",5,"shì","金","仕途、做事",0,9],["申",5,"shēn","金","伸展、申明",0,102],["白",5,"bái","金","潔白",0,106],["石",5,"shí","金","石頭、堅定",0,112],["玉",5,"yù","金","美玉",1,96],["正",5,"zhèng","金","端正",0,77],["立",5,"lì","金","站立、建立",0,117],["生",5,"shēng","金","生長",0,100],["冬",5,"dōng","水","冬天",-1,15],["永",5,"yǒng","水","永久",-1,85],["玄",5,"xuán","水","深遠",0,95],["弘",5,"hóng","水","寬大、弘揚",0,57],["以",5,"yǐ","土","用以，現代常用",0,9],["平",5,"píng","水","平安、平和",0,51],["巨",5,"jù","土","巨大",0,48],["田",5,"tián","土","田野",0,102],["由",5,"yóu","土","緣由、自由",0,102],["禾",5,"hé","木","禾苗；屬馬喜",1,115],["本",5,"běn","木","根本",0,75],["甲",5,"jiǎ","木","第一",0,102],["未",5,"wèi","木","未來",0,75],["令",5,"lìng","火","美好、令德",0,9],["可",5,"kě","木","可以",0,30],["古",5,"gǔ","木","古樸",0,30],["史",5,"shǐ","金","歷史",0,30],["加",5,"jiā","木","增加",0,19],["央",5,"yāng","土","中央",0,37],["善",12,"shàn","金","良善",0,30],["尊",12,"zūn","金","尊貴",0,41],["尋",12,"xún","金","尋找、探求",0,41],["斯",12,"sī","金","此，斯文",0,69],["欽",12,"qīn","金","欽佩",0,76],["鈞",12,"jūn","金","穩重有分量",1,167],["詠",12,"yǒng","金","吟詠",0,149],["舒",12,"shū","金","舒展",0,135],["竣",12,"jùn","金","完成",0,117],["皓",12,"hào","金","潔白明亮",0,106],["盛",12,"shèng","金","興盛",0,108],["涵",12,"hán","水","涵養",-1,85],["淳",12,"chún","水","淳樸",-1,85],["淵",12,"yuān","水","深淵、淵博",-1,85],["清",12,"qīng","水","清澈",-1,85],["淇",12,"qí","水","淇水",-1,85],["深",12,"shēn","水","深遠",-1,85],["添",12,"tiān","水","增添",-1,85],["博",12,"bó","水","博學",0,24],["雲",12,"yún","水","雲朵",-1,173],["雄",12,"xióng","水","雄壯",0,172],["雯",12,"wén","水","雲彩紋",-1,173],["閎",12,"hóng","水","宏大",0,169],["富",12,"fù","水","富足",0,40],["惠",12,"huì","水","恩惠",0,61],["森",12,"sēn","木","森林",0,75],["棋",12,"qí","木","棋藝",0,75],["棠",12,"táng","木","棠棣，兄弟情",0,75],["景",12,"jǐng","木","景色",0,72],["凱",12,"kǎi","木","凱旋",0,16],["喬",12,"qiáo","木","高大",0,30],["茗",12,"míng","木","茶；屬馬喜",1,140],["荃",12,"quán","木","香草；屬馬喜",1,140],["策",12,"cè","木","策略",0,118],["絢",12,"xuàn","木","絢爛",0,120],["傑",12,"jié","木","傑出",0,9],["晴",12,"qíng","火","晴朗",0,72],["晶",12,"jīng","火","晶亮",0,72],["智",12,"zhì","火","智慧",0,72],["普",12,"pǔ","火","普及",0,72],["然",12,"rán","火","自然、然諾",0,86],["登",12,"dēng","火","登高",0,105],["朝",12,"cháo","火","早晨",0,74],["斐",12,"fěi","水","文采斐然",0,67],["程",12,"chéng","火","路程、規程",1,115],["童",12,"tóng","金","童心",0,117],["堯",12,"yáo","土","古聖王",0,32],["嵐",12,"lán","土","山間霧氣",0,46],["翔",12,"xiáng","土","飛翔",0,124],["雅",12,"yǎ","土","文雅",0,172],["越",12,"yuè","土","超越",0,156],["順",12,"shùn","金","順利",0,181],["雁",12,"yàn","土","大雁",0,172],["新",13,"xīn","金","新的",0,69],["靖",13,"jìng","金","安定",0,174],["聖",13,"shèng","金","明理通達",0,128],["鈺",13,"yù","金","珍寶",1,167],["鈴",13,"líng","金","鈴聲",1,167],["鉅",13,"jù","金","巨大",1,167],["鉉",13,"xuàn","金","鼎耳，賢臣",1,167],["琛",13,"chēn","金","珍寶",1,96],["琦",13,"qí","金","美玉、奇偉",1,96],["琨",13,"kūn","金","美玉",1,96],["琪",13,"qí","金","美玉",1,96],["琳",13,"lín","金","美玉",1,96],["琴",13,"qín","金","古琴",1,96],["琮",13,"cóng","金","方柱形玉器",1,96],["詩",13,"shī","金","詩歌",0,149],["詮",13,"quán","金","詮釋",0,149],["詳",13,"xiáng","金","周詳",0,149],["詹",13,"zhān","金","古姓、至",0,149],["頌",13,"sòng","金","頌揚",0,181],["群",13,"qún","金","合群",0,123],["義",13,"yì","金","道義",0,123],["裕",13,"yù","金","富裕寬容",0,145],["稚",13,"zhì","金","稚嫩、純真",1,115],["歆",13,"xīn","金","欣喜、嚮往",0,76],["湘",13,"xiāng","水","湘江",-1,85],["湛",13,"zhàn","水","清澈深遠",-1,85],["湖",13,"hú","水","湖泊",-1,85],["游",13,"yóu","水","游歷",-1,85],["渝",13,"yú","水","不變",-1,85],["雷",13,"léi","水","雷",-1,173],["楊",13,"yáng","木","楊柳",0,75],["楓",13,"fēng","木","楓樹",0,75],["楚",13,"chǔ","木","清楚、楚楚",0,75],["楠",13,"nán","木","楠木",0,75],["業",13,"yè","木","事業、學業",0,75],["楷",13,"kǎi","木","楷模",0,75],["楫",13,"jí","木","船槳",0,75],["莊",13,"zhuāng","木","莊重",1,140],["莘",13,"shēn","木","莘莘學子",1,140],["稔",13,"rěn","木","熟悉、豐收",1,115],["筠",13,"yún","木","竹青皮，堅貞",0,118],["經",13,"jīng","木","經典",0,120],["毓",13,"yù","木","養育、鍾靈毓秀",0,80],["暄",13,"xuān","火","溫暖",0,72],["暉",13,"huī","火","光輝",0,72],["暖",13,"nuǎn","火","溫暖",0,72],["暘",13,"yáng","火","日出",0,72],["煌",13,"huáng","火","輝煌",0,86],["煜",13,"yù","火","照耀",0,86],["煥",13,"huàn","火","煥發",0,86],["煦",13,"xù","火","和煦",0,86],["照",13,"zhào","火","照耀",0,86],["傳",13,"chuán","火","傳承",0,9],["嵩",13,"sōng","土","嵩山、高",0,46],["園",13,"yuán","土","園地",0,31],["圓",13,"yuán","土","圓滿",0,31],["意",13,"yì","土","心意",0,61],["愛",13,"ài","土","愛",0,61],["雍",13,"yōng","土","雍容",0,172],["微",13,"wēi","水","細微",0,60],["敬",13,"jìng","木","敬重",0,66],["會",13,"huì","木","相會",0,73],["路",13,"lù","火","道路",0,157],["鼎",13,"dǐng","火","鼎盛",0,206],["誠",14,"chéng","金","真誠",0,149],["源",14,"yuán","水","源頭",-1,85],["銘",14,"míng","金","銘記",1,167],["銓",14,"quán","金","衡量",1,167],["銀",14,"yín","金","白銀",1,167],["瑞",14,"ruì","金","祥瑞",1,96],["瑜",14,"yú","金","美玉",1,96],["瑛",14,"yīng","金","玉光",1,96],["碩",14,"shuò","金","碩大、碩學",0,112],["碧",14,"bì","金","青綠玉石",0,112],["睿",14,"ruì","金","智慧通達",0,109],["誌",14,"zhì","金","記",0,149],["語",14,"yǔ","金","言語",0,149],["誥",14,"gào","金","告誡",0,149],["誦",14,"sòng","金","誦讀",0,149],["齊",14,"qí","金","見賢思齊",0,210],["韶",14,"sháo","金","美好，韶光",0,180],["端",14,"duān","金","端正",0,117],["實",14,"shí","金","誠實",0,40],["瑄",14,"xuān","金","祭天玉璧",1,96],["溥",14,"pǔ","水","廣大",-1,85],["溪",14,"xī","水","溪流",-1,85],["溫",14,"wēn","水","溫和",-1,85],["滄",14,"cāng","水","滄海",-1,85],["豪",14,"háo","水","豪邁",0,152],["聞",14,"wén","水","聽聞、聞名",0,128],["鳴",14,"míng","水","鳴叫",0,196],["福",14,"fú","水","福氣",0,113],["榕",14,"róng","木","榕樹",0,75],["榛",14,"zhēn","木","榛樹",0,75],["榮",14,"róng","木","光榮",0,75],["嘉",14,"jiā","木","美好、嘉許",0,30],["菁",14,"jīng","木","精華；屬馬喜",1,140],["華",14,"huá","木","光華；屬馬喜",1,140],["綸",14,"lún","木","經綸",0,120],["維",14,"wéi","土","維繫",0,120],["綺",14,"qǐ","木","美麗",0,120],["精",14,"jīng","金","精良",1,119],["箏",14,"zhēng","木","古箏",0,118],["熙",14,"xī","火","光明興盛",0,86],["熊",14,"xióng","火","熊",0,86],["赫",14,"hè","火","顯赫",0,155],["暢",14,"chàng","火","暢達",0,72],["寧",14,"níng","火","安寧",0,40],["爾",14,"ěr","火","你、如此",0,89],["禎",14,"zhēn","火","吉祥",0,113],["慎",14,"shèn","火","謹慎",0,61],["境",14,"jìng","土","境界",0,32],["壽",14,"shòu","金","長壽",0,33],["甄",14,"zhēn","土","甄選",0,98],["肇",14,"zhào","火","開始",0,129],["鑄",22,"zhù","金","鑄造",1,167],["鑑",22,"jiàn","金","鏡子、借鑑",1,167],["讀",22,"dú","火","讀書",0,149],["霽",22,"jì","水","雨後天晴",-1,173],["籟",22,"lài","木","天籟",0,118],["藻",22,"zǎo","木","文藻",1,140],["蘊",22,"yùn","木","蘊含",1,140],["蘇",22,"sū","木","復甦",1,140],["權",22,"quán","木","權衡",0,75],["聽",22,"tīng","火","聆聽",0,128],["驍",22,"xiāo","火","驍勇",0,187],["懿",22,"yì","土","美德",0,61],["巒",22,"luán","土","山巒",0,46],["巔",22,"diān","土","山巔",0,46],["歡",22,"huān","水","歡喜",0,76],["顯",23,"xiǎn","火","顯揚",0,181],["麟",23,"lín","土","麒麟",0,198],["巖",23,"yán","土","山巖",0,46],["鑠",23,"shuò","金","光亮",1,167],["鷺",23,"lù","火","白鷺",0,196]];
+const NOTES={"琪":["偏女性"],"琳":["偏女性"],"鈴":["偏女性"],"琴":["偏女性"],"雯":["偏女性"],"詩":["偏女性"],"碧":["偏女性"],"瑛":["偏女性"],"綺":["偏女性"],"菁":["偏女性"],"瑜":["偏女性"],"涵":["偏女性"],"淇":["偏女性"],"茗":["偏女性"],"絢":["偏女性"],"箏":["偏女性"],"夕":["偏女性"],"聖":["字義較重"],"尊":["字義較重"],"王":["字義較重"],"天":["字義較重"],"太":["字義較重"],"巨":["字義較重"],"鉅":["字義較重"],"權":["字義較重","筆畫多、不好寫"],"顯":["字義較重","筆畫多、不好寫"],"鼎":["字義較重"],"睿":["常見，撞名率較高"],"翔":["常見，撞名率較高"],"傑":["常見，撞名率較高"],"凱":["常見，撞名率較高"],"豪":["常見，撞名率較高"],"博":["常見，撞名率較高"],"皓":["常見，撞名率較高","響亮好叫，適合放第二字"],"銘":["常見，撞名率較高"],"瑞":["常見，撞名率較高","響亮好叫，適合放第二字"],"文":["常見，撞名率較高"],"宇":["常見，撞名率較高"],"霽":["筆畫多、不好寫"],"籟":["筆畫多、不好寫"],"鑄":["筆畫多、不好寫"],"鑑":["筆畫多、不好寫"],"藻":["筆畫多、不好寫"],"蘊":["筆畫多、不好寫"],"蘇":["筆畫多、不好寫"],"聽":["筆畫多、不好寫"],"驍":["筆畫多、不好寫"],"懿":["筆畫多、不好寫"],"巒":["筆畫多、不好寫"],"巔":["筆畫多、不好寫"],"歡":["筆畫多、不好寫"],"讀":["筆畫多、不好寫"],"麟":["筆畫多、不好寫"],"巖":["筆畫多、不好寫"],"鑠":["筆畫多、不好寫"],"鷺":["筆畫多、不好寫"],"乃":["語助字，單用較少見"],"于":["語助字，單用較少見"],"也":["語助字，單用較少見"],"午":["屬馬遇午，有「自刑」之說"],"介":["易聯想「介意」"],"微":["易聯想「微小」"],"熊":["字感較剛硬"],"雷":["字感較剛硬"],"靖":["穩重，適合放第一字"],"士":["穩重，適合放第一字"],"語":["響亮好叫，適合放第二字"],"人":["單獨當名字較少見"],"力":["單獨當名字較少見"],"又":["語助字，單用較少見"]};
+const grade=x=>{const good=x[3]==='金'||x[3]==='水';if(x[3]==='火'||x[3]==='土')return 3;if(good&&x[5]>=0)return 1;if(!good&&x[5]===-1)return 3;return 2};
+const NEG={'小人':'「小人」是負面詞'};
+const NEGSUR={'ren':'「馮人」讀音像「瘋人」','zi':'「馮子」讀音像「瘋子」','kuang':'讀音像「瘋狂」'};
+const PUNPAIR={'凡人':'凡人','才人':'古代嬪妃位號「才人」','經文':'經文','大人':'大人','千人':'千人','士人':'士人','小又':'小又'};
+const PUNSND={'xin wen':'新聞','xin ren':'新人','jing yu':'鯨魚','xin hao':'心好、信號','yu wen':'語文','shi li':'勢力','jing wen':'驚聞','xin yu':'心語、新雨','qian rui':'逢千瑞','qian yu':'千語、前語','chuan ren':'傳人','xiao yu':'小雨、小魚','zhan xin':'嶄新','kun yu':'困於','chen yu':'沉魚','shi cheng':'市城、誓成','jing ren':'驚人','xin yan':'心雁'};
+const plain=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ü/g,'v');
+const GN=['','◎','○','△'];
+const tone=py=>{const m={'āēīōūǖ':1,'áéíóúǘ':2,'ǎěǐǒǔǚ':3,'àèìòùǜ':4};for(const ch of py)for(const k in m)if(k.includes(ch))return m[k];return 5};
+const JI=new Set([1,3,5,6,7,8,11,13,15,16,17,18,21,23,24,25,29,31,32,33,35,37,39,41,45,47,48,52,57,61,63,65,67,68,81]);
+const BAN=new Set([27,30,38,40,49,51,53,55,58,71,73,75,77,78]);
+const EL=['水','木','木','火','火','土','土','金','金','水'];
+const GEN={木:'火',火:'土',土:'金',金:'水',水:'木'};
+const SUR=12;
+const luck=n=>JI.has(n)?'吉':BAN.has(n)?'半吉':'凶';
+const rel=(a,b)=>a===b?'比和':(GEN[a]===b||GEN[b]===a)?'相生':'相剋';
+function grid(a,b){
+  const tian=SUR+1,ren=SUR+a,di=a+b,wai=b+1,zong=SUR+a+b;
+  const sc=[EL[tian%10],EL[ren%10],EL[di%10]];
+  return {tian,ren,di,wai,zong,sc:sc.join('')};
+}
+function tier(a,b,loose){
+  const g=grid(a,b);
+  if(!(luck(g.ren)==='吉'&&luck(g.di)==='吉'&&luck(g.zong)==='吉'&&luck(g.wai)!=='凶'))return 0;
+  const [t,r,d]=g.sc;
+  if(d==='火'||rel(r,d)==='相剋')return 0;
+  if(r==='土')return d==='金'?1:(d==='土'?2:0);
+  if(r==='金'&&loose)return 3;
+  return 0;
+}
+const $=s=>document.querySelector(s);
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let st={a:[],b:[],fav:[],good:false,horse:false,loose:false};
+try{Object.assign(st,JSON.parse(localStorage.getItem('feng-picker')||'{}'))}catch(e){}
+if(!Array.isArray(st.fav))st.fav=[];
+const save=()=>{try{localStorage.setItem('feng-picker',JSON.stringify(st))}catch(e){}};
+const byCh=Object.fromEntries(POOL.map(x=>[x[0],x]));
+function pairList(){
+  const P=[];
+  for(let a=2;a<=25;a++)for(let b=2;b<=25;b++){const t=tier(a,b,st.loose);if(t)P.push([a,b,t])}
+  return P;
+}
+function visible(x){return (!st.good||x[3]==='金'||x[3]==='水')&&(!st.horse||x[5]!==-1)}
+function drawer(n,partners,key){
+  const list=POOL.filter(x=>x[1]===n&&(visible(x)||st[key].includes(x[0])));
+  if(!list.length)return '';
+  return `<div class="drawer" id="d-${key}-${n}"><h3><span><span class="st">${key==='a'?'第一字':'第二字'}</span>・${n} 畫</span> <small>可配第${key==='a'?'二':'一'}字 ${partners.join('、')} 畫</small></h3><div class="tiles">${list.map(x=>{
+    const on=st[key].includes(x[0]);
+    const other=key==='a'?st.b:st.a;
+    let cls='',badge='';
+    if(other.length){
+      const n=other.filter(c=>{const y=byCh[c];return y&&(key==='a'?tier(x[1],y[1],st.loose):tier(y[1],x[1],st.loose))}).length;
+      if(!n)cls=' dim';else badge=`<em class="badge">可配 ${n}</em>`;
+      if(other.some(c=>byCh[c]&&byCh[c][6]===x[6]&&c!==x[0]))badge+=`<em class="badge warn">同部首</em>`;
+    }
+    const h=x[5]===1?' <span class="hz hp">馬＋</span>':x[5]===-1?' <span class="hz hm">馬－</span>':'';
+    return `<button type="button" class="t${cls}" data-k="${key}" data-c="${esc(x[0])}" aria-pressed="${on}">${badge}<b class="e-${x[3]}">${esc(x[0])}</b><span class="py">${esc(x[2])}</span><span class="gl" title="${esc(x[4])}">${esc(x[4])}</span><i><span class="g g${grade(x)}">${GN[grade(x)]}</span> <span class="e-${x[3]}">${x[3]}</span>${h}</i><small title="${esc((NOTES[x[0]]||[]).join('・'))}">${esc((NOTES[x[0]]||[]).join('・'))}</small></button>`}).join('')}</div></div>`;
+}
+
+function drawSancai(R){
+  const ex=R&&R.length?R[0]:{ca:'千',cb:'語',xa:byCh['千'],xb:byCh['語']};
+  const a=ex.xa[1],b=ex.xb[1],g=grid(a,b);
+  const [et,er,ed]=g.sc.split('');
+  const r1=rel(et,er),r2=rel(er,ed);
+  const lab=(x,y,r)=>r==='相生'?`${x}生${y}`:r==='比和'?`${x}${y}比和`:`${x}剋${y}`;
+  $('#sancai').innerHTML=`<div class="sc-names">
+    <div class="sc-n fixed"><b>馮</b><small>姓・12 畫</small></div>
+    <div class="sc-n pick"><b>${esc(ex.ca)}</b><small>第一字・${a} 畫</small></div>
+    <div class="sc-n pick"><b>${esc(ex.cb)}</b><small>第二字・${b} 畫</small></div></div>
+   <div class="sc-br">
+    <div style="grid-column:1/2;color:#c8442e"><div class="br"></div><div class="brl">天格 12＋1＝${g.tian}</div></div>
+    <div style="grid-column:1/3;color:light-dark(#7a4b2a,#c58b67)"><div class="br"></div><div class="brl">人格 12＋${a}＝${g.ren}</div></div>
+    <div style="grid-column:2/4;color:light-dark(#b8860b,#e3b23c)"><div class="br"></div><div class="brl">地格 ${a}＋${b}＝${g.di}</div></div></div>
+   <div class="sc-flow">
+    <div class="ge ${et}"><small>天格 ${g.tian}</small><b>${et}</b></div><div class="arrow">${lab(et,er,r1)}</div>
+    <div class="ge ${er}"><small>人格 ${g.ren}</small><b>${er}</b></div><div class="arrow">${lab(er,ed,r2)}</div>
+    <div class="ge ${ed}"><small>地格 ${g.di}</small><b>${ed}</b></div></div>
+   <p class="sc-cap">${R&&R.length?`以你目前排第一的「馮${esc(ex.ca)}${esc(ex.cb)}」為例。`:'以「馮千語」為例，挑字後會換成你的第一名。'}數字看尾數換五行：1、2 木，3、4 火，5、6 土，7、8 金，9、0 水。天格的火改不了，靠人格的土接住，${ed==='金'?'再生出地格的金，這是首選。':ed==='土'?'地格也是土（比和），可以接受；能落在金會更好。':'人格的金被天格的火剋，這是放寬組。'}</p>`;
+}
+
+function evalPair(ca,cb){
+  const xa=byCh[ca],xb=byCh[cb];if(!xa||!xb)return null;
+  const t=tier(xa[1],xb[1],st.loose);if(!t)return null;
+  const ga=grade(xa),gb=grade(xb),why=[];
+  const tn=[2,tone(xa[2]),tone(xb[2])];
+  if(tn[0]===tn[1]&&tn[1]===tn[2])why.push('三字同聲調，念起來較平');else if(tn[1]===tn[2])why.push('名字兩字同聲調');
+  if(xb[2].startsWith(xa[2].replace(/[^a-z]/g,'').slice(0,2))&&xa[0]!==xb[0])why.push('兩字聲母相近');
+  if(ga===3||gb===3)why.push('有一字屬火土或犯生肖');
+  const badMsg=NEG[ca+cb]||NEGSUR[plain(xa[2])];
+  if(badMsg)why.unshift('詞義：'+badMsg);
+  const pun=PUNPAIR[ca+cb]||PUNSND[plain(xa[2])+' '+plain(xb[2])]||'';
+  for(const c of [ca,cb]){const ns=(NOTES[c]||[]).filter(n=>/女性|較重|撞名/.test(n));if(ns.length)why.push(`${c}：${ns.join('、')}`)}
+  const o=badMsg?3:(t===1&&ga===1&&gb===1&&!why.length)?1:(ga===3&&gb===3)||why.length>=2?3:2;
+  return {ca,cb,xa,xb,t,o,why,pun,g:grid(xa[1],xb[1]),key:ca+cb};
+}
+
+function favPairs(){return st.fav.map(k=>{const r=evalPair([...k][0],[...k][1]);return r||null}).filter(Boolean)}
+function renderFav(){
+  const F=favPairs();
+  $('#dock').hidden=!F.length;document.body.classList.toggle('docked',!!F.length);
+  $('#favcount').textContent=`我喜歡 ${F.length}`;
+  $('#favlist').innerHTML=F.map(r=>`<span class="fchip">馮${esc(r.key)}<button type="button" data-unfav="${esc(r.key)}" aria-label="移除 馮${esc(r.key)}">×</button></span>`).join('');
+}
+const openSheet=()=>{$('#sheet').hidden=false;document.body.style.overflow='hidden'};
+const closeSheet=()=>{$('#sheet').hidden=true;document.body.style.overflow=''};
+const ELC={金:'#b8860b',水:'#2f64b0',木:'#2f5e24',火:'#c8442e',土:'#7a4b2a'};
+function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+const SERIF='"Noto Serif TC","Songti TC","PMingLiU",serif',SANS='"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif';
+function drawCard(c,r,x,y,W,H){
+  c.save();rr(c,x,y,W,H,22);c.fillStyle='#ffffff';c.fill();c.lineWidth=2;c.strokeStyle='#e6e4df';c.stroke();
+  // seal
+  c.fillStyle='#c8322b';rr(c,x+24,y+24,64,64,10);c.fill();
+  c.fillStyle='#fff';c.font=`900 26px ${SERIF}`;c.textAlign='center';c.textBaseline='middle';
+  c.fillText(r.ca,x+56,y+42);c.fillText(r.cb,x+56,y+71);
+  c.textAlign='left';c.textBaseline='alphabetic';
+  c.fillStyle='#1d1f24';c.font=`900 46px ${SERIF}`;c.fillText('馮'+r.ca+r.cb,x+104,y+70);
+  c.fillStyle='#8d9097';c.font=`400 17px ${SANS}`;c.fillText(`féng ${r.xa[2]} ${r.xb[2]}`,x+106,y+96);
+  // chars
+  let cy=y+132;
+  for(const ch of [r.xa,r.xb]){
+    c.fillStyle=ELC[ch[3]];c.font=`900 30px ${SERIF}`;c.fillText(ch[0],x+26,cy+6);
+    const g=GN[grade(ch)];rr(c,x+66,cy-18,52,26,13);c.fillStyle=ELC[ch[3]];c.fill();
+    c.fillStyle='#fff';c.font=`700 15px ${SANS}`;c.textAlign='center';c.fillText(g+' '+ch[3],x+92,cy);c.textAlign='left';
+    c.fillStyle='#3a3d44';c.font=`400 17px ${SANS}`;c.fillText(ch[4].length>16?ch[4].slice(0,15)+'…':ch[4],x+130,cy);
+    cy+=44;
+  }
+  // flow
+  const els=r.g.sc.split(''),nums=[r.g.tian,r.g.ren,r.g.di],lb=['天格','人格','地格'];
+  const bw=(W-48-2*30)/3;let fx=x+24;const fy=cy+2;
+  els.forEach((e,i)=>{rr(c,fx,fy,bw,52,12);c.fillStyle=ELC[e];c.fill();c.fillStyle='#fff';c.textAlign='center';
+    c.font=`400 13px ${SANS}`;c.fillText(`${lb[i]} ${nums[i]}`,fx+bw/2,fy+19);c.font=`700 20px ${SANS}`;c.fillText(e,fx+bw/2,fy+43);
+    if(i<2){c.fillStyle='#8d9097';c.font=`700 20px ${SANS}`;c.fillText('→',fx+bw+15,fy+33)}c.textAlign='left';fx+=bw+30});
+  cy=fy+80;
+  c.fillStyle=r.o===1?'#c8322b':'#3a3d44';c.font=`700 18px ${SANS}`;
+  c.fillText(['','★ 推薦','可考慮','留意'][r.o]+`・總格 ${r.g.zong}・${['','首選','次選','放寬'][r.t]}`,x+26,cy);
+  cy+=28;c.font=`400 15px ${SANS}`;
+  if(r.pun){c.fillStyle='#3d5a80';c.fillText(('諧音：'+r.pun).slice(0,22),x+26,cy);cy+=24}
+  if(r.why.length){c.fillStyle='#8d9097';const w=r.why.join('；');c.fillText(w.length>24?w.slice(0,23)+'…':w,x+26,cy)}
+  c.restore();
+}
+async function makeCards(){
+  const F=favPairs();if(!F.length){toast('先在組合結果勾選喜歡的名字');return}
+  try{await Promise.all([document.fonts.load(`900 46px "Noto Serif TC"`),document.fonts.load(`400 16px "Noto Sans TC"`),document.fonts.load(`700 16px "Noto Sans TC"`)])}catch(e){}
+  const pages=[];for(let i=0;i<F.length;i+=9)pages.push(F.slice(i,i+9));
+  const d=new Date(),ds=`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
+  const W=420,H=350,G=24,PAD=40,S=2;
+  window._imgs=[];
+  $('#cards').innerHTML='';
+  openSheet();
+  pages.forEach((P,pi)=>{
+    const cols=P.length===1?1:P.length<=4?2:3,rows=Math.ceil(P.length/cols);
+    const cw=PAD*2+cols*W+(cols-1)*G,ch=PAD*2+96+rows*H+(rows-1)*G+40;
+    const cv=document.createElement('canvas');cv.width=cw*S;cv.height=ch*S;const c=cv.getContext('2d');c.scale(S,S);
+    c.fillStyle='#f6f3ee';c.fillRect(0,0,cw,ch);
+    c.fillStyle='#1d1f24';c.font=`900 34px ${SERIF}`;c.fillText('馮家寶寶取名候選',PAD,PAD+38);
+    c.fillStyle='#8d9097';c.font=`400 16px ${SANS}`;c.fillText(`${ds}${pages.length>1?`・第 ${pi+1}/${pages.length} 張`:''}・共 ${F.length} 個名字`,PAD,PAD+70);
+    P.forEach((r,i)=>drawCard(c,r,PAD+(i%cols)*(W+G),PAD+96+Math.floor(i/cols)*(H+G),W,H));
+    c.fillStyle='#a3a5ab';c.font=`400 13px ${SANS}`;c.fillText('筆畫依康熙字典計算・三才五格與八字喜用僅供參考',PAD,ch-PAD/2-4);
+    const url=cv.toDataURL('image/png');window._imgs.push(cv);
+    const fig=document.createElement('figure');
+    fig.innerHTML=`<img alt="取名分享卡 第 ${pi+1} 張" src="${url}"><figcaption><span>第 ${pi+1} 張・${P.length} 個名字</span><span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="primary" data-share="${pi}">分享圖片</button><button type="button" data-dl="${pi}">下載圖片</button></span></figcaption>`;
+    $('#cards').appendChild(fig);
+  });
+}
+
+function canShareFiles(){try{return !!(navigator.canShare&&navigator.share&&navigator.canShare({files:[new File([new Blob(['x'],{type:'image/png'})],'t.png',{type:'image/png'})]}))}catch(e){return false}}
+async function shareImg(i){
+  const cv=window._imgs[i];if(!cv)return;
+  const b=await new Promise(r=>cv.toBlob(r,'image/png'));
+  const f=new File([b],`馮家取名候選-${i+1}.png`,{type:'image/png'});
+  if(!canShareFiles()){toast('這裡無法叫出分享選單，已改為下載');dl(i);return}
+  try{await navigator.share({files:[f],title:'馮家寶寶取名候選',text:'寶寶取名候選，大家看看喜歡哪個？'})}
+  catch(e){if(e&&e.name==='AbortError')return;dl(i)}
+}
+let dlns=null;
+(async()=>{try{dlns=await window.claude?.use?.('downloads')}catch(e){dlns=null}})();
+async function dl(i){
+  const cv=window._imgs[i];if(!cv)return;
+  if(!dlns){cv.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`馮家取名候選-${i+1}.png`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)},'image/png');return}
+  cv.toBlob(async b=>{try{await dlns.save({filename:`馮家取名候選-${i+1}.png`,data:b});toast('已下載')}catch(e){toast(e&&e.code==='declined'?'已取消下載':'無法下載，請長按圖片儲存')}},'image/png');
+}
+function render(){
+  const P=pairList();
+  const has=n=>POOL.some(x=>x[1]===n);
+  const P2=P.filter(p=>has(p[0])&&has(p[1]));
+  const best=(k,n)=>Math.min(...P2.filter(p=>p[k]===n).map(p=>p[2]));
+  const order=k=>[...new Set(P2.map(p=>p[k]))].sort((x,y)=>best(k,x)-best(k,y)||x-y);
+  const A=order(0);
+  const rows=A.flatMap(a=>P2.filter(p=>p[0]===a).sort((x,y)=>x[2]-y[2]||x[1]-y[1]));
+  const B=[...new Set([...rows.filter(p=>p[2]===1),...rows].map(p=>p[1]))];
+  const tl=t=>t===1?'・首選':t===3?'・放寬':'';
+  $('#pairs').innerHTML=A.map(a=>`<li class="prow"><a href="#d-a-${a}">第一字 ${a} 畫</a>${P2.filter(p=>p[0]===a).sort((x,y)=>x[2]-y[2]||x[1]-y[1]).map(p=>`<span class="chip${p[2]===1?' best':''}"><b>${p[0]}＋${p[1]}</b> 畫・三才${grid(p[0],p[1]).sc}${tl(p[2])}</span>`).join('')}</li>`).join('');
+  $('#first').innerHTML=A.map(n=>drawer(n,P2.filter(p=>p[0]===n).sort((x,y)=>x[2]-y[2]||x[1]-y[1]).map(p=>p[1]),'a')).join('')||'<p class="empty">沒有可用的字。</p>';
+  $('#second').innerHTML=B.map(n=>drawer(n,P2.filter(p=>p[1]===n).sort((x,y)=>x[2]-y[2]||x[0]-y[0]).map(p=>p[0]),'b')).join('');
+  ['good','horse','loose'].forEach(k=>$('#f'+{good:'Good',horse:'Horse',loose:'Loose'}[k]).setAttribute('aria-pressed',st[k]));
+  const R=[];
+  for(const ca of st.a)for(const cb of st.b){const r=evalPair(ca,cb);if(r)R.push(r)}
+  R.sort((p,q)=>p.o-q.o||p.t-q.t||(p.xa[1]+p.xb[1])-(q.xa[1]+q.xb[1]));
+  window._R=R;
+  drawSancai(R);
+  renderFav();
+  $('#tally').innerHTML=`<span class="tl">第一字 ${st.a.length}・第二字 ${st.b.length}・</span><a href="#result">${R.length} 組</a>`;
+  if(!R.length){$('#out').innerHTML=`<p class="empty">${st.a.length&&st.b.length?'你挑的字之中，筆畫配不出符合規則的組合。可以多挑幾個不同筆畫的字，或打開「放寬」。':'兩個步驟各挑幾個字，這裡就會列出組合。'}</p>`;return}
+  const tn=['','首選','次選','放寬'];
+  const OV=['','★ 推薦','可考慮','留意'];
+  $('#out').innerHTML=`<div class="rlist"><div class="rrow rhead"><span>名字</span><span>五行</span><span>人・地・外・總格</span><span>三才</span><span>等級</span><span>總評</span></div>${R.map(r=>`<div class="rrow${st.fav.includes(r.key)?' faved':''}">
+   <label class="fv rn"><input type="checkbox" data-fav="${esc(r.key)}" ${st.fav.includes(r.key)?'checked':''} aria-label="喜歡 馮${esc(r.key)}"><b>馮${esc(r.ca)}${esc(r.cb)}</b></label>
+   <span class="rmeta"><span class="rel">${GN[grade(r.xa)]}${r.xa[3]}・${GN[grade(r.xb)]}${r.xb[3]}</span>
+   <span class="rnum"><i>人</i>${r.g.ren} <i>地</i>${r.g.di} <i>外</i>${r.g.wai} <i>總</i>${r.g.zong}</span>
+   <span class="rsc">${r.g.sc}</span>
+   <span class="rt"><span class="tier t${r.t}">${tn[r.t]}</span></span></span>
+   <span class="ro"><span class="overall o${r.o}">${OV[r.o]}</span></span>
+   ${r.why.length||r.pun?`<span class="rwhy">${r.why.length?`<span class="why">${esc(r.why.join('；'))}</span>`:''}${r.pun?`<span class="why pun">諧音：${esc(r.pun)}</span>`:''}</span>`:''}
+  </div>`).join('')}</div>`;
+}
+document.addEventListener('change',e=>{const f=e.target.closest('[data-fav]');if(!f)return;const k=f.dataset.fav;st.fav=f.checked?[...new Set([...st.fav,k])]:st.fav.filter(x=>x!==k);save();render()});
+document.addEventListener('click',e=>{
+  const u=e.target.closest('[data-unfav]');if(u){st.fav=st.fav.filter(x=>x!==u.dataset.unfav);save();render();return}
+  if(e.target.closest('[data-close]')){closeSheet();return}
+  const sh=e.target.closest('[data-share]');if(sh){shareImg(+sh.dataset.share);return}
+  const dd=e.target.closest('[data-dl]');if(dd){dl(+dd.dataset.dl);return}
+  const t=e.target.closest('.t');
+  if(t){const k=t.dataset.k,c=t.dataset.c;st[k]=st[k].includes(c)?st[k].filter(x=>x!==c):[...st[k],c];save();render();return}
+});
+$('#fGood').addEventListener('click',()=>{st.good=!st.good;save();render()});
+$('#fHorse').addEventListener('click',()=>{st.horse=!st.horse;save();render()});
+$('#fLoose').addEventListener('click',()=>{st.loose=!st.loose;save();render()});
+$('#clear').addEventListener('click',()=>{st.a=[];st.b=[];save();render()});
+$('#mkcard').addEventListener('click',makeCards);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#sheet').hidden)closeSheet()});
+function favText(){const F=favPairs();return '馮家寶寶取名候選\n'+F.map(r=>`馮${r.key}（féng ${r.xa[2]} ${r.xb[2]}）\n　${r.ca}：${r.xa[4]}；${r.cb}：${r.xb[4]}\n　三才${r.g.sc}・總格${r.g.zong}・${['','推薦','可考慮','留意'][r.o]}${r.pun?'・諧音：'+r.pun:''}`).join('\n')}
+$('#copyfav').addEventListener('click',async()=>{const F=favPairs();if(!F.length){toast('還沒有喜歡的名字');return}
+  try{await navigator.clipboard.writeText(favText());toast(`已複製 ${F.length} 個名字`)}catch(e){toast('這個環境無法複製')}});
+const toast=m=>{const el=$('#toast');el.textContent=m;el.style.opacity=1;setTimeout(()=>el.style.opacity=0,1800)};
+$('#copy').addEventListener('click',async()=>{
+  const R=window._R||[];if(!R.length){toast('還沒有組合可以複製');return}
+  const txt=R.map(r=>`馮${r.ca}${r.cb}（${r.xa[2]} ${r.xb[2]}）三才${r.g.sc}，總格${r.g.zong}，${['','推薦','可考慮','留意'][r.o]}${r.why.length?'：'+r.why.join('；'):''}${r.pun?'（諧音：'+r.pun+'）':''}`).join('\n');
+  try{await navigator.clipboard.writeText(txt);toast(`已複製 ${R.length} 組`)}catch(e){toast('這個環境無法複製')}
+});
+new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document.body,{childList:true,subtree:true});
+{const bar=document.querySelector('.bar');const setB=()=>document.documentElement.style.setProperty('--barh',bar.offsetHeight+'px');setB();const barRO=new ResizeObserver(setB);barRO.observe(bar)}
+render();
+}
+</script>
+</body>
+</html>
