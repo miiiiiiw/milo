@@ -207,7 +207,11 @@ body:has(.sheet:not([hidden])) .fab{display:none}
 .sbox input:focus{outline:none;border-color:var(--seal)}
 .smsg{font-size:14px;color:var(--mute);margin:6px 2px 12px;line-height:1.6}
 .smsg b{color:var(--ink)}.smsg .bad{color:var(--seal)}
-.tally .tl{margin-right:8px}
+.tally .tl{margin-right:8px;display:inline-flex;gap:6px}
+.tc{display:inline-flex;align-items:center;gap:5px;min-height:30px;padding:0 10px;border-radius:15px;font-size:12.5px;color:var(--mute);border:1px dashed var(--line)}
+.tc b{font-size:15px;font-weight:700;color:var(--mute);font-variant-numeric:tabular-nums}
+.tc.on{border:1px solid transparent;background:color-mix(in srgb,var(--slate) 16%,transparent);color:color-mix(in srgb,var(--ink) 75%,transparent)}
+.tc.on b{color:var(--slate)}
 .tally .cnt-btn{color:#fff}.tally .cnt-btn.zero{color:var(--mute)}
 .cnt-btn{display:inline-flex;align-items:center;gap:3px;min-height:40px;padding:0 12px 0 14px;border-radius:20px;background:var(--seal);color:#fff;text-decoration:none;font-size:14px;font-weight:500;box-shadow:0 2px 8px color-mix(in srgb,var(--seal) 35%,transparent)}
 .cnt-btn b{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums}
@@ -766,7 +770,7 @@ function render(){
   renderFav();
   renderRec();
   {const prev=window._lastN;window._lastN=R.length;
-  $('#tally').innerHTML=`<span class="tl">第一字 ${st.a.length}・第二字 ${st.b.length}</span>${st.a.length+st.b.length?`<button type="button" class="clr-btn" data-clear aria-label="清除所有選字">清除<span aria-hidden="true">×</span></button>`:''}<a href="#result" class="cnt-btn${R.length?'':' zero'}" aria-label="${R.length} 組組合，跳到組合結果"><b>${R.length}</b> 組<span class="arr">›</span></a>`;
+  $('#tally').innerHTML=`<span class="tl"><span class="tc${st.a.length?' on':''}">第一字<b>${st.a.length}</b></span><span class="tc${st.b.length?' on':''}">第二字<b>${st.b.length}</b></span></span>${st.a.length+st.b.length?`<button type="button" class="clr-btn" data-clear aria-label="清除所有選字">清除<span aria-hidden="true">×</span></button>`:''}<a href="#result" class="cnt-btn${R.length?'':' zero'}" aria-label="${R.length} 組組合，跳到組合結果"><b>${R.length}</b> 組<span class="arr">›</span></a>`;
   if(prev!==undefined&&prev!==R.length){const el=$('#tally .cnt-btn');el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump')}}
   if(!R.length){$('#out').innerHTML=`<p class="empty">${st.a.length&&st.b.length?'你挑的字之中，筆畫配不出符合規則的組合。可以多挑幾個不同筆畫的字，或打開「放寬」。':'兩個步驟各挑幾個字，這裡就會列出組合。'}</p>`;return}
   const tn=['','首選','次選','放寬','火木火'];
