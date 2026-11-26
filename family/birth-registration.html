@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>二寶出生登記清單</title>
+<meta name="description" content="出生登記一趟要辦什麼、帶什麼，以及抽中公托後育兒津貼怎麼切換">
+<meta name="keywords" content="家庭, 新生兒, 出生登記, 育兒津貼, 生育補助">
+<meta name="date" content="2026-11-26">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE everyday errand, calm and tender, few hues, lots of air
+   IDEA a route card for one errand day: three counters on one line, what to hand over at each
+   PICTURE the route itself: three stations on a drawn line, items at each stop; then a money bar and a timeline
+   COLOUR white ground, blush field #f7e3df for bands, plum ink #2e1a24, teal #0d7c80 for the path and checks
+   TYPE Noto Sans TC 700 display + Noto Sans TC 400 text
+   LAYOUT laptop: title band, route across full width; below two columns (checklist | money). phone: everything stacks, route turns vertical */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#1a1216);--ink:light-dark(#2e1a24,#f3e6ea);--soft:light-dark(#6d5560,#c3adb6);--band:light-dark(#f7e3df,#2a1c22);--card:light-dark(#ffffff,#22171c);--line:light-dark(#e6cfd0,#45313a);--teal:light-dark(#0d7c80,#4fc3c4);--teal2:light-dark(#d6eeee,#163738);--rose:light-dark(#c4566d,#ec8ea1)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:24px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;overflow-x:clip}
+.band{padding-block:clamp(28px,4vw,56px);padding-left:max(5vw,16px);padding-right:max(5vw,16px)}
+.wrap{max-width:1180px;margin:0 auto}
+.top{background:var(--band);padding-top:56px}
+.eyebrow{color:var(--soft)}
+@media(max-width:560px){.top{padding-top:32px}}
+h1{font-size:clamp(32px,5vw,48px);line-height:1.08;letter-spacing:-.02em;margin:0 0 10px;text-wrap:balance}
+h2{font-size:24px;line-height:1.2;margin:0 0 6px}
+.lead{font-size:18px;margin:0;max-width:40em}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:12px;margin-top:22px}
+.fg{background:var(--card);border-radius:14px;padding:14px 16px}
+.fg b{display:block;font-size:clamp(26px,3.4vw,34px);line-height:1.1;color:var(--teal);white-space:nowrap}
+.fg span{font-size:14px;color:var(--soft)}
+.sub{color:var(--soft);font-size:14px;margin:0 0 18px}
+/* route */
+.route{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:8px;position:relative}
+.stop{position:relative;padding:0 14px 0 0}
+.stop::before{content:"";position:absolute;top:21px;left:0;right:0;height:4px;background:var(--teal)}
+.stop:last-child::before{background:repeating-linear-gradient(90deg,var(--teal) 0 10px,transparent 10px 18px)}
+.stop:first-child::before{left:22px}
+.stop:last-child::before{right:auto;width:0}
+.dot{position:relative;width:46px;height:46px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-weight:700;font-size:18px;box-shadow:0 0 0 6px var(--bg)}
+.stop.opt .dot{background:var(--bg);color:var(--teal);border:3px dashed var(--teal)}
+.stop h3{font-size:19px;margin:14px 0 2px}
+.stop .where{font-size:14px;color:var(--soft);margin:0 0 10px}
+.stop ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.stop li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:15px;line-height:1.45}
+.stop li b{display:block;font-weight:700}
+.stop li small{color:var(--soft);font-size:13px}
+.auto{border-style:dashed!important}
+.tag{display:inline-block;font-size:13px;background:var(--teal2);color:var(--teal);border-radius:99px;padding:1px 9px;margin-left:4px;white-space:nowrap}
+/* two col */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(24px,4vw,56px);align-items:start}
+.check{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:8px}
+.check label{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;min-height:44px;border:1px solid var(--line);border-radius:12px;cursor:pointer;background:var(--card)}
+.check input{appearance:none;flex:none;width:22px;height:22px;margin:1px 0 0;border:2px solid var(--teal);border-radius:6px;display:grid;place-items:center;cursor:pointer}
+.check input:checked{background:var(--teal)}
+.check input:checked::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:translateY(-1px) rotate(45deg)}
+.check input:focus-visible{outline:3px solid var(--rose);outline-offset:2px}
+.check input:checked+span{color:var(--soft);text-decoration:line-through}
+.check small{display:block;color:var(--soft);font-size:13px;text-decoration:none}
+.count{font-size:14px;color:var(--soft);margin-top:10px}
+button{font:inherit;font-size:15px;min-height:44px;padding:8px 16px;border-radius:10px;border:1.5px solid var(--teal);background:transparent;color:var(--teal);cursor:pointer}
+button:hover{background:var(--teal2)}
+button:focus-visible{outline:3px solid var(--rose);outline-offset:2px}
+/* money */
+.bars{display:grid;gap:18px;margin-top:14px}
+.bar h4{margin:0 0 6px;font-size:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.bar h4 em{font-style:normal;color:var(--teal);white-space:nowrap}
+.track{display:flex;height:40px;border-radius:10px;overflow:hidden;background:var(--teal2)}
+.seg{display:flex;align-items:center;padding:0 10px;font-size:14px;color:#fff;white-space:nowrap;overflow:hidden}
+.s1{background:var(--teal)}
+.s2{background:var(--rose)}
+.s3{background:repeating-linear-gradient(135deg,var(--teal) 0 8px,color-mix(in srgb,var(--teal) 80%,#fff) 8px 16px)}
+.legend{font-size:13px;color:var(--soft);margin-top:6px}
+/* timeline */
+.tl{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:max-content minmax(0,1fr);column-gap:22px}
+.tl li{display:contents}
+.tl .t{font-weight:700;color:var(--teal);white-space:nowrap;padding:10px 0;border-top:1px solid var(--line);text-align:right}
+.tl .d{padding:10px 0;border-top:1px solid var(--line)}
+.tl .d small{display:block;color:var(--soft);font-size:14px}
+.say{background:var(--band);border-radius:16px;padding:18px 20px;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;margin-top:14px}
+.say q{font-size:19px;font-weight:500;quotes:"「" "」"}
+.note{margin:14px 0 0;padding-left:1.2em}
+.note li{margin:6px 0}
+.tuo{border:2px solid var(--teal);border-radius:20px;padding:clamp(20px,3vw,32px);background:var(--teal2)}
+.tuo-lead{font-size:18px;font-weight:500;margin:4px 0 20px}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;counter-reset:none}
+.steps li{background:var(--card);border-radius:14px;padding:16px 18px;position:relative}
+.steps b{display:block;font-size:17px;margin:8px 0 4px}
+.steps p{margin:0;font-size:15px;line-height:1.55}
+.sn{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--teal);color:#fff;font-weight:700}
+@media(max-width:700px){.steps{grid-template-columns:minmax(0,1fr)}}
+footer{font-size:13px;color:var(--soft)}
+footer a{color:var(--soft)}
+@media(max-width:760px){.two{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:640px){
+.route{grid-template-columns:minmax(0,1fr)}
+.stop{padding:0 0 26px 64px}
+.stop::before,.stop:first-child::before{top:22px;bottom:0;left:21px;right:auto;width:4px;height:auto}
+.stop:last-child::before{display:none}
+.stop:nth-child(2)::before{background:repeating-linear-gradient(180deg,var(--teal) 0 10px,transparent 10px 18px)}
+.dot{position:absolute;left:0;top:0}
+.stop h3{margin-top:8px}
+.tl{column-gap:14px}
+}
+@media(prefers-reduced-motion:no-preference){.check label{transition:background .2s}}
+/* ── milo 頁首小標規範（見 README「頁首小標」），請勿個別調整 ── */
+.page-kicker{font-family:ui-monospace, monospace;font-size:12px;line-height:1.4;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
+</style>
+</head>
+<body>
+
+<header class="band top"><div class="wrap">
+  <p class="eyebrow page-kicker">家庭生活 · 二寶出生登記</p>
+  <h1>二寶出生登記：跑三站，帶七樣</h1>
+  <p class="lead">出生後 60 天內辦。戶政台北市任一區都可以，區公所和健康服務中心要回文山。</p>
+  <div class="figs">
+    <div class="fg"><b>10 萬</b><span>勞保生育給付＋中央補助</span></div>
+    <div class="fg"><b>4.5 萬</b><span>台北市生育獎勵金（第二胎）</span></div>
+    <div class="fg"><b>6,000/月</b><span>育兒津貼，領到滿 2 歲</span></div>
+  </div>
+</div></header>
+
+<section class="band"><div class="wrap">
+  <h2>路線：戶政一次辦四件，再去區公所</h2>
+  <p class="sub">虛線框是不用另外申請、會自動發的；第三站非必要。</p>
+  <div class="route" id="route"></div>
+</div></section>
+
+<section class="band" style="padding-top:0"><div class="wrap two">
+  <div>
+    <h2>帶七樣東西</h2>
+    <p class="sub">勾選會記在這台裝置上。</p>
+    <ul class="check" id="check"></ul>
+    <p class="count" id="count"></p>
+    <button type="button" id="reset">全部取消勾選</button>
+  </div>
+  <div>
+    <h2>錢從哪裡來</h2>
+    <p class="sub">媽媽勞保已達投保薪資上限 45,800 元：勞保給付 45,800 × 2 = 91,600 元，中央補足 8,400 元。</p>
+    <div class="bars" id="bars"></div>
+    <p class="legend">育兒津貼總額假設二寶一直沒有入托；入托的情況見下方「抽中興岩公托之後」。</p>
+  </div>
+</div></section>
+
+<section class="band" style="background:var(--band)"><div class="wrap two">
+  <div>
+    <h2>出門前填好，櫃台說一句</h2>
+    <p style="margin:10px 0 0">出生證明書上用正楷寫好寶寶姓名，填好從姓約定欄。爸媽兩人都要在姓名後方和從姓欄簽名或蓋章。</p>
+    <div class="say" style="background:var(--card)">
+      <q id="line">辦第二胎出生登記，順便辦健保卡、勞保生育給付和台北市生育獎勵金。</q>
+      <button type="button" id="copy">複製這句</button>
+    </div>
+  </div>
+  <div>
+    <h2>之後的時間點</h2>
+    <ol class="tl" id="tl"></ol>
+  </div>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <div class="tuo">
+    <h2>抽中興岩公托之後</h2>
+    <p class="tuo-lead">育兒津貼照樣先申請，不必等抽籤結果。入托後兩者只能擇一，重複領要繳回。</p>
+    <ol class="steps">
+      <li><span class="sn">1</span><b>入托當月</b><p>向托育單位申請托育補助，同時確認育兒津貼已停發。</p></li>
+      <li><span class="sn">2</span><b>改領托育補助</b><p>公共化托育每月 7,000 元起。有哥哥姊姊，台北市再加發 2,000 元（家庭綜所稅率需未達 20%）。</p></li>
+      <li><span class="sn">3</span><b>如果停托</b><p>主動回文山區公所重新申請育兒津貼。不會自動恢復，也不會補發。</p></li>
+    </ol>
+  </div>
+  <p style="margin:28px 0 0">另外：媽媽如果是公保、軍保或農保，生育給付要另外向承保機關申請，不在戶政辦。</p>
+  <footer style="margin-top:28px">整理於 2026 年 11 月 26 日。依據臺北市政府申請案件處理時限表、衛福部育兒津貼、勞保局生育給付說明、臺北市兒童醫療補助實施要點。實際規定以承辦機關為準。</footer>
+</div></section>
+
+<script>
+{
+const stops=[
+ {n:"1",name:"戶政事務所",where:"台北市任一區皆可",opt:false,items:[
+  ["出生登記","當場換發新戶口名簿"],
+  ["健保投保＋健保卡","約 7 個工作天寄到；之前用爸媽的卡看病"],
+  ["勞保生育給付","45,800 × 2 = 91,600 元，匯入媽媽帳戶"],
+  ["中央生育補助","補足差額 8,400 元，勞保局合併發給","auto"],
+  ["台北市生育獎勵金","第二胎 4.5 萬元"]]},
+ {n:"2",name:"文山區公所",where:"孩子戶籍所在地",opt:false,items:[
+  ["育兒津貼","第二名子女每月 6,000 元，領到滿 2 歲"]]},
+ {n:"3",name:"文山健康服務中心",where:"或線上申請",opt:true,items:[
+  ["兒童醫療補助","6 歲前急診、住院部分負擔與兒童健檢掛號費減免"]]}
+];
+const things=[
+ ["c1","戶口名簿正本","健康服務中心要用換發後的新本"],
+ ["c2","出生證明書正本","醫院開立，姓名和從姓先填好"],
+ ["c3","申請人身分證正本",""],
+ ["c4","申請人印章","或當場簽名"],
+ ["c5","媽媽存摺封面影本 × 2","戶政、區公所各一份"],
+ ["c6","30 元","換發戶口名簿，現金或悠遊卡"],
+ ["c7","委託書","只有請別人代辦時才需要"]
+];
+const bars=[
+ {t:"生育給付＋補助",v:"10 萬（斜紋為中央補的 8,400）",segs:[[91.6,"s1","勞保 91,600"],[8.4,"s3",""]],max:100},
+ {t:"台北市生育獎勵金",v:"4.5 萬",segs:[[45,"s2","4.5 萬"]],max:100},
+ {t:"育兒津貼（最多 24 個月）",v:"最多 14.4 萬",segs:[[144,"s1","6,000 × 24"]],max:144}
+];
+const tl=[
+ ["出生後","醫院通報出生資料","戶政據此受理登記"],
+ ["60 天內","出生登記、台北市獎勵金","逾期獎勵金就不能申請"],
+ ["登記後約 7 天","健保卡寄到","以工作天計，無照片卡"],
+ ["入托當月","改領托育補助","確認育兒津貼停發"],
+ ["滿 2 歲當月","育兒津貼最後一個月",""]
+];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+document.getElementById("route").innerHTML=stops.map(s=>`<div class="stop${s.opt?" opt":""}"><div class="dot">${s.n}</div><h3>${esc(s.name)}${s.opt?'<span class="tag">非必要</span>':""}</h3><p class="where">${esc(s.where)}</p><ul>${s.items.map(i=>`<li class="${i[2]||""}"><b>${esc(i[0])}${i[2]?'<span class="tag">免申請</span>':""}</b><small>${esc(i[1])}</small></li>`).join("")}</ul></div>`).join("");
+let saved={};
+try{saved=JSON.parse(localStorage.getItem("baby2-check")||"{}")}catch(e){}
+const ck=document.getElementById("check");
+ck.innerHTML=things.map(t=>`<li><label for="${t[0]}"><input type="checkbox" id="${t[0]}"${saved[t[0]]?" checked":""}><span>${esc(t[1])}${t[2]?`<small>${esc(t[2])}</small>`:""}</span></label></li>`).join("");
+const cnt=document.getElementById("count");
+const upd=()=>{const boxes=[...ck.querySelectorAll("input")];const n=boxes.filter(b=>b.checked).length;cnt.textContent=n===boxes.length?"都備齊了，可以出門。":`已備 ${n} / ${boxes.length} 樣`;const st={};boxes.forEach(b=>{if(b.checked)st[b.id]=1});try{localStorage.setItem("baby2-check",JSON.stringify(st))}catch(e){}};
+ck.addEventListener("change",upd);
+document.getElementById("reset").addEventListener("click",()=>{ck.querySelectorAll("input").forEach(b=>b.checked=false);upd()});
+upd();
+document.getElementById("bars").innerHTML=bars.map(b=>`<div class="bar"><h4>${esc(b.t)}<em>${esc(b.v)}</em></h4><div class="track">${b.segs.map(s=>`<div class="seg ${s[1]}" style="width:${s[0]/144*100}%">${esc(s[2])}</div>`).join("")}</div></div>`).join("");
+document.getElementById("tl").innerHTML=tl.map(r=>`<li><span class="t">${esc(r[0])}</span><span class="d">${esc(r[1])}${r[2]?`<small>${esc(r[2])}</small>`:""}</span></li>`).join("");
+const cp=document.getElementById("copy");
+cp.addEventListener("click",()=>{const txt=document.getElementById("line").textContent;try{navigator.clipboard.writeText(txt).then(()=>{cp.textContent="已複製"},()=>{cp.textContent="請長按複製"})}catch(e){cp.textContent="請長按複製"}});
+}
+</script>
+</body>
+</html>
