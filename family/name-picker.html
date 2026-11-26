@@ -365,7 +365,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 <p class="lede">依寶寶的八字與生肖定出規則，先挑第一、二個字，再自動配出合格的名字。</p>
 <div class="prof">
   <section class="pcard">
-    <h3 class="ph">寶寶命盤<small>2026 年 11 月 25 日上午 9:03・台北</small></h3>
+    <h3 class="ph">寶寶命盤</h3>
     <div class="pillars">
       <div class="pil"><small>年柱</small><b>丙午</b><i><span class="e-火">火</span>・<span class="e-火">火</span></i></div>
       <div class="pil"><small>月柱</small><b>己亥</b><i><span class="e-土">土</span>・<span class="e-水">水</span></i></div>
@@ -493,7 +493,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 <div class="sheet" id="ssheet" hidden>
   <div class="sheet-mask" data-sclose></div>
   <div class="sheet-panel top" role="dialog" aria-modal="true" aria-label="搜尋名字">
-    <div class="sbox"><input type="search" id="sq" placeholder="輸入名字，例如 千語、語" autocomplete="off" enterkeyhint="search"><button type="button" data-sclose>關閉</button></div>
+    <div class="sbox"><input type="search" id="sq" placeholder="輸入名字，例如 川睿、睿" autocomplete="off" enterkeyhint="search"><button type="button" data-sclose>關閉</button></div>
     <div id="sres"></div>
   </div>
 </div>
@@ -574,7 +574,7 @@ function drawer(n,partners,key){
 }
 
 function drawSancai(R){
-  const ex=R&&R.length?R[0]:{ca:'千',cb:'語',xa:byCh['千'],xb:byCh['語']};
+  const ex=R&&R.length?R[0]:{ca:'川',cb:'睿',xa:byCh['川'],xb:byCh['睿']};
   const a=ex.xa[1],b=ex.xb[1],g=grid(a,b);
   const [et,er,ed]=g.sc.split('');
   const r1=rel(et,er),r2=rel(er,ed);
@@ -591,7 +591,7 @@ function drawSancai(R){
     <div class="ge ${et}"><small>天格 ${g.tian}</small><b>${et}</b></div><div class="arrow">${lab(et,er,r1)}</div>
     <div class="ge ${er}"><small>人格 ${g.ren}</small><b>${er}</b></div><div class="arrow">${lab(er,ed,r2)}</div>
     <div class="ge ${ed}"><small>地格 ${g.di}</small><b>${ed}</b></div></div>
-   <p class="sc-cap">${R&&R.length?`以你目前排第一的「馮${esc(ex.ca)}${esc(ex.cb)}」為例。`:'以「馮千語」為例，挑字後會換成你的第一名。'}數字看尾數換五行：1、2 木，3、4 火，5、6 土，7、8 金，9、0 水。天格的火改不了，靠人格的土接住，${ed==='金'?'再生出地格的金，這是首選。':ed==='土'?'地格也是土（比和），可以接受；能落在金會更好。':er==='木'?'這是「火木火」：木生兩邊的火，三才相生，只看三才的派別認為是吉；但會讓寶寶本來就旺的火更旺，不補八字。':'人格的金被天格的火剋，這是放寬組。'}</p>`;
+   <p class="sc-cap">${R&&R.length?`以你目前排第一的「馮${esc(ex.ca)}${esc(ex.cb)}」為例。`:'以「馮川睿」為例，挑字後會換成你的第一名。'}數字看尾數換五行：1、2 木，3、4 火，5、6 土，7、8 金，9、0 水。天格的火改不了，靠人格的土接住，${ed==='金'?'再生出地格的金，這是首選。':ed==='土'?'地格也是土（比和），可以接受；能落在金會更好。':er==='木'?'這是「火木火」：木生兩邊的火，三才相生，只看三才的派別認為是吉；但會讓寶寶本來就旺的火更旺，不補八字。':'人格的金被天格的火剋，這是放寬組。'}</p>`;
 }
 
 function evalPair(ca,cb){
