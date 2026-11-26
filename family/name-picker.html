@@ -315,6 +315,28 @@ details.help[open] summary{color:var(--ink)}
 @media(prefers-reduced-motion:reduce){.stepsum.isempty .sm-cta{animation:none}}
 @media(max-width:420px){.sm-cta{padding:0 10px}.sm-cta .ctl{display:none}.stepsum.isempty{gap:10px}}
 @media(max-width:380px){.stepsum.isempty .sm-empty{font-size:13px}.sm-ic{display:none}}.stepsum b{color:var(--ink);font-family:"Noto Serif TC",serif;font-size:16px}
+.prof{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:12px;margin:18px 0 6px}
+.pcard{background:var(--tile);border-radius:16px;padding:16px;border:1px solid var(--line)}
+.ph{font:600 17px "Noto Serif TC",serif;margin:0 0 12px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.ph small{font:400 12px "Noto Sans TC",sans-serif;color:var(--mute)}
+.pillars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.pil{border:1.5px solid var(--line);border-radius:10px;text-align:center;padding:6px 2px 8px;background:var(--bg)}
+.pil small{display:block;font-size:11px;color:var(--mute)}
+.pil b{display:block;font:900 clamp(22px,5vw,28px)/1.2 "Noto Serif TC",serif;letter-spacing:2px}
+.pil i{font-style:normal;font-size:12px;font-weight:700}
+.pil.day{border-color:var(--seal)}.pil.day b{color:var(--seal)}
+.ebal{display:grid;gap:5px;margin:12px 0 10px}
+.eb{display:grid;grid-template-columns:1.4em minmax(0,1fr) 4.6em;gap:8px;align-items:center;font-size:13px}
+.eb>span{font:900 15px "Noto Serif TC",serif}
+.et{height:8px;border-radius:4px;background:var(--line);overflow:hidden}.et i{display:block;height:100%;border-radius:4px}
+.eb em{font-style:normal;font-size:12px;color:var(--mute);white-space:nowrap}
+.pconc{margin:0;font-size:14px}.pconc .like{color:var(--seal)}.pconc .dis{color:var(--mute);font-size:13px}
+.zrow{display:flex;gap:10px;align-items:baseline;font-size:14px;margin:0 0 8px}
+.zrow .hz{flex:none}.hz.zl{border:1px solid var(--line);color:var(--mute)}
+.pnote{font-size:12.5px;color:var(--mute);margin:10px 0 0;line-height:1.6}
+.sech{font:600 18px "Noto Serif TC",serif;margin:26px 0 4px}
+.logic{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
+.lg{font-size:13px;padding:6px 12px;border-radius:10px;background:var(--tile);color:var(--mute)}.lg b{color:var(--ink);margin-right:4px}
+@media(max-width:700px){.prof{grid-template-columns:minmax(0,1fr)}}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mute);margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
@@ -340,13 +362,39 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 <section class="band first"><div class="wrap">
 <p class="eyebrow page-kicker">家庭生活 · 寶寶取名</p>
 <h1>寶寶取名選字器</h1>
-<p class="lede">先挑名字第一個字，再挑第二個字，最後自動配出所有符合規則的組合。這裡有兩層五行，各管各的：</p>
-<ul class="lede" style="padding-left:1.2em;margin:8px 0 0">
-<li><b>筆畫的五行（三才）</b>：馮 12 畫，天格固定 13，屬火。寶寶喜金，但火會剋金，所以讓人格屬土當橋樑：火生土、土生金，地格落在金或土。下面列出的筆畫組合都已經符合這一層。</li>
-<li><b>字本身的五行</b>：看部首或字義，例如銘屬金、源屬水。名字裡的字帶金、水，可以再加強補八字。上方的「金水補八字」按鈕篩的就是這一層，打開後只留字本身屬金或水的字；也可以在「排除」那一組點選金、水、火、木、土，只拿掉某幾種。</li>
-</ul>
+<p class="lede">依寶寶的八字與生肖定出規則，先挑第一、二個字，再自動配出合格的名字。</p>
+<div class="prof">
+  <section class="pcard">
+    <h3 class="ph">寶寶命盤<small>2026 年 11 月 25 日上午 9:03・台北</small></h3>
+    <div class="pillars">
+      <div class="pil"><small>年柱</small><b>丙午</b><i><span class="e-火">火</span>・<span class="e-火">火</span></i></div>
+      <div class="pil"><small>月柱</small><b>己亥</b><i><span class="e-土">土</span>・<span class="e-水">水</span></i></div>
+      <div class="pil day"><small>日柱</small><b>癸卯</b><i><span class="e-水">水</span>・<span class="e-木">木</span></i></div>
+      <div class="pil"><small>時柱</small><b>丁巳</b><i><span class="e-火">火</span>・<span class="e-火">火</span></i></div>
+    </div>
+    <div class="ebal" aria-label="五行強弱">
+      <div class="eb"><span class="e-火">火</span><div class="et"><i style="width:100%;background:#c8442e"></i></div><em>4・偏旺</em></div>
+      <div class="eb"><span class="e-水">水</span><div class="et"><i style="width:50%;background:#2f64b0"></i></div><em>2・日主</em></div>
+      <div class="eb"><span class="e-木">木</span><div class="et"><i style="width:25%;background:#2f5e24"></i></div><em>1</em></div>
+      <div class="eb"><span class="e-土">土</span><div class="et"><i style="width:25%;background:#7a4b2a"></i></div><em>1</em></div>
+      <div class="eb"><span class="e-金">金</span><div class="et"><i style="width:2%;background:#b8860b"></i></div><em>0・缺</em></div>
+    </div>
+    <p class="pconc">日主<b class="e-水">癸水</b>，火旺身弱 → <b class="like">喜金、水</b>　<span class="dis">忌火、土</span></p>
+  </section>
+  <section class="pcard">
+    <h3 class="ph">生肖：屬馬<small>丙午年</small></h3>
+    <div class="zrow"><span class="hz hp">喜</span><span>艹、禾、米（草糧）、玉、金（鞍飾）</span></div>
+    <div class="zrow"><span class="hz hm">忌</span><span>水、雨、冫、子（子午相沖）</span></div>
+    <div class="zrow"><span class="hz zl">合</span><span>三合寅、戌（虎、狗），六合未（羊）</span></div>
+    <div class="zrow"><span class="hz zl">沖</span><span>子（鼠）相沖、丑（牛）相害、午午自刑</span></div>
+    <p class="pnote">字卡上的 <span class="hz hp">馬＋</span> <span class="hz hm">馬－</span> 就是依這兩行標的；生肖派的說法和八字有時互相矛盾（例如八字喜水、生肖忌水），所以只標示、不刪字。</p>
+  </section>
+</div>
+<h3 class="sech">取名邏輯</h3>
 <div class="sancai" id="sancai" aria-label="三才示意圖"></div>
-<p class="lede" style="margin-top:16px">每一列是名字第一個字的筆畫，首選排在最前面，點列名可以跳到下方對應的字。筆畫後面的小色塊是組合出來的三才（天格・人格・地格）：</p>
+<div class="logic"><span class="lg"><b>筆畫的五行</b>決定三才：天格火 → 人格土 → 地格金，一路相生</span><span class="lg"><b>字本身的五行</b>用來補八字：挑屬金、水的字</span></div>
+<h3 class="sech">能用的筆畫組合</h3>
+<p class="lede" style="margin-top:0">每一列是名字第一個字的筆畫，首選排在最前面，點列名可以跳到下方對應的字。筆畫後面的小色塊是組合出來的三才（天格・人格・地格）：</p>
 <ul class="pairs" id="pairs"></ul>
 <div class="rules">
   <div class="rules-t">其他派別的組合<small>預設關閉，打開後上方會多出對應的筆畫組合</small></div>
