@@ -273,6 +273,9 @@ details.help[open] summary{color:var(--ink)}
 .dock-in{align-items:center}.dock-n,.dock-chips,.dock-btns{align-self:center}
 .dock-chips{align-items:center}
 .fchip{height:40px;min-height:40px;margin:0}
+.cardact{position:sticky;bottom:calc(-18px - env(safe-area-inset-bottom));margin:4px -4px 0;padding:12px 4px calc(12px + env(safe-area-inset-bottom));background:var(--bg);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line)}
+.cardact>span:first-child{font-size:14px;color:var(--mute)}
+.ca-btns{display:flex;gap:8px}.ca-btns button{min-height:44px;font-weight:700}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mute);margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
@@ -574,9 +577,12 @@ async function makeCards(){
     c.fillStyle='#a3a5ab';c.font=`400 13px ${SANS}`;c.fillText('筆畫依康熙字典計算・三才五格與八字喜用僅供參考',PAD,ch-PAD/2-4);
     const url=cv.toDataURL('image/png');window._imgs.push(cv);
     const fig=document.createElement('figure');
-    fig.innerHTML=`<img alt="取名分享卡 第 ${pi+1} 張" src="${url}"><figcaption><span>第 ${pi+1} 張・${P.length} 個名字</span><span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="primary" data-share="${pi}">分享圖片</button><button type="button" data-dl="${pi}">下載圖片</button></span></figcaption>`;
+    fig.innerHTML=`<img alt="取名分享卡 第 ${pi+1} 張" src="${url}">${pages.length>1?`<figcaption><span>第 ${pi+1}／${pages.length} 張・${P.length} 個名字</span></figcaption>`:''}`;
     $('#cards').appendChild(fig);
   });
+  const act=document.createElement('div');act.className='cardact';
+  act.innerHTML=`<span>${pages.length>1?`共 ${pages.length} 張・`:''}${F.length} 個名字</span><span class="ca-btns"><button type="button" class="primary" data-shareall>分享圖片</button><button type="button" data-dlall>下載圖片</button></span>`;
+  $('#cards').appendChild(act);
 }
 
 
@@ -593,6 +599,19 @@ function readFavParam(){
 }
 function inAppNote(){return IN_APP&&!canShareFiles()?`<div class="inapp">目前是在 LINE 等 App 內建的瀏覽器裡，沒辦法分享或下載圖片。<a class="primary-link" href="${esc(externalURL())}" target="_blank" rel="noopener">用瀏覽器開啟</a><small>「我喜歡」的名字會一起帶過去；也可以直接長按圖片儲存。</small></div>`:''}
 function canShareFiles(){try{return !!(navigator.canShare&&navigator.share&&navigator.canShare({files:[new File([new Blob(['x'],{type:'image/png'})],'t.png',{type:'image/png'})]}))}catch(e){return false}}
+
+async function allFiles(){
+  const fs=[];for(let i=0;i<window._imgs.length;i++){const b=await new Promise(r=>window._imgs[i].toBlob(r,'image/png'));fs.push(new File([b],`寶寶取名候選${window._imgs.length>1?'-'+(i+1):''}.png`,{type:'image/png'}))}
+  return fs;
+}
+async function shareAll(){
+  const fs=await allFiles();if(!fs.length)return;
+  let ok=false;try{ok=!!(navigator.canShare&&navigator.share&&navigator.canShare({files:fs}))}catch(e){}
+  if(!ok){if(IN_APP){toast('這個 App 的內建瀏覽器不支援分享，請按上方「用瀏覽器開啟」，或長按圖片儲存');return}toast('這裡無法叫出分享選單，已改為下載');dlAll();return}
+  try{await navigator.share({files:fs,title:'寶寶取名候選',text:'寶寶取名候選，大家看看喜歡哪個？'})}
+  catch(e){if(e&&e.name==='AbortError')return;dlAll()}
+}
+async function dlAll(){for(let i=0;i<window._imgs.length;i++){await dl(i);await new Promise(r=>setTimeout(r,500))}}
 async function shareImg(i){
   const cv=window._imgs[i];if(!cv)return;
   const b=await new Promise(r=>cv.toBlob(r,'image/png'));
@@ -798,6 +817,8 @@ document.addEventListener('change',e=>{const f=e.target.closest('[data-fav]');if
 document.addEventListener('click',e=>{
   const u=e.target.closest('[data-unfav]');if(u){st.fav=st.fav.filter(x=>x!==u.dataset.unfav);save();render();return}
   if(e.target.closest('[data-close]')){closeSheet();return}
+  if(e.target.closest('[data-shareall]')){shareAll();return}
+  if(e.target.closest('[data-dlall]')){dlAll();return}
   const sh=e.target.closest('[data-share]');if(sh){shareImg(+sh.dataset.share);return}
   const md=e.target.closest('.mode button[data-mode]');if(md){setMode(md.dataset.mode);render();window.scrollTo({top:Math.min(window.scrollY,document.querySelector('.bar').offsetTop),behavior:'smooth'});return}
   const tf=e.target.closest('[data-togfav]');if(tf){toggleFav(tf.dataset.togfav);return}
