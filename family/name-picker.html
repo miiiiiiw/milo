@@ -302,7 +302,11 @@ details.help[open] summary{color:var(--ink)}
 .stog{margin-left:auto;min-height:36px;padding:0 12px;border-radius:18px;font:500 13px "Noto Sans TC",sans-serif;display:inline-flex;align-items:center;gap:4px;color:var(--mute)}
 .stog .stc{display:inline-block;transition:transform .2s}.stog.closed .stc{transform:rotate(180deg)}
 .stog.closed{color:var(--seal);border-color:color-mix(in srgb,var(--seal) 50%,transparent)}
-.stepsum{margin:6px 0 0;padding:10px 14px;border-radius:12px;background:var(--tile);font-size:14px;color:var(--mute)}.stepsum b{color:var(--ink);font-family:"Noto Serif TC",serif;font-size:16px}
+.stepsum{margin:6px 0 0;padding:12px 14px;border-radius:12px;background:var(--tile);font-size:14px;color:var(--mute);cursor:pointer;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;border:1.5px solid transparent;transition:border-color .15s}
+.stepsum:hover{border-color:var(--line)}
+.stepsum .sm-go{margin-left:auto;font-size:13px;color:var(--slate);font-weight:700;white-space:nowrap}
+.stepsum.isempty{border:1.5px dashed color-mix(in srgb,var(--seal) 45%,transparent);background:var(--sealbg)}
+.stepsum.isempty .sm-empty{color:var(--ink);font-weight:500}.stepsum.isempty .sm-go{color:var(--seal)}.stepsum b{color:var(--ink);font-family:"Noto Serif TC",serif;font-size:16px}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mute);margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
@@ -371,7 +375,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 
 <section class="band m-pick" id="step1" style="padding-top:24px"><div class="wrap">
 <h2 class="sth" data-toggle="step1">第一步　名字第一個字<span class="role r-ren">決定人格 → 要屬土</span><button type="button" class="stog" data-toggle="step1" aria-expanded="true"><span class="stl">收合</span><span class="stc">⌃</span></button></h2>
-<p class="stepsum" id="step1sum" hidden></p>
+<p class="stepsum" id="step1sum" data-toggle="step1" role="button" tabindex="0" hidden></p>
 <div class="stepbody" id="step1body">
 <p class="guide">這個字和姓氏一起決定「人格」，也就是主運和個性核心，是最重要的位置。適合穩重、端正的字，也是傳統放輩分字的地方。</p>
 <details class="help"><summary>看標記說明</summary>
@@ -388,7 +392,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 
 <section class="band m-pick" id="step2" style="padding-top:0"><div class="wrap">
 <h2 class="sth" data-toggle="step2">第二步　名字第二個字<span class="role r-di">決定地格 → 屬金最好，土也可</span><button type="button" class="stog" data-toggle="step2" aria-expanded="true"><span class="stl">收合</span><span class="stc">⌃</span></button></h2>
-<p class="stepsum" id="step2sum" hidden></p>
+<p class="stepsum" id="step2sum" data-toggle="step2" role="button" tabindex="0" hidden></p>
 <div class="stepbody" id="step2body">
 <p class="guide">這個字決定「地格」（少年運、家庭）和「外格」（人際），也是平常最常被叫的字。讀音響亮、好叫，字義鮮明比較好。</p>
 <details class="help"><summary>看「可配 N」等提示的說明</summary>
@@ -482,9 +486,10 @@ function tier(a,b,loose){
 }
 const $=s=>document.querySelector(s);
 const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let st={mode:'pick',subj:true,bands:[],c1:false,c2:false,a:[],b:[],fav:[],good:false,metal:false,water:false,fire:false,wood:false,earth:false,horse:false,loose:false,hmh:false};
+let st={mode:'pick',subj:true,bands:[],c1:true,c2:true,a:[],b:[],fav:[],good:false,metal:false,water:false,fire:false,wood:false,earth:false,horse:false,loose:false,hmh:false};
 try{Object.assign(st,JSON.parse(localStorage.getItem('feng-picker')||'{}'))}catch(e){}
 if(!Array.isArray(st.fav))st.fav=[];
+if(st.cv!==2){st.c1=true;st.c2=true;st.cv=2}
 if(st.good){st.fire=st.wood=st.earth=true;st.metal=st.water=false;st.good=false}
 const save=()=>{try{localStorage.setItem('feng-picker',JSON.stringify(st))}catch(e){}};
 const byCh=Object.fromEntries(POOL.map(x=>[x[0],x]));
@@ -822,7 +827,9 @@ function renderCollapse(){
     const c=!!st[key];
     $('#'+sid+'body').hidden=c;
     const sm=$('#'+sid+'sum');sm.hidden=!c;
-    sm.innerHTML=arr.length?`已選 ${arr.length} 個：<b>${arr.map(esc).join('、')}</b>`:'還沒選字';
+    const empty=sid==='step1'?'第一個字還空著，點我展開，從首選的 3 畫、13 畫開始挑挑看吧':'第二個字還沒挑喔，點我展開，找個跟第一字合得來的字';
+    sm.innerHTML=arr.length?`已選 ${arr.length} 個：<b>${arr.map(esc).join('、')}</b><span class="sm-go">點我修改</span>`:`<span class="sm-empty">${empty}</span>`;
+    sm.classList.toggle('isempty',!arr.length);
     const b=document.querySelector(`.stog[data-toggle="${sid}"]`);b.setAttribute('aria-expanded',!c);b.querySelector('.stl').textContent=c?'展開':'收合';b.classList.toggle('closed',c);
   }
 }
@@ -922,7 +929,7 @@ $('#mkcard').addEventListener('click',makeCards);
 $('#sq').addEventListener('input',searchRun);
 $('#recmore').addEventListener('click',()=>{recBands+=8;renderRec()});
 $('#fSubj').addEventListener('change',e=>{st.subj=e.target.checked;save();render()});
-document.addEventListener('keydown',e=>{const rw=e.target.closest&&e.target.closest('.rrow.click');if(rw&&(e.key==='Enter'||e.key===' ')&&!e.target.closest('label.fbox')){e.preventDefault();openDetail(rw.dataset.detail);return}if(e.key!=='Escape')return;if(!$('#dsheet').hidden)closeDetail();else if(!$('#ssheet').hidden)closeSearch();else if(!$('#sheet').hidden)closeSheet()});
+document.addEventListener('keydown',e=>{const ss=e.target.closest&&e.target.closest('.stepsum');if(ss&&(e.key==='Enter'||e.key===' ')){e.preventDefault();ss.click();return}const rw=e.target.closest&&e.target.closest('.rrow.click');if(rw&&(e.key==='Enter'||e.key===' ')&&!e.target.closest('label.fbox')){e.preventDefault();openDetail(rw.dataset.detail);return}if(e.key!=='Escape')return;if(!$('#dsheet').hidden)closeDetail();else if(!$('#ssheet').hidden)closeSearch();else if(!$('#sheet').hidden)closeSheet()});
 function favText(){const F=favPairs();return '寶寶取名候選\n'+F.map(r=>`馮${r.key}（féng ${r.xa[2]} ${r.xb[2]}）\n　${r.ca}：${r.xa[4]}；${r.cb}：${r.xb[4]}\n　三才${r.g.sc}・總格${r.g.zong}・${r.sc.total}分・${['','推薦','可考慮','留意'][r.o]}${r.pun?'・諧音：'+r.pun:''}`).join('\n')}
 $('#copyfav').addEventListener('click',async()=>{const F=favPairs();if(!F.length){toast('還沒有喜歡的名字');return}
   try{await navigator.clipboard.writeText(favText());toast(`已複製 ${F.length} 個名字`)}catch(e){toast('這個環境無法複製')}});
