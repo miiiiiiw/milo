@@ -224,6 +224,7 @@ body:has(.sheet:not([hidden])) .fab{display:none}
 .smsg b{color:var(--ink)}.smsg .bad{color:var(--seal)}
 .tally .tl{margin-right:8px;display:inline-flex;gap:6px}
 .tc{display:inline-flex;align-items:center;gap:5px;min-height:30px;padding:0 10px;border-radius:15px;font-size:12.5px;color:var(--mute);border:1px dashed var(--line)}
+.bar .tally .tc{min-height:30px;cursor:pointer}.tca{font-size:13px;opacity:.6;margin-left:-1px}
 .tc b{font-size:15px;font-weight:700;color:var(--mute);font-variant-numeric:tabular-nums}
 .tc.on{border:1px solid transparent;background:color-mix(in srgb,var(--slate) 16%,transparent);color:color-mix(in srgb,var(--ink) 75%,transparent)}
 .tc.on b{color:var(--slate)}
@@ -295,6 +296,13 @@ details.help[open] summary{color:var(--ink)}
 .ex[aria-pressed=true] i{color:var(--mute);text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:var(--seal)}
 .ex:focus-visible{outline:2px solid var(--slate);outline-offset:1px}
 .exg:has(.ex[aria-pressed=true]){border-color:color-mix(in srgb,var(--seal) 50%,transparent)}
+.fab-top{width:44px;height:44px;min-height:44px;bottom:calc(var(--dockh,0px) + 84px + env(safe-area-inset-bottom));right:max(22px,calc((100vw - 1100px)/2 + 6px));background:var(--bg);color:var(--ink);border:1.5px solid var(--line);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.fab[hidden]{display:none}
+.sth{display:flex;align-items:center;flex-wrap:wrap;gap:6px;cursor:pointer}
+.stog{margin-left:auto;min-height:36px;padding:0 12px;border-radius:18px;font:500 13px "Noto Sans TC",sans-serif;display:inline-flex;align-items:center;gap:4px;color:var(--mute)}
+.stog .stc{display:inline-block;transition:transform .2s}.stog.closed .stc{transform:rotate(180deg)}
+.stog.closed{color:var(--seal);border-color:color-mix(in srgb,var(--seal) 50%,transparent)}
+.stepsum{margin:6px 0 0;padding:10px 14px;border-radius:12px;background:var(--tile);font-size:14px;color:var(--mute)}.stepsum b{color:var(--ink);font-family:"Noto Serif TC",serif;font-size:16px}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mute);margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
@@ -362,7 +370,9 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 </div></section>
 
 <section class="band m-pick" id="step1" style="padding-top:24px"><div class="wrap">
-<h2>第一步　名字第一個字<span class="role r-ren">決定人格 → 要屬土</span></h2>
+<h2 class="sth" data-toggle="step1">第一步　名字第一個字<span class="role r-ren">決定人格 → 要屬土</span><button type="button" class="stog" data-toggle="step1" aria-expanded="true"><span class="stl">收合</span><span class="stc">⌃</span></button></h2>
+<p class="stepsum" id="step1sum" hidden></p>
+<div class="stepbody" id="step1body">
 <p class="guide">這個字和姓氏一起決定「人格」，也就是主運和個性核心，是最重要的位置。適合穩重、端正的字，也是傳統放輩分字的地方。</p>
 <details class="help"><summary>看標記說明</summary>
 <div class="helpcard">
@@ -373,10 +383,13 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 </div>
 </details>
 <div id="first"></div>
+</div>
 </div></section>
 
 <section class="band m-pick" id="step2" style="padding-top:0"><div class="wrap">
-<h2>第二步　名字第二個字<span class="role r-di">決定地格 → 屬金最好，土也可</span></h2>
+<h2 class="sth" data-toggle="step2">第二步　名字第二個字<span class="role r-di">決定地格 → 屬金最好，土也可</span><button type="button" class="stog" data-toggle="step2" aria-expanded="true"><span class="stl">收合</span><span class="stc">⌃</span></button></h2>
+<p class="stepsum" id="step2sum" hidden></p>
+<div class="stepbody" id="step2body">
 <p class="guide">這個字決定「地格」（少年運、家庭）和「外格」（人際），也是平常最常被叫的字。讀音響亮、好叫，字義鮮明比較好。</p>
 <details class="help"><summary>看「可配 N」等提示的說明</summary>
 <div class="helpcard">
@@ -387,6 +400,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 </div>
 </details>
 <div id="second"></div>
+</div>
 </div></section>
 
 <section class="band m-pick" id="result" style="padding-top:0"><div class="wrap">
@@ -414,6 +428,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
     <div id="cards"></div>
   </div>
 </div>
+<button type="button" class="fab fab-top" id="topBtn" aria-label="回到頂部" hidden><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 19V6m0 0l-6 6m6-6l6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
 <button type="button" class="fab" id="srchBtn" aria-label="搜尋名字"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
 <div class="sheet" id="ssheet" hidden>
   <div class="sheet-mask" data-sclose></div>
@@ -467,7 +482,7 @@ function tier(a,b,loose){
 }
 const $=s=>document.querySelector(s);
 const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let st={mode:'pick',subj:true,bands:[],a:[],b:[],fav:[],good:false,metal:false,water:false,fire:false,wood:false,earth:false,horse:false,loose:false,hmh:false};
+let st={mode:'pick',subj:true,bands:[],c1:false,c2:false,a:[],b:[],fav:[],good:false,metal:false,water:false,fire:false,wood:false,earth:false,horse:false,loose:false,hmh:false};
 try{Object.assign(st,JSON.parse(localStorage.getItem('feng-picker')||'{}'))}catch(e){}
 if(!Array.isArray(st.fav))st.fav=[];
 if(st.good){st.fire=st.wood=st.earth=true;st.metal=st.water=false;st.good=false}
@@ -800,7 +815,19 @@ function searchRun(){
 const openSearch=()=>{$('#ssheet').hidden=false;document.body.style.overflow='hidden';searchRun();setTimeout(()=>$('#sq').focus(),50)};
 const closeSearch=()=>{$('#ssheet').hidden=true;if($('#dsheet').hidden)document.body.style.overflow=''};
 
-function goTo(sel){const el=document.querySelector(sel);if(!el)return;const y=el.getBoundingClientRect().top+window.scrollY-document.querySelector('.bar').offsetHeight-8;window.scrollTo({top:y,behavior:'smooth'})}
+function goToRaw(sel){const el=document.querySelector(sel);if(!el)return;const y=el.getBoundingClientRect().top+window.scrollY-document.querySelector('.bar').offsetHeight-8;window.scrollTo({top:y,behavior:'smooth'})}
+
+function renderCollapse(){
+  for(const [sid,key,arr] of [['step1','c1',st.a],['step2','c2',st.b]]){
+    const c=!!st[key];
+    $('#'+sid+'body').hidden=c;
+    const sm=$('#'+sid+'sum');sm.hidden=!c;
+    sm.innerHTML=arr.length?`已選 ${arr.length} 個：<b>${arr.map(esc).join('、')}</b>`:'還沒選字';
+    const b=document.querySelector(`.stog[data-toggle="${sid}"]`);b.setAttribute('aria-expanded',!c);b.querySelector('.stl').textContent=c?'展開':'收合';b.classList.toggle('closed',c);
+  }
+}
+function expandFor(sel){if(sel==='#step1'&&st.c1){st.c1=false;save();renderCollapse()}if(sel==='#step2'&&st.c2){st.c2=false;save();renderCollapse()}}
+function goTo(sel){expandFor(sel);goToRaw(sel)}
 function renderStepper(R){
   const a=st.a.length,b=st.b.length,n=R.length,f=st.fav.length;
   const cur=!a?1:!b?2:!f?3:4;
@@ -840,10 +867,11 @@ function render(){
   $('#reshidden').textContent=RA.length>R.length?`另有 ${RA.length-R.length} 組不在所選的分數區間`:'';
   drawSancai(R);
   renderStepper(R);
+  renderCollapse();
   renderFav();
   renderRec();
   {const prev=window._lastN;window._lastN=R.length;
-  $('#tally').innerHTML=`<span class="tl"><span class="tc${st.a.length?' on':''}">第一字<b>${st.a.length}</b></span><span class="tc${st.b.length?' on':''}">第二字<b>${st.b.length}</b></span></span>${st.a.length+st.b.length?`<button type="button" class="clr-btn" data-clear aria-label="清除所有選字">清除<span aria-hidden="true">×</span></button>`:''}<a href="#result" class="cnt-btn${R.length?'':' zero'}" aria-label="${R.length} 組組合，跳到組合結果"><b>${R.length}</b> 組<span class="arr">›</span></a>`;
+  $('#tally').innerHTML=`<span class="tl"><button type="button" class="tc${st.a.length?' on':''}" data-go="#step1" aria-label="第一字已選 ${st.a.length} 個，跳到第一步">第一字<b>${st.a.length}</b><span class="tca">›</span></button><button type="button" class="tc${st.b.length?' on':''}" data-go="#step2" aria-label="第二字已選 ${st.b.length} 個，跳到第二步">第二字<b>${st.b.length}</b><span class="tca">›</span></button></span>${st.a.length+st.b.length?`<button type="button" class="clr-btn" data-clear aria-label="清除所有選字">清除<span aria-hidden="true">×</span></button>`:''}<a href="#result" class="cnt-btn${R.length?'':' zero'}" aria-label="${R.length} 組組合，跳到組合結果"><b>${R.length}</b> 組<span class="arr">›</span></a>`;
   if(prev!==undefined&&prev!==R.length){const el=$('#tally .cnt-btn');el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump')}}
   if(!R.length){$('#out').innerHTML=`<p class="empty">${st.a.length&&st.b.length?'你挑的字之中，筆畫配不出符合規則的組合。可以多挑幾個不同筆畫的字，或打開「放寬」。':'兩個步驟各挑幾個字，這裡就會列出組合。'}</p>`;return}
   const tn=['','首選','次選','放寬','火木火'];
@@ -861,11 +889,13 @@ document.addEventListener('click',e=>{
   if(e.target.closest('label.fbox'))return;
   const dt=e.target.closest('[data-detail]');if(dt){openDetail(dt.dataset.detail);return}
   if(e.target.closest('[data-dclose]')){closeDetail();return}
+  const tg=e.target.closest('[data-toggle]');if(tg&&!e.target.closest('.role')){const k=tg.dataset.toggle==='step1'?'c1':'c2';st[k]=!st[k];save();renderCollapse();return}
   const gs=e.target.closest('[data-go]');if(gs){const g=gs.dataset.go;if(g==='share'){if(st.fav.length)makeCards();else{toast('先在組合結果勾選喜歡的名字');goTo('#result')}}else goTo(g);return}
   if(e.target.closest('[data-gorec]')){setMode('rec');render();window.scrollTo({top:document.querySelector('.bar').offsetTop,behavior:'smooth'});return}
   const sbb=e.target.closest('[data-sband]');if(sbb){const k=sbb.dataset.sband;st.bands=(st.bands||[]).includes(k)?st.bands.filter(x=>x!==k):[...(st.bands||[]),k];save();render();return}
   if(e.target.closest('[data-band-all]')){st.bands=[];save();render();return}
   if(e.target.closest('[data-clear]')){clearPicks();return}
+  if(e.target.closest('#topBtn')){window.scrollTo({top:0,behavior:'smooth'});return}
   if(e.target.closest('#srchBtn')){openSearch();return}
   if(e.target.closest('[data-sclose]')){closeSearch();return}
   const be=e.target.closest('[data-band]');if(be){const s=+be.dataset.band;openBand.has(s)?openBand.delete(s):openBand.add(s);renderRec();return}
@@ -904,6 +934,7 @@ $('#copy').addEventListener('click',async()=>{
 });
 new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document.body,{childList:true,subtree:true});
 readFavParam();setMode(st.mode||'pick');
+{const tb=document.querySelector('#topBtn');const upd=()=>{tb.hidden=window.scrollY<window.innerHeight*0.9};upd();window.addEventListener('scroll',upd,{passive:true})}
 {const bar=document.querySelector('.bar');const sio=new IntersectionObserver(([en])=>bar.classList.toggle('stuck',!en.isIntersecting&&en.boundingClientRect.top<0));sio.observe(document.querySelector('#barsent'))}$('#fSubj').checked=st.subj!==false;
 {const dk=document.querySelector('#dock');const setD=()=>document.documentElement.style.setProperty('--dockh',(dk.hidden?0:dk.offsetHeight)+'px');setD();const dockRO=new ResizeObserver(setD);dockRO.observe(dk);new MutationObserver(setD).observe(dk,{attributes:true,attributeFilter:['hidden']})}
 {const bar=document.querySelector('.bar');const setB=()=>document.documentElement.style.setProperty('--barh',bar.offsetHeight+'px');setB();const barRO=new ResizeObserver(setB);barRO.observe(bar)}
