@@ -33,7 +33,9 @@ h2{font:600 24px/1.25 "Noto Serif TC",serif;margin:0 0 6px}
 .bt{margin-left:6px;font-size:12px;color:var(--seal);font-weight:700}.bt.lo{color:var(--mute)}
 .pairs .chip{border:1px solid var(--line);border-radius:10px;padding:6px 12px;font-size:14px;white-space:nowrap}.pairs .chip.best{border-color:var(--seal)}
 .pairs b{color:var(--seal)}
-.bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px max(5vw,16px)}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px max(5vw,16px);transition:box-shadow .2s,background .2s}
+.bar.stuck{background:color-mix(in srgb,var(--bg) 86%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 8px 18px -12px rgba(0,0,0,.45)}
+#barsent{height:1px;margin-bottom:-1px}
 .bar .wrap{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .filters{display:flex;flex-wrap:wrap;gap:8px}
 @media(max-width:760px){.bar .wrap{flex-wrap:nowrap;gap:8px}.filters{flex:1;flex-wrap:nowrap;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent);padding-right:24px}.filters::-webkit-scrollbar{display:none}.bar button{flex:none;padding:0 11px;font-size:14px;white-space:nowrap}.bar .tl{display:none}.bar .tally{flex:none;margin-left:0}}
@@ -221,6 +223,23 @@ body:has(.sheet:not([hidden])) .fab{display:none}
 .inapp{border:1.5px solid var(--seal);background:var(--sealbg);border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.6}
 .inapp .primary-link{display:inline-flex;align-items:center;min-height:40px;margin:8px 0 2px;padding:0 16px;border-radius:20px;background:var(--seal);color:#fff;text-decoration:none;font-weight:700}
 .inapp small{display:block;color:var(--mute);font-size:12px}
+.stepband{padding-bottom:0;padding-top:20px}
+.stepper{display:flex;align-items:stretch;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px}
+.stepper::-webkit-scrollbar{display:none}
+.step{flex:1 1 0;min-width:120px;display:flex;align-items:center;gap:10px;text-align:left;padding:10px 12px;border-radius:14px;border:1.5px solid var(--line);background:var(--tile);color:var(--ink);min-height:60px}
+.step .sn{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:14px;background:var(--line);color:var(--mute)}
+.step .st{display:flex;flex-direction:column;line-height:1.3}.step b{font-size:15px}.step small{font-size:12px;color:var(--mute)}
+.step.done .sn{background:color-mix(in srgb,var(--seal) 18%,transparent);color:var(--seal)}
+.step.cur{border-color:var(--seal);background:var(--sealbg)}.step.cur .sn{background:var(--seal);color:#fff}.step.cur small{color:var(--seal)}
+.sarr{align-self:center;color:var(--mute);flex:none}
+.stephint{font-size:13px;color:var(--mute);margin:10px 0 0}
+.linkbtn{min-height:auto;padding:0;border:0;background:none;color:var(--seal);font-size:13px;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+details.help{margin:0 0 14px}
+details.help summary{cursor:pointer;font-size:14px;color:var(--slate);list-style:none;display:inline-flex;align-items:center;gap:6px;min-height:36px}
+details.help summary::-webkit-details-marker{display:none}
+details.help summary::before{content:"ⓘ";font-size:15px}
+details.help[open] summary{margin-bottom:6px}
+@media(max-width:600px){.step{min-width:132px;padding:8px 10px}.sarr{display:none}}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mute);margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
@@ -261,6 +280,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 </div>
 </div></section>
 
+<div id="barsent" aria-hidden="true"></div>
 <div class="bar"><div class="wrap">
   <div class="mode" role="tablist"><button type="button" role="tab" data-mode="pick">手挑</button><button type="button" role="tab" data-mode="rec">推薦</button></div>
   <div class="filters">
@@ -282,18 +302,27 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 <button type="button" id="recmore" style="margin-top:12px">顯示更多分數</button>
 </div></section>
 
-<section class="band m-pick"><div class="wrap">
+<section class="band m-pick stepband"><div class="wrap">
+<nav class="stepper" id="stepper" aria-label="選名字的步驟"></nav>
+<p class="stephint">不知道從哪開始？<button type="button" class="linkbtn" data-gorec>先看看「推薦」</button></p>
+</div></section>
+
+<section class="band m-pick" id="step1" style="padding-top:24px"><div class="wrap">
 <h2>第一步　名字第一個字<span class="role r-ren">決定人格 → 要屬土</span></h2>
 <p class="guide">這個字和姓氏一起決定「人格」，也就是主運和個性核心，是最重要的位置。適合穩重、端正的字，也是傳統放輩分字的地方。</p>
+<details class="help"><summary>看標記說明</summary>
 <p class="hint">點選喜歡的字，可以多選。每個字下面是讀音和簡義，字的顏色代表常見的五行歸類：金是金黃、水是藍、木是綠、火是紅、土是褐。</p>
 <div class="legend"><span><b class="g g1">◎ 推薦</b>：五行屬金或水，也不犯生肖</span><span><b class="g">○ 可用</b>：屬木，或八字和生肖一加一減</span><span><b class="g g3">△ 留意</b>：屬火或土，或犯生肖</span><span style="flex-basis:100%">等級只看八字和生肖；小字是我對字本身的備註（偏女性、字義重、撞名率等），不影響等級。</span><span><span class="hz hp">馬＋</span> 屬馬喜用的字根（艹、禾、玉、金、米）</span><span><span class="hz hm">馬－</span> 生肖派忌用的字根（水、雨、子、冫）</span></div>
+</details>
 <div id="first"></div>
 </div></section>
 
-<section class="band m-pick" style="padding-top:0"><div class="wrap">
+<section class="band m-pick" id="step2" style="padding-top:0"><div class="wrap">
 <h2>第二步　名字第二個字<span class="role r-di">決定地格 → 屬金最好，土也可</span></h2>
 <p class="guide">這個字決定「地格」（少年運、家庭）和「外格」（人際），也是平常最常被叫的字。讀音響亮、好叫，字義鮮明比較好。</p>
+<details class="help"><summary>看「可配 N」等提示的說明</summary>
 <p class="hint">一樣多選。挑了字之後，另一欄會跟著提示：右上角「可配 N」表示能和你已選的 N 個字組成合格的名字，變淡的字表示筆畫配不上（仍可選），左上角「同部首」表示字形會太像。兩欄都會互相提示，先挑哪一欄都可以。</p>
+</details>
 <div id="second"></div>
 </div></section>
 
@@ -685,6 +714,14 @@ function searchRun(){
 }
 const openSearch=()=>{$('#ssheet').hidden=false;document.body.style.overflow='hidden';searchRun();setTimeout(()=>$('#sq').focus(),50)};
 const closeSearch=()=>{$('#ssheet').hidden=true;if($('#dsheet').hidden)document.body.style.overflow=''};
+
+function goTo(sel){const el=document.querySelector(sel);if(!el)return;const y=el.getBoundingClientRect().top+window.scrollY-document.querySelector('.bar').offsetHeight-8;window.scrollTo({top:y,behavior:'smooth'})}
+function renderStepper(R){
+  const a=st.a.length,b=st.b.length,n=R.length,f=st.fav.length;
+  const cur=!a?1:!b?2:!f?3:4;
+  const steps=[[1,'挑第一字',a?`已選 ${a}`:'決定人格','#step1',a>0],[2,'挑第二字',b?`已選 ${b}`:'決定地格','#step2',b>0],[3,'看組合、勾喜歡',a&&b?`${n} 組・喜歡 ${f}`:'選好兩邊的字','#result',f>0],[4,'分享',f?`${f} 個名字`:'製作分享卡','share',false]];
+  $('#stepper').innerHTML=steps.map(([k,t,s,go,done],i)=>`${i?'<span class="sarr" aria-hidden="true">→</span>':''}<button type="button" class="step${done?' done':''}${k===cur?' cur':''}" data-go="${go}"><span class="sn">${done?'✓':k}</span><span class="st"><b>${t}</b><small>${s}</small></span></button>`).join('');
+}
 function render(){
   const P=pairList();
   const has=n=>POOL.some(x=>x[1]===n);
@@ -705,6 +742,7 @@ function render(){
   R.sort((p,q)=>q.sc.total-p.sc.total||p.o-q.o||p.t-q.t);
   window._R=R;
   drawSancai(R);
+  renderStepper(R);
   renderFav();
   renderRec();
   {const prev=window._lastN;window._lastN=R.length;
@@ -724,6 +762,8 @@ document.addEventListener('click',e=>{
   if(e.target.closest('label.fbox'))return;
   const dt=e.target.closest('[data-detail]');if(dt){openDetail(dt.dataset.detail);return}
   if(e.target.closest('[data-dclose]')){closeDetail();return}
+  const gs=e.target.closest('[data-go]');if(gs){const g=gs.dataset.go;if(g==='share'){if(st.fav.length)makeCards();else{toast('先在組合結果勾選喜歡的名字');goTo('#result')}}else goTo(g);return}
+  if(e.target.closest('[data-gorec]')){setMode('rec');render();window.scrollTo({top:document.querySelector('.bar').offsetTop,behavior:'smooth'});return}
   if(e.target.closest('[data-clear]')){clearPicks();return}
   if(e.target.closest('#srchBtn')){openSearch();return}
   if(e.target.closest('[data-sclose]')){closeSearch();return}
@@ -760,7 +800,8 @@ $('#copy').addEventListener('click',async()=>{
   try{await navigator.clipboard.writeText(txt);toast(`已複製 ${R.length} 組`)}catch(e){toast('這個環境無法複製')}
 });
 new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document.body,{childList:true,subtree:true});
-readFavParam();setMode(st.mode||'pick');$('#fSubj').checked=st.subj!==false;
+readFavParam();setMode(st.mode||'pick');
+{const bar=document.querySelector('.bar');const sio=new IntersectionObserver(([en])=>bar.classList.toggle('stuck',!en.isIntersecting&&en.boundingClientRect.top<0));sio.observe(document.querySelector('#barsent'))}$('#fSubj').checked=st.subj!==false;
 {const dk=document.querySelector('#dock');const setD=()=>document.documentElement.style.setProperty('--dockh',(dk.hidden?0:dk.offsetHeight)+'px');setD();const dockRO=new ResizeObserver(setD);dockRO.observe(dk);new MutationObserver(setD).observe(dk,{attributes:true,attributeFilter:['hidden']})}
 {const bar=document.querySelector('.bar');const setB=()=>document.documentElement.style.setProperty('--barh',bar.offsetHeight+'px');setB();const barRO=new ResizeObserver(setB);barRO.observe(bar)}
 render();
