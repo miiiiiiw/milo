@@ -266,6 +266,13 @@ details.help[open] summary{margin-bottom:6px}
 .demo-dim{display:inline-block;padding:1px 8px;border-radius:6px;background:var(--line);opacity:.45;font-size:12px}
 details.help[open] summary{color:var(--ink)}
 @media(max-width:600px){.hrow{grid-template-columns:minmax(0,1fr);gap:4px}.hi{white-space:normal}}
+.dock-btns button{min-height:40px;display:inline-flex;align-items:center;gap:6px;padding:0 14px;font-size:14px}
+.dock-btns button.ghost{border:0;background:none;color:var(--slate);font-weight:700;padding:0 8px}
+.dock-btns button.ghost:hover{background:color-mix(in srgb,var(--slate) 12%,transparent)}
+.dock-btns button.primary{font-weight:700}
+.dock-in{align-items:center}.dock-n,.dock-chips,.dock-btns{align-self:center}
+.dock-chips{align-items:center}
+.fchip{height:40px;min-height:40px;margin:0}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mute);margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
@@ -375,7 +382,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 <div class="dock" id="dock" hidden><div class="dock-in">
   <b class="dock-n" id="favcount"></b>
   <div class="dock-chips" id="favlist"></div>
-  <div class="dock-btns"><button type="button" id="copyfav">複製文字</button><button type="button" id="mkcard" class="primary">製作分享卡</button></div>
+  <div class="dock-btns"><button type="button" id="copyfav" class="ghost" title="把我喜歡的名字複製成文字"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 5.5V5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>複製</button><button type="button" id="mkcard" class="primary"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 15V4m0 0l-4 4m4-4l4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>分享卡片</button></div>
 </div></div>
 <div class="sheet" id="sheet" hidden>
   <div class="sheet-mask" data-close></div>
