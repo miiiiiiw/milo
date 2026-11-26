@@ -305,8 +305,15 @@ details.help[open] summary{color:var(--ink)}
 .stepsum{margin:6px 0 0;padding:12px 14px;border-radius:12px;background:var(--tile);font-size:14px;color:var(--mute);cursor:pointer;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;border:1.5px solid transparent;transition:border-color .15s}
 .stepsum:hover{border-color:var(--line)}
 .stepsum .sm-go{margin-left:auto;font-size:13px;color:var(--slate);font-weight:700;white-space:nowrap}
-.stepsum.isempty{border:1.5px dashed color-mix(in srgb,var(--seal) 45%,transparent);background:var(--sealbg)}
-.stepsum.isempty .sm-empty{color:var(--ink);font-weight:500}.stepsum.isempty .sm-go{color:var(--seal)}.stepsum b{color:var(--ink);font-family:"Noto Serif TC",serif;font-size:16px}
+.stepsum.isempty{flex-wrap:nowrap;gap:12px;background:var(--tile);border:1.5px dashed color-mix(in srgb,var(--slate) 55%,transparent);padding:12px 12px 12px 14px}
+.stepsum.isempty:hover{border-color:var(--slate)}
+.sm-ic{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--slate) 18%,transparent);color:var(--slate);font-size:16px}
+.stepsum.isempty .sm-empty{flex:1;color:var(--ink);font-weight:500;line-height:1.5}
+.sm-cta{flex:none;min-height:34px;padding:0 14px;border-radius:17px;background:var(--slate);color:var(--bg);font-size:13px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
+.stepsum.isempty .sm-cta{animation:nudge 1.6s ease-in-out 3}
+@media(prefers-reduced-motion:reduce){.stepsum.isempty .sm-cta{animation:none}}
+@media(max-width:420px){.sm-cta{padding:0 10px}}.stepsum b{color:var(--ink);font-family:"Noto Serif TC",serif;font-size:16px}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mute);margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
@@ -828,7 +835,7 @@ function renderCollapse(){
     $('#'+sid+'body').hidden=c;
     const sm=$('#'+sid+'sum');sm.hidden=!c;
     const empty=sid==='step1'?'第一個字還空著，點我展開，從首選的 3 畫、13 畫開始挑挑看吧':'第二個字還沒挑喔，點我展開，找個跟第一字合得來的字';
-    sm.innerHTML=arr.length?`已選 ${arr.length} 個：<b>${arr.map(esc).join('、')}</b><span class="sm-go">點我修改</span>`:`<span class="sm-empty">${empty}</span>`;
+    sm.innerHTML=arr.length?`已選 ${arr.length} 個：<b>${arr.map(esc).join('、')}</b><span class="sm-go">點我修改</span>`:`<span class="sm-ic" aria-hidden="true">✎</span><span class="sm-empty">${empty}</span><span class="sm-cta">開始挑字 ›</span>`;
     sm.classList.toggle('isempty',!arr.length);
     const b=document.querySelector(`.stog[data-toggle="${sid}"]`);b.setAttribute('aria-expanded',!c);b.querySelector('.stl').textContent=c?'展開':'收合';b.classList.toggle('closed',c);
   }
