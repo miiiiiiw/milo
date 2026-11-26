@@ -38,7 +38,18 @@ h2{font:600 24px/1.25 "Noto Serif TC",serif;margin:0 0 6px}
 #barsent{height:1px;margin-bottom:-1px}
 .bar .wrap{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .filters{display:flex;flex-wrap:wrap;gap:8px}
-@media(max-width:760px){.bar .wrap{flex-wrap:nowrap;gap:8px}.filters{flex:1;flex-wrap:nowrap;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent);padding-right:24px}.filters::-webkit-scrollbar{display:none}.bar button{flex:none;padding:0 11px;font-size:14px;white-space:nowrap}.bar .tally .tl{display:none}.bar .tally{flex:none;margin-left:0}}
+@media(max-width:760px){
+ .bar{padding-top:8px;padding-bottom:8px}
+ .bar .wrap{flex-wrap:wrap;gap:8px 8px}
+ .filters{flex:1 1 0;flex-wrap:nowrap;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent);padding-right:24px}
+ .filters::-webkit-scrollbar{display:none}
+ .bar button{flex:none;padding:0 11px;font-size:14px;white-space:nowrap}
+ .bar .tally{flex:1 0 100%;margin-left:0;display:flex;align-items:center;padding-top:8px;border-top:1px dashed color-mix(in srgb,var(--line) 80%,transparent)}
+ .bar .tally .tl{margin-right:auto}
+ .tc{min-height:28px;padding:0 9px}
+ .clr-btn,.cnt-btn{min-height:34px}
+ .cnt-btn b{font-size:16px}
+}
 button{font:500 15px "Noto Sans TC",sans-serif;min-height:44px;padding:0 14px;border-radius:22px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
 button[aria-pressed=true]{border-color:var(--seal);color:var(--seal);background:var(--sealbg)}
 button:focus-visible{outline:3px solid var(--slate);outline-offset:2px}
