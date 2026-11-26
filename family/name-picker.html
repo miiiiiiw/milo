@@ -248,7 +248,7 @@ body:has(.sheet:not([hidden])) .fab{display:none}
 .stepper::-webkit-scrollbar{display:none}
 .step{flex:1 1 0;min-width:120px;display:flex;align-items:center;gap:10px;text-align:left;padding:10px 12px;border-radius:14px;border:1.5px solid var(--line);background:var(--tile);color:var(--ink);min-height:60px}
 .step .sn{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:14px;background:var(--line);color:var(--mute)}
-.step .st{display:flex;flex-direction:column;line-height:1.3}.step b{font-size:15px}.step small{font-size:12px;color:var(--mute)}
+.step .st{display:flex;flex-direction:column;line-height:1.3;min-width:0}.step .st b,.step .st small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.step b{font-size:15px}.step small{font-size:12px;color:var(--mute)}
 .step.done .sn{background:color-mix(in srgb,var(--seal) 18%,transparent);color:var(--seal)}
 .step.cur{border-color:var(--seal);background:var(--sealbg)}.step.cur .sn{background:var(--seal);color:#fff}.step.cur small{color:var(--seal)}
 .sarr{align-self:center;color:var(--mute);flex:none}
@@ -838,7 +838,7 @@ function goTo(sel){expandFor(sel);goToRaw(sel)}
 function renderStepper(R){
   const a=st.a.length,b=st.b.length,n=R.length,f=st.fav.length;
   const cur=!a?1:!b?2:!f?3:4;
-  const steps=[[1,'挑第一字',a?`已選 ${a}`:'決定人格','#step1',a>0],[2,'挑第二字',b?`已選 ${b}`:'決定地格','#step2',b>0],[3,'看組合、勾喜歡',a&&b?`${n} 組・喜歡 ${f}`:'選好兩邊的字','#result',f>0],[4,'分享',f?`${f} 個名字`:'製作分享卡','share',false]];
+  const steps=[[1,'挑第一字',a?`已選 ${a}`:'決定人格','#step1',a>0],[2,'挑第二字',b?`已選 ${b}`:'決定地格','#step2',b>0],[3,'看組合',a&&b?`${n} 組・喜歡 ${f}`:'勾選喜歡','#result',f>0],[4,'分享',f?`${f} 個名字`:'製作卡片','share',false]];
   $('#stepper').innerHTML=steps.map(([k,t,s,go,done],i)=>`${i?'<span class="sarr" aria-hidden="true">→</span>':''}<button type="button" class="step${done?' done':''}${k===cur?' cur':''}" data-go="${go}"><span class="sn">${done?'✓':k}</span><span class="st"><b>${t}</b><small>${s}</small></span></button>`).join('');
 }
 
