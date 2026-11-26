@@ -339,7 +339,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 <div class="bar"><div class="wrap">
   <div class="mode" role="tablist"><button type="button" role="tab" data-mode="pick">手挑</button><button type="button" role="tab" data-mode="rec">推薦</button></div>
   <div class="filters">
-  <button type="button" id="fGood" aria-pressed="false" title="只顯示字本身屬金或水的字">金水補八字</button>
+  <button type="button" id="fGood" aria-pressed="false" title="只留字本身屬金或水的字，等於排除火、木、土">金水補八字</button>
   <div class="exg" role="group" aria-label="排除五行"><span class="exl">排除</span><button type="button" id="fMetal" class="ex" aria-pressed="false" title="排除字本身屬金的字"><i class="e-金">金</i></button><button type="button" id="fWater" class="ex" aria-pressed="false" title="排除字本身屬水的字"><i class="e-水">水</i></button><button type="button" id="fFire" class="ex" aria-pressed="false" title="排除字本身屬火的字"><i class="e-火">火</i></button><button type="button" id="fWood" class="ex" aria-pressed="false" title="排除字本身屬木的字"><i class="e-木">木</i></button><button type="button" id="fEarth" class="ex" aria-pressed="false" title="排除字本身屬土的字"><i class="e-土">土</i></button></div>
   <button type="button" id="fHorse" aria-pressed="false">隱藏生肖忌字</button>
   </div>
@@ -470,6 +470,7 @@ const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 let st={mode:'pick',subj:true,bands:[],a:[],b:[],fav:[],good:false,metal:false,water:false,fire:false,wood:false,earth:false,horse:false,loose:false,hmh:false};
 try{Object.assign(st,JSON.parse(localStorage.getItem('feng-picker')||'{}'))}catch(e){}
 if(!Array.isArray(st.fav))st.fav=[];
+if(st.good){st.fire=st.wood=st.earth=true;st.metal=st.water=false;st.good=false}
 const save=()=>{try{localStorage.setItem('feng-picker',JSON.stringify(st))}catch(e){}};
 const byCh=Object.fromEntries(POOL.map(x=>[x[0],x]));
 function pairList(){
@@ -477,7 +478,8 @@ function pairList(){
   for(let a=2;a<=25;a++)for(let b=2;b<=25;b++){const t=tier(a,b,st.loose);if(t)P.push([a,b,t])}
   return P;
 }
-function visible(x){return (!st.good||x[3]==='金'||x[3]==='水')&&(!st.metal||x[3]!=='金')&&(!st.water||x[3]!=='水')&&(!st.fire||x[3]!=='火')&&(!st.wood||x[3]!=='木')&&(!st.earth||x[3]!=='土')&&(!st.horse||x[5]!==-1)}
+const goodOn=()=>st.fire&&st.wood&&st.earth&&!st.metal&&!st.water;
+function visible(x){return (!st.metal||x[3]!=='金')&&(!st.water||x[3]!=='水')&&(!st.fire||x[3]!=='火')&&(!st.wood||x[3]!=='木')&&(!st.earth||x[3]!=='土')&&(!st.horse||x[5]!==-1)}
 function drawer(n,partners,key){
   const list=POOL.filter(x=>x[1]===n&&(visible(x)||st[key].includes(x[0])));
   if(!list.length)return '';
@@ -718,7 +720,7 @@ function rowHTML(r){
 function listHTML(R){return `<div class="rlist"><div class="rrow rhead"><span>名字</span><span>五行</span><span>人・地・外・總格</span><span>三才</span><span>等級</span><span>分數・總評</span></div>${R.map(rowHTML).join('')}</div>`}
 let recCache={key:''};
 function recAll(){
-  const key=JSON.stringify([st.good,st.metal,st.water,st.fire,st.wood,st.earth,st.horse,st.loose,st.hmh,st.subj]);
+  const key=JSON.stringify([st.metal,st.water,st.fire,st.wood,st.earth,st.horse,st.loose,st.hmh,st.subj]);
   if(recCache.key!==key){
     const vis=POOL.filter(visible),all=[];
     for(const a of vis)for(const b of vis){if(a[0]===b[0]||!tier(a[1],b[1],st.loose))continue;const r=evalPair(a[0],b[0]);if(r&&!r.bad)all.push(r)}
@@ -826,7 +828,8 @@ function render(){
   $('#pairs').innerHTML=A.map(a=>`<li class="prow"><a href="#d-a-${a}">第一字 ${a} 畫</a>${P2.filter(p=>p[0]===a).sort((x,y)=>x[2]-y[2]||x[1]-y[1]).map(p=>`<span class="chip${p[2]===1?' best':''}"><b>${p[0]}＋${p[1]}</b> 畫<span class="sc3" title="三才：天格・人格・地格">${grid(p[0],p[1]).sc.split('').map(e=>`<i class="e-${e}">${e}</i>`).join('')}</span>${p[2]===1?'<span class="bt">首選</span>':p[2]===3?'<span class="bt lo">放寬</span>':p[2]===4?'<span class="bt lo">不補八字</span>':''}</span>`).join('')}</li>`).join('');
   $('#first').innerHTML=A.map(n=>drawer(n,P2.filter(p=>p[0]===n).sort((x,y)=>x[2]-y[2]||x[1]-y[1]).map(p=>p[1]),'a')).join('')||'<p class="empty">沒有可用的字。</p>';
   $('#second').innerHTML=B.map(n=>drawer(n,P2.filter(p=>p[1]===n).sort((x,y)=>x[2]-y[2]||x[0]-y[0]).map(p=>p[0]),'b')).join('');
-  ['good','metal','water','fire','wood','earth','horse'].forEach(k=>$('#f'+{good:'Good',metal:'Metal',water:'Water',fire:'Fire',wood:'Wood',earth:'Earth',horse:'Horse'}[k]).setAttribute('aria-pressed',st[k]));
+  ['metal','water','fire','wood','earth','horse'].forEach(k=>$('#f'+{metal:'Metal',water:'Water',fire:'Fire',wood:'Wood',earth:'Earth',horse:'Horse'}[k]).setAttribute('aria-pressed',st[k]));
+  $('#fGood').setAttribute('aria-pressed',goodOn());
   $('#fLoose').checked=st.loose;$('#fHmh').checked=st.hmh;
   let R=[];
   for(const ca of st.a)for(const cb of st.b){const r=evalPair(ca,cb);if(r)R.push(r)}
@@ -871,7 +874,7 @@ document.addEventListener('click',e=>{
   const t=e.target.closest('.t');
   if(t){const k=t.dataset.k,c=t.dataset.c;st[k]=st[k].includes(c)?st[k].filter(x=>x!==c):[...st[k],c];save();render();return}
 });
-$('#fGood').addEventListener('click',()=>{st.good=!st.good;save();render()});
+$('#fGood').addEventListener('click',()=>{const on=goodOn();st.fire=st.wood=st.earth=!on;if(!on){st.metal=false;st.water=false}st.good=false;save();render()});
 $('#fHorse').addEventListener('click',()=>{st.horse=!st.horse;save();render()});
 $('#fMetal').addEventListener('click',()=>{st.metal=!st.metal;save();render()});
 $('#fWater').addEventListener('click',()=>{st.water=!st.water;save();render()});
