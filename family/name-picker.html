@@ -287,6 +287,14 @@ details.help[open] summary{color:var(--ink)}
 .sb.on{border-color:var(--seal);background:var(--sealbg);color:var(--seal);font-weight:700}.sb.on i{color:var(--seal)}
 .sb.empty{opacity:.45}
 #reshidden:empty{display:none}
+.exg{display:inline-flex;align-items:center;flex:none;border:1.5px solid var(--line);border-radius:22px;padding:0 4px 0 12px;min-height:44px;gap:2px}
+.exl{font-size:13px;color:var(--mute);margin-right:4px;white-space:nowrap}
+.bar .exg .ex{min-height:34px;min-width:34px;padding:0;border:0;border-radius:17px;background:none;display:grid;place-items:center}
+.ex i{font-style:normal;font:900 16px/1 "Noto Serif TC",serif}
+.ex[aria-pressed=true]{background:color-mix(in srgb,var(--mute) 22%,transparent)}
+.ex[aria-pressed=true] i{color:var(--mute);text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:var(--seal)}
+.ex:focus-visible{outline:2px solid var(--slate);outline-offset:1px}
+.exg:has(.ex[aria-pressed=true]){border-color:color-mix(in srgb,var(--seal) 50%,transparent)}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mute);margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
@@ -315,7 +323,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 <p class="lede">先挑名字第一個字，再挑第二個字，最後自動配出所有符合規則的組合。這裡有兩層五行，各管各的：</p>
 <ul class="lede" style="padding-left:1.2em;margin:8px 0 0">
 <li><b>筆畫的五行（三才）</b>：馮 12 畫，天格固定 13，屬火。寶寶喜金，但火會剋金，所以讓人格屬土當橋樑：火生土、土生金，地格落在金或土。下面列出的筆畫組合都已經符合這一層。</li>
-<li><b>字本身的五行</b>：看部首或字義，例如銘屬金、源屬水。名字裡的字帶金、水，可以再加強補八字。上方的「金水補八字」按鈕篩的就是這一層，打開後只留字本身屬金或水的字；也可以用「排除金」「排除水」「排除火」「排除木」「排除土」只拿掉某幾種。</li>
+<li><b>字本身的五行</b>：看部首或字義，例如銘屬金、源屬水。名字裡的字帶金、水，可以再加強補八字。上方的「金水補八字」按鈕篩的就是這一層，打開後只留字本身屬金或水的字；也可以在「排除」那一組點選金、水、火、木、土，只拿掉某幾種。</li>
 </ul>
 <div class="sancai" id="sancai" aria-label="三才示意圖"></div>
 <p class="lede" style="margin-top:16px">每一列是名字第一個字的筆畫，首選排在最前面，點列名可以跳到下方對應的字。筆畫後面的小色塊是組合出來的三才（天格・人格・地格）：</p>
@@ -332,11 +340,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   <div class="mode" role="tablist"><button type="button" role="tab" data-mode="pick">手挑</button><button type="button" role="tab" data-mode="rec">推薦</button></div>
   <div class="filters">
   <button type="button" id="fGood" aria-pressed="false" title="只顯示字本身屬金或水的字">金水補八字</button>
-  <button type="button" id="fMetal" aria-pressed="false" title="隱藏字本身屬金的字">排除金</button>
-  <button type="button" id="fWater" aria-pressed="false" title="隱藏字本身屬水的字">排除水</button>
-  <button type="button" id="fFire" aria-pressed="false" title="隱藏字本身屬火的字">排除火</button>
-  <button type="button" id="fWood" aria-pressed="false" title="隱藏字本身屬木的字">排除木</button>
-  <button type="button" id="fEarth" aria-pressed="false" title="隱藏字本身屬土的字">排除土</button>
+  <div class="exg" role="group" aria-label="排除五行"><span class="exl">排除</span><button type="button" id="fMetal" class="ex" aria-pressed="false" title="排除字本身屬金的字"><i class="e-金">金</i></button><button type="button" id="fWater" class="ex" aria-pressed="false" title="排除字本身屬水的字"><i class="e-水">水</i></button><button type="button" id="fFire" class="ex" aria-pressed="false" title="排除字本身屬火的字"><i class="e-火">火</i></button><button type="button" id="fWood" class="ex" aria-pressed="false" title="排除字本身屬木的字"><i class="e-木">木</i></button><button type="button" id="fEarth" class="ex" aria-pressed="false" title="排除字本身屬土的字"><i class="e-土">土</i></button></div>
   <button type="button" id="fHorse" aria-pressed="false">隱藏生肖忌字</button>
   </div>
   <span class="tally" id="tally"></span>
