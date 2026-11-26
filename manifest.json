@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-26T03:17:32.198Z",
+  "generated": "2026-11-26T04:24:31.065Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -15,6 +15,19 @@
     "mind": "心智"
   },
   "files": [
+    {
+      "path": "family/birth-registration.html",
+      "title": "二寶出生登記清單",
+      "description": "出生登記一趟要辦什麼、帶什麼，以及抽中公托後育兒津貼怎麼切換",
+      "tags": [
+        "家庭",
+        "新生兒",
+        "出生登記",
+        "育兒津貼",
+        "生育補助"
+      ],
+      "date": "2026-11-26"
+    },
     {
       "path": "family/name-picker.html",
       "title": "寶寶取名選字器",
