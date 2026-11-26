@@ -153,8 +153,12 @@ body.docked{padding-bottom:96px}
  .rsd{grid-area:s}
  .rn b{font-size:20px}
 }
-.rules{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;margin-top:10px;padding-top:12px;border-top:1px dashed color-mix(in srgb,var(--seal) 32%,transparent)}
-.rules-t{font-size:13px;color:var(--mute)}
+.rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px;margin-top:10px;padding-top:12px;border-top:1px dashed color-mix(in srgb,var(--seal) 32%,transparent)}
+.rules-t{grid-column:1/-1;font-size:13px;color:var(--mute);font-weight:500}.rules-t small{display:block;font-size:12px;font-weight:400;opacity:.85;margin-top:2px}
+.rsw{justify-content:space-between;gap:14px;padding:10px 14px;border-radius:12px;background:var(--tile);border:1px solid var(--line)}
+.rsw>span{min-width:0}
+.rsw:has(input:checked){border-color:color-mix(in srgb,var(--seal) 55%,transparent);background:var(--sealbg)}
+@media(max-width:600px){.rules{grid-template-columns:minmax(0,1fr)}}
 .sw{display:inline-flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}
 .sw input{appearance:none;-webkit-appearance:none;width:40px;height:24px;border-radius:12px;background:var(--line);position:relative;flex:none;margin:0;transition:background .2s;cursor:pointer}
 .sw input::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .2s}
@@ -317,9 +321,9 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 <p class="lede" style="margin-top:16px">每一列是名字第一個字的筆畫，首選排在最前面，點列名可以跳到下方對應的字。筆畫後面的小色塊是組合出來的三才（天格・人格・地格）：</p>
 <ul class="pairs" id="pairs"></ul>
 <div class="rules">
-  <span class="rules-t">其他派別的組合</span>
-  <label class="sw"><input type="checkbox" id="fLoose"><span><b>放寬</b><small>允許天格剋人格，多出 5＋12 畫</small></span></label>
-  <label class="sw"><input type="checkbox" id="fHmh"><span><b>火木火</b><small>只看三才的派別認為吉，不補八字，多出 9、19 畫</small></span></label>
+  <div class="rules-t">其他派別的組合<small>預設關閉，打開後上方會多出對應的筆畫組合</small></div>
+  <label class="sw rsw"><span><b>放寬</b><small>允許天格剋人格，多出第一字 5、6 畫</small></span><input type="checkbox" id="fLoose"></label>
+  <label class="sw rsw"><span><b>火木火</b><small>只看三才的派別認為吉，不補八字，多出第一字 9、19 畫</small></span><input type="checkbox" id="fHmh"></label>
 </div>
 </div></section>
 
