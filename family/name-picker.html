@@ -240,6 +240,17 @@ details.help summary::-webkit-details-marker{display:none}
 details.help summary::before{content:"ⓘ";font-size:15px}
 details.help[open] summary{margin-bottom:6px}
 @media(max-width:600px){.step{min-width:132px;padding:8px 10px}.sarr{display:none}}
+.helpcard{margin-top:8px;padding:14px 16px;border-radius:14px;background:var(--tile);border:1px solid color-mix(in srgb,var(--slate) 30%,transparent);display:grid;gap:12px;max-width:760px}
+.hrow{display:grid;grid-template-columns:6.5em minmax(0,1fr);gap:10px;align-items:start}
+.hk{font-size:12px;color:var(--mute);padding-top:3px;font-weight:500}
+.hv{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:13.5px}
+.hv small{font-size:12.5px;color:var(--mute);line-height:1.5}
+.hi{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.sw5{font-style:normal;font:900 18px/1 "Noto Serif TC",serif}
+.badge.demo{position:static;display:inline-block}
+.demo-dim{display:inline-block;padding:1px 8px;border-radius:6px;background:var(--line);opacity:.45;font-size:12px}
+details.help[open] summary{color:var(--ink)}
+@media(max-width:600px){.hrow{grid-template-columns:minmax(0,1fr);gap:4px}.hi{white-space:normal}}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mute);margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
@@ -311,8 +322,12 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 <h2>第一步　名字第一個字<span class="role r-ren">決定人格 → 要屬土</span></h2>
 <p class="guide">這個字和姓氏一起決定「人格」，也就是主運和個性核心，是最重要的位置。適合穩重、端正的字，也是傳統放輩分字的地方。</p>
 <details class="help"><summary>看標記說明</summary>
-<p class="hint">點選喜歡的字，可以多選。每個字下面是讀音和簡義，字的顏色代表常見的五行歸類：金是金黃、水是藍、木是綠、火是紅、土是褐。</p>
-<div class="legend"><span><b class="g g1">◎ 推薦</b>：五行屬金或水，也不犯生肖</span><span><b class="g">○ 可用</b>：屬木，或八字和生肖一加一減</span><span><b class="g g3">△ 留意</b>：屬火或土，或犯生肖</span><span style="flex-basis:100%">等級只看八字和生肖；小字是我對字本身的備註（偏女性、字義重、撞名率等），不影響等級。</span><span><span class="hz hp">馬＋</span> 屬馬喜用的字根（艹、禾、玉、金、米）</span><span><span class="hz hm">馬－</span> 生肖派忌用的字根（水、雨、子、冫）</span></div>
+<div class="helpcard">
+  <div class="hrow"><span class="hk">五行顏色</span><span class="hv"><i class="sw5 e-金">金</i><i class="sw5 e-水">水</i><i class="sw5 e-木">木</i><i class="sw5 e-火">火</i><i class="sw5 e-土">土</i><small>字的顏色代表常見的五行歸類</small></span></div>
+  <div class="hrow"><span class="hk">八字等級</span><span class="hv"><span class="hi"><b class="g g1">◎</b> 推薦：屬金或水，也不犯生肖</span><span class="hi"><b class="g">○</b> 可用：屬木，或八字和生肖一加一減</span><span class="hi"><b class="g g3">△</b> 留意：屬火或土，或犯生肖</span></span></div>
+  <div class="hrow"><span class="hk">生肖</span><span class="hv"><span class="hi"><span class="hz hp">馬＋</span> 屬馬喜用的字根（艹、禾、玉、金、米）</span><span class="hi"><span class="hz hm">馬－</span> 生肖派忌用的字根（水、雨、子、冫）</span></span></div>
+  <div class="hrow"><span class="hk">小字備註</span><span class="hv"><small>我對字本身的提醒（偏女性、字義重、撞名率等），只供參考，不影響等級</small></span></div>
+</div>
 </details>
 <div id="first"></div>
 </div></section>
@@ -321,7 +336,12 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 <h2>第二步　名字第二個字<span class="role r-di">決定地格 → 屬金最好，土也可</span></h2>
 <p class="guide">這個字決定「地格」（少年運、家庭）和「外格」（人際），也是平常最常被叫的字。讀音響亮、好叫，字義鮮明比較好。</p>
 <details class="help"><summary>看「可配 N」等提示的說明</summary>
-<p class="hint">一樣多選。挑了字之後，另一欄會跟著提示：右上角「可配 N」表示能和你已選的 N 個字組成合格的名字，變淡的字表示筆畫配不上（仍可選），左上角「同部首」表示字形會太像。兩欄都會互相提示，先挑哪一欄都可以。</p>
+<div class="helpcard">
+  <div class="hrow"><span class="hk"><em class="badge demo">可配 2</em></span><span class="hv"><small>能和另一欄已選的 2 個字，組成合格的名字</small></span></div>
+  <div class="hrow"><span class="hk"><span class="demo-dim">變淡</span></span><span class="hv"><small>筆畫和另一欄已選的字都配不上，但仍可選</small></span></div>
+  <div class="hrow"><span class="hk"><em class="badge warn demo">同部首</em></span><span class="hv"><small>和另一欄某個已選的字部首相同，字形會太像</small></span></div>
+  <div class="hrow"><span class="hk">兩欄互通</span><span class="hv"><small>先挑哪一欄都可以，另一欄會跟著提示</small></span></div>
+</div>
 </details>
 <div id="second"></div>
 </div></section>
