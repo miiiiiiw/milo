@@ -214,6 +214,8 @@ body[data-mode=pick] .m-rec,body[data-mode=rec] .m-pick,body[data-mode=rec] .bar
 .si-h+.si-d{margin-top:10px}
 .fab{position:fixed;right:max(16px,calc((100vw - 1100px)/2));bottom:calc(var(--dockh,0px) + 16px + env(safe-area-inset-bottom));z-index:21;width:56px;height:56px;min-height:56px;padding:0;border-radius:50%;border:0;background:var(--seal);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.28);transition:bottom .2s,transform .15s}
 .fab:active{transform:scale(.94)}
+.fab-k{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;padding:0 5px;border-radius:6px;background:var(--bg);color:var(--ink);border:1px solid var(--line);font:700 12px/18px ui-monospace,monospace;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+@media(hover:none),(max-width:760px){.fab-k{display:none}}
 body:has(.sheet:not([hidden])) .fab{display:none}
 #dsheet{z-index:40}
 .sheet-panel.top{top:0;bottom:auto;border-radius:0 0 18px 18px;padding-top:calc(14px + env(safe-area-inset-top));max-height:85vh}
@@ -489,7 +491,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   </div>
 </div>
 <button type="button" class="fab fab-top" id="topBtn" aria-label="回到頂部" hidden><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 19V6m0 0l-6 6m6-6l6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-<button type="button" class="fab" id="srchBtn" aria-label="搜尋名字"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+<button type="button" class="fab" id="srchBtn" aria-label="搜尋名字（快速鍵 /）" title="搜尋名字（快速鍵 /）"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><kbd class="fab-k" aria-hidden="true">/</kbd></button>
 <div class="sheet" id="ssheet" hidden>
   <div class="sheet-mask" data-sclose></div>
   <div class="sheet-panel top" role="dialog" aria-modal="true" aria-label="搜尋名字">
@@ -873,7 +875,7 @@ function searchRun(){
   }
   box.innerHTML='<p class="smsg">名字只要輸入一個或兩個字。</p>';
 }
-const openSearch=()=>{$('#ssheet').hidden=false;document.body.style.overflow='hidden';searchRun();setTimeout(()=>$('#sq').focus(),50)};
+const openSearch=()=>{$('#ssheet').hidden=false;document.body.style.overflow='hidden';searchRun();const q=$('#sq');q.focus({preventScroll:true});q.select();requestAnimationFrame(()=>{if(document.activeElement!==q){q.focus({preventScroll:true})}})};
 const closeSearch=()=>{$('#ssheet').hidden=true;if($('#dsheet').hidden)document.body.style.overflow=''};
 
 function goToRaw(sel){const el=document.querySelector(sel);if(!el)return;const y=el.getBoundingClientRect().top+window.scrollY-document.querySelector('.bar').offsetHeight-8;window.scrollTo({top:y,behavior:'smooth'})}
@@ -985,7 +987,7 @@ $('#mkcard').addEventListener('click',makeCards);
 $('#sq').addEventListener('input',searchRun);
 $('#recmore').addEventListener('click',()=>{recBands+=8;renderRec()});
 $('#fSubj').addEventListener('change',e=>{st.subj=e.target.checked;save();render()});
-document.addEventListener('keydown',e=>{const ss=e.target.closest&&e.target.closest('.stepsum');if(ss&&(e.key==='Enter'||e.key===' ')){e.preventDefault();ss.click();return}const rw=e.target.closest&&e.target.closest('.rrow.click');if(rw&&(e.key==='Enter'||e.key===' ')&&!e.target.closest('label.fbox')){e.preventDefault();openDetail(rw.dataset.detail);return}if(e.key!=='Escape')return;if(!$('#dsheet').hidden)closeDetail();else if(!$('#ssheet').hidden)closeSearch();else if(!$('#sheet').hidden)closeSheet()});
+document.addEventListener('keydown',e=>{if(e.key==='/'&&!e.metaKey&&!e.ctrlKey&&!e.altKey){const tg=e.target;if(!(tg.closest&&tg.closest('input,textarea,select,[contenteditable]'))&&$('#ssheet').hidden&&$('#dsheet').hidden){e.preventDefault();openSearch();return}}const ss=e.target.closest&&e.target.closest('.stepsum');if(ss&&(e.key==='Enter'||e.key===' ')){e.preventDefault();ss.click();return}const rw=e.target.closest&&e.target.closest('.rrow.click');if(rw&&(e.key==='Enter'||e.key===' ')&&!e.target.closest('label.fbox')){e.preventDefault();openDetail(rw.dataset.detail);return}if(e.key!=='Escape')return;if(!$('#dsheet').hidden)closeDetail();else if(!$('#ssheet').hidden)closeSearch();else if(!$('#sheet').hidden)closeSheet()});
 function favText(){const F=favPairs();return '寶寶取名候選\n'+F.map(r=>`馮${r.key}（féng ${r.xa[2]} ${r.xb[2]}）\n　${r.ca}：${r.xa[4]}；${r.cb}：${r.xb[4]}\n　三才${r.g.sc}・總格${r.g.zong}・${r.sc.total}分・${['','推薦','可考慮','留意'][r.o]}${r.pun?'・諧音：'+r.pun:''}`).join('\n')}
 $('#copyfav').addEventListener('click',async()=>{const F=favPairs();if(!F.length){toast('還沒有喜歡的名字');return}
   try{await navigator.clipboard.writeText(favText());toast(`已複製 ${F.length} 個名字`)}catch(e){toast('這個環境無法複製')}});
