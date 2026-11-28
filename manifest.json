@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-28T16:39:31.030Z",
+  "generated": "2026-11-28T16:45:43.799Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -16,6 +16,48 @@
   },
   "files": [
     {
+      "path": "reading/eianlu-ai-video-tools.html",
+      "title": "AI 影片製作實踐：用 Claude Code / Codex 串聯 6 個工具，搞定畫面、鏡頭、拆音軌與後期全流程",
+      "description": "Eian 用 Claude Code 串 6 個工具做 AI 影片：參考圖、鏡頭、聲音拆軌到後期",
+      "tags": [
+        "原文學習",
+        "AI 影片",
+        "Seedance",
+        "提示詞",
+        "Eian"
+      ],
+      "category": "motion",
+      "date": "2026-11-28"
+    },
+    {
+      "path": "reading/longhai-ai-writing.html",
+      "title": "人人都用得上的 AI 寫作指南：怎麼和 AI 做好分工，以及我的 7 步創作全流程，附 20+ 工具推薦",
+      "description": "龍海拆解自己的 7 步 AI 寫作流程：人和 AI 怎麼分工、各步驟用哪些工具",
+      "tags": [
+        "原文學習",
+        "AI 寫作",
+        "工作流程",
+        "內容創作",
+        "龍海"
+      ],
+      "category": "reach",
+      "date": "2026-11-28"
+    },
+    {
+      "path": "watching/jinchenma-ai-learning-path.html",
+      "title": "2027 新手 AI 入門最佳路徑",
+      "description": "金尘马給只會用 AI 聊天的新手一條入門路線：裝 AI 代理、做小任務、遇到什麼學什麼",
+      "tags": [
+        "影片學習",
+        "AI 入門",
+        "AI 代理",
+        "學習方法",
+        "金尘马"
+      ],
+      "category": "mind",
+      "date": "2026-11-28"
+    },
+    {
       "path": "product/grok-bot-guide.html",
       "title": "GrokBot 學習導航",
       "description": "八個學習主題、132 篇 X 長文的收藏榜與作者排行，依學習路線由淺入深",
@@ -25,6 +67,48 @@
         "學習導航",
         "收藏榜"
       ],
+      "date": "2026-11-27"
+    },
+    {
+      "path": "reading/katelyn-multiagent.html",
+      "title": "工程師要解決的一組新問題（The new set of problems for engineers to solve）",
+      "description": "Katelyn Lesse 談多代理系統帶來的四類新工程問題：基礎設施、身分、隔離與監控",
+      "tags": [
+        "原文學習",
+        "AI 代理",
+        "AI 安全",
+        "系統架構",
+        "Katelyn Lesse"
+      ],
+      "category": "build",
+      "date": "2026-11-27"
+    },
+    {
+      "path": "reading/zachary-ai-ui-rules.html",
+      "title": "在做精細化 UI 前，讓 AI 寫出乾淨介面的最基礎前端規範",
+      "description": "雷电芽衣整理五條前端規範，用數字、比例與禁令讓 AI 寫出乾淨的第一版介面",
+      "tags": [
+        "原文學習",
+        "網頁設計",
+        "設計規範",
+        "提示詞",
+        "雷电芽衣"
+      ],
+      "category": "design",
+      "date": "2026-11-27"
+    },
+    {
+      "path": "watching/steve-yegge-trash-mountain.html",
+      "title": "軟體工廠：逃離垃圾山——Gas Town 作者 Steve Yegge（Software Factories: Escape from Trash Mountain — Steve Yegge, Gas Town）",
+      "description": "Steve Yegge 談經營軟體工廠一年的教訓：工作、燃料、脈絡怎麼管，AI 代理還會鬧人事問題",
+      "tags": [
+        "影片學習",
+        "軟體工廠",
+        "AI 代理",
+        "模型福祉",
+        "Steve Yegge"
+      ],
+      "category": "build",
       "date": "2026-11-27"
     },
     {
@@ -41,6 +125,20 @@
       "date": "2026-11-26"
     },
     {
+      "path": "reading/dankoe-deep-work.html",
+      "title": "改變我人生的深度工作作息，每天早上 1 小時（The deep work routine that changed my life (1 hour every morning)）",
+      "description": "Dan Koe 談忙碌為何不再是地位象徵，以及每天早上一小時深度工作如何打造一生的志業。",
+      "tags": [
+        "原文學習",
+        "深度工作",
+        "生產力",
+        "一人事業",
+        "Dan Koe"
+      ],
+      "category": "mind",
+      "date": "2026-11-26"
+    },
+    {
       "path": "family/name-picker.html",
       "title": "寶寶取名選字器",
       "description": "依康熙筆畫、三才五格與八字喜用，先選字再自動組合名字，可製作分享卡",
@@ -50,6 +148,36 @@
         "八字",
         "工具"
       ],
+      "date": "2026-11-25"
+    },
+    {
+      "path": "reading/addy-ship-guide.html",
+      "title": "用 Claude Code 交付程式碼的實用指南（A practical guide to shipping with Claude Code）",
+      "description": "Claude Code 團隊實戰：用 /ship 讓 AI 代理接手合併請求後的審查、修正與核准。",
+      "tags": [
+        "原文學習",
+        "程式碼審查",
+        "Claude Code",
+        "Claude Ship",
+        "AI 代理",
+        "Addy Osmani"
+      ],
+      "category": "build",
+      "date": "2026-11-25"
+    },
+    {
+      "path": "reading/claude-ship.html",
+      "title": "推出 Claude Ship（Introducing Claude Ship）",
+      "description": "Anthropic 推出 Claude Ship：讓 AI 代理接手程式碼審查、修正與依團隊政策核准",
+      "tags": [
+        "原文學習",
+        "Claude Code",
+        "程式碼審查",
+        "AI 代理",
+        "Claude Ship",
+        "Anthropic"
+      ],
+      "category": "build",
       "date": "2026-11-25"
     },
     {
@@ -65,6 +193,21 @@
         "Palantir",
         "OpenAI",
         "Gergely Orosz"
+      ],
+      "category": "build",
+      "date": "2026-11-25"
+    },
+    {
+      "path": "watching/zimo-grokbot-leads.html",
+      "title": "Grok Bot 保姆級教學！從零搭建 AI 獲客小隊，自動找客戶、寫開發信（附全套提示詞）",
+      "description": "子墨用 Grok Bot 搭主管、找店官、文案官三個 Bot，每天自動找店家寫開發信，並算清額度",
+      "tags": [
+        "影片學習",
+        "Grok Bot",
+        "AI 代理",
+        "開發信",
+        "獲客",
+        "子墨说AI"
       ],
       "category": "build",
       "date": "2026-11-25"
