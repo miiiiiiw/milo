@@ -223,5 +223,20 @@
     "sha256": "9bb7c778a3ae55ab13f699693c54163e69fb04c7ccb3ab8dc09aa31a7d484dcd",
     "v": 15,
     "synced": "2026-11-23"
+  },
+  "jinchenma-ai-learning-path": {
+    "sha256": "7fa2a76c79026218511d9d5c74469c8910f94c7cc67cdab4584fa285660a4397",
+    "v": 15,
+    "synced": "2026-11-28"
+  },
+  "steve-yegge-trash-mountain": {
+    "sha256": "cc061923bfcc0b857bc1b6013a42e00ac036dd1de1df343c4cad4e173ace8466",
+    "v": 15,
+    "synced": "2026-11-28"
+  },
+  "zimo-grokbot-leads": {
+    "sha256": "ca2c8b7f8d9d423e5e584d0fed5e741e5755fbb85deda7e1956be41aff6083cc",
+    "v": 15,
+    "synced": "2026-11-28"
   }
 }
