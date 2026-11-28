@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-26T08:54:04.915Z",
+  "generated": "2026-11-28T16:39:31.030Z",
   "folders": {
     "family": "家庭生活",
     "product": "產品應用",
@@ -15,6 +15,18 @@
     "mind": "心智"
   },
   "files": [
+    {
+      "path": "product/grok-bot-guide.html",
+      "title": "GrokBot 學習導航",
+      "description": "八個學習主題、132 篇 X 長文的收藏榜與作者排行，依學習路線由淺入深",
+      "tags": [
+        "Grok Bot",
+        "AI",
+        "學習導航",
+        "收藏榜"
+      ],
+      "date": "2026-11-27"
+    },
     {
       "path": "family/birth-registration.html",
       "title": "二寶出生登記清單",
@@ -358,18 +370,6 @@
         "產檢",
         "第二胎",
         "決策"
-      ],
-      "date": "2026-11-20"
-    },
-    {
-      "path": "product/grok-bot-guide.html",
-      "title": "GrokBot 學習導航",
-      "description": "八個學習主題、132 篇 X 長文的收藏榜與作者排行，依學習路線由淺入深",
-      "tags": [
-        "Grok Bot",
-        "AI",
-        "學習導航",
-        "收藏榜"
       ],
       "date": "2026-11-20"
     },
